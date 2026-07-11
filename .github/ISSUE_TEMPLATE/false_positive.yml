@@ -1,0 +1,52 @@
+name: "Scanner misjudged my repo (false positive/negative)"
+description: "A check passed or failed when it shouldn't have — the highest-value bug report there is."
+labels: ["check-accuracy"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The scanner is deterministic pattern matching, so it will occasionally
+        misjudge a real repository (a linter it doesn't recognize, a rule
+        format it doesn't parse). Reports like this are what keep the rubric
+        honest — thank you.
+  - type: input
+    id: check-id
+    attributes:
+      label: Check ID
+      description: "e.g. SNS-02, HKS-05 — shown in the CLI output and JSON report"
+      placeholder: "SNS-02"
+    validations:
+      required: true
+  - type: dropdown
+    id: direction
+    attributes:
+      label: What went wrong
+      options:
+        - "False negative — check failed but the artifact is actually there"
+        - "False positive — check passed but it shouldn't have"
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Repository / minimal reproduction
+      description: >-
+        A link to the public repo, or the smallest file/snippet that
+        reproduces it (e.g. the exact `.cursor/rules/*.mdc` frontmatter, the
+        linter config, the hooks.json entry).
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs. actual
+      description: What did you expect the check to report, and what did it actually report?
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: harness-score version
+      description: "Output of `npx harness-score --json | grep version`, or the `v0.x.y` printed in the CLI header"
+    validations:
+      required: true

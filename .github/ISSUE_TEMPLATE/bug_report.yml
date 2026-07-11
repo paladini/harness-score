@@ -1,0 +1,44 @@
+name: "Bug report"
+description: "Something crashed, produced wrong output, or otherwise misbehaved (not a scoring judgment call — see the check-accuracy template for that)."
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What did you run, and what went wrong?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Command(s) run, and a link to the repo if the bug depends on repo contents.
+      placeholder: |
+        npx harness-score --json
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: harness-score version
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: OS / Node version
+      placeholder: "macOS 14, Node 20.11"
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant output / stack trace
+      render: shell

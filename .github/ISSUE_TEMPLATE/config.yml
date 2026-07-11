@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/paladini/harness-score/security/policy
+    about: Please report security issues privately — see SECURITY.md, don't file a public issue.
+  - name: Guide / documentation
+    url: https://paladini.github.io/harness-score/
+    about: Read the maturity model and check catalog before opening a question — most "why did I lose points" questions are answered there.
