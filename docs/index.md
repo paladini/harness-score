@@ -48,21 +48,33 @@ the **Harness Score** plugin.
 
 ## Branded visuals
 
-Three self-contained SVG artifacts — same shields.io height (20px), level-only
-pills for README rows, full names on share cards:
+Three SVG artifacts — 20px pills for README rows, banner cards for posts.
 
-<div class="hs-badge-row">
-  <img class="hs-badge" alt="Live badge (auto-updates)" src="/harness-badge.svg" height="20">
-  <img class="hs-badge" alt="L0 compact" src="/maturity/badge-l0.svg" height="20">
-  <img class="hs-badge" alt="L1 compact" src="/maturity/badge-l1.svg" height="20">
-  <img class="hs-badge" alt="L2 compact" src="/maturity/badge-l2.svg" height="20">
-  <img class="hs-badge" alt="L3 compact" src="/maturity/badge-l3.svg" height="20">
-  <img class="hs-badge" alt="L4 compact" src="/maturity/badge-l4.svg" height="20">
+<div class="hs-visual">
+  <p class="hs-visual-label">1 · Live badge</p>
+  <div class="hs-badge-row">
+    <img class="hs-badge" alt="Live badge (auto-updates)" src="/harness-badge.svg" height="20">
+  </div>
+  <p class="hs-visual-detail">Regenerated on every CI run — <code>harness</code> + detected level.</p>
 </div>
 
-<p>
-  <img alt="L4 share card (includes level name)" src="/maturity/card-l4.svg" width="100%">
-</p>
+<div class="hs-visual">
+  <p class="hs-visual-label">2 · Compact badges</p>
+  <div class="hs-badge-row">
+    <img class="hs-badge" alt="L0" src="/maturity/badge-l0.svg" height="20">
+    <img class="hs-badge" alt="L1" src="/maturity/badge-l1.svg" height="20">
+    <img class="hs-badge" alt="L2" src="/maturity/badge-l2.svg" height="20">
+    <img class="hs-badge" alt="L3" src="/maturity/badge-l3.svg" height="20">
+    <img class="hs-badge" alt="L4" src="/maturity/badge-l4.svg" height="20">
+  </div>
+  <p class="hs-visual-detail">Static files to pin a level — same pill, no auto-update.</p>
+</div>
+
+<div class="hs-visual">
+  <p class="hs-visual-label">3 · Share card</p>
+  <img class="hs-share-card" alt="L4 · Self-correcting" src="/maturity/card-l4.svg">
+  <p class="hs-visual-detail">860×240 banner with the level name for social posts and repo heroes.</p>
+</div>
 
 Gallery, CI recipes, and embed snippets:
 **[Show your maturity →](/guide/measure-and-improve#show-your-maturity)**

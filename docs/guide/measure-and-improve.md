@@ -130,12 +130,17 @@ the same row (112×20 SVG; level only — score percent stays in the CLI report)
 This guide's site dogfoods the pattern — the live badge below is regenerated
 on every Pages deploy:
 
-<img class="hs-badge" src="/harness-badge.svg" alt="Harness Score" height="20">
+<div class="hs-visual">
+  <p class="hs-visual-label">Live badge</p>
+  <div class="hs-badge-row">
+    <img class="hs-badge" src="/harness-badge.svg" alt="Harness Score" height="20">
+  </div>
+</div>
 
 The matching banner card for the detected level is published as
 `harness-card.svg` (currently L4 for this repository):
 
-![Harness Score banner](https://paladini.github.io/harness-score/harness-card.svg)
+<img class="hs-share-card" src="/harness-card.svg" alt="Harness Score L4 · Self-correcting">
 
 ### Option B — compact badge (level only)
 
@@ -158,33 +163,22 @@ name (`Unharnessed`, `Guided`, …):
 | L3 · Sensing | [badge-l3.svg](https://paladini.github.io/harness-score/maturity/badge-l3.svg) | [card-l3.svg](https://paladini.github.io/harness-score/maturity/card-l3.svg) |
 | L4 · Self-correcting | [badge-l4.svg](https://paladini.github.io/harness-score/maturity/badge-l4.svg) | [card-l4.svg](https://paladini.github.io/harness-score/maturity/card-l4.svg) |
 
-All five compact badges (112×20 each):
-
-<div class="hs-badge-row">
-  <img class="hs-badge" alt="L0" src="/maturity/badge-l0.svg" height="20">
-  <img class="hs-badge" alt="L1" src="/maturity/badge-l1.svg" height="20">
-  <img class="hs-badge" alt="L2" src="/maturity/badge-l2.svg" height="20">
-  <img class="hs-badge" alt="L3" src="/maturity/badge-l3.svg" height="20">
-  <img class="hs-badge" alt="L4" src="/maturity/badge-l4.svg" height="20">
+<div class="hs-visual">
+  <p class="hs-visual-label">Compact badges (112×20)</p>
+  <div class="hs-badge-row">
+    <img class="hs-badge" alt="L0" src="/maturity/badge-l0.svg" height="20">
+    <img class="hs-badge" alt="L1" src="/maturity/badge-l1.svg" height="20">
+    <img class="hs-badge" alt="L2" src="/maturity/badge-l2.svg" height="20">
+    <img class="hs-badge" alt="L3" src="/maturity/badge-l3.svg" height="20">
+    <img class="hs-badge" alt="L4" src="/maturity/badge-l4.svg" height="20">
+  </div>
 </div>
 
-Share cards (860×240 — include the level name):
-
-<p>
-  <img alt="L0 · Unharnessed" src="/maturity/card-l0.svg" width="100%">
-</p>
-<p>
-  <img alt="L1 · Documented" src="/maturity/card-l1.svg" width="100%">
-</p>
-<p>
-  <img alt="L2 · Guided" src="/maturity/card-l2.svg" width="100%">
-</p>
-<p>
-  <img alt="L3 · Sensing" src="/maturity/card-l3.svg" width="100%">
-</p>
-<p>
-  <img alt="L4 · Self-correcting" src="/maturity/card-l4.svg" width="100%">
-</p>
+<div class="hs-visual">
+  <p class="hs-visual-label">Share card example (860×240)</p>
+  <img class="hs-share-card" alt="L4 · Self-correcting" src="/maturity/card-l4.svg">
+  <p class="hs-visual-detail">Download any level from the table above — cards include the level name.</p>
+</div>
 
 > **shields.io fan?** Your Action can also write a small JSON file and point a
 > [shields endpoint](https://shields.io/badges/endpoint-badge) at it

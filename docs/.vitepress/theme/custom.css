@@ -4,7 +4,7 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   align-items: center;
-  margin: 1rem 0;
+  margin: 0.25rem 0 0;
 }
 
 .hs-badge,
@@ -17,7 +17,38 @@
   display: inline-block !important;
   vertical-align: middle;
   margin: 0 !important;
-  /* Rounded <img> corners clip the left bar icon when the SVG is rasterized. */
   border-radius: 0 !important;
   object-fit: contain !important;
+}
+
+/* Three-artifact gallery blocks (home + guide). */
+.hs-visual {
+  margin: 1.25rem 0 1.75rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  background: var(--vp-c-bg-soft);
+}
+
+.hs-visual-label {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+}
+
+.hs-visual-detail {
+  margin: 0.5rem 0 0;
+  font-size: 0.82rem;
+  color: var(--vp-c-text-2);
+}
+
+/* Share cards: cap width so banners do not dominate the column. */
+.hs-share-card {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+  margin: 0.25rem 0 0;
+  border-radius: 8px;
 }
