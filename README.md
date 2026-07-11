@@ -52,7 +52,11 @@ npx harness-score
 ```
 
 Not just a score — a **diagnosis**. Every failed check names the file,
-explains what's missing, and links to the exact recipe to fix it.
+explains what's missing, and links to the exact recipe to fix it. Every
+check is a filesystem fact — a file exists, parses, matches a pattern —
+never a judgment call and never a network request. Same repository, same
+commit, same score, on your laptop or in CI, forever. That's what lets you
+gate a pipeline on it.
 
 ---
 
@@ -70,64 +74,29 @@ Most repositories have none of this and don't know it. Harness Score tells
 you exactly where you stand, in a language a CI pipeline (and a competitive
 teammate) understands: a number, a level, a badge.
 
-## How it works
-
-```mermaid
-flowchart LR
-    A["Your repository"] --> B["harness-score scanner\n33 deterministic checks"]
-    B --> C["6 dimensions scored\ncontext · skills · hooks\nsensors · CI · hygiene"]
-    C --> D["Maturity level\nL0 → L4"]
-    D --> E["Terminal report"]
-    D --> F["JSON / Markdown"]
-    D --> G["SVG badge"]
-    D --> H["CI gate\n--min-level"]
-```
-
-Every check is a filesystem fact — a file exists, parses, matches a pattern —
-never a judgment call and never a network request. Same repository, same
-commit, same score, on your laptop or in CI, forever. That's what lets you
-gate a pipeline on it.
-
 ## The maturity ladder
 
 Levels don't just add up points — they gate on the **shape** of your harness.
 80 points of beautifully written docs with zero tests is not maturity; it's
-L1. Climbing the ladder means covering a new dimension at each step, not just
-accumulating percentage.
+L1. Climbing the ladder means covering a new dimension at each step.
 
-```mermaid
-flowchart LR
-    L0["L0 · Unharnessed"] -- "write AGENTS.md" --> L1["L1 · Documented"]
-    L1 -- "rules + skills\n+ hygiene" --> L2["L2 · Guided"]
-    L2 -- "tests + linter\n+ CI" --> L3["L3 · Sensing"]
-    L3 -- "hooks + 80% total" --> L4["L4 · Self-correcting"]
-```
+| | Level | What it means | Priority to climb |
+|---|---|---|---|
+| 🌱 | **L0 · Unharnessed** | Agents rediscover the project every session. Mistakes ship unless a human happens to catch them. Most repositories start — and stay — here. | Write an `AGENTS.md` |
+| 📖 | **L1 · Documented** | A substantive `AGENTS.md` orients every session: what the project is, how to build and test it, what not to touch. The single highest-leverage step from zero. | Add scoped rules + a skill |
+| 🧭 | **L2 · Guided** | Guidance has real structure: scoped `.cursor/rules/`, at least one skill or command, basic hygiene (env files ignored, no leaked secrets). The harness ships with the code and is reviewed like code. | Add a test runner, linter, types, CI |
+| 🔬 | **L3 · Sensing** | The feedback loop exists. Tests, a linter, type checking, and a CI pipeline re-verify every push. The agent can check its own work with deterministic tools — this is where AI-assisted development stops feeling risky. | Add gate + feedback hooks, pre-commit |
+| 🛡️ | **L4 · Self-correcting** | The loop closes at runtime. Gate hooks make destructive actions *impossible*, not just discouraged; feedback hooks lint and format inline. A mistake has to get past rules, hooks, tests, types, CI, *and* the gates — mostly without a human in the loop. | Keep it there — gate CI on `--min-level 4` |
 
-| | Level | What it means | You unlock it with | Priority to climb |
-|---|---|---|---|---|
-| 🌱 | **L0 · Unharnessed** | Agents rediscover the project every session. Mistakes ship unless a human happens to catch them. Most repositories start — and stay — here. | *(the default)* | Write an `AGENTS.md` |
-| 📖 | **L1 · Documented** | A substantive `AGENTS.md` orients every session: what the project is, how to build and test it, what not to touch. The single highest-leverage step from zero. | Context ≥ 40% | Add scoped rules + a skill |
-| 🧭 | **L2 · Guided** | Guidance has real structure: scoped `.cursor/rules/` with valid frontmatter, at least one skill or command, basic hygiene (env files ignored, no leaked secrets). The harness ships with the code and is reviewed like code. | Context ≥ 60%, (Skills ≥ 30% *or* Hooks ≥ 30%), Hygiene ≥ 50% | Add a test runner, linter, types, CI |
-| 🔬 | **L3 · Sensing** | The feedback loop exists. Tests, a linter, type checking, and a CI pipeline re-verify every push. The agent can check its own work with deterministic tools — this is where AI-assisted development stops feeling risky. | L2, plus Sensors ≥ 60%, CI ≥ 50% | Add gate + feedback hooks, pre-commit |
-| 🛡️ | **L4 · Self-correcting** | The loop closes at runtime. Gate hooks make destructive actions *impossible*, not just discouraged; feedback hooks lint and format inline. All six dimensions covered, total score ≥ 80%. A mistake has to get past rules, hooks, tests, types, CI, *and* the gates — mostly without a human in the loop. | L3, plus Hooks ≥ 70%, total ≥ 80% | Keep it there — gate CI on `--min-level 4` |
-
-Two repositories can both score 65% with completely different shapes — that's
-exactly why levels gate on dimensions instead of a raw percentage:
-
-- **65%, all guides, no sensors** → stuck at L1. Beautifully documented,
-  unverified. Priority: tests + CI, not more prose.
-- **65%, strong sensors, no context** → stuck at L0/L1. The agent's work is
-  checked, but it guesses your conventions every session. Priority: one
-  afternoon on `AGENTS.md`.
-
-The scanner always tells you which requirement blocks the *next* level
-(`To reach L3: sensors ≥ 60%; ci ≥ 50%`) — the path up is never a guess.
-Full rubric, thresholds, and rationale: **[the Maturity Model](https://paladini.github.io/harness-score/guide/maturity-model)**.
+The scanner always tells you exactly which requirement blocks the *next*
+level (`To reach L3: sensors ≥ 60%; ci ≥ 50%`) — the path up is never a
+guess. Full rubric, thresholds, and rationale:
+**[the Maturity Model](https://paladini.github.io/harness-score/guide/maturity-model)**.
 
 ## The six dimensions
 
-100 points, six dimensions, 33 checks. Each check names a concrete artifact —
-never "write better rules," always "this file, this field, this pattern."
+100 points, six dimensions, 33 checks — each one naming a concrete artifact,
+never "write better rules."
 
 | Dimension | Points | What it measures |
 |---|---|---|
@@ -138,9 +107,8 @@ never "write better rules," always "this file, this field, this pattern."
 | ⚙️ CI Feedback | 14 | Pipeline runs tests/lint/types on every push, pre-commit installed |
 | 🔒 Hygiene & Safety | 20 | `.gitignore`, no leaked `.env`/secrets, license, lockfile committed |
 
-The full check catalog — every one of the 33 checks with its exact
-remediation recipe — lives in
-**[Measure & Improve, chapter 7](https://paladini.github.io/harness-score/guide/measure-and-improve#the-check-catalog)**.
+Full check catalog, with every remediation recipe:
+**[Measure & Improve](https://paladini.github.io/harness-score/guide/measure-and-improve#the-check-catalog)**.
 
 ## What it deliberately does not measure
 
