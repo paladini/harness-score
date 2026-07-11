@@ -111,8 +111,16 @@ Reference the published file from your README:
 ![Harness Score](https://raw.githubusercontent.com/<you>/<repo>/badges/harness-badge.svg)
 ```
 
-Every badge uses a **fixed width and font size** — `L2 · Guided 52%` and
-`L4 · Self-correcting 100%` look the same; only the text changes.
+Set `height="20"` on the image tag so the badge aligns with shields.io badges
+in the same row.
+
+Every badge uses a **fixed 227×20 px layout** (shields.io height, 11px Verdana) so
+`L2 · Guided 52%` and `L4 · Self-correcting 100%` render at the same font size.
+In your README, set `height="20"` on the `<img>` so it lines up with npm/CI shields:
+
+```md
+<img alt="Harness Score" src="https://paladini.github.io/harness-score/harness-badge.svg" height="20">
+```
 
 This guide's site dogfoods the pattern — the live badge below is regenerated
 on every Pages deploy:
@@ -143,11 +151,11 @@ Prefer a static image? Pick the badge or banner for your level (`l0`–`l4`):
 All five levels at a glance:
 
 <p>
-  <img alt="L0 · Unharnessed" src="/maturity/badge-l0.svg" height="28">
-  <img alt="L1 · Documented" src="/maturity/badge-l1.svg" height="28">
-  <img alt="L2 · Guided" src="/maturity/badge-l2.svg" height="28">
-  <img alt="L3 · Sensing" src="/maturity/badge-l3.svg" height="28">
-  <img alt="L4 · Self-correcting" src="/maturity/badge-l4.svg" height="28">
+  <img alt="L0 · Unharnessed" src="/maturity/badge-l0.svg" height="20">
+  <img alt="L1 · Documented" src="/maturity/badge-l1.svg" height="20">
+  <img alt="L2 · Guided" src="/maturity/badge-l2.svg" height="20">
+  <img alt="L3 · Sensing" src="/maturity/badge-l3.svg" height="20">
+  <img alt="L4 · Self-correcting" src="/maturity/badge-l4.svg" height="20">
 </p>
 
 <p>

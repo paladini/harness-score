@@ -1,5 +1,5 @@
 // Generates the harness-score maturity cards and badges (one per level L0-L4).
-// Badges use a fixed width so every level renders at the same font size.
+// Badges follow shields.io layout (20px, 11px Verdana, fixed segments).
 // Re-run with: node generate.mjs
 import { writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -22,11 +22,6 @@ const C = {
 };
 const FAM = "'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif";
 
-// Fixed badge width — same font size on every level (no textLength scaling).
-const BADGE_LABEL_SEG = 102;
-const BADGE_VALUE_SEG = 149; // fits "L4 Self-correcting"
-const BADGE_TOTAL = BADGE_LABEL_SEG + BADGE_VALUE_SEG;
-
 const LEVELS = [
   { n: 0, name: 'Unharnessed', tag: 'Every agent session cold-starts' },
   { n: 1, name: 'Documented', tag: 'AGENTS.md orients every session' },
@@ -42,6 +37,22 @@ function txt({ x, y, size, weight, spacing = 0, fill, anchor, text }) {
   const s = spacing ? ` letter-spacing="${spacing}"` : '';
   return `<text x="${x}" y="${y}"${a} font-family="${FAM}" font-size="${size}" font-weight="${weight}"${s} fill="${fill}">${text}</text>`;
 }
+
+// --- BADGE (shields.io layout — keep in sync with badge.ts) -----------------
+const BADGE_H = 20;
+const BADGE_FONT = 'Verdana,Geneva,DejaVu Sans,sans-serif';
+const BADGE_FONT_SIZE = 11;
+const BADGE_TEXT_Y = 14;
+const BADGE_LABEL_SEG = 58;
+function badgeTextWidth(text) {
+  let width = 0;
+  for (const char of text) {
+    width += /[mwMW%]/.test(char) ? 10 : /[il1.:· ]/.test(char) ? 4 : 7;
+  }
+  return width;
+}
+const BADGE_VALUE_SEG = badgeTextWidth('L4 · Self-correcting 100%') + 12;
+const BADGE_TOTAL = BADGE_LABEL_SEG + BADGE_VALUE_SEG;
 
 // --- CARD --------------------------------------------------------------------
 function card(lvl) {
@@ -94,38 +105,31 @@ ${bars}
 `;
 }
 
-// --- BADGE (flat, README-inline) --------------------------------------------
 function badge(lvl) {
   const level = lvl.n;
-  const microX = [12, 19, 26];
-  const microH = [8, 12, 16];
-  const microBase = 21;
-  const micro = microX
-    .map(
-      (x, i) =>
-        `    <rect x="${x}" y="${microBase - microH[i]}" width="4" height="${microH[i]}" rx="2" fill="url(#hs-fill)"/>`,
-    )
-    .join('\n');
-
-  const harnessX = 38;
-  const rTextX = BADGE_LABEL_SEG + 12;
   const rightText = `L${level} ${lvl.name}`;
+  const labelX = 20;
+  const valueX = BADGE_LABEL_SEG + 6;
 
-  return `<svg width="${BADGE_TOTAL}" height="30" viewBox="0 0 ${BADGE_TOTAL} 30" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Harness Score L${level} ${lvl.name}">
+  return `<svg width="${BADGE_TOTAL}" height="${BADGE_H}" viewBox="0 0 ${BADGE_TOTAL} ${BADGE_H}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Harness Score L${level} ${lvl.name}">
   <title>Harness Score — L${level} ${lvl.name}</title>
   <defs>
     <linearGradient id="hs-fill" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="${C.emerTop}"/>
       <stop offset="1" stop-color="${C.emerBottom}"/>
     </linearGradient>
-    <clipPath id="hs-badge"><rect x="0" y="0" width="${BADGE_TOTAL}" height="30" rx="6"/></clipPath>
+    <clipPath id="hs-badge"><rect width="${BADGE_TOTAL}" height="${BADGE_H}" rx="3"/></clipPath>
   </defs>
   <g clip-path="url(#hs-badge)">
-    <rect x="0" y="0" width="${BADGE_LABEL_SEG}" height="30" fill="${C.tileTop}"/>
-    <rect x="${BADGE_LABEL_SEG}" y="0" width="${BADGE_VALUE_SEG}" height="30" fill="${C.emerBottom}"/>
-${micro}
-    ${txt({ x: harnessX, y: 20, size: 15, weight: 600, fill: C.harnessOnDark, text: 'harness' })}
-    ${txt({ x: rTextX, y: 20, size: 15, weight: 700, fill: C.inkOnEmer, text: rightText })}
+    <rect width="${BADGE_LABEL_SEG}" height="${BADGE_H}" fill="${C.tileTop}"/>
+    <rect x="${BADGE_LABEL_SEG}" width="${BADGE_VALUE_SEG}" height="${BADGE_H}" fill="${C.emerBottom}"/>
+    <g fill="#3ce3a3">
+      <rect x="5" y="12" width="2.5" height="4" rx="1.25"/>
+      <rect x="9" y="9" width="2.5" height="7" rx="1.25"/>
+      <rect x="13" y="6" width="2.5" height="10" rx="1.25"/>
+    </g>
+    <text x="${labelX}" y="${BADGE_TEXT_Y}" font-family="${BADGE_FONT}" font-size="${BADGE_FONT_SIZE}" font-weight="600" fill="${C.harnessOnDark}">harness</text>
+    <text x="${valueX}" y="${BADGE_TEXT_Y}" font-family="${BADGE_FONT}" font-size="${BADGE_FONT_SIZE}" font-weight="700" fill="${C.inkOnEmer}">${rightText}</text>
   </g>
 </svg>
 `;
