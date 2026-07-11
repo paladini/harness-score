@@ -31,9 +31,12 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      - name: Generate the live maturity badge + card (dogfood)
+      - name: Generate maturity assets (dogfood)
         run: |
           set -euo pipefail
+          node brand/maturity/generate.mjs
+          cp brand/maturity/badge-l*.svg docs/public/maturity/
+          cp brand/maturity/card-l*.svg docs/public/maturity/
           node packages/cli/dist/cli.js . --quiet --json > hs-report.json
           LEVEL=$(node -p "JSON.parse(require('fs').readFileSync('hs-report.json','utf8')).level.index")
           node packages/cli/dist/cli.js . --quiet --badge docs/public/harness-badge.svg

@@ -153,22 +153,24 @@ shields.io subscription:
 ```
 
 ```md
-![Harness Score](https://raw.githubusercontent.com/<you>/<repo>/badges/harness-badge.svg)
+<img alt="Harness Score" src="https://raw.githubusercontent.com/<you>/<repo>/badges/harness-badge.svg" height="20">
 ```
 
-**Compact badge** — pin a level (`l0`–`l4`); shows `harness` + `L3` only:
+**Compact badge** — pin a level (`l0`–`l4`); same pill, static file:
 
 ```md
-[![Harness Score](https://paladini.github.io/harness-score/maturity/badge-l3.svg)](https://paladini.github.io/harness-score/)
+<img alt="Harness Score L3" src="https://paladini.github.io/harness-score/maturity/badge-l3.svg" height="20">
 ```
 
 All five compact badges:
 
-[![L0](https://paladini.github.io/harness-score/maturity/badge-l0.svg)](https://paladini.github.io/harness-score/)
-[![L1](https://paladini.github.io/harness-score/maturity/badge-l1.svg)](https://paladini.github.io/harness-score/)
-[![L2](https://paladini.github.io/harness-score/maturity/badge-l2.svg)](https://paladini.github.io/harness-score/)
-[![L3](https://paladini.github.io/harness-score/maturity/badge-l3.svg)](https://paladini.github.io/harness-score/)
-[![L4](https://paladini.github.io/harness-score/maturity/badge-l4.svg)](https://paladini.github.io/harness-score/)
+<p align="center">
+  <img alt="L0" src="https://paladini.github.io/harness-score/maturity/badge-l0.svg" height="20">
+  <img alt="L1" src="https://paladini.github.io/harness-score/maturity/badge-l1.svg" height="20">
+  <img alt="L2" src="https://paladini.github.io/harness-score/maturity/badge-l2.svg" height="20">
+  <img alt="L3" src="https://paladini.github.io/harness-score/maturity/badge-l3.svg" height="20">
+  <img alt="L4" src="https://paladini.github.io/harness-score/maturity/badge-l4.svg" height="20">
+</p>
 
 Shareable banner cards for posts and docs (`card-l0`–`card-l4`):
 

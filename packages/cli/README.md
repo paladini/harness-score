@@ -44,7 +44,7 @@ for Deno/Bun users.
 harness-score [path]              # human-readable report (default: cwd)
 harness-score --json              # full report as JSON
 harness-score --md report.md      # markdown report ("-" for stdout)
-harness-score --badge badge.svg   # self-contained SVG maturity badge
+harness-score --badge badge.svg   # SVG pill: harness + detected level (L0–L4)
 harness-score --min-level 3       # exit 1 if below L3 — the CI gate
 ```
 
@@ -82,9 +82,9 @@ TypeScript types.
 Or use the [packaged GitHub Action](https://github.com/paladini/harness-score/tree/main/action),
 which also emits the badge.
 
-Branded README badges and banner cards for every level (L0–L4), including a
-free auto-updating CI pattern:
+Three branded SVG artifacts (live pill, compact pill per level, share card):
 [Show your maturity](https://paladini.github.io/harness-score/guide/measure-and-improve#show-your-maturity).
+Badges show `harness` + the level only; level names live on the share cards.
 
 ## Cursor plugin
 

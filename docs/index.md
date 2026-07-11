@@ -31,7 +31,7 @@ features:
     details: Five levels, six dimensions, thirty-three deterministic checks. `npx harness-score` — no LLM calls, no network, no telemetry.
   - icon: 🏷️
     title: Badges you can show off
-    details: Branded SVG badges and banner cards for every level (L0–L4). Wire the scanner into CI once and your README badge updates itself — free, no shields.io.
+    details: Three branded SVGs — live pill (`harness` · `L4`), compact pill per level, and share cards with full names. Wire the scanner into CI once; your README badge updates itself. Free, no shields.io.
 ---
 
 ## One command, zero AI
@@ -45,3 +45,24 @@ The scanner reads your filesystem, applies the same rubric documented in the
 every finding links back to a remediation recipe in this guide. It never calls
 a model, so results are reproducible in CI, in pre-commit, or inside Cursor via
 the **Harness Score** plugin.
+
+## Branded visuals
+
+Three self-contained SVG artifacts — same shields.io height (20px), level-only
+pills for README rows, full names on share cards:
+
+<div class="hs-badge-row">
+  <img class="hs-badge" alt="Live badge (auto-updates)" src="/harness-badge.svg" height="20">
+  <img class="hs-badge" alt="L0 compact" src="/maturity/badge-l0.svg" height="20">
+  <img class="hs-badge" alt="L1 compact" src="/maturity/badge-l1.svg" height="20">
+  <img class="hs-badge" alt="L2 compact" src="/maturity/badge-l2.svg" height="20">
+  <img class="hs-badge" alt="L3 compact" src="/maturity/badge-l3.svg" height="20">
+  <img class="hs-badge" alt="L4 compact" src="/maturity/badge-l4.svg" height="20">
+</div>
+
+<p>
+  <img alt="L4 share card (includes level name)" src="/maturity/card-l4.svg" width="100%">
+</p>
+
+Gallery, CI recipes, and embed snippets:
+**[Show your maturity →](/guide/measure-and-improve#show-your-maturity)**

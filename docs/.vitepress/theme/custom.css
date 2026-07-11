@@ -8,6 +8,7 @@
 }
 
 .hs-badge,
+.hs-badge-row img,
 .vp-doc .hs-badge-row img {
   height: 20px !important;
   width: auto !important;

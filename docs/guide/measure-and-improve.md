@@ -41,7 +41,7 @@ for Deno/Bun projects.
 harness-score [path]              # human report (default: current directory)
 harness-score --json              # full report as JSON
 harness-score --md report.md      # markdown report (use "-" for stdout)
-harness-score --badge badge.svg   # self-contained SVG maturity badge
+harness-score --badge badge.svg   # SVG pill: harness + detected level (L0–L4)
 harness-score --min-level 3       # exit 1 if below L3 — the CI gate
 ```
 
@@ -117,15 +117,11 @@ jobs:
 Reference the published file from your README:
 
 ```md
-![Harness Score](https://raw.githubusercontent.com/<you>/<repo>/badges/harness-badge.svg)
+<img alt="Harness Score" src="https://raw.githubusercontent.com/<you>/<repo>/badges/harness-badge.svg" height="20">
 ```
 
-Set `height="20"` on the image tag so the badge aligns with shields.io badges
-in the same row.
-
-Every badge is **20px tall with 11px Verdana** (shields.io height) and shows
-`harness` plus the level (`L0`–`L4`) only.
-In your README, set `height="20"` on the `<img>` so it lines up with npm/CI shields:
+Set `height="20"` on the `<img>` so the pill lines up with npm/CI shields in
+the same row (112×20 SVG; level only — score percent stays in the CLI report).
 
 ```md
 <img alt="Harness Score" src="https://paladini.github.io/harness-score/harness-badge.svg" height="20">
@@ -146,7 +142,7 @@ The matching banner card for the detected level is published as
 Prefer a static pill? Pick the compact badge for your level (`l0`–`l4`):
 
 ```md
-[![Harness Score](https://paladini.github.io/harness-score/maturity/badge-l3.svg)](https://paladini.github.io/harness-score/)
+<img alt="Harness Score L3" src="https://paladini.github.io/harness-score/maturity/badge-l3.svg" height="20">
 ```
 
 ### Option C — share card (full name)
@@ -162,7 +158,7 @@ name (`Unharnessed`, `Guided`, …):
 | L3 · Sensing | [badge-l3.svg](https://paladini.github.io/harness-score/maturity/badge-l3.svg) | [card-l3.svg](https://paladini.github.io/harness-score/maturity/card-l3.svg) |
 | L4 · Self-correcting | [badge-l4.svg](https://paladini.github.io/harness-score/maturity/badge-l4.svg) | [card-l4.svg](https://paladini.github.io/harness-score/maturity/card-l4.svg) |
 
-All five levels at a glance:
+All five compact badges (112×20 each):
 
 <div class="hs-badge-row">
   <img class="hs-badge" alt="L0" src="/maturity/badge-l0.svg" height="20">
@@ -171,6 +167,8 @@ All five levels at a glance:
   <img class="hs-badge" alt="L3" src="/maturity/badge-l3.svg" height="20">
   <img class="hs-badge" alt="L4" src="/maturity/badge-l4.svg" height="20">
 </div>
+
+Share cards (860×240 — include the level name):
 
 <p>
   <img alt="L0 · Unharnessed" src="/maturity/card-l0.svg" width="100%">
@@ -190,7 +188,7 @@ All five levels at a glance:
 
 > **shields.io fan?** Your Action can also write a small JSON file and point a
 > [shields endpoint](https://shields.io/badges/endpoint-badge) at it
-> (`{ "schemaVersion": 1, "label": "harness", "message": "L3 · Sensing", "color": "brightgreen" }`).
+> (`{ "schemaVersion": 1, "label": "harness", "message": "L3", "color": "brightgreen" }`).
 > The brand SVGs above are self-contained and need no third party.
 
 ## The check catalog {#the-check-catalog}
