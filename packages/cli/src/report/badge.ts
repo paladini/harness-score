@@ -50,7 +50,7 @@ function badgeBody(total: number, value: string): string {
  * grows with the message.
  */
 export function renderBadge(report: Report): string {
-  const value = `L${report.level.index} ${report.level.name} ${report.score.percent}%`;
+  const value = `L${report.level.index} ${report.score.percent}%`;
   const valueSeg = textWidth(value) + PAD * 2;
   const total = LABEL_SEG + valueSeg;
 

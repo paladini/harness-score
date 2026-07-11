@@ -46,7 +46,8 @@ const BADGE_TEXT_Y = 14;
 const BADGE_PAD = 7;
 // Static gallery badges: fixed total width (keep in sync with badge.ts insets).
 const BADGE_LABEL_SEG = 76;
-const BADGE_VALUE_SEG = 130;
+// Right segment fits "L4" (widest static label) with shields.io padding.
+const BADGE_VALUE_SEG = 36;
 const BADGE_TOTAL = BADGE_LABEL_SEG + BADGE_VALUE_SEG;
 const BADGE_BAR_X = 10;
 const BADGE_LABEL_X = 28;
@@ -114,10 +115,10 @@ function badgeSegmentPaths(total, split) {
 
 function badge(lvl) {
   const level = lvl.n;
-  const rightText = `L${level} ${lvl.name}`;
+  const rightText = `L${level}`;
 
-  return `<svg width="${BADGE_TOTAL}" height="${BADGE_H}" viewBox="0 0 ${BADGE_TOTAL} ${BADGE_H}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Harness Score L${level} ${lvl.name}">
-  <title>Harness Score — L${level} ${lvl.name}</title>
+  return `<svg width="${BADGE_TOTAL}" height="${BADGE_H}" viewBox="0 0 ${BADGE_TOTAL} ${BADGE_H}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Harness Score L${level}">
+  <title>Harness Score — L${level}</title>
   ${badgeSegmentPaths(BADGE_TOTAL, BADGE_LABEL_SEG)}
     <g fill="#3ce3a3">
       <rect x="${BADGE_BAR_X}" y="12" width="2.5" height="4"/>

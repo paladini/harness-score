@@ -80,11 +80,20 @@ Or use the packaged action, which also emits the badge:
 
 ## Show your maturity {#show-your-maturity}
 
-Harness Score ships **branded SVG badges and banner cards** in the same visual
-language as the scanner's progress bars — no shields.io, no paid service, no
-network at render time.
+Harness Score ships **three branded SVG artifacts** in the same visual language
+as the scanner's progress bars — no shields.io, no paid service, no network at
+render time:
 
-### Option A — automatic badge (recommended)
+| Artifact | File | Shows | Best for |
+|---|---|---|---|
+| **Live badge** | `harness-badge.svg` | `harness` · `L4 100%` | README row — updates with your score |
+| **Compact badge** | `badge-l0.svg` … `badge-l4.svg` | `harness` · `L3` | Pin a level without the long name |
+| **Share card** | `card-l0.svg` … `card-l4.svg` | Full banner with level name | Social posts, repo hero image |
+
+Compact and live badges show **only the level** (`L0`–`L4`). Level names
+(Unharnessed, Guided, …) live on the share cards and in the scanner output.
+
+### Option A — live badge (recommended)
 
 `harness-score --badge` writes an SVG for whatever level the scanner detects.
 Wire it into CI once; the README image updates itself as your harness improves.
@@ -115,8 +124,8 @@ Set `height="20"` on the image tag so the badge aligns with shields.io badges
 in the same row.
 
 Every badge is **20px tall with 11px Verdana** (shields.io height). Width grows with
-the message so text is never clipped — `L2 Guided 52%` and `L4 Self-correcting 100%`
-use the same font size; only the pill gets wider.
+the message so text is never clipped — `L2 52%` and `L4 100%` use the same font
+size; only the pill gets wider.
 In your README, set `height="20"` on the `<img>` so it lines up with npm/CI shields:
 
 ```md
@@ -133,13 +142,18 @@ The matching banner card for the detected level is published as
 
 ![Harness Score banner](https://paladini.github.io/harness-score/harness-card.svg)
 
-### Option B — pin a specific level
+### Option B — compact badge (level only)
 
-Prefer a static image? Pick the badge or banner for your level (`l0`–`l4`):
+Prefer a static pill? Pick the compact badge for your level (`l0`–`l4`):
 
 ```md
 [![Harness Score](https://paladini.github.io/harness-score/maturity/badge-l3.svg)](https://paladini.github.io/harness-score/)
 ```
+
+### Option C — share card (full name)
+
+For a hero image or social post, use the banner card — it includes the level
+name (`Unharnessed`, `Guided`, …):
 
 | Level | Compact badge | Share card |
 |---|---|---|
@@ -152,11 +166,11 @@ Prefer a static image? Pick the badge or banner for your level (`l0`–`l4`):
 All five levels at a glance:
 
 <div class="hs-badge-row">
-  <img class="hs-badge" alt="L0 · Unharnessed" src="/maturity/badge-l0.svg" height="20">
-  <img class="hs-badge" alt="L1 · Documented" src="/maturity/badge-l1.svg" height="20">
-  <img class="hs-badge" alt="L2 · Guided" src="/maturity/badge-l2.svg" height="20">
-  <img class="hs-badge" alt="L3 · Sensing" src="/maturity/badge-l3.svg" height="20">
-  <img class="hs-badge" alt="L4 · Self-correcting" src="/maturity/badge-l4.svg" height="20">
+  <img class="hs-badge" alt="L0" src="/maturity/badge-l0.svg" height="20">
+  <img class="hs-badge" alt="L1" src="/maturity/badge-l1.svg" height="20">
+  <img class="hs-badge" alt="L2" src="/maturity/badge-l2.svg" height="20">
+  <img class="hs-badge" alt="L3" src="/maturity/badge-l3.svg" height="20">
+  <img class="hs-badge" alt="L4" src="/maturity/badge-l4.svg" height="20">
 </div>
 
 <p>

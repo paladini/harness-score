@@ -134,11 +134,16 @@ deterministic scanner can claim.
 
 ## Show your maturity in your README
 
-Harness Score ships **branded badges and banner cards** — free, self-contained
-SVGs, no shields.io subscription. Put your level on the repo so visitors (and
-future you) know how well-harnessed the project is.
+Harness Score ships **three branded SVG artifacts** — free, self-contained, no
+shields.io subscription:
 
-**Automatic (recommended)** — the badge updates itself when your level changes:
+| Artifact | Shows | Best for |
+|---|---|---|
+| **Live badge** (`harness-badge.svg`) | `harness` · `L4 100%` | README row — updates with your score |
+| **Compact badge** (`badge-l0`–`l4`) | `harness` · `L3` | Pin a level (no long name) |
+| **Share card** (`card-l0`–`l4`) | Full banner with level name | Social posts, repo hero |
+
+**Live badge (recommended)** — updates itself when your level changes:
 
 ```yaml
 # .github/workflows/harness.yml
@@ -151,7 +156,7 @@ future you) know how well-harnessed the project is.
 ![Harness Score](https://raw.githubusercontent.com/<you>/<repo>/badges/harness-badge.svg)
 ```
 
-**Static** — pin a level badge (`l0`–`l4`) if you prefer a fixed image:
+**Compact badge** — pin a level (`l0`–`l4`); shows `harness` + `L3` only:
 
 ```md
 [![Harness Score](https://paladini.github.io/harness-score/maturity/badge-l3.svg)](https://paladini.github.io/harness-score/)

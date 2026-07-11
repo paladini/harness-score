@@ -1,6 +1,6 @@
-<svg width="206" height="20" viewBox="0 0 206 20" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Harness Score L2 Guided">
-  <title>Harness Score — L2 Guided</title>
-  <path d="M76,0 H203 Q206,0 206,3 V17 Q206,20 203,20 H76 Z" fill="#16a877"/>
+<svg width="112" height="20" viewBox="0 0 112 20" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Harness Score L2">
+  <title>Harness Score — L2</title>
+  <path d="M76,0 H109 Q112,0 112,3 V17 Q112,20 109,20 H76 Z" fill="#16a877"/>
     <path d="M3,0 H76 V20 H3 Q0,20 0,17 V3 Q0,0 3,0 Z" fill="#14232f"/>
     <g fill="#3ce3a3">
       <rect x="10" y="12" width="2.5" height="4"/>
@@ -8,5 +8,5 @@
       <rect x="18" y="6" width="2.5" height="10"/>
     </g>
     <text x="28" y="14" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11" font-weight="400" fill="#e9f2ee">harness</text>
-    <text x="83" y="14" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11" font-weight="700" fill="#06231a">L2 Guided</text>
+    <text x="83" y="14" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11" font-weight="700" fill="#06231a">L2</text>
 </svg>
