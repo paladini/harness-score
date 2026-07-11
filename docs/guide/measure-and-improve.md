@@ -114,7 +114,7 @@ Reference the published file from your README:
 Set `height="20"` on the image tag so the badge aligns with shields.io badges
 in the same row.
 
-Every badge uses a **fixed 227×20 px layout** (shields.io height, 11px Verdana) so
+Every badge uses a **fixed 256×20 px layout** (shields.io height, 11px Verdana) so
 `L2 · Guided 52%` and `L4 · Self-correcting 100%` render at the same font size.
 In your README, set `height="20"` on the `<img>` so it lines up with npm/CI shields:
 

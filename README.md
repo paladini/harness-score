@@ -14,7 +14,7 @@
 
 <p align="center">
   <a href="https://github.com/paladini/harness-score/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/paladini/harness-score/actions/workflows/ci.yml/badge.svg"></a>
-  <a href="https://paladini.github.io/harness-score/"><img alt="Harness Score" src="https://paladini.github.io/harness-score/harness-badge.svg" height="20"></a>
+  <a href="https://paladini.github.io/harness-score/"><img alt="Harness Score" src="https://raw.githubusercontent.com/paladini/harness-score/docs/readme-and-oss-scaffolding/docs/public/harness-badge.svg" height="20"></a>
   <a href="https://www.npmjs.com/package/harness-score"><img alt="npm" src="https://img.shields.io/npm/v/harness-score"></a>
   <a href="https://jsr.io/@paladini/harness-score"><img alt="JSR" src="https://jsr.io/badges/@paladini/harness-score"></a>
   <a href="https://paladini.github.io/harness-score/"><img alt="docs" src="https://img.shields.io/badge/guide-github%20pages-blue"></a>

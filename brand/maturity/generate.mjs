@@ -44,14 +44,7 @@ const BADGE_FONT = 'Verdana,Geneva,DejaVu Sans,sans-serif';
 const BADGE_FONT_SIZE = 11;
 const BADGE_TEXT_Y = 14;
 const BADGE_LABEL_SEG = 58;
-function badgeTextWidth(text) {
-  let width = 0;
-  for (const char of text) {
-    width += /[mwMW%]/.test(char) ? 10 : /[il1.:· ]/.test(char) ? 4 : 7;
-  }
-  return width;
-}
-const BADGE_VALUE_SEG = badgeTextWidth('L4 · Self-correcting 100%') + 12;
+const BADGE_VALUE_SEG = 198;
 const BADGE_TOTAL = BADGE_LABEL_SEG + BADGE_VALUE_SEG;
 
 // --- CARD --------------------------------------------------------------------
@@ -108,8 +101,8 @@ ${bars}
 function badge(lvl) {
   const level = lvl.n;
   const rightText = `L${level} ${lvl.name}`;
-  const labelX = 20;
-  const valueX = BADGE_LABEL_SEG + 6;
+  const labelCx = BADGE_LABEL_SEG / 2;
+  const valueCx = BADGE_LABEL_SEG + BADGE_VALUE_SEG / 2;
 
   return `<svg width="${BADGE_TOTAL}" height="${BADGE_H}" viewBox="0 0 ${BADGE_TOTAL} ${BADGE_H}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Harness Score L${level} ${lvl.name}">
   <title>Harness Score — L${level} ${lvl.name}</title>
@@ -118,19 +111,17 @@ function badge(lvl) {
       <stop offset="0" stop-color="${C.emerTop}"/>
       <stop offset="1" stop-color="${C.emerBottom}"/>
     </linearGradient>
-    <clipPath id="hs-badge"><rect width="${BADGE_TOTAL}" height="${BADGE_H}" rx="3"/></clipPath>
   </defs>
-  <g clip-path="url(#hs-badge)">
-    <rect width="${BADGE_LABEL_SEG}" height="${BADGE_H}" fill="${C.tileTop}"/>
-    <rect x="${BADGE_LABEL_SEG}" width="${BADGE_VALUE_SEG}" height="${BADGE_H}" fill="${C.emerBottom}"/>
-    <g fill="#3ce3a3">
-      <rect x="5" y="12" width="2.5" height="4" rx="1.25"/>
-      <rect x="9" y="9" width="2.5" height="7" rx="1.25"/>
-      <rect x="13" y="6" width="2.5" height="10" rx="1.25"/>
-    </g>
-    <text x="${labelX}" y="${BADGE_TEXT_Y}" font-family="${BADGE_FONT}" font-size="${BADGE_FONT_SIZE}" font-weight="600" fill="${C.harnessOnDark}">harness</text>
-    <text x="${valueX}" y="${BADGE_TEXT_Y}" font-family="${BADGE_FONT}" font-size="${BADGE_FONT_SIZE}" font-weight="700" fill="${C.inkOnEmer}">${rightText}</text>
+  <rect width="${BADGE_TOTAL}" height="${BADGE_H}" rx="3" fill="${C.emerBottom}"/>
+  <rect width="${BADGE_LABEL_SEG}" height="${BADGE_H}" rx="3" fill="${C.tileTop}"/>
+  <rect x="${BADGE_LABEL_SEG}" width="${BADGE_VALUE_SEG}" height="${BADGE_H}" fill="${C.emerBottom}"/>
+  <g fill="#3ce3a3">
+    <rect x="5" y="12" width="2.5" height="4" rx="1.25"/>
+    <rect x="9" y="9" width="2.5" height="7" rx="1.25"/>
+    <rect x="13" y="6" width="2.5" height="10" rx="1.25"/>
   </g>
+  <text x="${labelCx}" y="${BADGE_TEXT_Y}" font-family="${BADGE_FONT}" font-size="${BADGE_FONT_SIZE}" font-weight="400" fill="${C.harnessOnDark}" text-anchor="middle">harness</text>
+  <text x="${valueCx}" y="${BADGE_TEXT_Y}" font-family="${BADGE_FONT}" font-size="${BADGE_FONT_SIZE}" font-weight="700" fill="${C.inkOnEmer}" text-anchor="middle">${rightText}</text>
 </svg>
 `;
 }
