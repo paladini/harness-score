@@ -126,7 +126,7 @@ In your README, set `height="20"` on the `<img>` so it lines up with npm/CI shie
 This guide's site dogfoods the pattern — the live badge below is regenerated
 on every Pages deploy:
 
-![Harness Score](https://paladini.github.io/harness-score/harness-badge.svg)
+<img class="hs-badge" src="/harness-badge.svg" alt="Harness Score" height="20">
 
 The matching banner card for the detected level is published as
 `harness-card.svg` (currently L4 for this repository):
@@ -151,13 +151,13 @@ Prefer a static image? Pick the badge or banner for your level (`l0`–`l4`):
 
 All five levels at a glance:
 
-<p>
-  <img alt="L0 · Unharnessed" src="/maturity/badge-l0.svg" height="20">
-  <img alt="L1 · Documented" src="/maturity/badge-l1.svg" height="20">
-  <img alt="L2 · Guided" src="/maturity/badge-l2.svg" height="20">
-  <img alt="L3 · Sensing" src="/maturity/badge-l3.svg" height="20">
-  <img alt="L4 · Self-correcting" src="/maturity/badge-l4.svg" height="20">
-</p>
+<div class="hs-badge-row">
+  <img class="hs-badge" alt="L0 · Unharnessed" src="/maturity/badge-l0.svg" height="20">
+  <img class="hs-badge" alt="L1 · Documented" src="/maturity/badge-l1.svg" height="20">
+  <img class="hs-badge" alt="L2 · Guided" src="/maturity/badge-l2.svg" height="20">
+  <img class="hs-badge" alt="L3 · Sensing" src="/maturity/badge-l3.svg" height="20">
+  <img class="hs-badge" alt="L4 · Self-correcting" src="/maturity/badge-l4.svg" height="20">
+</div>
 
 <p>
   <img alt="L0 · Unharnessed" src="/maturity/card-l0.svg" width="100%">

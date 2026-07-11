@@ -1,13 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="217" height="20" viewBox="0 0 217 20" role="img" aria-label="Harness Score L4 Self-correcting 100%">
+<svg xmlns="http://www.w3.org/2000/svg" width="229" height="20" viewBox="0 0 229 20" role="img" aria-label="Harness Score L4 Self-correcting 100%">
   <title>Harness Score: L4 Self-correcting 100%</title>
-  <rect width="217" height="20" rx="3" fill="#16a877"/>
-  <rect width="54" height="20" rx="3" fill="#14232f"/>
-  <rect x="54" width="163" height="20" fill="#16a877"/>
+  <rect width="229" height="20" rx="3" fill="#16a877"/>
+  <rect width="66" height="20" rx="3" fill="#14232f"/>
+  <rect x="66" width="163" height="20" fill="#16a877"/>
   <g fill="#3ce3a3">
     <rect x="4" y="12" width="2.5" height="4" rx="1.25"/>
     <rect x="8" y="9" width="2.5" height="7" rx="1.25"/>
     <rect x="12" y="6" width="2.5" height="10" rx="1.25"/>
   </g>
-  <text x="27" y="14" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11" font-weight="400" fill="#e9f2ee" text-anchor="middle">harness</text>
-  <text x="61" y="14" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11" font-weight="700" fill="#06231a">L4 Self-correcting 100%</text>
+  <text x="20" y="14" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11" font-weight="400" fill="#e9f2ee">harness</text>
+  <text x="73" y="14" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11" font-weight="700" fill="#06231a">L4 Self-correcting 100%</text>
 </svg>

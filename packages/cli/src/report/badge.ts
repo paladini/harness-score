@@ -16,8 +16,8 @@ const TEXT_Y = 14;
 const PAD = 7;
 
 /** Left segment: mini bars + "harness" (fixed for every level). */
-const LABEL_SEG = 54;
-const LABEL_X = 18;
+const LABEL_SEG = 66;
+const LABEL_X = 20;
 const VALUE_X = LABEL_SEG + PAD;
 
 /**
@@ -30,7 +30,6 @@ export function renderBadge(report: Report): string {
   const value = `L${report.level.index} ${report.level.name} ${report.score.percent}%`;
   const valueSeg = textWidth(value) + PAD * 2;
   const total = LABEL_SEG + valueSeg;
-  const labelCx = LABEL_SEG / 2;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${total}" height="${H}" viewBox="0 0 ${total} ${H}" role="img" aria-label="Harness Score ${value}">
   <title>Harness Score: ${value}</title>
@@ -42,7 +41,7 @@ export function renderBadge(report: Report): string {
     <rect x="8" y="9" width="2.5" height="7" rx="1.25"/>
     <rect x="12" y="6" width="2.5" height="10" rx="1.25"/>
   </g>
-  <text x="${labelCx}" y="${TEXT_Y}" font-family="${FONT}" font-size="${FONT_SIZE}" font-weight="400" fill="#e9f2ee" text-anchor="middle">${label}</text>
+  <text x="${LABEL_X}" y="${TEXT_Y}" font-family="${FONT}" font-size="${FONT_SIZE}" font-weight="400" fill="#e9f2ee">${label}</text>
   <text x="${VALUE_X}" y="${TEXT_Y}" font-family="${FONT}" font-size="${FONT_SIZE}" font-weight="700" fill="#06231a">${value}</text>
 </svg>
 `;

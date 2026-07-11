@@ -1,0 +1,22 @@
+/* Maturity badges: never stretch to full prose width (breaks aspect ratio). */
+.hs-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.hs-badge,
+.vp-doc .hs-badge-row img.hs-badge {
+  height: 20px !important;
+  width: auto !important;
+  max-width: none !important;
+  display: inline-block !important;
+  vertical-align: middle;
+  margin: 0 !important;
+}
+
+.vp-doc img.hs-badge {
+  border-radius: 3px;
+}
