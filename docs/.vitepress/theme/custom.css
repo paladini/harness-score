@@ -8,15 +8,15 @@
 }
 
 .hs-badge,
-.vp-doc .hs-badge-row img.hs-badge {
+.vp-doc .hs-badge-row img {
   height: 20px !important;
   width: auto !important;
   max-width: none !important;
+  flex: 0 0 auto !important;
   display: inline-block !important;
   vertical-align: middle;
   margin: 0 !important;
-}
-
-.vp-doc img.hs-badge {
-  border-radius: 3px;
+  /* Rounded <img> corners clip the left bar icon when the SVG is rasterized. */
+  border-radius: 0 !important;
+  object-fit: contain !important;
 }

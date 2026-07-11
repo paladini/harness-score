@@ -44,11 +44,12 @@ const BADGE_FONT = 'Verdana,Geneva,DejaVu Sans,sans-serif';
 const BADGE_FONT_SIZE = 11;
 const BADGE_TEXT_Y = 14;
 const BADGE_PAD = 7;
-// Static gallery badges: fixed total width so a docs row never distorts them.
-const BADGE_LABEL_SEG = 66;
-const BADGE_VALUE_SEG = 132;
+// Static gallery badges: fixed total width (keep in sync with badge.ts insets).
+const BADGE_LABEL_SEG = 76;
+const BADGE_VALUE_SEG = 130;
 const BADGE_TOTAL = BADGE_LABEL_SEG + BADGE_VALUE_SEG;
-const BADGE_LABEL_X = 20;
+const BADGE_BAR_X = 10;
+const BADGE_LABEL_X = 28;
 const BADGE_VALUE_X = BADGE_LABEL_SEG + BADGE_PAD;
 
 // --- CARD --------------------------------------------------------------------
@@ -102,22 +103,29 @@ ${bars}
 `;
 }
 
+const BADGE_R = 3;
+
+function badgeSegmentPaths(total, split) {
+  const right = `M${split},0 H${total - BADGE_R} Q${total},0 ${total},${BADGE_R} V${BADGE_H - BADGE_R} Q${total},${BADGE_H} ${total - BADGE_R},${BADGE_H} H${split} Z`;
+  const left = `M${BADGE_R},0 H${split} V${BADGE_H} H${BADGE_R} Q0,${BADGE_H} 0,${BADGE_H - BADGE_R} V${BADGE_R} Q0,0 ${BADGE_R},0 Z`;
+  return `<path d="${right}" fill="${C.emerBottom}"/>
+    <path d="${left}" fill="${C.tileTop}"/>`;
+}
+
 function badge(lvl) {
   const level = lvl.n;
   const rightText = `L${level} ${lvl.name}`;
 
   return `<svg width="${BADGE_TOTAL}" height="${BADGE_H}" viewBox="0 0 ${BADGE_TOTAL} ${BADGE_H}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Harness Score L${level} ${lvl.name}">
   <title>Harness Score — L${level} ${lvl.name}</title>
-  <rect width="${BADGE_TOTAL}" height="${BADGE_H}" rx="3" fill="${C.emerBottom}"/>
-  <rect width="${BADGE_LABEL_SEG}" height="${BADGE_H}" rx="3" fill="${C.tileTop}"/>
-  <rect x="${BADGE_LABEL_SEG}" width="${BADGE_VALUE_SEG}" height="${BADGE_H}" fill="${C.emerBottom}"/>
-  <g fill="#3ce3a3">
-    <rect x="4" y="12" width="2.5" height="4" rx="1.25"/>
-    <rect x="8" y="9" width="2.5" height="7" rx="1.25"/>
-    <rect x="12" y="6" width="2.5" height="10" rx="1.25"/>
-  </g>
-  <text x="${BADGE_LABEL_X}" y="${BADGE_TEXT_Y}" font-family="${BADGE_FONT}" font-size="${BADGE_FONT_SIZE}" font-weight="400" fill="${C.harnessOnDark}">harness</text>
-  <text x="${BADGE_VALUE_X}" y="${BADGE_TEXT_Y}" font-family="${BADGE_FONT}" font-size="${BADGE_FONT_SIZE}" font-weight="700" fill="${C.inkOnEmer}">${rightText}</text>
+  ${badgeSegmentPaths(BADGE_TOTAL, BADGE_LABEL_SEG)}
+    <g fill="#3ce3a3">
+      <rect x="${BADGE_BAR_X}" y="12" width="2.5" height="4"/>
+      <rect x="${BADGE_BAR_X + 4}" y="9" width="2.5" height="7"/>
+      <rect x="${BADGE_BAR_X + 8}" y="6" width="2.5" height="10"/>
+    </g>
+    <text x="${BADGE_LABEL_X}" y="${BADGE_TEXT_Y}" font-family="${BADGE_FONT}" font-size="${BADGE_FONT_SIZE}" font-weight="400" fill="${C.harnessOnDark}">harness</text>
+    <text x="${BADGE_VALUE_X}" y="${BADGE_TEXT_Y}" font-family="${BADGE_FONT}" font-size="${BADGE_FONT_SIZE}" font-weight="700" fill="${C.inkOnEmer}">${rightText}</text>
 </svg>
 `;
 }
