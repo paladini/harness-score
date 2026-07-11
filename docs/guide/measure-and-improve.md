@@ -116,7 +116,8 @@ jobs:
         with: { branch: badges, folder: ., clean: false }
 ```
 
-Reference the published file from your README:
+Reference the published file from your README — full copy-paste recipes in
+[Embed snippets](#embed-snippets):
 
 ```md
 <img alt="Harness Score" src="https://raw.githubusercontent.com/<you>/<repo>/badges/harness-badge.svg" height="20">
@@ -125,12 +126,7 @@ Reference the published file from your README:
 Set `height="20"` on the `<img>` so the pill lines up with npm/CI shields in
 the same row (112×20 SVG; level only — score percent stays in the CLI report).
 
-```md
-<img alt="Harness Score" src="https://paladini.github.io/harness-score/harness-badge.svg" height="20">
-```
-
-This guide's site dogfoods the pattern — badge below is regenerated on every
-Pages deploy:
+Dogfood example (this guide's live badge on GitHub Pages):
 
 <div class="hs-visual">
   <p class="hs-visual-label">Badge (this repo)</p>
@@ -147,11 +143,8 @@ The matching share card for the detected level is published as
 ### Badge — pin a level
 
 Same pill, static file — pick `badge-l0.svg` … `badge-l4.svg` if you do not
-want CI to regenerate the image:
-
-```md
-<img alt="Harness Score L3" src="https://paladini.github.io/harness-score/maturity/badge-l3.svg" height="20">
-```
+want CI to regenerate the image. See [Embed snippets](#embed-snippets) for
+Markdown, HTML, iframe, JSX, and more.
 
 ### Share card
 
@@ -182,6 +175,175 @@ name (`Unharnessed`, `Guided`, …):
   <img class="hs-share-card" alt="L4 · Self-correcting" src="/maturity/card-l4.svg">
   <p class="hs-visual-detail">Download any level from the table above — cards include the level name.</p>
 </div>
+
+## Embed snippets {#embed-snippets}
+
+Copy-paste recipes for sharing. Replace placeholders:
+
+| Placeholder | Auto-updating badge | Pinned badge (level `{N}`) | Share card |
+|---|---|---|---|
+| `{BADGE_URL}` | `https://raw.githubusercontent.com/{owner}/{repo}/badges/harness-badge.svg` | `https://paladini.github.io/harness-score/maturity/badge-l{N}.svg` | — |
+| `{CARD_URL}` | — | — | `https://paladini.github.io/harness-score/maturity/card-l{N}.svg` |
+| `{LINK}` | Your repo or `https://paladini.github.io/harness-score/` | Same | Same |
+
+`{N}` is `0`–`4`. This repository's live badge (no CI on your fork needed):
+`https://raw.githubusercontent.com/paladini/harness-score/main/docs/public/harness-badge.svg`
+
+**Badge size:** 112×20 — always set `height="20"` (or `height={20}`) so the pill
+lines up with shields.io badges in the same row.
+
+### Badge — Markdown
+
+Image only (GitHub, GitLab, dev.to — use HTML if plain `![]()` stretches):
+
+```md
+<img alt="Harness Score L4" src="{BADGE_URL}" height="20">
+```
+
+Linked (clickable):
+
+```md
+[![Harness Score L4]({BADGE_URL})]({LINK})
+```
+
+Reference-style:
+
+```md
+[![Harness Score][hs-badge]][hs-link]
+
+[hs-badge]: {BADGE_URL}
+[hs-link]: {LINK}
+```
+
+### Badge — HTML
+
+```html
+<img alt="Harness Score L4" src="{BADGE_URL}" height="20" width="112">
+```
+
+Linked:
+
+```html
+<a href="{LINK}">
+  <img alt="Harness Score L4" src="{BADGE_URL}" height="20" width="112">
+</a>
+```
+
+### Badge — iframe
+
+For CMS or wikis that only allow iframes (not `<img>`):
+
+```html
+<iframe
+  src="{BADGE_URL}"
+  title="Harness Score L4"
+  width="112"
+  height="20"
+  style="border:0;overflow:hidden"
+></iframe>
+```
+
+### Badge — SVG object / embed
+
+```html
+<object data="{BADGE_URL}" type="image/svg+xml" width="112" height="20">
+  <a href="{BADGE_URL}">Harness Score L4</a>
+</object>
+```
+
+```html
+<embed src="{BADGE_URL}" type="image/svg+xml" width="112" height="20" />
+```
+
+### Badge — JSX / React
+
+```jsx
+<a href="{LINK}">
+  <img
+    alt="Harness Score L4"
+    src="{BADGE_URL}"
+    height={20}
+    width={112}
+    style={{ verticalAlign: 'middle' }}
+  />
+</a>
+```
+
+### Badge — AsciiDoc
+
+```asciidoc
+image:{BADGE_URL}[Harness Score L4,link={LINK},height=20]
+```
+
+### Badge — BBCode (forums)
+
+```text
+[url={LINK}][img]{BADGE_URL}[/img][/url]
+```
+
+### Badge — direct URL
+
+Paste in chat, Notion image block, Slack, Discord, or any tool that accepts a
+raw image URL:
+
+```text
+{BADGE_URL}
+```
+
+### Share card — Markdown / HTML
+
+Banner for README hero, blog posts, or social previews (`{N}` = `0`–`4`):
+
+```md
+[![Harness Score L4 · Self-correcting]({CARD_URL})]({LINK})
+```
+
+```html
+<a href="{LINK}">
+  <img
+    alt="Harness Score L4 · Self-correcting"
+    src="{CARD_URL}"
+    width="560"
+    style="max-width:100%;height:auto;border-radius:8px"
+  />
+</a>
+```
+
+### Share card — iframe
+
+```html
+<iframe
+  src="{CARD_URL}"
+  title="Harness Score L4 · Self-correcting"
+  width="560"
+  height="157"
+  style="border:0;max-width:100%"
+></iframe>
+```
+
+### Share card — direct URL
+
+```text
+{CARD_URL}
+```
+
+### Worked example (pinned L3 badge)
+
+```md
+<a href="https://paladini.github.io/harness-score/">
+  <img alt="Harness Score L3" src="https://paladini.github.io/harness-score/maturity/badge-l3.svg" height="20">
+</a>
+```
+
+```html
+<iframe
+  src="https://paladini.github.io/harness-score/maturity/badge-l3.svg"
+  title="Harness Score L3"
+  width="112"
+  height="20"
+  style="border:0"
+></iframe>
+```
 
 > **shields.io fan?** Your Action can also write a small JSON file and point a
 > [shields endpoint](https://shields.io/badges/endpoint-badge) at it

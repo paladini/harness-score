@@ -181,8 +181,9 @@ Shareable banner cards for posts and docs (`card-l0`–`card-l4`):
   </a>
 </p>
 
-Full gallery, CI recipes, and the live auto-updating banner:
-**[Show your maturity →](https://paladini.github.io/harness-score/guide/measure-and-improve#show-your-maturity)**
+Full gallery, CI recipes, and copy-paste embeds (Markdown, HTML, iframe, JSX):
+**[Show your maturity →](https://paladini.github.io/harness-score/guide/measure-and-improve#show-your-maturity)** ·
+**[Embed snippets →](https://paladini.github.io/harness-score/guide/measure-and-improve#embed-snippets)**
 
 ## Install
 

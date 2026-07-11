@@ -69,4 +69,5 @@ Two SVG formats — same visual language as the scanner:
 </div>
 
 Gallery, CI recipes, and embed snippets:
-**[Show your maturity →](/guide/measure-and-improve#show-your-maturity)**
+**[Show your maturity →](/guide/measure-and-improve#show-your-maturity)** ·
+**[Embed snippets →](/guide/measure-and-improve#embed-snippets)**
