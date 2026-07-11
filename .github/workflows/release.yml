@@ -8,7 +8,6 @@ on:
 jobs:
   npm:
     runs-on: ubuntu-latest
-    if: ${{ vars.SKIP_NPM_PUBLISH != 'true' }}
     permissions:
       contents: read
     steps:
@@ -19,17 +18,17 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: npm ci
       - run: npm run build -w harness-score
-      - name: Publish to npmjs.org
-        if: ${{ secrets.NPM_TOKEN != '' }}
-        run: npm publish -w harness-score --provenance --access public
+      - name: Publish to npmjs.org (skips if NPM_TOKEN is not set)
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "::warning::NPM_TOKEN secret is not set — skipping npmjs.org publish."
+            echo "Create an 'Automation' token at https://www.npmjs.com/settings/~/tokens" \
+                 "and add it with: gh secret set NPM_TOKEN"
+            exit 0
+          fi
+          npm publish -w harness-score --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Skip notice
-        if: ${{ secrets.NPM_TOKEN == '' }}
-        run: |
-          echo "::warning::NPM_TOKEN secret is not set — skipping npmjs.org publish."
-          echo "Create an 'Automation' token at https://www.npmjs.com/settings/~/tokens" \
-               "and add it with: gh secret set NPM_TOKEN"
 
   github-packages:
     runs-on: ubuntu-latest
