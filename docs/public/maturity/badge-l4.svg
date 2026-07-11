@@ -1,0 +1,19 @@
+<svg width="251" height="30" viewBox="0 0 251 30" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Harness Score L4 Self-correcting">
+  <title>Harness Score — L4 Self-correcting</title>
+  <defs>
+    <linearGradient id="hs-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3ce3a3"/>
+      <stop offset="1" stop-color="#16a877"/>
+    </linearGradient>
+    <clipPath id="hs-badge"><rect x="0" y="0" width="251" height="30" rx="6"/></clipPath>
+  </defs>
+  <g clip-path="url(#hs-badge)">
+    <rect x="0" y="0" width="102" height="30" fill="#14232f"/>
+    <rect x="102" y="0" width="149" height="30" fill="#16a877"/>
+    <rect x="12" y="13" width="4" height="8" rx="2" fill="url(#hs-fill)"/>
+    <rect x="19" y="9" width="4" height="12" rx="2" fill="url(#hs-fill)"/>
+    <rect x="26" y="5" width="4" height="16" rx="2" fill="url(#hs-fill)"/>
+    <text x="38" y="20" textLength="52.1" lengthAdjust="spacingAndGlyphs" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="15" font-weight="600" fill="#e9f2ee">harness</text>
+    <text x="114" y="20" textLength="124.5" lengthAdjust="spacingAndGlyphs" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="15" font-weight="700" fill="#06231a">L4 Self-correcting</text>
+  </g>
+</svg>

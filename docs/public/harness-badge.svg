@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="265" height="22" role="img" aria-label="harness score: L4 · Self-correcting 100%">
+  <title>harness score: L4 · Self-correcting 100%</title>
+  <defs>
+    <linearGradient id="hs-g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#14232f"/>
+      <stop offset="1" stop-color="#0b141c"/>
+    </linearGradient>
+    <linearGradient id="hs-e" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3ce3a3"/>
+      <stop offset="1" stop-color="#16a877"/>
+    </linearGradient>
+    <clipPath id="hs-r"><rect width="265" height="22" rx="5"/></clipPath>
+  </defs>
+  <g clip-path="url(#hs-r)">
+    <rect width="86" height="22" fill="url(#hs-g)"/>
+    <rect x="86" width="179" height="22" fill="url(#hs-e)"/>
+    <g fill="#3ce3a3">
+      <rect x="8" y="11" width="3" height="5" rx="1.5"/>
+      <rect x="13" y="8" width="3" height="8" rx="1.5"/>
+      <rect x="18" y="5" width="3" height="11" rx="1.5"/>
+    </g>
+  </g>
+  <g font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11">
+    <text x="28" y="15" fill="#e9f2ee" font-weight="600">harness</text>
+    <text x="175.5" y="15" fill="#06231a" font-weight="700" text-anchor="middle">L4 · Self-correcting 100%</text>
+  </g>
+</svg>

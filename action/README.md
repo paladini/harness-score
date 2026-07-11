@@ -2,8 +2,10 @@
 
 Runs the deterministic [harness-score](https://paladini.github.io/harness-score/)
 scanner in CI: reports the repository's AI-harness maturity level, writes a
-badge, and (optionally) fails the build below a minimum level so your harness
-only ratchets up.
+branded SVG badge (self-contained — no shields.io), and (optionally) fails the
+build below a minimum level so your harness only ratchets up. Because the badge
+is re-rendered for the detected level on every run, publishing it once gives
+you a self-updating badge for free.
 
 ## Usage
 

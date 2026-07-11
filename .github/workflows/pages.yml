@@ -3,7 +3,12 @@ name: Deploy guide to GitHub Pages
 on:
   push:
     branches: [main]
-    paths: ['docs/**', 'package.json', '.github/workflows/pages.yml']
+    paths:
+      - 'docs/**'
+      - 'brand/**'
+      - 'packages/**'
+      - 'package.json'
+      - '.github/workflows/pages.yml'
   workflow_dispatch:
 
 permissions:
@@ -25,6 +30,14 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm run build
+      - name: Generate the live maturity badge + card (dogfood)
+        run: |
+          set -euo pipefail
+          node packages/cli/dist/cli.js . --quiet --json > hs-report.json
+          LEVEL=$(node -p "JSON.parse(require('fs').readFileSync('hs-report.json','utf8')).level.index")
+          node packages/cli/dist/cli.js . --quiet --badge docs/public/harness-badge.svg
+          cp "brand/maturity/card-l${LEVEL}.svg" docs/public/harness-card.svg
       - run: npm run docs:build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
