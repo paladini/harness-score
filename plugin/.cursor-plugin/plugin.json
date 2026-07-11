@@ -1,6 +1,7 @@
 {
   "name": "harness-score",
   "displayName": "Harness Score",
+  "logo": "icon.svg",
   "description": "Deterministic harness-maturity audit for your repository: measures AGENTS.md, rules, skills, hooks, sensors, CI, and hygiene against a 5-level maturity model — without any LLM calls — and teaches the agent how to fix every gap.",
   "version": "0.1.0",
   "author": {
