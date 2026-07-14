@@ -61,15 +61,19 @@ This is the highest-value contribution and the one most likely to need a
 design discussion first, because it changes what every existing repository
 scores:
 
-1. Open an issue describing the artifact you want to detect and why it
-   deserves points (or why an existing check's points should move).
+1. Open an issue using the **[Rubric change](../../issues/new?template=rubric_change.yml)**
+   template, describing the artifact you want to detect and why it deserves
+   points (or why an existing check's points/logic should change, or why a
+   check should be removed).
 2. Implement the check in the relevant `packages/cli/src/checks/*.ts`,
    wire it into the dimension total, and add/update fixtures under
    `fixtures/level-0..4/` so the maturity ladder still makes sense at every
    level.
 3. Update `docs/guide/maturity-model.md` and
-   `docs/guide/measure-and-improve.md` in the same PR — the docs-sync test
-   will fail otherwise.
+   `docs/guide/measure-and-improve.md` in the same PR — `packages/cli/test/docs.test.ts`
+   and `packages/cli/test/rubric-sync.test.ts` enforce that check IDs,
+   points, dimension totals, and level thresholds all stay in sync across
+   `score.ts` and both docs pages; `npm test` fails loudly otherwise.
 4. Run the full gate before opening the PR (see below).
 
 ## Before opening a PR
@@ -83,6 +87,12 @@ npm run docs:build   # builds the guide — dead links fail it
 ```
 
 CI runs the same checks; a red run will block review.
+
+If your change is user-facing (a new/changed check, a CLI flag, a bug fix a
+user would notice), add a changeset: `npm run changeset`, pick a bump type,
+and describe the change — it becomes an entry in `packages/cli/CHANGELOG.md`
+the next time a maintainer runs the release process. Skip it for
+docs-only/internal changes.
 
 ## Releasing
 

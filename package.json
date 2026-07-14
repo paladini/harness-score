@@ -17,10 +17,13 @@
     "docs:preview": "vitepress preview docs",
     "lint": "biome check .",
     "format": "biome check --write .",
+    "changeset": "changeset",
+    "version-packages": "changeset version && node scripts/sync-version.mjs",
     "prepare": "husky"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.3",
+    "@changesets/cli": "^2.31.0",
     "husky": "^9.1.7",
     "vitepress": "^1.6.0"
   },

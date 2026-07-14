@@ -1,0 +1,20 @@
+version: 2
+updates:
+  # packages/cli has zero runtime dependencies by design (see AGENTS.md /
+  # CONTRIBUTING.md) — this only ever touches devDependencies (tsup,
+  # vitest, typescript, attw, …), never adds a runtime supply-chain surface.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      dev-dependencies:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

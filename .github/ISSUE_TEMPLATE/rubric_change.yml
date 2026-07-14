@@ -1,0 +1,81 @@
+name: "Rubric change: add / edit / remove a check"
+description: "Propose adding a new check, changing an existing check's logic or points, or removing a check from the maturity rubric."
+labels: ["rubric-change"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Rubric changes are the highest-leverage contribution this project
+        takes, and the one most likely to need agreement before a PR — they
+        change what every existing repository scores. See
+        [ROADMAP.md](../../ROADMAP.md) for what's already planned, and
+        [CONTRIBUTING.md#adding-or-changing-a-check](../../CONTRIBUTING.md#adding-or-changing-a-check)
+        for what a rubric-changing PR needs to include.
+
+        Check IDs (`CTX-01`, `SNS-03`, …) are public API: an edit can change
+        a check's logic or points, but an id is never renumbered or reused,
+        even when a check is removed.
+  - type: dropdown
+    id: change-type
+    attributes:
+      label: What kind of change is this?
+      options:
+        - Add a new check
+        - Edit an existing check (logic, points, or remediation)
+        - Remove a check
+    validations:
+      required: true
+  - type: input
+    id: check-id
+    attributes:
+      label: Check ID
+      description: The existing id (e.g. "HYG-08") if editing or removing. Leave blank when adding a new check.
+      placeholder: HYG-08
+  - type: input
+    id: dimension
+    attributes:
+      label: Dimension
+      description: One of context, skills, hooks, sensors, ci, hygiene.
+    validations:
+      required: true
+  - type: textarea
+    id: detect
+    attributes:
+      label: What should it detect (or what does it detect today)?
+      description: The artifact, file pattern, or convention this check looks for — and, for an edit, what's wrong with the current detection logic.
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Why does this deserve points (or why should the points/logic change)?
+      description: What does passing this check actually tell you about a repository's harness maturity?
+    validations:
+      required: true
+  - type: input
+    id: points
+    attributes:
+      label: Proposed point value
+      description: For an add or edit — how many points, and does that shift the dimension's total?
+  - type: textarea
+    id: fixture-impact
+    attributes:
+      label: Fixture impact
+      description: >-
+        Which of fixtures/level-0..4 need a new/changed artifact to keep
+        landing on their intended level after this change? A rubric change
+        that shifts a dimension's earned/max ratio usually touches at least
+        one fixture.
+  - type: checkboxes
+    id: sync-checklist
+    attributes:
+      label: Coupled artifacts this change will touch
+      description: >-
+        These stay in sync via packages/cli/test/docs.test.ts and
+        test/rubric-sync.test.ts — CI fails loudly if one is missed, but
+        it's worth planning for up front.
+      options:
+        - label: packages/cli/src/checks/*.ts (the check implementation)
+        - label: docs/guide/measure-and-improve.md (check catalog entry)
+        - label: docs/guide/maturity-model.md (dimension points table, and LEVEL_REQUIREMENTS thresholds if this change affects level gating)
+        - label: fixtures/level-0..4 (new/changed artifacts to preserve each fixture's intended level)

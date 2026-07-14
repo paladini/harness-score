@@ -12,9 +12,24 @@ no npm token, no long-lived secret stored anywhere in this repo.
    - If plugin content changed: `plugin/.cursor-plugin/plugin.json` +
      an entry in `plugin/CHANGELOG.md` (the plugin has its own release
      track and version number).
+
+   Preferred way to do this: contributors add a changeset
+   (`npm run changeset`) describing their change and its bump type
+   (patch/minor/major) in the same PR; at release time, run
+   `npm run version-packages` — this runs `changeset version` (bumps
+   `packages/cli/package.json` and writes `packages/cli/CHANGELOG.md` from
+   the accumulated changesets) followed by `scripts/sync-version.mjs`,
+   which mirrors the new version into `TOOL_VERSION` and `jsr.json` (changesets
+   has no notion of either file, so this closes that gap). Review the diff,
+   then continue at step 3. If no changesets were added for a release,
+   bump all three by hand as before.
 3. Commit `release: vX.Y.Z`, tag `vX.Y.Z`, push with tags.
-4. Create a GitHub Release from that tag:
+4. Create a GitHub Release from that tag. If `packages/cli/CHANGELOG.md`
+   gained an entry for this version (via changesets), copy that section
+   into the release notes instead of relying on bare auto-generated notes:
    ```bash
+   gh release create vX.Y.Z --notes-file path/to/notes.md
+   # or, with no CHANGELOG.md entry for this release:
    gh release create vX.Y.Z --generate-notes
    ```
    This fires [`release.yml`](.github/workflows/release.yml), which
