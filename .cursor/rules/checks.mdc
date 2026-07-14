@@ -12,11 +12,19 @@ Adding a check:
    never `fs` directly, so tests can fake it.
 3. `evidence` must state what was found and where, in one sentence, for both
    pass and fail. `remediation` is one actionable sentence.
-4. Keep dimension totals in mind: points must sum to the dimension's
-   documented maximum, and the overall total must stay 100.
+4. Keep dimension totals in mind: a new/changed check shifts its
+   dimension's max, which shifts the overall total (currently 108, derived
+   from `ALL_CHECKS` — not a number to hardcode, but a real one every
+   rubric change must account for).
 5. Update the check catalog in `docs/guide/measure-and-improve.md` with a
-   `#### <ID> · <title> — <n> pts {#<id-lowercase>}` entry — the docs-sync
-   test fails otherwise.
+   `#### <ID> · <title> — <n> pts {#<id-lowercase>}` entry, and the
+   dimension-points table + level thresholds in
+   `docs/guide/maturity-model.md` if they're affected —
+   `packages/cli/test/docs.test.ts` and
+   `packages/cli/test/rubric-sync.test.ts` fail otherwise.
 6. Add a unit test in `packages/cli/test/checks.test.ts` (use
    `fakeContext`), and adjust fixtures if the check changes any fixture's
    expected level.
+7. Consider opening the change as a **Rubric change** issue first (see
+   `.github/ISSUE_TEMPLATE/rubric_change.yml`) if it's not already agreed —
+   this is the highest-stakes contribution surface in the repo.

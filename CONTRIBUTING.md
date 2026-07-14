@@ -55,13 +55,17 @@ Full conventions — written for agents, equally useful for humans — live in
 Check IDs (`CTX-01`, `SNS-03`, …) are public API: never renumber or reuse
 one, even if a check is removed.
 
+`.github/CODEOWNERS` auto-requests review on PRs touching checks, the
+rubric, the maturity docs, fixtures, or the release workflow — not a
+gate, just a heads-up on the highest-stakes paths in the repo.
+
 ## Adding or changing a check
 
 This is the highest-value contribution and the one most likely to need a
 design discussion first, because it changes what every existing repository
 scores:
 
-1. Open an issue using the **[Rubric change](../../issues/new?template=rubric_change.yml)**
+1. Open an issue using the **[Rubric change](https://github.com/paladini/harness-score/issues/new?template=rubric_change.yml)**
    template, describing the artifact you want to detect and why it deserves
    points (or why an existing check's points/logic should change, or why a
    check should be removed).

@@ -8,7 +8,8 @@ alwaysApply: true
   belong in the CLI — it belongs in the guide as advice.
 - `packages/cli` has zero runtime dependencies. Do not add one.
 - Rubric changes touch three files together: `packages/cli/src/score.ts`,
-  `docs/guide/maturity-model.md`, `docs/guide/measure-and-improve.md`.
+  `docs/guide/maturity-model.md`, `docs/guide/measure-and-improve.md` —
+  enforced in CI by `docs.test.ts` and `rubric-sync.test.ts`.
 - Check IDs are stable public API (they are documentation anchors and appear
   in users' CI logs). Never renumber, reuse, or delete an ID — deprecate by
   making the check always-pass if truly needed.

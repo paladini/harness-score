@@ -1,27 +1,28 @@
-name: "Feature request / new check"
-description: "Propose a new check, a rubric change, or a feature for the CLI, guide, plugin, or GitHub Action."
+name: "Feature request"
+description: "Propose a feature for the CLI, guide, plugin, or GitHub Action — not a new/changed/removed check (use the Rubric change template for those)."
 labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
       value: |
-        Check the [ROADMAP](../../ROADMAP.md) first — your idea might already
-        be planned. New-check proposals in particular benefit from discussion
-        before a PR, since they change what every existing repository scores.
+        Proposing a new check, or a change to an existing one's points or
+        logic? Use the **Rubric change** template instead — it asks for the
+        dimension/points/fixture-impact details that kind of change needs.
+
+        Check the [ROADMAP](../../ROADMAP.md) first — your idea might
+        already be planned.
   - type: textarea
     id: problem
     attributes:
       label: What's missing or wrong today
-      description: What artifact, tool, or convention isn't recognized — or what behavior would you like to see instead?
+      description: What behavior would you like to see instead?
     validations:
       required: true
   - type: textarea
     id: proposal
     attributes:
-      label: Proposed check or feature
-      description: >-
-        If proposing a new check: what would it detect, how many points
-        should it be worth, and which dimension does it belong to?
+      label: Proposed feature
+      description: What would it do, and where does it live (CLI flag, plugin, Action, docs)?
     validations:
       required: true
   - type: textarea

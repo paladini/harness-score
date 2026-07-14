@@ -21,7 +21,7 @@ const installs = [
   {
     title: 'npm',
     cmd: 'npm i -g harness-score',
-    note: 'v0.1.2 on npmjs.org',
+    note: 'v0.3.0 on npmjs.org',
     href: 'https://www.npmjs.com/package/harness-score',
     external: true,
     primary: false,
@@ -29,8 +29,8 @@ const installs = [
   {
     title: 'Cursor plugin',
     cmd: '/harness-audit',
-    note: 'Audit + fix gaps in the editor',
-    href: 'https://cursor.com/marketplace',
+    note: 'In repo — Marketplace listing not live yet',
+    href: 'https://github.com/paladini/harness-score/tree/main/plugin',
     external: true,
     primary: false,
   },

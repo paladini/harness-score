@@ -21,10 +21,14 @@ scanner: it must always score **L4** (`npm run scan`).
 
 ## Build & test
 
-- `npm test` — builds the CLI and runs vitest (includes docs-sync tests).
+- `npm test` — builds the CLI (`tsup`), typechecks `src/` and the
+  packaging-level consumer smoke test (`test/types/smoke.ts`, imports from
+  `dist/`, not `src/`), then runs vitest.
 - `npm run lint` — Biome (lints + checks formatting).
 - `npm run scan` — self-audit; must report L4.
 - `npm run docs:build` — builds the guide; must pass (dead links fail it).
+- `npm run bench` (in `packages/cli/`) — scan-time benchmark against a
+  synthetic large repo; use it before/after touching `scan.ts`.
 - Tests MUST pass before any commit.
 
 ## Non-negotiable conventions
@@ -34,10 +38,19 @@ scanner: it must always score **L4** (`npm run scan`).
 - `packages/cli` keeps **zero runtime dependencies** (fast `npx`, no supply
   chain surface). Dev dependencies are fine.
 - The rubric lives in three places that must change together:
-  `src/score.ts` (implementation), `docs/guide/maturity-model.md` (levels),
-  `docs/guide/measure-and-improve.md` (check catalog). The docs-sync test
-  enforces anchors and point values.
+  `src/score.ts` (implementation), `docs/guide/maturity-model.md` (levels
+  + dimension point totals), `docs/guide/measure-and-improve.md` (check
+  catalog). `packages/cli/test/docs.test.ts` and
+  `packages/cli/test/rubric-sync.test.ts` enforce that check IDs, points,
+  dimension totals, and level thresholds all stay in sync across every one
+  of those three files — not just anchors in the check catalog.
 - Check IDs (`CTX-01`, …) are public API: never renumber or reuse them.
+- `Check.run(ctx)` and `ScanContext.read()`/`.matching()` are synchronous
+  by contract — part of the public API (`packages/cli/src/index.ts`).
+  Don't make them async as a perf fix; that's a breaking (major-version)
+  change, not a drive-by tweak.
+- User-facing changes get a changeset (`npm run changeset` at the repo
+  root) in the same PR — see `RELEASING.md`.
 
 ## Do not touch
 

@@ -35,6 +35,33 @@ Also mirrored on [GitHub Packages](https://github.com/paladini/harness-score/pkg
 (`@paladini/harness-score`) and [JSR](https://jsr.io/@paladini/harness-score)
 for Deno/Bun projects.
 
+## Using it as a library
+
+The CLI is a thin wrapper around a fully-typed programmatic API — useful
+for a custom dashboard, a bot, or any tool that wants the raw `Report`
+instead of parsing terminal output:
+
+```ts
+import { score } from 'harness-score';
+
+const report = score('/path/to/repo');
+console.log(report.level.name, report.score.percent, report.dimensions);
+```
+
+`Report`, `Check`, `CheckResult`, `DimensionScore`, `LevelInfo`, and every
+other shape ship as TypeScript declarations — resolved via an explicit
+`"types"` field, so editors and `tsc` pick them up with no extra
+configuration. Lower-level building blocks are exported too, for anything
+`score()` doesn't cover directly:
+
+```ts
+import { createScanContext, buildReport, computeDiff, renderMarkdown } from 'harness-score';
+
+const ctx = createScanContext('/path/to/repo');   // walk the filesystem once
+const report = buildReport(ctx);                  // run all 36 checks against it
+const markdown = renderMarkdown(report);          // same renderer the CLI's --md uses
+```
+
 ## CLI reference
 
 ```bash

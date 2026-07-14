@@ -128,7 +128,7 @@ deterministic scanner can claim.
 | Piece | What | Where |
 |---|---|---|
 | 📖 **The Guide** | Harness engineering applied to Cursor: guides (feedforward), sensors (feedback), guardrails, and the 5-level maturity model. Consolidates Martin Fowler's harness engineering articles, LangChain's harness lessons, and Cursor's own docs. | [paladini.github.io/harness-score](https://paladini.github.io/harness-score/) |
-| 🔍 **The CLI** | `npx harness-score` — 36 checks across 6 dimensions, maturity level L0–L4, JSON/markdown/badge output, `--diff` mode, `--min-level` CI gate. Zero runtime dependencies. | [packages/cli](packages/cli) |
+| 🔍 **The CLI** | `npx harness-score` — 36 checks across 6 dimensions, maturity level L0–L4, JSON/markdown/badge output, `--diff` mode, `--min-level` CI gate. Zero runtime dependencies, fully-typed programmatic API. | [packages/cli](packages/cli) |
 | 🧩 **The Cursor plugin** | `/harness-audit` command + `harness-engineering` skill: audit the open workspace and let the agent fix the gaps following the guide's recipes. | [plugin](plugin) |
 | ⚙️ **The GitHub Action** | Run the scan on every push, gate on a minimum level, emit the badge. | [action](action) |
 
@@ -265,6 +265,7 @@ npm test            # build + vitest (fixtures pin each maturity level)
 npm run lint        # biome
 npm run scan        # self-audit — must print L4
 npm run docs:dev    # guide dev server
+npm run bench -w harness-score   # scan-time benchmark against a synthetic large repo
 ```
 
 Monorepo layout, conventions, and the rubric-sync rule live in
@@ -274,11 +275,15 @@ Monorepo layout, conventions, and the rubric-sync rule live in
 
 Issues and pull requests are welcome — new checks, new language/tool
 recognition (a linter or test runner the scanner doesn't know about yet),
-docs fixes, bug reports against real-world repositories. See
-[CONTRIBUTING.md](CONTRIBUTING.md) for the workflow and
-[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for how we expect people to treat
-each other. Security issues: see [SECURITY.md](SECURITY.md) instead of
-filing a public issue.
+docs fixes, bug reports against real-world repositories. Proposing a new
+check or a rubric change? Use the
+**[Rubric change](https://github.com/paladini/harness-score/issues/new?template=rubric_change.yml)**
+issue template — it's the highest-value contribution and the one most
+likely to need agreement up front, since it changes what every existing
+repository scores. See [CONTRIBUTING.md](CONTRIBUTING.md) for the full
+workflow and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for how we expect
+people to treat each other. Security issues: see [SECURITY.md](SECURITY.md)
+instead of filing a public issue.
 
 ## Roadmap
 

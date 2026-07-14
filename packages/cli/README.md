@@ -51,9 +51,9 @@ harness-score --min-level 3       # exit 1 if below L3 — the CI gate
 Example:
 
 ```
-  harness-score v0.1.2  /work/my-app
+  harness-score v0.3.0  /work/my-app
 
-  Maturity: L2 · Guided   Score: 61/100 (61%)
+  Maturity: L2 · Guided   Score: 66/108 (61%)
 
   Context & Guides     ████████████████░░░░  80%
   Hooks & Guardrails   ░░░░░░░░░░░░░░░░░░░░   0%
@@ -71,7 +71,11 @@ console.log(report.level.index, report.level.name, report.score.percent);
 ```
 
 `Report`, `Check`, `DimensionScore`, and every other shape are exported as
-TypeScript types.
+TypeScript types, resolved via an explicit `"types"` field — no extra
+config needed in a consuming project. `dist/` is a small, bundled build
+(`tsup`, ESM only); verified against `attw` and a packaging-level type
+smoke test in CI, and against a real `npm pack` install in an external
+project before each release.
 
 ## CI gate
 

@@ -7,14 +7,23 @@ description: Use when the user asks to release, publish, or version-bump harness
 
 1. Verify green: `npm test`, `npm run lint`, `npm run scan` (must be L4),
    `npm run docs:build`.
-2. Bump versions **together**:
+2. Bump versions **together** — preferably via changesets: run
+   `npm run version-packages` (runs `changeset version`, which bumps
+   `packages/cli/package.json` and writes `packages/cli/CHANGELOG.md` from
+   accumulated `.changeset/*.md` files, then `scripts/sync-version.mjs`,
+   which mirrors the new version into `TOOL_VERSION` and `jsr.json` —
+   changesets doesn't know about either file on its own). Review the diff.
+   If no changesets were added since the last release, bump all three by
+   hand instead:
    - `packages/cli/package.json`, `TOOL_VERSION` in
      `packages/cli/src/score.ts`, and `version` in `packages/cli/jsr.json`
    - `plugin/.cursor-plugin/plugin.json` (+ entry in `plugin/CHANGELOG.md`)
      — only if plugin content changed, it has its own release track
 3. Commit `release: vX.Y.Z`, tag `vX.Y.Z`, push with tags.
-4. Create a GitHub Release from that tag (`gh release create vX.Y.Z --generate-notes`)
-   — this fires `.github/workflows/release.yml`, which publishes to all
+4. Create a GitHub Release from that tag — use the new
+   `packages/cli/CHANGELOG.md` entry as the notes body if changesets
+   produced one, otherwise `gh release create vX.Y.Z --generate-notes` —
+   this fires `.github/workflows/release.yml`, which publishes to all
    three registries via OIDC, no secrets stored anywhere:
    - **npmjs.org** as `harness-score`, via
      [Trusted Publishing](https://docs.npmjs.com/trusted-publishers) — the

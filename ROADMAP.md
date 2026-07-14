@@ -79,6 +79,49 @@ touchpoint that makes a CI tool sticky.
   repeated pushes update one comment). Requires the consumer to grant
   `pull-requests: write` — documented in `action/README.md`, not assumed.
 
+## Shipped in v0.4.0
+
+### Distribution, type packaging, scan performance, and community infra — done
+
+Not a rubric change (no checks added, no points moved) — a maintenance pass
+on the CLI's packaging and the contribution process itself:
+
+- **Smaller, bundled `dist/`.** The build moved from plain `tsc` (36
+  unbundled files, ~82KB) to `tsup` (5 files, ~54KB via splitting +
+  minification). `package.json` gained an explicit `"types"` field and a
+  `"types"` condition in `"exports"`.
+- **Verified type packaging.** `test/types/smoke.ts` type-checks every
+  public symbol against the *built* `dist/` output (not `src/`) via a new
+  `typecheck:consumer` script, and `attw --pack . --profile esm-only` runs
+  in CI — both catch a wrong `"types"` path or missing re-export that
+  vitest's runtime tests (which import from `src/`) never would.
+- **Scan performance.** `ctx.matching(re)` is memoized per regex
+  source+flags in `createScanContext` — several checks already re-query
+  the same pattern independently (every `CTX-03..06` rule check calls
+  `matching(RULE_RE)`). ~7% faster on a 20k-file synthetic benchmark
+  (`npm run bench`, new). Deliberately did **not** parallelize file reads:
+  `Check.run()`/`ScanContext.read()` are synchronous public API, and
+  making them async would be a breaking change, not a perf tweak.
+- **Rubric doc-sync gap closed.** `maturity-model.md`'s dimension-points
+  table and `LEVEL_REQUIREMENTS` thresholds were only mirrored by hand
+  ("change both together" in a comment); `rubric-sync.test.ts` now
+  enforces both in CI, the same way `docs.test.ts` already enforced
+  `measure-and-improve.md`.
+- **Formalized the contribution process.** A dedicated
+  `.github/ISSUE_TEMPLATE/rubric_change.yml` for add/edit/remove-a-check
+  proposals, `.github/CODEOWNERS` (routes checks/rubric/release-surface
+  PRs for review), `.github/dependabot.yml` (weekly devDependency +
+  Actions updates — `packages/cli` still has zero runtime dependencies),
+  and changesets (`npm run changeset` / `npm run version-packages`) for a
+  real `packages/cli/CHANGELOG.md` instead of relying only on GitHub's
+  auto-generated release notes.
+- **Non-breaking, verified.** A new `golden-output.test.ts` snapshots the
+  `Report` JSON for every fixture and this repo's own self-scan; a real
+  external-consumer test (`npm pack`, install the tarball in a throwaway
+  project, run the bin directly and via `npx`, `import` the library, and
+  `tsc --noEmit` against a consumer script) confirmed nothing broke for
+  existing users of the CLI or the library.
+
 ## Why these aren't quick adds
 
 Both `v0.2.0` features added a **positively-weighted check**, which shifts
@@ -106,9 +149,15 @@ pages → all five fixtures → this repo's own dogfood artifacts if needed.
   constructs in other agent harnesses (e.g. Claude Code's own
   `.claude/agents/`, hooks, and skills) without diluting the Cursor-first
   focus of the guide — needs its own branding/scope decision before design.
+- Shipping harness-score as a plugin for other tools (Claude Code, Windsurf,
+  Codex CLI, VS Code), not just Cursor, all published from this same repo —
+  planned in [PLUGINS-ROADMAP.md](PLUGINS-ROADMAP.md), not yet scheduled.
 
 ## Proposing something new
 
-Open an issue using the **feature request / new check** template. See
+Open an issue using the **[Rubric change](https://github.com/paladini/harness-score/issues/new?template=rubric_change.yml)**
+template for anything that adds, edits, or removes a check; the general
+**feature request** template covers everything else (CLI flags, plugin,
+Action, docs). See
 [CONTRIBUTING.md](CONTRIBUTING.md#adding-or-changing-a-check) for what a
 rubric-changing PR needs to include.
