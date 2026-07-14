@@ -2,7 +2,7 @@
   "name": "harness-score-monorepo",
   "private": true,
   "version": "0.1.0",
-  "description": "Harness engineering guide for Cursor + deterministic harness-maturity scanner",
+  "description": "AI coding harness engineering guide + deterministic harness-maturity scanner, Cursor-flagship and expanding to other AI-first dev tools",
   "type": "module",
   "workspaces": [
     "packages/*"
@@ -19,6 +19,8 @@
     "format": "biome check --write .",
     "changeset": "changeset",
     "version-packages": "changeset version && node scripts/sync-version.mjs",
+    "plugins:generate": "node plugins/shared/generate.mjs",
+    "plugins:sync-check": "node plugins/shared/generate.mjs --check",
     "prepare": "husky"
   },
   "devDependencies": {

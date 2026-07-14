@@ -31,7 +31,8 @@ packages/cli/    the scanner — TypeScript, ESM, zero runtime dependencies
   src/score.ts   the maturity rubric (levels L0–L4)
   test/          vitest; fixtures/level-0..4 pin each maturity level
 docs/            the VitePress guide (deploys to GitHub Pages)
-plugin/          the Cursor Marketplace plugin
+plugins/         one directory per editor/agent (cursor/, claude-code/, …),
+                 plus shared/ (see PLUGINS-ROADMAP.md)
 action/          the composite GitHub Action wrapping the CLI
 ```
 

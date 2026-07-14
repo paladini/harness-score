@@ -2,10 +2,12 @@
 
 ## What this is
 
-A monorepo shipping four artifacts about harness engineering for Cursor:
-the guide (VitePress → GitHub Pages), the deterministic `harness-score` CLI,
-the Cursor Marketplace plugin, and a GitHub Action. The repo dogfoods its own
-scanner: it must always score **L4** (`npm run scan`).
+A monorepo shipping AI coding harness engineering as a product: a guide
+(VitePress → GitHub Pages), the deterministic, harness-agnostic
+`harness-score` CLI, a growing family of thin per-tool plugins under
+`plugins/` (Cursor is the flagship/most fully-developed target; see
+`PLUGINS-ROADMAP.md` for the others), and a GitHub Action. The repo
+dogfoods its own scanner: it must always score **L4** (`npm run scan`).
 
 ## Layout
 
@@ -14,7 +16,10 @@ scanner: it must always score **L4** (`npm run scan`).
   - `src/score.ts` — the maturity rubric (levels L0–L4)
 - `docs/` — the VitePress guide. `docs/guide/measure-and-improve.md` holds
   the check catalog with one `{#<check-id>}` anchor per check.
-- `plugin/` — Cursor plugin (`.cursor-plugin/plugin.json`, command, skill).
+- `plugins/` — one directory per tool (`cursor/`, `claude-code/`, …), plus
+  `shared/` holding the single prose source templated into each
+  (`npm run plugins:generate`, checked by `npm run plugins:sync-check`).
+  Root `.claude-plugin/marketplace.json` lists the Claude Code entry.
 - `action/` — composite GitHub Action wrapping the CLI.
 - `fixtures/level-0..4/` — sample repos pinned to each maturity level by
   tests. Changing a check usually changes a fixture.

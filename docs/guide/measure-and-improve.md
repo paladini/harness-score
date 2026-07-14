@@ -100,7 +100,7 @@ comments on pull requests.
 
 ## The Cursor plugin
 
-Install **Harness Score** from [its plugin directory in this repo](https://github.com/paladini/harness-score/tree/main/plugin)
+Install **Harness Score** from [its plugin directory in this repo](https://github.com/paladini/harness-score/tree/main/plugins/cursor)
 (the Cursor Marketplace listing is submitted and pending review — this link
 will move there once it's live) and you get:
 
