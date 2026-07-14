@@ -451,7 +451,6 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "context ≥ 40%",
     ],
   },
-  "root": "D:\\code\\a-good-ai-harness-for-cursor\\fixtures\\level-0",
   "score": {
     "earned": 14,
     "max": 108,
@@ -913,7 +912,6 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "skills ≥ 30% or hooks ≥ 30%",
     ],
   },
-  "root": "D:\\code\\a-good-ai-harness-for-cursor\\fixtures\\level-1",
   "score": {
     "earned": 22,
     "max": 108,
@@ -1375,7 +1373,6 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "ci ≥ 50%",
     ],
   },
-  "root": "D:\\code\\a-good-ai-harness-for-cursor\\fixtures\\level-2",
   "score": {
     "earned": 52,
     "max": 108,
@@ -1836,7 +1833,6 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "hooks ≥ 70%",
     ],
   },
-  "root": "D:\\code\\a-good-ai-harness-for-cursor\\fixtures\\level-3",
   "score": {
     "earned": 88,
     "max": 108,
@@ -2295,7 +2291,6 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
     "name": "Self-correcting",
     "nextLevelGaps": [],
   },
-  "root": "D:\\code\\a-good-ai-harness-for-cursor\\fixtures\\level-4",
   "score": {
     "earned": 108,
     "max": 108,
@@ -2754,7 +2749,6 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
     "name": "Self-correcting",
     "nextLevelGaps": [],
   },
-  "root": "D:\\code\\a-good-ai-harness-for-cursor",
   "score": {
     "earned": 108,
     "max": 108,

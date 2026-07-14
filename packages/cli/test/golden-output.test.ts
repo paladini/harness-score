@@ -10,12 +10,15 @@ const REPO_ROOT = path.join(HERE, '..', '..', '..');
 
 /**
  * `tool.version` legitimately changes on every release regardless of whether
- * the scan/build behavior changed at all — excluded so this snapshot only
- * flags genuine output regressions (see "Garantias de não-quebra" in the
- * distribution/perf improvement plan).
+ * the scan/build behavior changed at all, and `root` is an absolute
+ * filesystem path that differs between machines/CI runners (e.g.
+ * `D:\...\fixtures\level-3` locally vs `/home/runner/work/...` in GitHub
+ * Actions) — both excluded so this snapshot only flags genuine output
+ * regressions (see "Garantias de não-quebra" in the distribution/perf
+ * improvement plan).
  */
 function normalize(report: Report) {
-  const { tool: _tool, ...rest } = report;
+  const { tool: _tool, root: _root, ...rest } = report;
   return rest;
 }
 
