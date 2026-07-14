@@ -30,7 +30,15 @@ no npm token, no long-lived secret stored anywhere in this repo.
      "Workflow permissions" to be set to *Read and write*.
    - **JSR** as `@paladini/harness-score`, via OIDC — no token at all. The
      scope must be claimed once at [jsr.io/new](https://jsr.io/new) before
-     the first publish succeeds.
+     the first publish succeeds. **Deliberately publishes raw `src/**/*.ts`**
+     (see `packages/cli/jsr.json`), not the `dist/` bundle npm/GitHub
+     Packages ship — JSR consumes and type-checks TypeScript natively, so
+     shipping source there avoids a build step and gives JSR consumers the
+     original (non-minified) code with inline JSDoc. This means the three
+     registries are not byte-for-byte identical artifacts of the same
+     release; all three still expose the same public API (checked by
+     `packages/cli/test/golden-output.test.ts` and the `attw`/type-smoke
+     checks against the npm-published shape).
 5. If npm Trusted Publishing isn't configured yet, `npm publish` in CI fails
    with a clear error; complete the one-time npmjs.com setup and re-run —
    no manual local publish is ever needed once it's wired up.
