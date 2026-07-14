@@ -111,6 +111,11 @@ export function createScanContext(rootInput: string): ScanContext {
   const { files, truncated } = walk(root);
   const fileSet = new Set(files);
   const contentCache = new Map<string, string | null>();
+  // `files` is fixed once the walk completes, so matching(re) is a pure
+  // function of re's source+flags — several checks re-query the exact same
+  // pattern (e.g. every CTX-* rule check matches RULE_RE independently),
+  // and this cache turns those repeats into a single filter() per pattern.
+  const matchCache = new Map<string, string[]>();
 
   return {
     root,
@@ -137,7 +142,12 @@ export function createScanContext(rootInput: string): ScanContext {
       return content;
     },
     matching(re: RegExp): string[] {
-      return files.filter((f) => re.test(f));
+      const key = re.toString();
+      const cached = matchCache.get(key);
+      if (cached) return cached;
+      const result = files.filter((f) => re.test(f));
+      matchCache.set(key, result);
+      return result;
     },
   };
 }

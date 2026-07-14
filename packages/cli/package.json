@@ -26,6 +26,7 @@
     "check:types": "attw --pack . --profile esm-only",
     "test": "npm run build && npm run typecheck && npm run typecheck:consumer && vitest run",
     "test:coverage": "npm run build && npm run typecheck && vitest run --coverage",
+    "bench": "npm run build && node bench/scan.bench.mjs",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
