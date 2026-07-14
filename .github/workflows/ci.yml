@@ -19,6 +19,10 @@ jobs:
         run: npm run lint
       - name: Build, test & coverage gate
         run: npm run test:coverage
+      - name: Consumer-facing type packaging check (typecheck:consumer)
+        run: npm run typecheck:consumer -w harness-score
+      - name: Published types match runtime exports (attw)
+        run: npm run check:types -w harness-score
       - name: Self-audit — this repo must stay L4
         run: node packages/cli/dist/cli.js . --min-level 4
       - name: Docs build

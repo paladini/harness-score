@@ -22,8 +22,10 @@
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "npm run build && npm run typecheck && vitest run",
-    "test:coverage": "npm run build && vitest run --coverage",
+    "typecheck:consumer": "tsc -p test/types/tsconfig.json",
+    "check:types": "attw --pack . --profile esm-only",
+    "test": "npm run build && npm run typecheck && npm run typecheck:consumer && vitest run",
+    "test:coverage": "npm run build && npm run typecheck && vitest run --coverage",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
