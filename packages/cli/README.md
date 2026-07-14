@@ -93,9 +93,11 @@ Gallery and CI wiring:
 
 ## Cursor plugin
 
-Install **Harness Score** from the
-[Cursor Marketplace](https://cursor.com/marketplace) for a `/harness-audit`
-command and a remediation skill that fixes gaps directly in your editor.
+Install **Harness Score** from
+[its plugin directory in this repo](https://github.com/paladini/harness-score/tree/main/plugin)
+for a `/harness-audit` command and a remediation skill that fixes gaps
+directly in your editor. (Cursor Marketplace listing submitted, pending
+review.)
 
 ## License
 

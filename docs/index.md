@@ -13,8 +13,8 @@ hero:
       text: Scan your repo
       link: /guide/measure-and-improve
     - theme: alt
-      text: Install in Cursor
-      link: https://cursor.com/marketplace
+      text: Cursor plugin (in repo)
+      link: https://github.com/paladini/harness-score/tree/main/plugin
     - theme: alt
       text: Read the guide
       link: /guide/what-is-harness-engineering

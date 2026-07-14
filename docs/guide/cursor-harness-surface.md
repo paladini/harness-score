@@ -174,7 +174,8 @@ manifest, distributed through the
 harness engineering because they make harness patterns **reusable across
 repositories** — including the
 [Harness Score plugin](/guide/measure-and-improve#the-cursor-plugin) that
-audits the very artifacts this chapter described.
+audits the very artifacts this chapter described (installable from its
+repo directory today; its Marketplace listing is pending review).
 
 ## Choosing the right mechanism
 

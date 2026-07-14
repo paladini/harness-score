@@ -100,8 +100,9 @@ comments on pull requests.
 
 ## The Cursor plugin
 
-Install **Harness Score** from the [Cursor Marketplace](https://cursor.com/marketplace)
-and you get:
+Install **Harness Score** from [its plugin directory in this repo](https://github.com/paladini/harness-score/tree/main/plugin)
+(the Cursor Marketplace listing is submitted and pending review — this link
+will move there once it's live) and you get:
 
 - **`/harness-audit`** — runs the scanner on the open workspace and has the
   agent present the report with its top remediations.
