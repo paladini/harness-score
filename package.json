@@ -10,6 +10,7 @@
   "scripts": {
     "build": "npm run build -w harness-score",
     "test": "npm run test -w harness-score",
+    "test:coverage": "npm run test:coverage -w harness-score",
     "scan": "node packages/cli/dist/cli.js .",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",

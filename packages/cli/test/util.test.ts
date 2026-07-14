@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { findSecret, parseFrontmatter, safeJsonParse } from '../dist/util.js';
+import { findSecret, parseFrontmatter, safeJsonParse } from '../src/util.js';
 
 describe('parseFrontmatter', () => {
   test('plain single-line values still work', () => {

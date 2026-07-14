@@ -17,8 +17,8 @@ jobs:
       - run: npm ci
       - name: Lint (biome)
         run: npm run lint
-      - name: Build & test
-        run: npm test
+      - name: Build, test & coverage gate
+        run: npm run test:coverage
       - name: Self-audit — this repo must stay L4
         run: node packages/cli/dist/cli.js . --min-level 4
       - name: Docs build

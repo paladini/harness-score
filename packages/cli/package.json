@@ -18,6 +18,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && vitest run",
+    "test:coverage": "npm run build && vitest run --coverage",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -43,6 +44,7 @@
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
+    "@vitest/coverage-v8": "^3.0.0",
     "typescript": "^5.6.0",
     "vitest": "^3.0.0"
   }

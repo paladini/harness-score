@@ -2,7 +2,7 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
-import { ALL_CHECKS } from '../dist/index.js';
+import { ALL_CHECKS } from '../src/index.js';
 
 const GUIDE = path.join(
   path.dirname(fileURLToPath(import.meta.url)),

@@ -1,9 +1,11 @@
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
-import { score } from '../dist/index.js';
+import { ALL_CHECKS } from '../src/checks/index.js';
+import { score } from '../src/index.js';
 
 const FIXTURES = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..', 'fixtures');
+const ALL_FIXTURES = ['level-0', 'level-1', 'level-2', 'level-3', 'level-4'];
 
 describe('maturity levels on fixture repositories', () => {
   test.each([
@@ -40,5 +42,19 @@ describe('maturity levels on fixture repositories', () => {
   test('level gaps explain what is missing', () => {
     const report = score(path.join(FIXTURES, 'level-3'));
     expect(report.level.nextLevelGaps.join(' ')).toContain('hooks');
+  });
+
+  test.each(ALL_FIXTURES)('%s runs every registered check exactly once', (fixture) => {
+    const report = score(path.join(FIXTURES, fixture));
+    expect(report.checks).toHaveLength(ALL_CHECKS.length);
+    expect(new Set(report.checks.map((c) => c.id)).size).toBe(ALL_CHECKS.length);
+  });
+
+  test.each(ALL_FIXTURES)('%s dimension percentages are internally consistent', (fixture) => {
+    const report = score(path.join(FIXTURES, fixture));
+    for (const dim of report.dimensions) {
+      const expected = dim.max === 0 ? 0 : Math.round((dim.earned / dim.max) * 100);
+      expect(dim.percent, `${dim.id}: ${dim.earned}/${dim.max}`).toBe(expected);
+    }
   });
 });

@@ -1,7 +1,15 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.5.3/schema.json",
   "files": {
-    "includes": ["**", "!fixtures", "!**/dist", "!docs/.vitepress/cache", "!package-lock.json", "!.claude"]
+    "includes": [
+      "**",
+      "!fixtures",
+      "!**/dist",
+      "!**/coverage",
+      "!docs/.vitepress/cache",
+      "!package-lock.json",
+      "!.claude"
+    ]
   },
   "formatter": {
     "enabled": true,

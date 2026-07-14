@@ -1,4 +1,4 @@
-import type { ScanContext } from '../dist/index.js';
+import type { ScanContext } from '../src/index.js';
 
 /** In-memory ScanContext for unit-testing individual checks. */
 export function fakeContext(files: Record<string, string>): ScanContext {
@@ -15,7 +15,7 @@ export function fakeContext(files: Record<string, string>): ScanContext {
 
 export function check(id: string) {
   // Lazy import indirection keeps this helper synchronous for tests.
-  return import('../dist/index.js').then(({ ALL_CHECKS }) => {
+  return import('../src/index.js').then(({ ALL_CHECKS }) => {
     const found = ALL_CHECKS.find((c) => c.id === id);
     if (!found) throw new Error(`no such check: ${id}`);
     return found;
