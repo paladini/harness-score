@@ -1,0 +1,22 @@
+{
+  "name": "harness-score",
+  "displayName": "Harness Score",
+  "version": "0.1.0",
+  "description": "Deterministic harness-maturity audit for your repository: measures AGENTS.md, rules, skills, hooks, sensors, CI, and hygiene against a 5-level maturity model — without any LLM calls — and teaches the agent how to fix every gap.",
+  "author": {
+    "name": "Fernando Paladini",
+    "url": "https://github.com/paladini"
+  },
+  "license": "MIT",
+  "homepage": "https://paladini.github.io/harness-score/",
+  "repository": "https://github.com/paladini/harness-score",
+  "keywords": [
+    "harness-engineering",
+    "audit",
+    "maturity",
+    "rules",
+    "hooks",
+    "guardrails",
+    "ai-assisted-development"
+  ]
+}

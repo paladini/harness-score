@@ -28,43 +28,46 @@ Create `AGENTS.md` with: what the project is (2 sentences), directory
 layout, exact build/test/lint commands, non-negotiable conventions, and a
 "do not touch" list.
 
-Then `.cursor/rules/*.mdc`, each with frontmatter:
-
-```markdown
----
-description: <one line>
-globs: <path pattern>   # or alwaysApply: true, sparingly
----
-- Concrete, checkable bullets. Show a 5-line example of the right pattern.
-```
-
-One concern per rule. Migrate any legacy `.cursorrules` into these.
+For guidance scoped to part of the tree, add a nested `CLAUDE.md`
+inside that subdirectory — Claude Code loads it automatically when working
+in that subtree, the same idea as glob-scoped rules in other tools, just
+directory-scoped instead of pattern-scoped.
 
 ### SKL — Skills & Commands
 For the team's most repeated procedure, create
-`.cursor/skills/<name>/SKILL.md` with frontmatter `name:` and a
+`.claude/skills/<name>/SKILL.md` with frontmatter `name:` and a
 `description:` written as a trigger ("Use when the user asks to …", ≥40
-chars), body = numbered runbook. Add `.cursor/commands/<verb>.md` for
+chars), body = numbered runbook. Add `.claude/commands/<verb>.md` for
 human-triggered workflows like /review.
 
 ### HKS — Hooks & Guardrails
-Create `.cursor/hooks.json`:
+Register hooks in `.claude/settings.json`'s `"hooks"` key:
 
 ```json
 {
-  "version": 1,
   "hooks": {
-    "beforeShellExecution": [{ "command": "node ./.cursor/hooks/guard-shell.js", "timeout": 10 }],
-    "afterFileEdit": [{ "command": "node ./.cursor/hooks/format-on-edit.js", "timeout": 30 }]
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [{ "type": "command", "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/guard-shell.js" }]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [{ "type": "command", "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/format-on-edit.js" }]
+      }
+    ]
   }
 }
 ```
 
-The gate script reads JSON from stdin, tests the command against a
-destructive-pattern regex (rm -rf on roots, git push --force, DROP TABLE),
-and prints `{"permission":"deny","userMessage":"…"}` or
-`{"permission":"allow"}`. The feedback script runs the project's formatter
-on the edited file, best-effort. Commit both scripts. Full examples:
+The gate script reads the tool-call JSON from stdin on `PreToolUse`, tests
+the command against a destructive-pattern regex (rm -rf on roots, git push
+--force, DROP TABLE), and — to block it — prints
+`{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"…"}}`
+and exits 0. The feedback script runs on `PostToolUse` and formats the
+edited file, best-effort. Commit both scripts. Full examples:
 https://paladini.github.io/harness-score/guide/guardrails-and-safety
 
 ### SNS — Sensors
@@ -79,7 +82,7 @@ Pre-commit via husky+lint-staged or pre-commit.
 
 ### HYG — Hygiene & Safety
 `.gitignore` must cover `.env` and `.env.*` (keep `!.env.example`). Remove
-real env files; replace inlined keys in `.cursor/mcp.json` with
+real env files; replace inlined keys in `.mcp.json` with
 `${ENV_VAR}` interpolation. Add LICENSE and commit the lockfile.
 
 ## After fixing

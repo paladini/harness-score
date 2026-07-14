@@ -1,0 +1,15 @@
+{
+  "name": "harness-score",
+  "owner": {
+    "name": "Fernando Paladini",
+    "email": "fnpaladini@gmail.com"
+  },
+  "description": "Deterministic AI coding harness-maturity plugins — audit AGENTS.md, rules, skills, hooks, sensors, CI, and hygiene, and fix every gap.",
+  "plugins": [
+    {
+      "name": "harness-score",
+      "source": "./plugins/claude-code",
+      "description": "Deterministic harness-maturity audit + remediation skill for this workspace."
+    }
+  ]
+}
