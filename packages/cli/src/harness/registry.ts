@@ -37,6 +37,12 @@ export const PATH_SPECS: PathSpec[] = [
   { toolId: 'antigravity', kind: 'rules', pathRegex: /(^|\/)\.agents\/rules\/[^/]+$/ },
   { toolId: 'antigravity', kind: 'rules', pathRegex: /(^|\/)\.agent\/rules\/[^/]+$/ },
   { toolId: 'antigravity', kind: 'rules', pathRegex: /(^|\/)\.gemini\/rules\/[^/]+$/ },
+  // Nested context files (root ones are CTX-01's job) — directory-scoped
+  // guidance loaded automatically by Codex/Cursor (AGENTS.md), Claude Code
+  // (CLAUDE.md), and Gemini/Antigravity (GEMINI.md).
+  { toolId: 'codex', kind: 'rules', pathRegex: /.\/AGENTS\.md$/ },
+  { toolId: 'claude-code', kind: 'rules', pathRegex: /.\/CLAUDE\.md$/ },
+  { toolId: 'antigravity', kind: 'rules', pathRegex: /.\/GEMINI\.md$/ },
 
   // Skills
   { toolId: 'cursor', kind: 'skills', pathRegex: /(^|\/)\.cursor\/skills\/[^/]+\/SKILL\.md$/ },

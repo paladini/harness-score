@@ -563,6 +563,50 @@ describe('sensor checks', () => {
   });
 });
 
+describe('multi-harness equivalence regressions (field-tested)', () => {
+  test('HKS: hook-less .claude/settings.json must not shadow a real .cursor/hooks.json', async () => {
+    const ctx = fakeContext({
+      '.claude/settings.json': JSON.stringify({ permissions: { allow: ['Bash(go test:*)'] } }),
+      '.cursor/hooks.json': JSON.stringify({
+        version: 1,
+        hooks: {
+          beforeShellExecution: [{ command: 'node ./.cursor/hooks/guard.js' }],
+          afterFileEdit: [{ command: 'node ./.cursor/hooks/fmt.js' }],
+        },
+      }),
+      '.cursor/hooks/guard.js': 'ok',
+      '.cursor/hooks/fmt.js': 'ok',
+    });
+    expect((await check('HKS-02')).run(ctx).passed).toBe(true);
+    expect((await check('HKS-03')).run(ctx).passed).toBe(true);
+    expect((await check('HKS-04')).run(ctx).passed).toBe(true);
+    expect((await check('HKS-05')).run(ctx).passed).toBe(true);
+  });
+
+  test('CTX-04: root-level .continue/rules/*.md without frontmatter still count as valid', async () => {
+    const ctx = fakeContext({
+      '.continue/rules/data.md': '- Prefer polars over pandas.',
+      '.continue/rules/style.md': '- Type hints mandatory.',
+    });
+    expect((await check('CTX-04')).run(ctx).passed).toBe(true);
+  });
+
+  test('CTX-03/04/05: nested context files count as scoped rules', async () => {
+    const ctx = fakeContext({
+      'CLAUDE.md': '# Root context',
+      'packages/api/CLAUDE.md': '# API guidance - Fastify plugins only.',
+    });
+    expect((await check('CTX-03')).run(ctx).passed).toBe(true);
+    expect((await check('CTX-04')).run(ctx).passed).toBe(true);
+    expect((await check('CTX-05')).run(ctx).passed).toBe(true);
+  });
+
+  test('nested rules: root context files do NOT count as rules', async () => {
+    const ctx = fakeContext({ 'AGENTS.md': '# Root only' });
+    expect((await check('CTX-03')).run(ctx).passed).toBe(false);
+  });
+});
+
 describe('every check has a direct test', () => {
   test("every ALL_CHECKS id appears at least once in check('...') calls in this file", async () => {
     const fs = await import('node:fs');

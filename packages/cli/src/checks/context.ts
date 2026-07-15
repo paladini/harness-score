@@ -49,7 +49,7 @@ export const contextChecks: Check[] = [
     title: 'Scoped rules in use',
     points: 4,
     remediation:
-      'Add at least one scoped rule file for your AI tool (e.g. .cursor/rules/*.mdc, .windsurf/rules/*.md, .clinerules/*.md) stating the project non-negotiables.',
+      'Add at least one scoped rule file for your AI tool (e.g. .cursor/rules/*.mdc, .windsurf/rules/*.md, .clinerules/*.md) or a nested AGENTS.md/CLAUDE.md in a subdirectory, stating the project non-negotiables.',
     run(ctx) {
       const rules = collectRules(ctx);
       return rules.length > 0
@@ -57,7 +57,7 @@ export const contextChecks: Check[] = [
         : {
             passed: false,
             evidence:
-              'No scoped rule files found (.cursor/rules, .windsurf/rules, .clinerules, .continue/rules, .github/instructions, .agents/rules, …).',
+              'No scoped rule files found (.cursor/rules, .windsurf/rules, .clinerules, .continue/rules, .github/instructions, .agents/rules, nested AGENTS.md/CLAUDE.md, …).',
           };
     },
   },

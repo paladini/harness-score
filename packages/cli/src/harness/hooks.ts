@@ -143,21 +143,26 @@ function normalizeClaude(source: string, content: string): NormalizedHooks | nul
   };
 }
 
-/** First parseable hooks config wins (OR across tools). */
+/**
+ * Of all parseable hooks configs, the one with the most registered events
+ * wins (ties: first by sorted path). Picking the *first* parseable config
+ * would let a hook-less `.claude/settings.json` (e.g. permissions only)
+ * shadow a fully-configured `.cursor/hooks.json` — OR semantics must reward
+ * the tool that actually has hooks.
+ */
 export function readNormalizedHooks(ctx: ScanContext): NormalizedHooks | null {
+  let best: NormalizedHooks | null = null;
   for (const artifact of collectHookConfigs(ctx)) {
     const content = ctx.read(artifact.path);
     if (content === null) continue;
-    if (artifact.toolId === 'cursor') {
-      const normalized = normalizeCursor(artifact.path, content);
-      if (normalized) return normalized;
-    }
-    if (artifact.toolId === 'claude-code') {
-      const normalized = normalizeClaude(artifact.path, content);
-      if (normalized) return normalized;
+    let normalized: NormalizedHooks | null = null;
+    if (artifact.toolId === 'cursor') normalized = normalizeCursor(artifact.path, content);
+    if (artifact.toolId === 'claude-code') normalized = normalizeClaude(artifact.path, content);
+    if (normalized && (!best || normalized.events.length > best.events.length)) {
+      best = normalized;
     }
   }
-  return null;
+  return best;
 }
 
 export function hookCommandPathsResolve(

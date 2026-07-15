@@ -425,17 +425,23 @@ Commands over descriptions; point to rules instead of pasting them.
 #### CTX-03 · Scoped rules in use — 4 pts {#ctx-03}
 At least one scoped rule file for any supported tool (e.g. `.cursor/rules/*.mdc`,
 `.windsurf/rules/*.md`, `.clinerules/*.md`, `.continue/rules/*.md`,
-`.github/instructions/*.instructions.md`, `.agents/rules/*`).
+`.github/instructions/*.instructions.md`, `.agents/rules/*`). Nested context
+files in subdirectories (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md` anywhere below
+the root) also count — they are directory-scoped rules in tools like Claude
+Code and Codex.
 **Fix:** start with one short always-on rule holding your non-negotiables,
-then add path-scoped rules per area.
+then add path-scoped rules per area (or nested context files per subtree).
 
 #### CTX-04 · Rules have valid frontmatter — 3 pts {#ctx-04}
 Every rule declares activation metadata (`description`, `globs`/`trigger`/`paths`/`applyTo`, or `alwaysApply`).
+Rules a tool auto-loads without metadata — `.continue/rules/*` and nested
+context files — pass by construction.
 **Fix:** add the frontmatter block; without it the agent can't decide when the
 rule applies.
 
 #### CTX-05 · Rules are scoped — 2 pts {#ctx-05}
-Not every rule is blanket always-on.
+Not every rule is blanket always-on. Nested context files count as scoped —
+they apply only to their subtree.
 **Fix:** scope rules to paths (`globs:`, `trigger:` glob, `paths:`, `applyTo:`)
 so they load only when relevant — every always-on rule taxes every request's context.
 
