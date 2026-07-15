@@ -19,7 +19,9 @@ The sources this guide consolidates, roughly in order of influence.
   open-source "batteries-included agent harness"; useful to read as a
   concrete harness implementation.
 
-## Cursor documentation
+## Tool documentation
+
+### Cursor (flagship)
 
 - **[Rules](https://cursor.com/docs/rules)** — `.cursor/rules/*.mdc`,
   frontmatter, AGENTS.md.
@@ -32,6 +34,13 @@ The sources this guide consolidates, roughly in order of influence.
 - **[Cursor Marketplace](https://cursor.com/marketplace)** and the
   **[plugin spec repository](https://github.com/cursor/plugins)** — how
   plugins are packaged, reviewed, and distributed.
+
+### Claude Code, Windsurf, and others
+
+See [Multi-Harness Support](/guide/multi-harness) for how Harness Score
+recognizes equivalent artifacts from Claude Code (`.claude/agents/`, hooks),
+Windsurf (`.windsurf/rules/`), Cline (`.clinerules/`), Continue, Codex, and
+other tools.
 
 ## Adjacent work
 

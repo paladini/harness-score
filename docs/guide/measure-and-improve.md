@@ -7,11 +7,11 @@ npx harness-score
 ```
 
 The scanner walks your repository (filesystem only — no LLM, no network, no
-telemetry), runs 36 deterministic checks, and reports a maturity level with
-the exact gaps to the next one:
+telemetry), runs 36 deterministic checks across any AI tool, and reports a
+maturity level with the exact gaps to the next one:
 
 ```
-  harness-score v0.3.0  /work/my-app
+  harness-score v0.5.0  /work/my-app
 
   Maturity: L2 · Guided   Score: 66/108 (61%)
 
@@ -22,6 +22,10 @@ the exact gaps to the next one:
 
   To reach L3: sensors ≥ 60%; ci ≥ 50%
 ```
+
+> **Multi-tool:** The scanner recognizes harness artifacts from Cursor, Claude Code,
+> Windsurf, Cline, Continue, and other tools via OR semantics — if you configure
+> any one tool, Harness Score counts it. Learn more in [Multi-Harness Support](./multi-harness).
 
 ## Installing
 

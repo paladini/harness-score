@@ -4,6 +4,8 @@ Cursor exposes more harness machinery than any other mainstream AI editor.
 This chapter is the map: every artifact, where it lives, and what job it does
 in the control system.
 
+> **Note:** Harness Score supports multiple tools (Claude Code, Windsurf, Cline, Continue, and others) via OR semantics. This chapter focuses on Cursor as the flagship example. See [Multi-Harness Support](./multi-harness) for how other tools are recognized and scored.
+
 ## The artifacts at a glance
 
 | Artifact | Path | Family | Loaded |

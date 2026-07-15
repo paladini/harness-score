@@ -293,6 +293,52 @@
   color: var(--hs-muted);
 }
 
+.hs-landing__tools-grid {
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  margin-top: 1.25rem;
+}
+
+.hs-landing__tool-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--hs-line);
+  border-radius: 10px;
+  background: var(--hs-panel);
+  text-align: center;
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.hs-landing__tool-chip:hover {
+  border-color: color-mix(in srgb, var(--hs-emer) 45%, var(--hs-line));
+  transform: translateY(-2px);
+}
+
+.hs-landing__tool-chip strong {
+  font-size: 0.92rem;
+  color: var(--vp-c-text-1);
+}
+
+.hs-landing__tool-badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--hs-emer) 15%, transparent);
+  color: var(--hs-emer);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
 /* Tighter home hero — default VPHome leaves a gap when features are empty */
 .VPHome .VPFeatures {
   display: none;

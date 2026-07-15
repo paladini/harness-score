@@ -9,6 +9,15 @@ const levels = [
   { n: 4, name: 'Self-correcting', hint: 'Hooks close the loop' },
 ];
 
+const supportedTools = [
+  { name: 'Cursor', status: 'Flagship' },
+  { name: 'Claude Code', status: 'Supported' },
+  { name: 'Windsurf', status: 'Supported' },
+  { name: 'Cline', status: 'Supported' },
+  { name: 'Continue', status: 'Supported' },
+  { name: 'Codex', status: 'Supported' },
+];
+
 const installs = [
   {
     title: 'Run once',
@@ -21,7 +30,7 @@ const installs = [
   {
     title: 'npm',
     cmd: 'npm i -g harness-score',
-    note: 'v0.3.0 on npmjs.org',
+    note: 'v0.5.0 on npmjs.org',
     href: 'https://www.npmjs.com/package/harness-score',
     external: true,
     primary: false,
@@ -64,7 +73,8 @@ const installs = [
         Two repos can run the same model and get wildly different results. One has
         <strong>guides</strong> that steer the agent, <strong>sensors</strong> that verify
         its work, and <strong>guardrails</strong> that stop damage — the other has none.
-        Harness Score measures that harness in seconds and tells you what to fix next.
+        Harness Score measures that harness in seconds, across any AI tool, and tells you
+        what to fix next.
       </p>
     </section>
 
@@ -110,7 +120,7 @@ const installs = [
           Run the scanner →
         </a>
       </div>
-      <pre class="hs-landing__terminal-pre" aria-label="Example harness-score output"><code>  harness-score v0.3.0  ~/my-app
+      <pre class="hs-landing__terminal-pre" aria-label="Example harness-score output"><code>  harness-score v0.5.0  ~/my-app
 
   Maturity: L2 · Guided   Score: 70/108 (65%)
 
@@ -170,6 +180,28 @@ const installs = [
       </div>
       <a class="hs-landing__cta hs-landing__cta--ghost" :href="withBase('/guide/maturity-model')">
         Full maturity model →
+      </a>
+    </section>
+
+    <section class="hs-landing__tools">
+      <p class="hs-landing__eyebrow">Works with</p>
+      <h2 class="hs-landing__title">Any AI coding tool</h2>
+      <p class="hs-landing__lede">
+        One harness, one maturity model, many tools. Configure Cursor, Claude Code,
+        Windsurf, or any other AI tool — Harness Score measures them all the same way.
+      </p>
+      <div class="hs-landing__tools-grid">
+        <div
+          v-for="tool in supportedTools"
+          :key="tool.name"
+          class="hs-landing__tool-chip"
+        >
+          <strong>{{ tool.name }}</strong>
+          <span class="hs-landing__tool-badge">{{ tool.status }}</span>
+        </div>
+      </div>
+      <a class="hs-landing__cta hs-landing__cta--ghost" :href="withBase('/guide/multi-harness')">
+        Learn about multi-harness support →
       </a>
     </section>
 

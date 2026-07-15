@@ -79,6 +79,36 @@ touchpoint that makes a CI tool sticky.
   repeated pushes update one comment). Requires the consumer to grant
   `pull-requests: write` — documented in `action/README.md`, not assumed.
 
+## Planned for v1.0.0
+
+### Site redesign, docs expansion, and multi-tool branding — in progress
+
+The v1.0.0 release marks the project's transition from "Cursor-focused tool" to
+"universal harness maturity platform." Key work:
+
+- **Site redesign**: HomeLanding.vue enhancements, clearer tool-agnostic messaging,
+  prominent call-out that any AI tool benefits from the same harness.
+- **Docs expansion**: New "Multi-Harness Support" chapter (added in v0.5.0 docs
+  reorg) explaining OR semantics, supported tools table, migration patterns,
+  and FAQs. Updated landing page and navigation to surface multi-tool story first.
+- **Updated README**: Multi-tool language, clarified that Cursor is the flagship
+  but not exclusive, mention of Claude Code, Windsurf, and others gaining first-class
+  support in plugins over time.
+- **Plugin roadmap clarity**: Formalize the staggered plugin launch — Cursor
+  (v0.x shipped), Claude Code (Phase 0 read-only audit), Windsurf and others
+  TBD. **[PLUGINS-ROADMAP.md](PLUGINS-ROADMAP.md)** exists; keep it
+  consumer-facing and current as phases land.
+
+(`--json` already exposes a `detectedHarnesses` array — shipped with the OR
+semantics engine in v0.4.0, #18 — so "which tools are configured" needs no
+new work, only surfacing in the terminal/markdown renderers if we want it.)
+
+**Rationale:** v0.4.0 shipped the *engine* (multi-harness OR semantics in the
+scanner). v1.0.0 ships the *story* — making it clear that this tool measures
+harness maturity *across tools* and that a single well-built harness benefits
+every AI agent in your workflow. No check changes, no maturity-model shifts — just
+clarity and docs.
+
 ## Shipped in v0.4.0
 
 ### Distribution, type packaging, scan performance, and community infra — done
@@ -132,6 +162,26 @@ v0.2.0" section above for what that PR touched. Any future check addition
 should expect the same shape of change: check → dimension total → both docs
 pages → all five fixtures → this repo's own dogfood artifacts if needed.
 
+## Shipped in v0.5.0
+
+### Multi-harness equivalence fixes — done
+
+After field-testing v0.4.0 against a corpus of differently-shaped repositories,
+three equivalence gaps were found and closed:
+
+- **Hooks regression:** A hook-less `.claude/settings.json` (permissions only)
+  no longer shadows a fully-configured `.cursor/hooks.json` — of all hooks
+  configs, the one with the most registered events wins.
+- **CTX-04 path fix:** `.continue/rules/*.md` without frontmatter now pass at
+  the repository root (previously only in subdirectories).
+- **CTX-03/04/05 nested files:** `AGENTS.md`/`CLAUDE.md`/`GEMINI.md` in
+  subdirectories now count as scoped rules — a fully-harnessed Claude Code
+  repo can progress past L1 without `.cursor/` paths.
+
+Also shipped: comprehensive multi-harness docs (new "Multi-Harness Support"
+chapter), site messaging updates (docs.index, nav, HomeLanding.vue), and
+README clarifications about OR-semantic scoring across tools.
+
 ## Also under consideration (not yet scheduled)
 
 - **`harness-score init`** — a scaffold command that generates starter
@@ -145,13 +195,10 @@ pages → all five fixtures → this repo's own dogfood artifacts if needed.
   detector (`detectEcosystems`) sees them in the wild — this is the kind of
   contribution that needs no design discussion, just a PR (see
   [CONTRIBUTING.md](CONTRIBUTING.md)).
-- Expanding beyond Cursor-specific artifacts to recognize equivalent
-  constructs in other agent harnesses (e.g. Claude Code's own
-  `.claude/agents/`, hooks, and skills) without diluting the Cursor-first
-  focus of the guide — needs its own branding/scope decision before design.
 - Shipping harness-score as a plugin for other tools (Claude Code, Windsurf,
   Codex CLI, VS Code), not just Cursor, all published from this same repo —
-  planned in [PLUGINS-ROADMAP.md](PLUGINS-ROADMAP.md), not yet scheduled.
+  planned in [PLUGINS-ROADMAP.md](PLUGINS-ROADMAP.md), in progress (Claude Code
+  Phase 0 audit command shipped; full plugin suite post-v1.0).
 
 ## Proposing something new
 

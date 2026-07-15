@@ -33,8 +33,13 @@ control theory:
 |---|---|---|
 | When | *Before* the agent acts | *After* the agent acts |
 | Purpose | Steer toward good outcomes | Detect and correct bad ones |
-| Cursor examples | `AGENTS.md`, rules, skills, commands, MCP context | tests, linters, type checkers, CI, hooks |
+| Examples (tool-agnostic) | `AGENTS.md`, rules, skills, commands, MCP context | tests, linters, type checkers, CI, hooks |
 | Failure mode when missing | Agent guesses your conventions | Agent ships mistakes confidently |
+
+The principles are the same across Cursor, Claude Code, Windsurf, and any other
+AI coding tool — what differs is *where* you configure them (different directories
+and frontmatter formats), not *what* you're building. Harness Score recognizes
+these tool-specific variants via OR semantics, so your harness works everywhere.
 
 A harness needs both. Guides without sensors produce confident, unverified
 output. Sensors without guides catch the same mistakes over and over because
