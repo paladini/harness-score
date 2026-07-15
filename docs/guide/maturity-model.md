@@ -8,9 +8,12 @@ Design goals:
 
 - **Deterministic.** Every check is a filesystem fact: a file exists, parses,
   matches a pattern. No model, no judgment calls, no network.
-- **Cursor-first, ecosystem-aware.** Cursor artifacts (rules, skills, hooks)
-  are scored alongside universal harness infrastructure (tests, linters,
-  types, CI) because they form one control system.
+- **Harness-agnostic, Cursor as flagship example.** Rules, skills, hooks, and
+  commands from any supported AI-first tool (Cursor, Windsurf, Claude Code,
+  Codex/Antigravity `.agents/`, OpenCode, Cline, Continue, Copilot
+  instructions, Zed) score via OR semantics — one configured tool is enough.
+  Universal harness infrastructure (tests, linters, types, CI) forms the same
+  control system regardless of IDE.
 - **A ladder, not a grade.** Levels gate on the *shape* of your harness (which
   dimensions are covered), not just a raw percentage — 80 points of guides
   with zero sensors is not maturity.
@@ -52,8 +55,9 @@ step from zero — feedforward for every future session in one file.
 
 **Requires: Context ≥ 60% · (Skills ≥ 30% or Hooks ≥ 30%) · Hygiene ≥ 50%.**
 
-Guidance has structure: scoped `.cursor/rules/` with valid frontmatter, and
-at least the beginnings of procedural knowledge (a skill, command, or
+Guidance has structure: scoped rules with valid frontmatter (`.cursor/rules/`,
+`.windsurf/rules/`, `.clinerules/`, or your tool's equivalent), and at least
+the beginnings of procedural knowledge (a skill, command/workflow, or
 subagent) or hook machinery. Basic hygiene holds — env files ignored, no
 credential signatures in harness files. The harness now ships with the code
 and is reviewed like code.

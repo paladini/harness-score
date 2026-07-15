@@ -1,10 +1,11 @@
+import { collectHarnessTextFiles } from '../harness/collectors.js';
+import { mcpConfigPaths } from '../harness/mcp.js';
 import type { Check, ScanContext } from '../types.js';
 import { findSecret, safeJsonParse } from '../util.js';
 import { detectEcosystems } from './sensors.js';
 
 const ENV_FILE_RE = /(^|\/)\.env(\.[^/]+)?$/;
 const ENV_TEMPLATE_RE = /\.(example|sample|template|dist)$/;
-const MCP_RE = /(^|\/)\.cursor\/mcp\.json$/;
 const CREDENTIAL_WORDS = new Set(['token', 'key', 'secret', 'password', 'passwd', 'auth', 'apikey']);
 const ENV_INTERPOLATION_RE = /\$\{[A-Za-z_][A-Za-z0-9_]*\}/;
 
@@ -141,11 +142,11 @@ export const hygieneChecks: Check[] = [
     title: 'MCP configuration free of credentials',
     points: 4,
     remediation:
-      'Never inline API keys in .cursor/mcp.json — use environment variable interpolation (${VAR}) and document required variables in .env.example.',
+      'Never inline API keys in MCP config (.cursor/mcp.json, .mcp.json, .agents/mcp_config.json) — use ${VAR} interpolation and document required variables in .env.example.',
     run(ctx) {
-      const mcpFiles = ctx.matching(MCP_RE);
+      const mcpFiles = mcpConfigPaths(ctx);
       if (mcpFiles.length === 0) {
-        return { passed: true, evidence: 'No .cursor/mcp.json in repository (nothing to leak).' };
+        return { passed: true, evidence: 'No MCP config in repository (nothing to leak).' };
       }
       for (const file of mcpFiles) {
         const content = ctx.read(file) ?? '';
@@ -162,7 +163,7 @@ export const hygieneChecks: Check[] = [
     dimension: 'hygiene',
     title: 'License present',
     points: 2,
-    remediation: 'Add a LICENSE file — required for open-source distribution and for the Cursor Marketplace.',
+    remediation: 'Add a LICENSE file — required for open-source distribution and plugin marketplaces.',
     run(ctx) {
       const license = ['LICENSE', 'LICENSE.md', 'LICENSE.txt', 'COPYING'].find((f) => ctx.has(f));
       return license
@@ -178,13 +179,7 @@ export const hygieneChecks: Check[] = [
     remediation:
       'Remove any API keys or tokens from AGENTS.md, rules, and hooks configuration — harness files are loaded into model context on every session.',
     run(ctx) {
-      const harnessFiles = [
-        'AGENTS.md',
-        'CLAUDE.md',
-        'README.md',
-        '.cursor/hooks.json',
-        ...ctx.matching(/(^|\/)\.cursor\/rules\/[^/]+\.mdc$/),
-      ].filter((f) => ctx.has(f));
+      const harnessFiles = collectHarnessTextFiles(ctx);
       for (const file of harnessFiles) {
         const secret = findSecret(ctx.read(file) ?? '');
         if (secret) {
@@ -236,11 +231,14 @@ export const hygieneChecks: Check[] = [
     title: 'MCP config uses env interpolation for credentials',
     points: 3,
     remediation:
-      'Reference credential-shaped values in .cursor/mcp.json via ${ENV_VAR} interpolation instead of literals — this rewards deliberate, safe tool-access configuration, not just the absence of a leak.',
+      'Reference credential-shaped values in MCP config via ${ENV_VAR} interpolation instead of literals — this rewards deliberate, safe tool-access configuration.',
     run(ctx) {
-      const mcpFiles = ctx.matching(MCP_RE);
+      const mcpFiles = mcpConfigPaths(ctx);
       if (mcpFiles.length === 0) {
-        return { passed: false, evidence: 'No .cursor/mcp.json in repository.' };
+        return {
+          passed: false,
+          evidence: 'No MCP config found (.cursor/mcp.json, .mcp.json, or .agents/mcp_config.json).',
+        };
       }
       for (const file of mcpFiles) {
         const content = ctx.read(file) ?? '';

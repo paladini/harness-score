@@ -1,11 +1,9 @@
+import { collectCommands, collectSkills, summarizeArtifacts } from '../harness/index.js';
 import type { Check, ScanContext } from '../types.js';
 import { parseFrontmatter } from '../util.js';
 
-const SKILL_RE = /(^|\/)\.(cursor|agents)\/skills\/[^/]+\/SKILL\.md$/;
-const COMMAND_RE = /(^|\/)\.cursor\/commands\/[^/]+\.md$/;
-
-function skillFiles(ctx: ScanContext): string[] {
-  return ctx.matching(SKILL_RE);
+function skillPaths(ctx: ScanContext): string[] {
+  return collectSkills(ctx).map((s) => s.path);
 }
 
 export const skillChecks: Check[] = [
@@ -15,15 +13,15 @@ export const skillChecks: Check[] = [
     title: 'At least one agent skill defined',
     points: 4,
     remediation:
-      'Create .cursor/skills/<skill-name>/SKILL.md packaging a procedural workflow the agent should follow on demand (deploys, releases, migrations…).',
+      'Create a SKILL.md under your tool skills directory (.cursor/skills/, .claude/skills/, or .agents/skills/) packaging a procedural workflow the agent should follow on demand.',
     run(ctx) {
-      const skills = skillFiles(ctx);
+      const skills = collectSkills(ctx);
       return skills.length > 0
-        ? {
-            passed: true,
-            evidence: `Found ${skills.length} skill(s): ${skills.slice(0, 3).join(', ')}${skills.length > 3 ? ', …' : ''}`,
-          }
-        : { passed: false, evidence: 'No SKILL.md under .cursor/skills/ or .agents/skills/.' };
+        ? { passed: true, evidence: summarizeArtifacts(skills, 'skill(s)') }
+        : {
+            passed: false,
+            evidence: 'No SKILL.md under .cursor/skills/, .claude/skills/, or .agents/skills/.',
+          };
     },
   },
   {
@@ -34,7 +32,7 @@ export const skillChecks: Check[] = [
     remediation:
       'Add frontmatter with name: and description: to every SKILL.md — the agent decides whether to load a skill from those two fields alone.',
     run(ctx) {
-      const skills = skillFiles(ctx);
+      const skills = skillPaths(ctx);
       if (skills.length === 0) {
         return { passed: false, evidence: 'No skills found to validate.' };
       }
@@ -51,18 +49,19 @@ export const skillChecks: Check[] = [
   {
     id: 'SKL-03',
     dimension: 'skills',
-    title: 'Slash commands defined',
+    title: 'Explicit workflows/commands defined',
     points: 3,
     remediation:
-      'Add markdown files under .cursor/commands/ for workflows you trigger intentionally (e.g. /release, /review) — commands are explicit, repeatable entry points.',
+      'Add explicit workflow/command entry points (.cursor/commands/, .windsurf/workflows/, .claude/commands/, .continue/prompts/, …) for workflows you trigger intentionally.',
     run(ctx) {
-      const commands = ctx.matching(COMMAND_RE);
+      const commands = collectCommands(ctx);
       return commands.length > 0
-        ? {
-            passed: true,
-            evidence: `Found ${commands.length} command(s): ${commands.slice(0, 3).join(', ')}${commands.length > 3 ? ', …' : ''}`,
-          }
-        : { passed: false, evidence: 'No markdown files under .cursor/commands/.' };
+        ? { passed: true, evidence: summarizeArtifacts(commands, 'command/workflow(s)') }
+        : {
+            passed: false,
+            evidence:
+              'No command/workflow files found (.cursor/commands, .windsurf/workflows, .claude/commands, .continue/prompts, …).',
+          };
     },
   },
   {
@@ -73,7 +72,7 @@ export const skillChecks: Check[] = [
     remediation:
       'Write skill descriptions of 40+ characters that say when to use the skill ("Use when…"), not just what it is — vague descriptions never trigger.',
     run(ctx) {
-      const skills = skillFiles(ctx);
+      const skills = skillPaths(ctx);
       if (skills.length === 0) {
         return { passed: false, evidence: 'No skills found.' };
       }

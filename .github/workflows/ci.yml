@@ -25,5 +25,7 @@ jobs:
         run: npm run check:types -w harness-score
       - name: Self-audit — this repo must stay L4
         run: node packages/cli/dist/cli.js . --min-level 4
+      - name: Plugin path hints stay in sync with harness registry
+        run: npm run plugins:sync-check
       - name: Docs build
         run: npm run docs:build

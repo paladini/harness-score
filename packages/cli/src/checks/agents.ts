@@ -1,10 +1,9 @@
+import { collectSubagents, summarizeArtifacts } from '../harness/index.js';
 import type { Check, ScanContext } from '../types.js';
 import { parseFrontmatter } from '../util.js';
 
-const AGENT_RE = /(^|\/)\.cursor\/agents\/[^/]+\.md$/;
-
-function agentFiles(ctx: ScanContext): string[] {
-  return ctx.matching(AGENT_RE);
+function agentPaths(ctx: ScanContext): string[] {
+  return collectSubagents(ctx).map((a) => a.path);
 }
 
 export const agentChecks: Check[] = [
@@ -14,15 +13,15 @@ export const agentChecks: Check[] = [
     title: 'Custom subagent defined',
     points: 3,
     remediation:
-      'Create .cursor/agents/<agent-name>.md defining a purpose-built subagent the primary agent can delegate to for a specific job (planning, review, release…).',
+      'Create a subagent definition (.cursor/agents/, .claude/agents/, or .opencode/agents/) for a purpose-built delegate (planning, review, release…).',
     run(ctx) {
-      const agents = agentFiles(ctx);
+      const agents = collectSubagents(ctx);
       return agents.length > 0
-        ? {
-            passed: true,
-            evidence: `Found ${agents.length} subagent(s): ${agents.slice(0, 3).join(', ')}${agents.length > 3 ? ', …' : ''}`,
-          }
-        : { passed: false, evidence: 'No markdown files under .cursor/agents/.' };
+        ? { passed: true, evidence: summarizeArtifacts(agents, 'subagent(s)') }
+        : {
+            passed: false,
+            evidence: 'No subagent files found (.cursor/agents, .claude/agents, or .opencode/agents).',
+          };
     },
   },
   {
@@ -33,7 +32,7 @@ export const agentChecks: Check[] = [
     remediation:
       'Add frontmatter with name: and description: to every subagent definition — the parent agent decides whether to delegate from those two fields alone.',
     run(ctx) {
-      const agents = agentFiles(ctx);
+      const agents = agentPaths(ctx);
       if (agents.length === 0) {
         return { passed: false, evidence: 'No subagents found to validate.' };
       }
