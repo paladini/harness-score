@@ -38,9 +38,10 @@ npx harness-score
 ```
 
 ```
-  harness-score v0.5.0  ~/my-app
+  harness-score v0.6.0  ~/my-app
 
   Maturity: L2 · Guided   Score: 70/108 (65%)
+  Detected: Cursor, Claude Code
 
   Context & Guides     ████████████████░░░░  80%  16/20 pts
   Skills & Commands    █████████████░░░░░░░  65%  11/17 pts

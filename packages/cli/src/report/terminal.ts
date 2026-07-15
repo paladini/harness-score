@@ -1,4 +1,5 @@
 import type { ReportDiff } from '../diff.js';
+import { toolDisplayName } from '../harness/registry.js';
 import type { Report } from '../types.js';
 
 const useColor = process.stdout.isTTY === true && process.env.NO_COLOR === undefined;
@@ -76,6 +77,10 @@ export function renderTerminal(report: Report, diff?: ReportDiff | null): string
     `  ${bold('Maturity:')} ${levelPaint(bold(`L${report.level.index} · ${report.level.name}`))}` +
       `   ${bold('Score:')} ${report.score.earned}/${report.score.max} (${report.score.percent}%)`,
   );
+  const detected = report.detectedHarnesses ?? [];
+  if (detected.length > 0) {
+    lines.push(dim(`  Detected: ${detected.map(toolDisplayName).join(', ')}`));
+  }
   lines.push('');
   if (diff) {
     lines.push(...renderDiffSection(diff));

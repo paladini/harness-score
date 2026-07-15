@@ -34,6 +34,7 @@ function makeReport(overrides: Partial<Report> = {}): Report {
     tool: { name: 'harness-score', version: '0.3.0' },
     root: '/fake',
     truncated: false,
+    detectedHarnesses: [],
     level: { index: 1, name: 'Documented', nextLevelGaps: [] },
     score: { earned: 50, max: 108, percent: 46 },
     dimensions: makeDimensions(),
@@ -78,6 +79,18 @@ describe('renderTerminal', () => {
     expect(out).toContain('Create an AGENTS.md.');
     expect(out).toContain('No AGENTS.md found.');
     expect(out).toContain('measure-and-improve#ctx-01');
+  });
+
+  test('shows detected harnesses with display names, only when non-empty', () => {
+    const detected = makeReport({ detectedHarnesses: ['cursor', 'claude-code'] });
+    expect(renderTerminal(detected)).toContain('Detected: Cursor, Claude Code');
+
+    expect(renderTerminal(makeReport({ detectedHarnesses: [] }))).not.toContain('Detected:');
+  });
+
+  test('unknown tool ids in detectedHarnesses pass through as-is', () => {
+    const out = renderTerminal(makeReport({ detectedHarnesses: ['some-future-tool'] }));
+    expect(out).toContain('Detected: some-future-tool');
   });
 
   test('shows next-level gaps only when present', () => {

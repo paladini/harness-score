@@ -1,4 +1,5 @@
 import type { ReportDiff } from '../diff.js';
+import { toolDisplayName } from '../harness/registry.js';
 import type { Report } from '../types.js';
 
 function signed(n: number): string {
@@ -55,6 +56,10 @@ export function renderMarkdown(report: Report, diff?: ReportDiff | null): string
   lines.push('');
   lines.push(`**Maturity level:** L${report.level.index} · ${report.level.name}`);
   lines.push(`**Score:** ${report.score.earned}/${report.score.max} (${report.score.percent}%)`);
+  const detected = report.detectedHarnesses ?? [];
+  if (detected.length > 0) {
+    lines.push(`**Detected harnesses:** ${detected.map(toolDisplayName).join(', ')}`);
+  }
   lines.push('');
   if (diff) {
     lines.push(...renderDiffSection(diff));

@@ -30,7 +30,10 @@ import {
   renderTerminal,
   type ScanContext,
   score,
+  TOOL_DISPLAY_NAMES,
   TOOL_VERSION,
+  type ToolId,
+  toolDisplayName,
 } from '../../dist/index.js';
 
 const checks: Check[] = ALL_CHECKS;
@@ -50,6 +53,8 @@ const checkOutcome: CheckOutcome = { passed: true, evidence: 'x' };
 const checkResult: CheckResult = scored.checks[0]!;
 const checkDelta: CheckDelta | undefined = diff.checksChanged[0];
 const dimensionDelta: DimensionDelta = diff.dimensions[0]!;
+const toolId: ToolId = 'cursor';
+const toolName: string = toolDisplayName(scored.detectedHarnesses[0] ?? 'cursor');
 
 // Referenced only so the compiler treats every import as used; this file is
 // never executed, only type-checked.
@@ -70,8 +75,11 @@ void [
   checkResult,
   checkDelta,
   dimensionDelta,
+  toolId,
+  toolName,
   DOCS_BASE_URL,
   LEVEL_NAMES,
   LEVEL_REQUIREMENTS,
+  TOOL_DISPLAY_NAMES,
   TOOL_VERSION,
 ];

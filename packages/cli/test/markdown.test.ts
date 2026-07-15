@@ -28,6 +28,7 @@ function makeReport(overrides: Partial<Report> = {}): Report {
     tool: { name: 'harness-score', version: '0.3.0' },
     root: '/fake',
     truncated: false,
+    detectedHarnesses: [],
     level: { index: 1, name: 'Documented', nextLevelGaps: [] },
     score: { earned: 50, max: 108, percent: 46 },
     dimensions: makeDimensions(),
@@ -61,6 +62,13 @@ describe('renderMarkdown', () => {
     expect(out).toContain(`| ${DIMENSIONS[0]!.title} | 5/20 | 25% |`);
     expect(out).toContain('| | Check | Points | Evidence |');
     expect(out).toContain('❌');
+  });
+
+  test('shows detected harnesses with display names, only when non-empty', () => {
+    const detected = renderMarkdown(makeReport({ detectedHarnesses: ['cursor', 'claude-code'] }));
+    expect(detected).toContain('**Detected harnesses:** Cursor, Claude Code');
+
+    expect(renderMarkdown(makeReport({ detectedHarnesses: [] }))).not.toContain('Detected harnesses');
   });
 
   test('escapes pipe characters inside evidence so the table does not break', () => {

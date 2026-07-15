@@ -13,6 +13,25 @@ export type ToolId =
 
 export type HarnessKind = 'rules' | 'skills' | 'commands' | 'subagents' | 'hooks' | 'mcp';
 
+/** Human-readable tool names for report renderers. */
+export const TOOL_DISPLAY_NAMES: Record<ToolId, string> = {
+  cursor: 'Cursor',
+  windsurf: 'Windsurf',
+  cline: 'Cline',
+  continue: 'Continue',
+  copilot: 'GitHub Copilot',
+  'claude-code': 'Claude Code',
+  codex: 'Codex',
+  opencode: 'OpenCode',
+  antigravity: 'Antigravity',
+  zed: 'Zed',
+};
+
+/** Display name for a detected tool id; unknown ids pass through as-is. */
+export function toolDisplayName(id: string): string {
+  return TOOL_DISPLAY_NAMES[id as ToolId] ?? id;
+}
+
 export interface PathSpec {
   toolId: ToolId;
   kind: HarnessKind;

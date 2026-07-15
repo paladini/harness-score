@@ -1,6 +1,8 @@
 export { ALL_CHECKS } from './checks/index.js';
 export type * from './diff.js';
 export { computeDiff } from './diff.js';
+export type { ToolId } from './harness/registry.js';
+export { TOOL_DISPLAY_NAMES, toolDisplayName } from './harness/registry.js';
 export { renderBadge } from './report/badge.js';
 export { renderMarkdown } from './report/markdown.js';
 export { renderTerminal } from './report/terminal.js';

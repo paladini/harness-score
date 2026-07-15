@@ -120,9 +120,10 @@ const installs = [
           Run the scanner →
         </a>
       </div>
-      <pre class="hs-landing__terminal-pre" aria-label="Example harness-score output"><code>  harness-score v0.5.0  ~/my-app
+      <pre class="hs-landing__terminal-pre" aria-label="Example harness-score output"><code>  harness-score v0.6.0  ~/my-app
 
   Maturity: L2 · Guided   Score: 70/108 (65%)
+  Detected: Cursor, Claude Code
 
   Context & Guides     ████████████████░░░░  80%
   Skills & Commands    █████████████░░░░░░░  65%
