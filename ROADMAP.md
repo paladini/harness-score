@@ -99,10 +99,6 @@ The v1.0.0 release marks the project's transition from "Cursor-focused tool" to
   TBD. **[PLUGINS-ROADMAP.md](PLUGINS-ROADMAP.md)** exists; keep it
   consumer-facing and current as phases land.
 
-(`--json` already exposes a `detectedHarnesses` array — shipped with the OR
-semantics engine in v0.4.0, #18 — so "which tools are configured" needs no
-new work, only surfacing in the terminal/markdown renderers if we want it.)
-
 **Rationale:** v0.4.0 shipped the *engine* (multi-harness OR semantics in the
 scanner). v1.0.0 ships the *story* — making it clear that this tool measures
 harness maturity *across tools* and that a single well-built harness benefits
@@ -181,6 +177,23 @@ three equivalence gaps were found and closed:
 Also shipped: comprehensive multi-harness docs (new "Multi-Harness Support"
 chapter), site messaging updates (docs.index, nav, HomeLanding.vue), and
 README clarifications about OR-semantic scoring across tools.
+
+## Shipped in v0.6.0
+
+### Detected harnesses in human-readable reports — done
+
+The `detectedHarnesses` array (in `--json` since v0.4.0) is now surfaced in
+the terminal report (`Detected: Cursor, Claude Code` under the maturity
+header) and the markdown report (`**Detected harnesses:**`). Display names
+live in `TOOL_DISPLAY_NAMES` in the harness registry, exported publicly with
+`toolDisplayName()` and the `ToolId` type. Empty list renders nothing, so
+zero-harness output is unchanged. Shipped alongside a Cursor plugin `0.1.1`
+content-only bump (terminology + `plugins/` move regularized).
+
+Known model note carried forward (not addressed here): `detectHarnesses`
+reports antigravity+codex together for shared `.agents/` paths, and
+`fixtures/`-style example directories inflate a root repo's detected list via
+`(^|\/)` path matching — both candidates for a v1.0.0 pass.
 
 ## Also under consideration (not yet scheduled)
 
