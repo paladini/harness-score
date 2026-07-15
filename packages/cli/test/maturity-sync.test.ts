@@ -47,7 +47,7 @@ function extractPairs(label: string): Array<{ id: string; pct: string }> {
   return pairs;
 }
 
-describe('maturity-model.md stays in sync with the rubric (packages/cli/src/score.ts + types.ts)', () => {
+describe('maturity-model.md stays in sync with the implementation (score.ts + types.ts)', () => {
   test('per-dimension point totals in the guide match the sum of ALL_CHECKS', () => {
     for (const dim of DIMENSIONS) {
       const computed = ALL_CHECKS.filter((c) => c.dimension === dim.id).reduce((sum, c) => sum + c.points, 0);

@@ -25,10 +25,10 @@ function signed(n: number): string {
 function renderDiffSection(diff: ReportDiff): string[] {
   const lines: string[] = [];
   lines.push(bold('  Compared to baseline:'));
-  if (diff.rubricChanged) {
+  if (diff.maturityModelChanged) {
     lines.push(
       yellow(
-        '  ⚠ Baseline is from a different tool version/rubric total — some deltas below may reflect that, not repository changes.',
+        '  ⚠ Baseline is from a different tool version or maturity model total — some deltas below may reflect that, not repository changes.',
       ),
     );
   }

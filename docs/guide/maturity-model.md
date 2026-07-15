@@ -1,8 +1,13 @@
 # The Maturity Model
 
-This chapter defines the rubric. It is the same rubric — literally the same
-thresholds — implemented by [`npx harness-score`](/guide/measure-and-improve),
+This chapter defines the maturity model — the same assessment framework
+implemented by [`npx harness-score`](/guide/measure-and-improve),
 so a level you read here is a level you can measure, reproduce, and gate on.
+
+The shape follows familiar capability-maturity patterns (DORA *capabilities*,
+OWASP SAMM *business functions*, CMMI *levels*): **dimensions** measure
+areas of practice, **checks** are deterministic pass/fail indicators, and
+**levels** gate on coverage shape — not just a raw percentage.
 
 Design goals:
 

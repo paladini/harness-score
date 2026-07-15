@@ -2450,7 +2450,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-01",
       "earned": 3,
-      "evidence": "Found 4 subagent(s) (cursor, claude-code): .cursor/agents/rubric-auditor.md, fixtures/level-3/.cursor/agents/reviewer.md, fixtures/level-4-claude-code/.claude/agents/reviewer.md, …",
+      "evidence": "Found 4 subagent(s) (cursor, claude-code): .cursor/agents/maturity-model-auditor.md, fixtures/level-3/.cursor/agents/reviewer.md, fixtures/level-4-claude-code/.claude/agents/reviewer.md, …",
       "id": "AGT-01",
       "passed": true,
       "points": 3,

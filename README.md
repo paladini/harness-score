@@ -90,7 +90,7 @@ L1. Climbing the ladder means covering a new dimension at each step.
 
 The scanner always tells you exactly which requirement blocks the *next*
 level (`To reach L3: sensors ≥ 60%; ci ≥ 50%`) — the path up is never a
-guess. Full rubric, thresholds, and rationale:
+guess. Full maturity model, thresholds, and rationale:
 **[the Maturity Model](https://paladini.github.io/harness-score/guide/maturity-model)**.
 
 ## The six dimensions
@@ -268,7 +268,7 @@ npm run docs:dev    # guide dev server
 npm run bench -w harness-score   # scan-time benchmark against a synthetic large repo
 ```
 
-Monorepo layout, conventions, and the rubric-sync rule live in
+Monorepo layout, conventions, and the maturity-sync rule live in
 [AGENTS.md](AGENTS.md) — written for agents, useful for humans.
 
 ## Contributing
@@ -276,8 +276,8 @@ Monorepo layout, conventions, and the rubric-sync rule live in
 Issues and pull requests are welcome — new checks, new language/tool
 recognition (a linter or test runner the scanner doesn't know about yet),
 docs fixes, bug reports against real-world repositories. Proposing a new
-check or a rubric change? Use the
-**[Rubric change](https://github.com/paladini/harness-score/issues/new?template=rubric_change.yml)**
+check or a check change? Use the
+**[Check change](https://github.com/paladini/harness-score/issues/new?template=check_change.yml)**
 issue template — it's the highest-value contribution and the one most
 likely to need agreement up front, since it changes what every existing
 repository scores. See [CONTRIBUTING.md](CONTRIBUTING.md) for the full
@@ -289,7 +289,7 @@ instead of filing a public issue.
 
 What's already planned for the next version lives in
 [ROADMAP.md](ROADMAP.md), including two checks identified during real-world
-testing that the rubric doesn't yet reward: custom subagent definitions and
+testing that the maturity model doesn't yet reward: custom subagent definitions and
 a positive check for a properly configured `.cursor/mcp.json`.
 
 ## License

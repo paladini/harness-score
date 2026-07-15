@@ -26,18 +26,18 @@ describe('computeDiff', () => {
     expect(diff.score.deltaEarned).toBe(0);
     expect(diff.checksChanged).toHaveLength(0);
     expect(diff.dimensions.every((d) => d.delta === 0)).toBe(true);
-    expect(diff.rubricChanged).toBe(false);
+    expect(diff.maturityModelChanged).toBe(false);
   });
 
-  test('flags rubricChanged when the baseline is from a different tool version', () => {
+  test('flags maturityModelChanged when the baseline is from a different tool version', () => {
     const current = score(path.join(FIXTURES, 'level-4'));
     const baseline = { ...current, tool: { ...current.tool, version: '0.1.0' } };
-    expect(computeDiff(baseline, current).rubricChanged).toBe(true);
+    expect(computeDiff(baseline, current).maturityModelChanged).toBe(true);
   });
 
-  test('flags rubricChanged when the rubric total point value changed', () => {
+  test('flags maturityModelChanged when the maturity model total point value changed', () => {
     const current = score(path.join(FIXTURES, 'level-4'));
     const baseline = { ...current, score: { ...current.score, max: current.score.max - 8 } };
-    expect(computeDiff(baseline, current).rubricChanged).toBe(true);
+    expect(computeDiff(baseline, current).maturityModelChanged).toBe(true);
   });
 });

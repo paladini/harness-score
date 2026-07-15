@@ -1,16 +1,16 @@
-name: "Rubric change: add / edit / remove a check"
-description: "Propose adding a new check, changing an existing check's logic or points, or removing a check from the maturity rubric."
-labels: ["rubric-change"]
+name: "Check change: add / edit / remove a check"
+description: "Propose adding a new check, changing an existing check's logic or points, or removing a check from the maturity model."
+labels: ["check-change"]
 body:
   - type: markdown
     attributes:
       value: |
-        Rubric changes are the highest-leverage contribution this project
+        Check changes are the highest-leverage contribution this project
         takes, and the one most likely to need agreement before a PR — they
         change what every existing repository scores. See
         [ROADMAP.md](../../ROADMAP.md) for what's already planned, and
         [CONTRIBUTING.md#adding-or-changing-a-check](../../CONTRIBUTING.md#adding-or-changing-a-check)
-        for what a rubric-changing PR needs to include.
+        for what a check-changing PR needs to include.
 
         Check IDs (`CTX-01`, `SNS-03`, …) are public API: an edit can change
         a check's logic or points, but an id is never renumbered or reused,
@@ -63,7 +63,7 @@ body:
       label: Fixture impact
       description: >-
         Which of fixtures/level-0..4 need a new/changed artifact to keep
-        landing on their intended level after this change? A rubric change
+        landing on their intended level after this change? A check change
         that shifts a dimension's earned/max ratio usually touches at least
         one fixture.
   - type: checkboxes
@@ -72,7 +72,7 @@ body:
       label: Coupled artifacts this change will touch
       description: >-
         These stay in sync via packages/cli/test/docs.test.ts and
-        test/rubric-sync.test.ts — CI fails loudly if one is missed, but
+        test/maturity-sync.test.ts — CI fails loudly if one is missed, but
         it's worth planning for up front.
       options:
         - label: packages/cli/src/checks/*.ts (the check implementation)

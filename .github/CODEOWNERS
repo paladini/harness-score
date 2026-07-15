@@ -1,4 +1,4 @@
-# The rubric is the highest-stakes surface in this repo — any PR touching a
+# The maturity model is the highest-stakes surface in this repo — any PR touching a
 # check's logic/points, the dimension totals, or the level thresholds
 # routes for review here automatically. See CONTRIBUTING.md#adding-or-changing-a-check.
 /packages/cli/src/checks/       @paladini

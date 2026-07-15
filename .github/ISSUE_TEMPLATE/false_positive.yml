@@ -7,7 +7,7 @@ body:
       value: |
         The scanner is deterministic pattern matching, so it will occasionally
         misjudge a real repository (a linter it doesn't recognize, a rule
-        format it doesn't parse). Reports like this are what keep the rubric
+        format it doesn't parse). Reports like this are what keep the maturity model
         honest — thank you.
   - type: input
     id: check-id

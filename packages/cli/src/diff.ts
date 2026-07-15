@@ -28,16 +28,16 @@ export interface ReportDiff {
   checksChanged: CheckDelta[];
   /**
    * True when baseline and current come from different tool versions (or
-   * the rubric's point total changed) — dimension/score deltas may then
-   * reflect a rubric change rather than an actual change in the repository.
+   * the maturity model's point total changed) — dimension/score deltas may then
+   * reflect a maturity model change rather than an actual change in the repository.
    */
-  rubricChanged: boolean;
+  maturityModelChanged: boolean;
 }
 
 /**
- * Compares two reports from the same rubric version. Checks present in
- * `current` but absent from `baseline` (e.g. the rubric grew a check between
- * scans) are ignored for the pass/fail delta — that's a rubric change, not a
+ * Compares two reports from the same maturity model version. Checks present in
+ * `current` but absent from `baseline` (e.g. the model gained a check between
+ * scans) are ignored for the pass/fail delta — that's a maturity model change, not a
  * regression or improvement in the scanned repository.
  */
 export function computeDiff(baseline: Report, current: Report): ReportDiff {
@@ -82,6 +82,7 @@ export function computeDiff(baseline: Report, current: Report): ReportDiff {
     },
     dimensions,
     checksChanged,
-    rubricChanged: baseline.tool.version !== current.tool.version || baseline.score.max !== current.score.max,
+    maturityModelChanged:
+      baseline.tool.version !== current.tool.version || baseline.score.max !== current.score.max,
   };
 }

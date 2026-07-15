@@ -1,12 +1,12 @@
 name: "Feature request"
-description: "Propose a feature for the CLI, guide, plugin, or GitHub Action — not a new/changed/removed check (use the Rubric change template for those)."
+description: "Propose a feature for the CLI, guide, plugin, or GitHub Action — not a new/changed/removed check (use the Check change template for those)."
 labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
       value: |
         Proposing a new check, or a change to an existing one's points or
-        logic? Use the **Rubric change** template instead — it asks for the
+        logic? Use the **Check change** template instead — it asks for the
         dimension/points/fixture-impact details that kind of change needs.
 
         Check the [ROADMAP](../../ROADMAP.md) first — your idea might

@@ -47,7 +47,7 @@ function makeDiff(overrides: Partial<ReportDiff> = {}): ReportDiff {
     },
     dimensions: DIMENSIONS.map((d) => ({ id: d.id, title: d.title, before: 0, after: 0, delta: 0 })),
     checksChanged: [],
-    rubricChanged: false,
+    maturityModelChanged: false,
     ...overrides,
   };
 }
@@ -112,8 +112,8 @@ describe('renderMarkdown', () => {
     expect(out).toContain('No change since baseline.');
   });
 
-  test('diff warns when rubricChanged is true', () => {
-    const out = renderMarkdown(makeReport(), makeDiff({ rubricChanged: true }));
+  test('diff warns when maturityModelChanged is true', () => {
+    const out = renderMarkdown(makeReport(), makeDiff({ maturityModelChanged: true }));
     expect(out).toContain('Baseline is from a different tool version');
   });
 });

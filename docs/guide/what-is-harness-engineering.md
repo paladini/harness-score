@@ -104,6 +104,6 @@ the same control system.
   [Guides](/guide/guides-feedforward), [Sensors](/guide/sensors-feedback), and
   [Guardrails](/guide/guardrails-and-safety).
 - Chapter 6 defines a [five-level maturity model](/guide/maturity-model) with
-  an objective rubric.
+  an objective maturity model.
 - Chapter 7 shows how to [measure and improve](/guide/measure-and-improve)
   with the `harness-score` scanner and the Cursor plugin.

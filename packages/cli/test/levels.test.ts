@@ -21,8 +21,8 @@ describe('maturity levels on fixture repositories', () => {
     expect(report.level.index, JSON.stringify(report.level, null, 2)).toBe(expected);
   });
 
-  test('total rubric points snapshot', () => {
-    // Deliberately a literal, not derived: a rubric change must consciously bump
+  test('total maturity model points snapshot', () => {
+    // Deliberately a literal, not derived: a check change must consciously bump
     // this number, not have it float silently along with ALL_CHECKS.
     const total = ALL_CHECKS.reduce((sum, c) => sum + c.points, 0);
     expect(total).toBe(108);

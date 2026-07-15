@@ -113,8 +113,8 @@ runs:
           const arrow = diff.level.delta > 0 ? '⬆️' : diff.level.delta < 0 ? '⬇️' : '➡️';
           const sign = (n) => (n > 0 ? `+${n}` : `${n}`);
 
-          const rubricWarning = diff.rubricChanged
-            ? '> ⚠ Baseline is from a different tool version/rubric total — some deltas below may reflect that, not repository changes.\n\n'
+          const modelWarning = diff.maturityModelChanged
+            ? '> ⚠ Baseline is from a different tool version or maturity model total — some deltas below may reflect that, not repository changes.\n\n'
             : '';
 
           const movedDims = diff.dimensions.filter((d) => d.delta !== 0);
@@ -133,7 +133,7 @@ runs:
             marker,
             `### ${arrow} Harness Score: L${diff.level.before} · ${diff.level.beforeName} → L${diff.level.after} · ${diff.level.afterName}`,
             '',
-            rubricWarning + `**Score:** ${diff.score.before.earned}/${diff.score.before.max} (${diff.score.before.percent}%) → ` +
+            modelWarning + `**Score:** ${diff.score.before.earned}/${diff.score.before.max} (${diff.score.before.percent}%) → ` +
               `${diff.score.after.earned}/${diff.score.after.max} (${diff.score.after.percent}%) (${sign(diff.score.deltaPercent)}pp)`,
             '',
             dimTable,

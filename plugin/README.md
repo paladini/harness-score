@@ -25,7 +25,7 @@ CI-gateable. The model only presents findings and applies fixes you request.
 | L3 | Sensing | tests, linter, types + CI |
 | L4 | Self-correcting | gate & feedback hooks + ≥80% overall |
 
-Full rubric, check catalog, and remediation guide:
+Full maturity model, check catalog, and remediation guide:
 **https://paladini.github.io/harness-score/**
 
 ## Requirements

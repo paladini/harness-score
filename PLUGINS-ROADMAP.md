@@ -21,7 +21,7 @@ deterministic, offline CLI. None of the per-tool work below touches
 invoke the same npm package and present the same report, plus a tool-specific
 way to teach the agent the harness-engineering recipes. That means:
 
-- The rubric, checks, fixtures, and test suite are already shared — zero
+- The maturity model, checks, fixtures, and test suite are already shared — zero
   duplication risk there.
 - The only genuinely new content per tool is (a) an invocation wrapper
   (command/workflow file) and (b) the remediation guidance (skill/rule
@@ -47,7 +47,7 @@ enough that stale assumptions are a real risk):
    layer of cross-tool compatibility is close to free. The real
    differentiation work is in the richer artifacts (scoped rules, skills,
    subagents, hooks) that go beyond plain `AGENTS.md` — exactly what the
-   deeper rubric dimensions (Skills & Commands, Hooks & Guardrails) already
+   deeper maturity model dimensions (Skills & Commands, Hooks & Guardrails) already
    measure.
 2. **MCP (Model Context Protocol) is now near-universal.** Donated to the
    Linux Foundation in December 2025; supported natively by Cursor, Claude
@@ -156,7 +156,7 @@ implementing, since these surfaces move fast.
   `paths: ["src/**", ...]` glob-scopes a rule, structurally close to
   Cursor's `.mdc` scoped rules. Also has a "Memory Bank" convention
   (persistent markdown files the agent is told to update) — a different
-  concept from this repo's rubric (session memory, not static guidance) and
+  concept from this repo's maturity model (session memory, not static guidance) and
   likely out of scope for a first pass.
 - **Distribution:** no marketplace of its own for rule content (Cline
   itself installs from the VS Code Marketplace); rule files ship as docs +
@@ -291,7 +291,7 @@ constraint the existing `.cursor-plugin/plugin.json` already has relative to
 
 ## Avoiding drift: a sync test, like `docs-sync` already does
 
-This repo already enforces rubric consistency across `score.ts` /
+This repo already enforces maturity model consistency across `score.ts` /
 `maturity-model.md` / `measure-and-improve.md` with a `docs-sync` vitest
 suite (see `AGENTS.md`). Apply the same idea here: `shared/generate.mjs`
 regenerates each `plugins/<tool>/.../SKILL.md` (or workflow/rule file) from
@@ -369,7 +369,7 @@ These need a maintainer call, not a default assumption:
 
 ## Non-goals
 
-- No change to `packages/cli/`, the rubric, or fixtures — this plan is
+- No change to `packages/cli/`, the maturity model, or fixtures — this plan is
   entirely about presentation-layer wrappers.
 - No new check dimensions (unrelated to the deferred `AGT-*`/`HYG-08`-style
-  rubric work already tracked in `ROADMAP.md`).
+  maturity model work already tracked in `ROADMAP.md`).

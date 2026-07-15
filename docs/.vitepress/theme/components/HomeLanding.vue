@@ -169,7 +169,7 @@ const installs = [
         </a>
       </div>
       <a class="hs-landing__cta hs-landing__cta--ghost" :href="withBase('/guide/maturity-model')">
-        Full rubric →
+        Full maturity model →
       </a>
     </section>
 

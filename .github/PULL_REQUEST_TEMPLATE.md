@@ -5,11 +5,11 @@
 ## Type of change
 
 - [ ] Bug fix (false positive/negative in a check, incorrect output)
-- [ ] New or changed check (rubric change — see checklist below)
+- [ ] New or changed check (check change — see checklist below)
 - [ ] Docs
 - [ ] Other (plugin, GitHub Action, tooling)
 
-## Rubric-change checklist (skip if not touching `score.ts`/checks)
+## Check-change checklist (skip if not touching `score.ts`/checks)
 
 - [ ] `packages/cli/src/checks/*.ts` updated
 - [ ] `docs/guide/maturity-model.md` updated to match

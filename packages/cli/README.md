@@ -17,7 +17,7 @@ The scan reads your filesystem and parses config — that's it. No network
 calls, no telemetry, no model in the loop. Same repo in, same score out,
 every time.
 
-Full rubric, check catalog, and remediation guide:
+Full maturity model, check catalog, and remediation guide:
 **[paladini.github.io/harness-score](https://paladini.github.io/harness-score/)**
 
 ## Install

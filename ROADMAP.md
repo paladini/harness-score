@@ -1,20 +1,20 @@
 # Roadmap
 
-Harness Score is pre-1.0 and the rubric is expected to keep evolving as we
+Harness Score is pre-1.0 and the maturity model is expected to keep evolving as we
 test it against real repositories. This document tracks what's already
 planned so contributors (and future sessions) don't duplicate discovery
 work. It is not a promise of dates — just of intent and design direction.
 
-For the invariants any rubric change must respect, see
+For the invariants any check change must respect, see
 [AGENTS.md](AGENTS.md) and [CONTRIBUTING.md](CONTRIBUTING.md#the-three-invariants-that-matter-most).
 
-## Why the rubric still moves
+## Why the maturity model still moves
 
 `v0.1.2` was a real-world test against
 [tech-leads-club/fakeflix](https://github.com/tech-leads-club/fakeflix), a
 genuinely excellent AI-harness example repo. That test fixed several parser
 bugs (frontmatter block scalars, hook tokenization, monorepo test-runner
-detection, symlink traversal) but also surfaced two things the rubric
+detection, symlink traversal) but also surfaced two things the maturity model
 **didn't reward at all**, even though fakeflix uses them heavily and our own
 guide already documented them as core Cursor harness artifacts. Both shipped
 in `v0.2.0`.
@@ -36,7 +36,7 @@ credential-shaped field (token/key/secret/password) uses `${ENV_VAR}`
 interpolation — the positive complement to `HYG-04`'s negative gate.
 Folded into **Hygiene & Safety** (grown 20 → 23 pts).
 
-**Total rubric points moved 100 → 108.** Rather than trimming four unrelated
+**Total maturity model points moved 100 → 108.** Rather than trimming four unrelated
 dimensions to preserve the round "100" number, only the two dimensions that
 gained checks grew — this kept the change scoped to
 `checks/agents.ts`, `checks/hygiene.ts`, and their two dimensions' entries
@@ -46,7 +46,7 @@ percentage-based per dimension (and for the L4 total gate), so no threshold
 formula changed — only fixtures needed new example artifacts to keep their
 intended level. `fixtures/level-3` and `level-4` gained a `.cursor/agents/`
 subagent; `level-4` also gained a well-formed `.cursor/mcp.json`. This
-repository's own `.cursor/agents/rubric-auditor.md` and `.cursor/mcp.json`
+repository's own `.cursor/agents/maturity-model-auditor.md` and `.cursor/mcp.json`
 keep it dogfooding **L4**. The stale, copy-pasted `fixtures/level-2..4`
 READMEs (all describing level-1 content) were fixed while fixtures were
 being touched anyway.
@@ -66,7 +66,7 @@ touchpoint that makes a CI tool sticky.
   delta, score delta, per-dimension deltas, and which checks flipped
   pass/fail. Pure comparison of two already-computed `Report` objects, no
   new runtime deps, fully deterministic. Checks present in `current` but
-  absent from `baseline` (a rubric change between scans) are ignored for
+  absent from `baseline` (a check change between scans) are ignored for
   the pass/fail delta rather than counted as a regression.
 - CLI flag `--diff <baseline.json>` (see
   [Tracking score over time](docs/guide/measure-and-improve.md#diff-mode)),
@@ -83,7 +83,7 @@ touchpoint that makes a CI tool sticky.
 
 ### Distribution, type packaging, scan performance, and community infra — done
 
-Not a rubric change (no checks added, no points moved) — a maintenance pass
+Not a check change (no checks added, no points moved) — a maintenance pass
 on the CLI's packaging and the contribution process itself:
 
 - **Smaller, bundled `dist/`.** The build moved from plain `tsc` (36
@@ -102,14 +102,14 @@ on the CLI's packaging and the contribution process itself:
   (`npm run bench`, new). Deliberately did **not** parallelize file reads:
   `Check.run()`/`ScanContext.read()` are synchronous public API, and
   making them async would be a breaking change, not a perf tweak.
-- **Rubric doc-sync gap closed.** `maturity-model.md`'s dimension-points
+- **Maturity model doc-sync gap closed.** `maturity-model.md`'s dimension-points
   table and `LEVEL_REQUIREMENTS` thresholds were only mirrored by hand
-  ("change both together" in a comment); `rubric-sync.test.ts` now
+  ("change both together" in a comment); `maturity-sync.test.ts` now
   enforces both in CI, the same way `docs.test.ts` already enforced
   `measure-and-improve.md`.
 - **Formalized the contribution process.** A dedicated
-  `.github/ISSUE_TEMPLATE/rubric_change.yml` for add/edit/remove-a-check
-  proposals, `.github/CODEOWNERS` (routes checks/rubric/release-surface
+  `.github/ISSUE_TEMPLATE/check_change.yml` for add/edit/remove-a-check
+  proposals, `.github/CODEOWNERS` (routes checks/maturity-model/release-surface
   PRs for review), `.github/dependabot.yml` (weekly devDependency +
   Actions updates — `packages/cli` still has zero runtime dependencies),
   and changesets (`npm run changeset` / `npm run version-packages`) for a
@@ -127,7 +127,7 @@ on the CLI's packaging and the contribution process itself:
 Both `v0.2.0` features added a **positively-weighted check**, which shifts
 the earned/max ratio for every dimension total and therefore every existing
 fixture under `fixtures/level-0..4/`. That's why they shipped together as a
-deliberate rubric-change PR rather than a drive-by fix — see the "Shipped in
+deliberate check-change PR rather than a drive-by fix — see the "Shipped in
 v0.2.0" section above for what that PR touched. Any future check addition
 should expect the same shape of change: check → dimension total → both docs
 pages → all five fixtures → this repo's own dogfood artifacts if needed.
@@ -155,9 +155,9 @@ pages → all five fixtures → this repo's own dogfood artifacts if needed.
 
 ## Proposing something new
 
-Open an issue using the **[Rubric change](https://github.com/paladini/harness-score/issues/new?template=rubric_change.yml)**
+Open an issue using the **[Check change](https://github.com/paladini/harness-score/issues/new?template=check_change.yml)**
 template for anything that adds, edits, or removes a check; the general
 **feature request** template covers everything else (CLI flags, plugin,
 Action, docs). See
 [CONTRIBUTING.md](CONTRIBUTING.md#adding-or-changing-a-check) for what a
-rubric-changing PR needs to include.
+check-changing PR needs to include.

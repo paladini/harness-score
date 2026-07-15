@@ -53,7 +53,7 @@ function makeDiff(overrides: Partial<ReportDiff> = {}): ReportDiff {
     },
     dimensions: DIMENSIONS.map((d) => ({ id: d.id, title: d.title, before: 0, after: 0, delta: 0 })),
     checksChanged: [],
-    rubricChanged: false,
+    maturityModelChanged: false,
     ...overrides,
   };
 }
@@ -90,8 +90,8 @@ describe('renderTerminal', () => {
     expect(renderTerminal(noGaps)).not.toContain('To reach L');
   });
 
-  test('diff section warns when rubricChanged is true', () => {
-    const out = renderTerminal(makeReport(), makeDiff({ rubricChanged: true }));
+  test('diff section warns when maturityModelChanged is true', () => {
+    const out = renderTerminal(makeReport(), makeDiff({ maturityModelChanged: true }));
     expect(out).toContain('Baseline is from a different tool version');
   });
 
