@@ -30,7 +30,7 @@ const installs = [
   {
     title: 'npm',
     cmd: 'npm i -g harness-score',
-    note: 'v0.5.0 on npmjs.org',
+    note: 'v1.0.0 on npmjs.org',
     href: 'https://www.npmjs.com/package/harness-score',
     external: true,
     primary: false,
