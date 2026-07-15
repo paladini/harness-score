@@ -28,6 +28,36 @@ describe('context checks', () => {
     expect((await check('CTX-03')).run(ctx).passed).toBe(true);
   });
 
+  test('CTX-03 passes with a Windsurf rule file', async () => {
+    const ctx = fakeContext({
+      '.windsurf/rules/style.md': '---\ndescription: x\ntrigger: src/**\n---\nbody',
+    });
+    expect((await check('CTX-03')).run(ctx).passed).toBe(true);
+  });
+
+  test('CTX-04 passes with Windsurf trigger frontmatter', async () => {
+    const ctx = fakeContext({
+      '.windsurf/rules/api.md': '---\ndescription: API\ntrigger: src/api/**\n---\nbody',
+    });
+    expect((await check('CTX-04')).run(ctx).passed).toBe(true);
+  });
+
+  test('CTX-05 passes when a Cline rule uses paths scoping', async () => {
+    const ctx = fakeContext({
+      '.clinerules/core.md': '---\npaths: ["**"]\n---\ncore',
+      '.clinerules/http.md': '---\npaths: ["src/app.js"]\n---\nhttp',
+    });
+    expect((await check('CTX-05')).run(ctx).passed).toBe(true);
+  });
+
+  test('CTX-08 passes when .cursorrules exists alongside modern rules', async () => {
+    const ctx = fakeContext({
+      '.cursorrules': 'legacy',
+      '.windsurf/rules/modern.md': '---\ndescription: x\ntrigger: src/**\n---\nbody',
+    });
+    expect((await check('CTX-08')).run(ctx).passed).toBe(true);
+  });
+
   test('CTX-04 rejects rules without frontmatter', async () => {
     const ctx = fakeContext({ '.cursor/rules/naked.mdc': 'Just some prose, no frontmatter.' });
     expect((await check('CTX-04')).run(ctx).passed).toBe(false);
@@ -85,6 +115,13 @@ describe('skills checks', () => {
     expect((await check('SKL-01')).run(ctx).passed).toBe(true);
   });
 
+  test('SKL-01 passes with a Claude Code skill', async () => {
+    const ctx = fakeContext({
+      '.claude/skills/release/SKILL.md': '---\nname: release\ndescription: x\n---\n',
+    });
+    expect((await check('SKL-01')).run(ctx).passed).toBe(true);
+  });
+
   test('SKL-02 fails when a skill is missing name/description frontmatter', async () => {
     const ctx = fakeContext({ '.cursor/skills/deploy/SKILL.md': '# Deploy\nNo frontmatter.' });
     expect((await check('SKL-02')).run(ctx).passed).toBe(false);
@@ -105,6 +142,11 @@ describe('skills checks', () => {
 
   test('SKL-03 passes with at least one slash command', async () => {
     const ctx = fakeContext({ '.cursor/commands/release.md': '# /release' });
+    expect((await check('SKL-03')).run(ctx).passed).toBe(true);
+  });
+
+  test('SKL-03 passes with a Windsurf workflow', async () => {
+    const ctx = fakeContext({ '.windsurf/workflows/audit.md': '# /audit' });
     expect((await check('SKL-03')).run(ctx).passed).toBe(true);
   });
 
@@ -211,6 +253,36 @@ describe('hook checks', () => {
   test('HKS-04 passes with an afterFileEdit feedback hook', async () => {
     const ctx = fakeContext({
       '.cursor/hooks.json': JSON.stringify({ version: 1, hooks: { afterFileEdit: [{ command: 'x' }] } }),
+    });
+    expect((await check('HKS-04')).run(ctx).passed).toBe(true);
+  });
+
+  test('HKS-01 passes with Claude Code settings.json hooks', async () => {
+    const ctx = fakeContext({
+      '.claude/settings.json': JSON.stringify({
+        hooks: { PreToolUse: [{ matcher: 'Bash', hooks: [{ type: 'command', command: 'x' }] }] },
+      }),
+    });
+    expect((await check('HKS-01')).run(ctx).passed).toBe(true);
+  });
+
+  test('HKS-03 passes with Claude Code PreToolUse gate hook', async () => {
+    const ctx = fakeContext({
+      '.claude/settings.json': JSON.stringify({
+        hooks: { PreToolUse: [{ matcher: 'Bash', hooks: [{ type: 'command', command: 'x' }] }] },
+      }),
+    });
+    expect((await check('HKS-03')).run(ctx).passed).toBe(true);
+  });
+
+  test('HKS-04 passes with Claude Code PostToolUse feedback hook', async () => {
+    const ctx = fakeContext({
+      '.claude/settings.json': JSON.stringify({
+        hooks: {
+          PreToolUse: [{ matcher: 'Bash', hooks: [{ type: 'command', command: 'x' }] }],
+          PostToolUse: [{ matcher: 'Edit', hooks: [{ type: 'command', command: 'y' }] }],
+        },
+      }),
     });
     expect((await check('HKS-04')).run(ctx).passed).toBe(true);
   });
@@ -334,6 +406,15 @@ describe('hygiene checks', () => {
     expect((await check('HYG-08')).run(ctx).passed).toBe(true);
   });
 
+  test('HYG-08 passes with Claude Code .mcp.json path', async () => {
+    const ctx = fakeContext({
+      '.mcp.json': JSON.stringify({
+        mcpServers: { svc: { env: { API_TOKEN: '${SVC_API_TOKEN}' } } },
+      }),
+    });
+    expect((await check('HYG-08')).run(ctx).passed).toBe(true);
+  });
+
   test('HYG-08 passes when mcp.json has no credential-shaped fields at all', async () => {
     const ctx = fakeContext({
       '.cursor/mcp.json': JSON.stringify({
@@ -415,6 +496,11 @@ describe('agent checks', () => {
   test('AGT-01 fails when no subagents are defined', async () => {
     const ctx = fakeContext({});
     expect((await check('AGT-01')).run(ctx).passed).toBe(false);
+  });
+
+  test('AGT-01 passes with a Claude Code subagent', async () => {
+    const ctx = fakeContext({ '.claude/agents/reviewer.md': '---\nname: r\ndescription: d\n---\n' });
+    expect((await check('AGT-01')).run(ctx).passed).toBe(true);
   });
 
   test('AGT-02 rejects a subagent missing frontmatter', async () => {

@@ -1,4 +1,5 @@
 import { ALL_CHECKS } from './checks/index.js';
+import { detectHarnesses } from './harness/index.js';
 import type {
   CheckOutcome,
   CheckResult,
@@ -110,6 +111,7 @@ export function buildReport(ctx: ScanContext): Report {
     tool: { name: 'harness-score', version: TOOL_VERSION },
     root: ctx.root,
     truncated: ctx.truncated,
+    detectedHarnesses: detectHarnesses(ctx),
     level: computeLevel(dimensions, percent),
     score: { earned, max, percent },
     dimensions,

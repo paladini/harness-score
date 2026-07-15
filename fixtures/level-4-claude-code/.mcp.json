@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "example-api": {
+      "command": "npx",
+      "args": ["-y", "@example/mcp-server"],
+      "env": {
+        "EXAMPLE_API_TOKEN": "${EXAMPLE_API_TOKEN}"
+      }
+    }
+  }
+}

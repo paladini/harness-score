@@ -412,7 +412,7 @@ stable; the CLI links each failure to its entry here.
 ### Context & Guides (20 pts)
 
 #### CTX-01 · Agent context file present — 4 pts {#ctx-01}
-An `AGENTS.md` (or `CLAUDE.md`) exists at the repository root.
+An `AGENTS.md` (or `CLAUDE.md` / `GEMINI.md`) exists at the repository root.
 **Fix:** create `AGENTS.md` answering: what is this project, how do I build
 and test it, what conventions hold, what must I never touch. Recipe in
 [chapter 3](/guide/guides-feedforward#writing-an-agents-md-that-works).
@@ -422,20 +422,22 @@ and test it, what conventions hold, what must I never touch. Recipe in
 **Fix:** cover layout, build & test commands, conventions, and no-go zones.
 Commands over descriptions; point to rules instead of pasting them.
 
-#### CTX-03 · Cursor rules directory in use — 4 pts {#ctx-03}
-At least one `.mdc` file under `.cursor/rules/`.
+#### CTX-03 · Scoped rules in use — 4 pts {#ctx-03}
+At least one scoped rule file for any supported tool (e.g. `.cursor/rules/*.mdc`,
+`.windsurf/rules/*.md`, `.clinerules/*.md`, `.continue/rules/*.md`,
+`.github/instructions/*.instructions.md`, `.agents/rules/*`).
 **Fix:** start with one short always-on rule holding your non-negotiables,
-then add glob-scoped rules per area (`api.mdc`, `testing.mdc`).
+then add path-scoped rules per area.
 
 #### CTX-04 · Rules have valid frontmatter — 3 pts {#ctx-04}
-Every rule declares `description`, `alwaysApply`, or `globs`.
-**Fix:** add the frontmatter block; without it Cursor can't decide when the
+Every rule declares activation metadata (`description`, `globs`/`trigger`/`paths`/`applyTo`, or `alwaysApply`).
+**Fix:** add the frontmatter block; without it the agent can't decide when the
 rule applies.
 
 #### CTX-05 · Rules are scoped — 2 pts {#ctx-05}
-Not every rule is `alwaysApply: true`.
-**Fix:** scope rules with `globs:` so they load only when relevant — every
-always-on rule taxes every request's context.
+Not every rule is blanket always-on.
+**Fix:** scope rules to paths (`globs:`, `trigger:` glob, `paths:`, `applyTo:`)
+so they load only when relevant — every always-on rule taxes every request's context.
 
 #### CTX-06 · No bloated rules — 2 pts {#ctx-06}
 No single rule exceeds 500 lines.
@@ -446,13 +448,13 @@ No single rule exceeds 500 lines.
 a fallback for agents.
 
 #### CTX-08 · No legacy .cursorrules — 1 pt {#ctx-08}
-The deprecated single-file format is absent.
-**Fix:** migrate `.cursorrules` content into scoped `.cursor/rules/*.mdc`.
+The deprecated single-file format is absent (or modern scoped rules also exist).
+**Fix:** migrate `.cursorrules` content into scoped rules for your tool.
 
 ### Skills & Commands (17 pts)
 
 #### SKL-01 · At least one skill — 4 pts {#skl-01}
-A `SKILL.md` under `.cursor/skills/<name>/` (or `.agents/skills/`).
+A `SKILL.md` under `.cursor/skills/<name>/`, `.claude/skills/<name>/`, or `.agents/skills/<name>/`.
 **Fix:** package your most repeated procedure (deploy, release, migration)
 as a skill — [chapter 3](/guide/guides-feedforward#skills-the-procedural-layer).
 
@@ -461,10 +463,11 @@ Frontmatter with `name:` and `description:` on every skill.
 **Fix:** the agent decides whether to load a skill from these two fields
 alone; without them the skill is invisible.
 
-#### SKL-03 · Slash commands defined — 3 pts {#skl-03}
-Markdown files under `.cursor/commands/`.
+#### SKL-03 · Explicit workflows/commands defined — 3 pts {#skl-03}
+Command or workflow files (`.cursor/commands/`, `.windsurf/workflows/`,
+`.claude/commands/`, `.continue/prompts/`, `.zed/commands/`, `.agents/workflows/`).
 **Fix:** encode workflows you trigger deliberately (`/review`, `/release`)
-as command files.
+as command/workflow files.
 
 #### SKL-04 · Skill descriptions are trigger-worthy — 2 pts {#skl-04}
 Descriptions ≥40 characters.
@@ -472,7 +475,7 @@ Descriptions ≥40 characters.
 to deploy or release; covers tagging, pipeline, rollback, smoke tests."
 
 #### AGT-01 · Custom subagent defined — 3 pts {#agt-01}
-A markdown file under `.cursor/agents/`.
+A subagent file under `.cursor/agents/`, `.claude/agents/`, or `.opencode/agents/`.
 **Fix:** package a purpose-built subagent for a job the primary agent should
 delegate (planning, review, release) — see
 [Subagents](/guide/cursor-harness-surface#subagents-purpose-built-delegates)
@@ -485,29 +488,31 @@ alone; without them the subagent is never invoked.
 
 ### Hooks & Guardrails (14 pts)
 
-#### HKS-01 · hooks.json present and valid — 4 pts {#hks-01}
-`.cursor/hooks.json` exists and parses as JSON.
-**Fix:** create it with `{"version": 1, "hooks": {}}` and grow from the
+#### HKS-01 · Hooks configuration present and valid — 4 pts {#hks-01}
+`.cursor/hooks.json` or `.claude/settings.json` (`hooks` key) exists and parses as JSON.
+**Fix:** create hooks config and grow from the
 recipes in [chapter 5](/guide/guardrails-and-safety#gate-hooks).
 
 #### HKS-02 · Known events, version declared — 2 pts {#hks-02}
-`version` present; every registered event is a documented Cursor event.
+Version/metadata present; every registered event is documented for your tool
+(Cursor lifecycle events, or Claude Code `PreToolUse`/`PostToolUse`).
 **Fix:** typo'd event names fail silently — check against the event list in
 [chapter 2](/guide/cursor-harness-surface#hooks-observe-and-control-the-agent-loop).
 
 #### HKS-03 · Gate hook guards risky operations — 4 pts {#hks-03}
-A hook on `beforeShellExecution`, `beforeMCPExecution`, `preToolUse`, or
-`beforeReadFile`.
+A gate hook registered (Cursor: `beforeShellExecution`, `beforeMCPExecution`,
+`preToolUse`, or `beforeReadFile`; Claude Code: `PreToolUse`).
 **Fix:** add the destructive-command deny gate from chapter 5 — prose rules
 are requests; gates are facts.
 
 #### HKS-04 · Feedback hook observes output — 2 pts {#hks-04}
-A hook on `afterFileEdit`, `postToolUse`, or similar.
+A feedback hook registered (Cursor: `afterFileEdit`, `postToolUse`, …;
+Claude Code: `PostToolUse`).
 **Fix:** format-and-lint on edit gives the agent instant feedback inside the
 session.
 
 #### HKS-05 · Hook scripts committed — 2 pts {#hks-05}
-Scripts referenced by hooks.json exist in the repository.
+Scripts referenced by the hooks config exist in the repository.
 **Fix:** commit them; a hook pointing at a missing script fails open on
 every machine but the author's.
 
@@ -572,13 +577,13 @@ No real env files in the tree unless gitignored (templates are fine).
 variables.
 
 #### HYG-04 · MCP config free of credentials — 4 pts {#hyg-04}
-No credential signatures in `.cursor/mcp.json`.
-**Fix:** use `${ENV_VAR}` interpolation — an inlined key in mcp.json is a
+No credential signatures in MCP config (`.cursor/mcp.json`, `.mcp.json`,
+`.agents/mcp_config.json`).
+**Fix:** use `${ENV_VAR}` interpolation — an inlined key in MCP config is a
 secret published to every clone.
 
 #### HYG-05 · License present — 2 pts {#hyg-05}
-**Fix:** add a LICENSE; required for open-source use and the Cursor
-Marketplace.
+**Fix:** add a LICENSE; required for open-source use and plugin marketplaces.
 
 #### HYG-06 · No secrets in harness files — 2 pts {#hyg-06}
 AGENTS.md, rules, and hooks config are clean of token signatures.
@@ -591,7 +596,7 @@ package-lock.json, uv.lock, Cargo.lock, go.sum, or equivalent.
 tree everywhere.
 
 #### HYG-08 · MCP config uses env interpolation for credentials — 3 pts {#hyg-08}
-`.cursor/mcp.json` is valid, and any credential-shaped field (token, key,
+An MCP config file is valid, and any credential-shaped field (token, key,
 secret, password…) uses `${ENV_VAR}` interpolation rather than a literal.
 The positive complement to HYG-04 — a repo with no MCP setup earns nothing
 here, same as any other bonus check.

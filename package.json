@@ -12,6 +12,8 @@
     "test": "npm run test -w harness-score",
     "test:coverage": "npm run test:coverage -w harness-score",
     "scan": "node packages/cli/dist/cli.js .",
+    "plugins:sync": "node plugins/shared/generate-tools.mjs",
+    "plugins:sync-check": "npm run build && node plugins/shared/generate-tools.mjs --check",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",

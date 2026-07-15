@@ -81,6 +81,8 @@ export interface Report {
   root: string;
   /** True if the scan hit its file-count cap before fully walking the tree — results may be incomplete. */
   truncated: boolean;
+  /** Tool IDs with at least one harness artifact detected (informational; does not affect score). */
+  detectedHarnesses: string[];
   level: LevelInfo;
   score: { earned: number; max: number; percent: number };
   dimensions: DimensionScore[];

@@ -14,6 +14,8 @@ describe('maturity levels on fixture repositories', () => {
     ['level-2', 2],
     ['level-3', 3],
     ['level-4', 4],
+    ['level-2-windsurf', 2],
+    ['level-4-claude-code', 4],
   ])('%s scores L%i', (fixture, expected) => {
     const report = score(path.join(FIXTURES, fixture));
     expect(report.level.index, JSON.stringify(report.level, null, 2)).toBe(expected);
@@ -24,6 +26,22 @@ describe('maturity levels on fixture repositories', () => {
     // this number, not have it float silently along with ALL_CHECKS.
     const total = ALL_CHECKS.reduce((sum, c) => sum + c.points, 0);
     expect(total).toBe(108);
+  });
+
+  test('level-4-claude-code reaches L4 without any .cursor/ artifacts', () => {
+    const report = score(path.join(FIXTURES, 'level-4-claude-code'));
+    expect(report.level.index).toBe(4);
+    expect(report.detectedHarnesses).toContain('claude-code');
+    expect(report.detectedHarnesses).not.toContain('cursor');
+    const hookChecks = report.checks.filter((c) => c.id.startsWith('HKS-'));
+    expect(hookChecks.every((c) => c.passed)).toBe(true);
+  });
+
+  test('level-2-windsurf reaches L2 without any .cursor/ artifacts', () => {
+    const report = score(path.join(FIXTURES, 'level-2-windsurf'));
+    expect(report.level.index).toBe(2);
+    expect(report.detectedHarnesses).toContain('windsurf');
+    expect(report.detectedHarnesses).not.toContain('cursor');
   });
 
   test('report shape is stable', () => {
