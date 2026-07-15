@@ -1,6 +1,6 @@
 ---
 name: harness-engineering
-description: Use when the user asks to improve, fix, or build their repository's AI harness — AGENTS.md, Cursor rules, skills, commands, hooks, guardrails, CI sensors — or to act on harness-score audit findings and raise their maturity level.
+description: Use when the user asks to improve, fix, or build their repository's AI harness — AGENTS.md, rules, skills, commands, hooks, guardrails, CI sensors — or to act on harness-score audit findings and raise their maturity level.
 ---
 
 # Harness Engineering — remediation recipes
@@ -18,52 +18,27 @@ https://paladini.github.io/harness-score/ — these recipes summarize it.
 - Write harness files that match THIS repository — read the codebase enough
   to state real commands, real directories, real conventions. Never ship
   placeholder text like "<your build command>".
-- Keep context lean: AGENTS.md ≤150 lines; scope rules with globs; put
-  procedures in skills, not rules.
+- Keep context lean: AGENTS.md ≤150 lines; scope guidance where the tool
+  supports it; put procedures in skills, not rules.
 
 ## Recipes by check family
 
 ### CTX — Context & Guides
 Create `AGENTS.md` with: what the project is (2 sentences), directory
 layout, exact build/test/lint commands, non-negotiable conventions, and a
-"do not touch" list. Then `.cursor/rules/*.mdc`, each with frontmatter:
+"do not touch" list.
 
-```markdown
----
-description: <one line>
-globs: <path pattern>   # or alwaysApply: true, sparingly
----
-- Concrete, checkable bullets. Show a 5-line example of the right pattern.
-```
-
-One concern per rule. Migrate any legacy `.cursorrules` into these.
+<!-- SLOT:ctx-rules -->
 
 ### SKL — Skills & Commands
 For the team's most repeated procedure, create
-`.cursor/skills/<name>/SKILL.md` with frontmatter `name:` and a
+`{{SKILLS_DIR}}/<name>/SKILL.md` with frontmatter `name:` and a
 `description:` written as a trigger ("Use when the user asks to …", ≥40
-chars), body = numbered runbook. Add `.cursor/commands/<verb>.md` for
+chars), body = numbered runbook. Add `{{COMMANDS_DIR}}/<verb>.md` for
 human-triggered workflows like /review.
 
 ### HKS — Hooks & Guardrails
-Create `.cursor/hooks.json`:
-
-```json
-{
-  "version": 1,
-  "hooks": {
-    "beforeShellExecution": [{ "command": "node ./.cursor/hooks/guard-shell.js", "timeout": 10 }],
-    "afterFileEdit": [{ "command": "node ./.cursor/hooks/format-on-edit.js", "timeout": 30 }]
-  }
-}
-```
-
-The gate script reads JSON from stdin, tests the command against a
-destructive-pattern regex (rm -rf on roots, git push --force, DROP TABLE),
-and prints `{"permission":"deny","userMessage":"…"}` or
-`{"permission":"allow"}`. The feedback script runs the project's formatter
-on the edited file, best-effort. Commit both scripts. Full examples:
-https://paladini.github.io/harness-score/guide/guardrails-and-safety
+<!-- SLOT:hooks -->
 
 ### SNS — Sensors
 Wire the ecosystem's standard tools: test runner with a `test` script,
@@ -77,8 +52,8 @@ Pre-commit via husky+lint-staged or pre-commit.
 
 ### HYG — Hygiene & Safety
 `.gitignore` must cover `.env` and `.env.*` (keep `!.env.example`). Remove
-real env files; replace inlined keys in `.cursor/mcp.json` with `${ENV_VAR}`
-interpolation. Add LICENSE and commit the lockfile.
+real env files; replace inlined keys in `{{MCP_CONFIG_PATH}}` with
+`${ENV_VAR}` interpolation. Add LICENSE and commit the lockfile.
 
 ## After fixing
 

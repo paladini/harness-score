@@ -94,7 +94,7 @@ Gallery and CI wiring:
 ## Cursor plugin
 
 Install **Harness Score** from
-[its plugin directory in this repo](https://github.com/paladini/harness-score/tree/main/plugin)
+[its plugin directory in this repo](https://github.com/paladini/harness-score/tree/main/plugins/cursor)
 for a `/harness-audit` command and a remediation skill that fixes gaps
 directly in your editor. (Cursor Marketplace listing submitted, pending
 review.)

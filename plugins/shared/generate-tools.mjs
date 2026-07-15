@@ -17,11 +17,15 @@ const LABELS = {
   windsurf: 'Windsurf',
 };
 
+function formatKey(id) {
+  return /^[A-Za-z_$][\w$]*$/.test(id) ? id : `'${id}'`;
+}
+
 function render() {
   const entries = Object.entries(PLUGIN_TOOL_PATHS)
     .map(([id, paths]) => {
       const label = LABELS[id] ?? id;
-      return `  '${id}': {
+      return `  ${formatKey(id)}: {
     label: '${label}',
     skillsDir: '${paths.skillsDir}',
     commandsDir: '${paths.commandsDir}',

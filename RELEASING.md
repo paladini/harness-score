@@ -9,9 +9,12 @@ no npm token, no long-lived secret stored anywhere in this repo.
    - `packages/cli/package.json` (`version`)
    - `TOOL_VERSION` in `packages/cli/src/score.ts`
    - `version` in `packages/cli/jsr.json`
-   - If plugin content changed: `plugin/.cursor-plugin/plugin.json` +
-     an entry in `plugin/CHANGELOG.md` (the plugin has its own release
+   - If Cursor plugin content changed: `plugins/cursor/.cursor-plugin/plugin.json` +
+     an entry in `plugins/cursor/CHANGELOG.md` (it has its own release
      track and version number).
+   - If the Claude Code plugin content changed: bump `version` in
+     `plugins/claude-code/.claude-plugin/plugin.json` — no separate publish
+     step, the marketplace *is* this repo (see step 6).
 
    Preferred way to do this: contributors add a changeset
    (`npm run changeset`) describing their change and its bump type
@@ -60,8 +63,12 @@ no npm token, no long-lived secret stored anywhere in this repo.
 6. **Cursor Marketplace:** the listing points at the repo, so most changes
    need nothing further. Resubmit at
    [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish)
-   only if `plugin/.cursor-plugin/plugin.json` metadata (name, description,
-   version) changed.
+   only if `plugins/cursor/.cursor-plugin/plugin.json` metadata (name,
+   description, version) changed.
+   **Claude Code:** no registry, no resubmission — the marketplace *is*
+   this git repo (`.claude-plugin/marketplace.json`). A `plugins/claude-code/.claude-plugin/plugin.json`
+   version bump and a push to `main` is the entire release; users already
+   on the marketplace pick it up via `/plugin marketplace update`.
 7. **Docs:** deploy automatically via
    [`pages.yml`](.github/workflows/pages.yml) on every push to `main` — no
    manual step.

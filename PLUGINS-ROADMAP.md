@@ -1,7 +1,8 @@
 # Multi-harness plugin plan
 
 This document plans extending harness-score's single Cursor plugin
-(`plugin/`) into a family of thin, per-tool plugins — Claude Code, Windsurf,
+(originally `plugin/`, now `plugins/cursor/`) into a family of thin,
+per-tool plugins — Claude Code, Windsurf,
 OpenAI Codex CLI, VS Code, OpenCode, Cline, Continue.dev, Zed, JetBrains
 AI Assistant (Junie), and others — that all wrap the same deterministic
 scanner, published from one repository. It answers the question raised (but
@@ -9,9 +10,11 @@ deliberately not designed) in [ROADMAP.md](ROADMAP.md#also-under-consideration-n
 *"expanding beyond Cursor-specific artifacts... needs its own branding/scope
 decision before design."*
 
-This is a **planning document only** — nothing here has been implemented.
-See [Open decisions](#open-decisions-before-any-implementation) for what
-needs a call from the maintainer before Phase 0 starts.
+**Phase 0 (Claude Code) is implemented** — see
+[Suggested sequencing](#suggested-sequencing) below for what shipped.
+Everything else here is still planning only. See
+[Open decisions](#open-decisions-before-any-implementation) for what needs
+a maintainer call before picking up Phase 1.
 
 ## Why this is easy to reuse
 
@@ -325,11 +328,23 @@ npm/GitHub Packages/JSR jobs:
 
 ## Suggested sequencing
 
-1. **Claude Code** — smallest diff from what already exists, reuses the
-   exact same content shape as the Cursor plugin, dogfoodable immediately
-   (this very repo already uses Claude Code as a harness). Also validates
-   the `shared/` + sync-test mechanism cheaply before more tools depend on
-   it.
+1. **Claude Code — shipped.** `plugin/` → `plugins/cursor/`, the
+   `plugins/shared/` templating system (`harness-engineering-recipe.md` +
+   `tools.mjs` + `generate.mjs`, with a `plugins:sync-check` CI gate),
+   `plugins/claude-code/` (manifest, generated skill, generated command),
+   and the root `.claude-plugin/marketplace.json`. Verified against the
+   real `claude` CLI (v2.1.191): `claude plugin validate .` and
+   `claude plugin validate ./plugins/claude-code` both pass clean, and a
+   real `claude plugin marketplace add ./` + `claude plugin install
+   harness-score@harness-score` round-trip installed correctly (cache
+   contained exactly `commands/harness-audit.md` and
+   `skills/harness-engineering/SKILL.md`), then was uninstalled/removed
+   again to leave no test state behind. Cursor's plugin content is now
+   *generated* from the same shared recipe as Claude Code's, reworded to
+   drop tool-specific language it no longer needs — its own file is
+   unaffected where it didn't need to change (verified: the command file's
+   generated output is byte-identical to what was hand-written before,
+   since it was already tool-agnostic prose).
 2. **OpenCode, Codex, JetBrains/Junie** — all read `AGENTS.md` natively, so
    these are close to zero marginal content cost once Claude Code's
    `shared/` recipe exists; OpenCode additionally gets a small subagent

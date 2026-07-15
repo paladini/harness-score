@@ -16,7 +16,7 @@ surface is narrow, but a few things are worth reporting if you find them:
 - Anything in the GitHub Action (`action/`) or the release pipeline
   (`.github/workflows/release.yml`) that could leak the OIDC/publish tokens
   it relies on.
-- The Cursor plugin (`plugin/`) instructing the agent to do something
+- Any editor/agent plugin (`plugins/`) instructing the agent to do something
   destructive or credential-exposing that a user wouldn't expect from an
   "audit" command.
 

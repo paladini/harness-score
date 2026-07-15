@@ -2,7 +2,7 @@
   "name": "harness-score-monorepo",
   "private": true,
   "version": "0.1.0",
-  "description": "Harness engineering guide for Cursor + deterministic harness-maturity scanner",
+  "description": "AI coding harness engineering guide + deterministic harness-maturity scanner, Cursor-flagship and expanding to other AI-first dev tools",
   "type": "module",
   "workspaces": [
     "packages/*"
@@ -13,7 +13,8 @@
     "test:coverage": "npm run test:coverage -w harness-score",
     "scan": "node packages/cli/dist/cli.js .",
     "plugins:sync": "node plugins/shared/generate-tools.mjs",
-    "plugins:sync-check": "npm run build && node plugins/shared/generate-tools.mjs --check",
+    "plugins:generate": "node plugins/shared/generate.mjs",
+    "plugins:sync-check": "npm run build && node plugins/shared/generate-tools.mjs --check && node plugins/shared/generate.mjs --check",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",

@@ -123,13 +123,13 @@ A high score means the *infrastructure* for reliable agent work exists. It's
 necessary, not sufficient — and that's the honest ceiling of what any
 deterministic scanner can claim.
 
-## The four pieces
+## The pieces
 
 | Piece | What | Where |
 |---|---|---|
-| 📖 **The Guide** | Harness engineering applied to Cursor: guides (feedforward), sensors (feedback), guardrails, and the 5-level maturity model. Consolidates Martin Fowler's harness engineering articles, LangChain's harness lessons, and Cursor's own docs. | [paladini.github.io/harness-score](https://paladini.github.io/harness-score/) |
+| 📖 **The Guide** | Harness engineering for AI coding agents: guides (feedforward), sensors (feedback), guardrails, and the 5-level maturity model. Consolidates Martin Fowler's harness engineering articles, LangChain's harness lessons, and Cursor's own docs. | [paladini.github.io/harness-score](https://paladini.github.io/harness-score/) |
 | 🔍 **The CLI** | `npx harness-score` — 36 checks across 6 dimensions, maturity level L0–L4, JSON/markdown/badge output, `--diff` mode, `--min-level` CI gate. Zero runtime dependencies, fully-typed programmatic API. | [packages/cli](packages/cli) |
-| 🧩 **The Cursor plugin** | `/harness-audit` command + `harness-engineering` skill: audit the open workspace and let the agent fix the gaps following the guide's recipes. | [plugin](plugin) |
+| 🧩 **Editor/agent plugins** | `/harness-audit` command + `harness-engineering` skill: audit the open workspace and let the agent fix the gaps following the guide's recipes. Cursor is the flagship, most fully-developed target; Claude Code is next (see [PLUGINS-ROADMAP.md](PLUGINS-ROADMAP.md) for the rest). | [plugins](plugins) |
 | ⚙️ **The GitHub Action** | Run the scan on every push, gate on a minimum level, emit the badge. | [action](action) |
 
 ## Show your maturity in your README

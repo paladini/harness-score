@@ -30,7 +30,7 @@ const installs = [
     title: 'Cursor plugin',
     cmd: '/harness-audit',
     note: 'In repo — Marketplace listing not live yet',
-    href: 'https://github.com/paladini/harness-score/tree/main/plugin',
+    href: 'https://github.com/paladini/harness-score/tree/main/plugins/cursor',
     external: true,
     primary: false,
   },
@@ -91,8 +91,8 @@ const installs = [
           <span class="hs-landing__step-num">3</span>
           <h3>Fix</h3>
           <p>
-            Every failed check links to a remediation recipe in the guide — or let the
-            Cursor plugin's <code>/harness-audit</code> skill apply the fixes.
+            Every failed check links to a remediation recipe in the guide — or let an
+            editor plugin's <code>/harness-audit</code> command apply the fixes.
           </p>
         </article>
       </div>
@@ -209,7 +209,7 @@ const installs = [
       <div class="hs-landing__product-grid">
         <a class="hs-landing__product" :href="withBase('/guide/what-is-harness-engineering')">
           <h3>Guide</h3>
-          <p>8 chapters on harness engineering for Cursor — feedforward, sensors, guardrails.</p>
+          <p>8 chapters on harness engineering for AI coding agents — feedforward, sensors, guardrails.</p>
         </a>
         <a class="hs-landing__product" :href="withBase('/guide/measure-and-improve')">
           <h3>CLI</h3>
@@ -217,7 +217,7 @@ const installs = [
         </a>
         <a
           class="hs-landing__product"
-          href="https://github.com/paladini/harness-score/tree/main/plugin"
+          href="https://github.com/paladini/harness-score/tree/main/plugins/cursor"
           target="_blank"
           rel="noreferrer"
         >

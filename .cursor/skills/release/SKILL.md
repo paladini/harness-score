@@ -17,8 +17,13 @@ description: Use when the user asks to release, publish, or version-bump harness
    hand instead:
    - `packages/cli/package.json`, `TOOL_VERSION` in
      `packages/cli/src/score.ts`, and `version` in `packages/cli/jsr.json`
-   - `plugin/.cursor-plugin/plugin.json` (+ entry in `plugin/CHANGELOG.md`)
-     — only if plugin content changed, it has its own release track
+   - `plugins/cursor/.cursor-plugin/plugin.json` (+ entry in
+     `plugins/cursor/CHANGELOG.md`) — only if Cursor plugin content
+     changed, it has its own release track
+   - `plugins/claude-code/.claude-plugin/plugin.json` — only if Claude
+     Code plugin content changed; no separate publish step, a version bump
+     + push to `main` is the entire release (the marketplace *is* this
+     repo)
 3. Commit `release: vX.Y.Z`, tag `vX.Y.Z`, push with tags.
 4. Create a GitHub Release from that tag — use the new
    `packages/cli/CHANGELOG.md` entry as the notes body if changesets
@@ -39,8 +44,9 @@ description: Use when the user asks to release, publish, or version-bump harness
 5. If npm Trusted Publishing isn't configured yet, `npm publish` in CI will
    fail with a clear error; the user completes the one-time npmjs.com setup
    and the next run succeeds — no manual local publish needed once it's on.
-6. Marketplace: the plugin updates from the repo — remind the user to
-   resubmit at https://cursor.com/marketplace/publish only if plugin
-   metadata changed.
+6. Cursor Marketplace: the listing updates from the repo — remind the user
+   to resubmit at https://cursor.com/marketplace/publish only if
+   `plugins/cursor/` metadata changed. Claude Code has no separate
+   marketplace to resubmit to — see step 2.
 7. Docs deploy automatically via `.github/workflows/pages.yml` on push to
    main.
