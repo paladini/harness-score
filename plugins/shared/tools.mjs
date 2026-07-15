@@ -2,19 +2,20 @@
  * Per-tool configuration consumed by generate.mjs. Adding a new markdown-only
  * plugin (Windsurf, OpenCode, Cline, Continue.dev, Zed — see
  * PLUGINS-ROADMAP.md) means adding one entry here, not touching the shared
- * recipe prose.
+ * recipe prose. Path fields (skillsDir, commandsDir, mcpConfigPath) come from
+ * tool-paths.mjs, which is generated from the CLI harness registry — only
+ * tools with a shipped plugin under plugins/<tool>/ get an entry here.
  */
+import { TOOL_PATHS } from './tool-paths.mjs';
+
 export const TOOLS = {
   cursor: {
-    label: 'Cursor',
+    ...TOOL_PATHS.cursor,
     pluginDir: 'plugins/cursor',
     // No command frontmatter: the already-submitted (pending review) Cursor
     // Marketplace listing ships this file as-is with none — don't change a
     // proven-working artifact under external review without a reason.
     commandFrontmatter: null,
-    skillsDir: '.cursor/skills',
-    commandsDir: '.cursor/commands',
-    mcpConfigPath: '.cursor/mcp.json',
     ctxRulesSlot: `Then \`.cursor/rules/*.mdc\`, each with frontmatter:
 
 \`\`\`markdown
@@ -46,15 +47,12 @@ on the edited file, best-effort. Commit both scripts. Full examples:
 https://paladini.github.io/harness-score/guide/guardrails-and-safety`,
   },
   'claude-code': {
-    label: 'Claude Code',
+    ...TOOL_PATHS['claude-code'],
     pluginDir: 'plugins/claude-code',
     // `claude plugin validate` recommends a description for command
     // discovery in the `/` picker — new artifact, no compat risk.
     commandFrontmatter:
       "description: Audit this repository's AI harness maturity with the deterministic harness-score scanner.",
-    skillsDir: '.claude/skills',
-    commandsDir: '.claude/commands',
-    mcpConfigPath: '.mcp.json',
     ctxRulesSlot: `For guidance scoped to part of the tree, add a nested \`CLAUDE.md\`
 inside that subdirectory — Claude Code loads it automatically when working
 in that subtree, the same idea as glob-scoped rules in other tools, just

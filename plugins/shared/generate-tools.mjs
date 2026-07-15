@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Writes plugins/shared/tools.mjs from the CLI harness registry.
+ * Writes plugins/shared/tool-paths.mjs from the CLI harness registry.
  * Usage: node plugins/shared/generate-tools.mjs [--check]
  */
 import * as fs from 'node:fs';
@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { PLUGIN_TOOL_PATHS } from '../../packages/cli/dist/harness/registry.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const outPath = path.join(here, 'tools.mjs');
+const outPath = path.join(here, 'tool-paths.mjs');
 
 const LABELS = {
   cursor: 'Cursor',
@@ -35,10 +35,11 @@ function render() {
     .join('\n');
 
   return `/**
- * Plugin path hints — must stay in sync with packages/cli/src/harness/registry.ts
- * (PLUGIN_TOOL_PATHS). Regenerate with: node plugins/shared/generate-tools.mjs
+ * GENERATED — do not edit. Path hints per supported tool, mirrored from
+ * packages/cli/src/harness/registry.ts (PLUGIN_TOOL_PATHS).
+ * Regenerate with: node plugins/shared/generate-tools.mjs
  */
-export const TOOLS = {
+export const TOOL_PATHS = {
 ${entries}
 };
 `;
@@ -47,14 +48,14 @@ ${entries}
 const check = process.argv.includes('--check');
 const next = render();
 if (check) {
-  const current = fs.readFileSync(outPath, 'utf8');
+  const current = fs.existsSync(outPath) ? fs.readFileSync(outPath, 'utf8') : null;
   if (current !== next) {
     console.error(
-      'plugins/shared/tools.mjs is out of sync with harness registry — run: node plugins/shared/generate-tools.mjs',
+      'plugins/shared/tool-paths.mjs is out of sync with harness registry — run: node plugins/shared/generate-tools.mjs',
     );
     process.exit(1);
   }
-  console.log('plugins/shared/tools.mjs is in sync');
+  console.log('plugins/shared/tool-paths.mjs is in sync');
 } else {
   fs.writeFileSync(outPath, next);
   console.log(`Wrote ${outPath}`);

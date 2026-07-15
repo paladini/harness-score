@@ -2329,7 +2329,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-02",
       "earned": 3,
-      "evidence": "AGENTS.md: 49 non-empty lines, 6 headings (needs ≥20 lines and ≥2 headings).",
+      "evidence": "AGENTS.md: 54 non-empty lines, 6 headings (needs ≥20 lines and ≥2 headings).",
       "id": "CTX-02",
       "passed": true,
       "points": 3,
