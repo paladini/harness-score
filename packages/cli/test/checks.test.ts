@@ -223,6 +223,51 @@ describe('hook checks', () => {
     expect((await check('HKS-05')).run(ctx).passed).toBe(true);
   });
 
+  test('HKS-05 resolves the unbraced $VAR form (Claude Code) when the script exists', async () => {
+    const ctx = fakeContext({
+      '.claude/settings.json': JSON.stringify({
+        hooks: {
+          SessionStart: [
+            { hooks: [{ type: 'command', command: '$CLAUDE_PROJECT_DIR/.claude/hooks/setup.sh' }] },
+          ],
+        },
+      }),
+      '.claude/hooks/setup.sh': '#!/bin/sh',
+    });
+    expect((await check('HKS-05')).run(ctx).passed).toBe(true);
+  });
+
+  test('HKS-05 flags the unbraced $VAR form when the script is actually missing', async () => {
+    const ctx = fakeContext({
+      '.claude/settings.json': JSON.stringify({
+        hooks: {
+          SessionStart: [
+            { hooks: [{ type: 'command', command: '$CLAUDE_PROJECT_DIR/.claude/hooks/missing.sh' }] },
+          ],
+        },
+      }),
+    });
+    expect((await check('HKS-05')).run(ctx).passed).toBe(false);
+  });
+
+  test('HKS-05 treats a node_modules/.bin/ command as resolved without requiring it committed', async () => {
+    const ctx = fakeContext({
+      '.claude/settings.json': JSON.stringify({
+        hooks: {
+          PreToolUse: [
+            {
+              matcher: 'Bash',
+              hooks: [
+                { type: 'command', command: '${CLAUDE_PROJECT_DIR}/node_modules/.bin/block-no-verify' },
+              ],
+            },
+          ],
+        },
+      }),
+    });
+    expect((await check('HKS-05')).run(ctx).passed).toBe(true);
+  });
+
   test('HKS-03 fails with no gate hook registered', async () => {
     const ctx = fakeContext({
       '.cursor/hooks.json': JSON.stringify({ version: 1, hooks: { afterFileEdit: [{ command: 'x' }] } }),
