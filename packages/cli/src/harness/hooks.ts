@@ -179,8 +179,12 @@ export function hookCommandPathsResolve(
     const resolvable = pathTokens.some((t) => {
       const unquoted = t.replace(/^["']|["']$/g, '');
       const normalized = unquoted.replace(/^\.[\\/]/, '').replace(/\\/g, '/');
-      // Claude uses ${CLAUDE_PROJECT_DIR}/.claude/hooks/... — strip env prefix for resolution.
-      const stripped = normalized.replace(/^\$\{[^}]+\}\//, '');
+      // Claude uses either ${CLAUDE_PROJECT_DIR}/... or the unbraced $CLAUDE_PROJECT_DIR/...
+      // — both are valid interpolation forms, so strip either one for resolution.
+      const stripped = normalized.replace(/^\$\{[^}]+\}\/|^\$[A-Za-z_][A-Za-z0-9_]*\//, '');
+      // A node_modules/.bin/ binary is populated by the package manager, not
+      // something a repository is expected to commit — treat it as resolved.
+      if (/(^|\/)node_modules\/\.bin\//.test(stripped)) return true;
       return has(stripped) || has(normalized);
     });
     if (!resolvable) missing.push(command);
