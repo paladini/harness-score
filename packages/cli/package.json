@@ -1,6 +1,6 @@
 {
   "name": "harness-score",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Deterministic AI coding harness-maturity scanner for AI-assisted repositories (Cursor-flagship, expanding to other AI-first dev tools). Zero LLM calls, zero network, zero runtime dependencies.",
   "type": "module",
   "bin": {

@@ -4,15 +4,14 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
 import { ALL_CHECKS } from '../src/index.js';
 
-const GUIDE = path.join(
-  path.dirname(fileURLToPath(import.meta.url)),
-  '..',
-  '..',
-  '..',
-  'docs',
-  'guide',
-  'measure-and-improve.md',
-);
+const REPO = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
+
+const GUIDE = path.join(REPO, 'docs', 'guide', 'measure-and-improve.md');
+
+function extractAnchors(content: string): string[] {
+  const matches = content.matchAll(/\{#([a-z0-9-]+)\}/g);
+  return [...matches].map((m) => m[1]).sort();
+}
 
 describe('docs stay in sync with the scanner', () => {
   const content = fs.readFileSync(GUIDE, 'utf8');
@@ -32,4 +31,17 @@ describe('docs stay in sync with the scanner', () => {
       expect(line, `heading for ${check.id}`).toContain(`${check.points} pt`);
     }
   });
+});
+
+describe('translated measure-and-improve guides preserve anchors', () => {
+  const enAnchors = extractAnchors(fs.readFileSync(GUIDE, 'utf8'));
+
+  for (const locale of ['pt-BR', 'es'] as const) {
+    test(`${locale} has the same anchor set as English`, () => {
+      const translated = path.join(REPO, 'docs', locale, 'guide', 'measure-and-improve.md');
+      expect(fs.existsSync(translated), `${locale} guide missing`).toBe(true);
+      const localeAnchors = extractAnchors(fs.readFileSync(translated, 'utf8'));
+      expect(localeAnchors).toEqual(enAnchors);
+    });
+  }
 });

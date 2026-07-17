@@ -1,5 +1,11 @@
 # harness-score
 
+## 1.1.0
+
+### Minor Changes
+
+- Add full VitePress guide translations in English (default), Portuguese (Brazil), and Latin American Spanish, with an easy language switcher in the site header and landing page.
+
 ## 1.0.0
 
 ### Major Changes
