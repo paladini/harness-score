@@ -17,7 +17,7 @@ Contract for translators and reviewers. English is the source of truth for check
 | check | verificação / check | verificación / check | Prefer "check" when tied to IDs |
 | scanner | scanner | scanner | Product name for CLI tool |
 | self-correcting | autocorretivo | autocorrección | Level name L4 in prose only |
-| OR semantics | semântica OR | semántica OR | Technical term |
+| OR semantics | equivalência entre ferramentas (semântica OR) | equivalencia entre herramientas (semántica OR) | Scanner accepts Cursor *or* Claude Code equivalents |
 
 ## Level names (prose only — CLI output stays English)
 
@@ -26,8 +26,8 @@ Contract for translators and reviewers. English is the source of truth for check
 | Unharnessed | Sem harness | Sin harness |
 | Documented | Documentado | Documentado |
 | Guided | Orientado | Guiado |
-| Sensing | Sensorizado | Con sensores |
-| Self-correcting | Autocorretivo | Autocorrector |
+| Sensing | Com sensores | Con sensores |
+| Self-correcting | Autocorretivo | Autocorrección |
 
 ## Never translate
 

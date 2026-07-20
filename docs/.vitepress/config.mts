@@ -1,8 +1,10 @@
 import { defineConfig, type HeadConfig } from 'vitepress';
-import { LOCALES, localeFromRelativePath, localePath, neutralPagePath } from './theme/i18n/localePath';
+import { hreflangPath, LOCALES, localeFromRelativePath, neutralPagePath } from './theme/i18n/localePath';
 
 const SITE = 'https://paladini.github.io/harness-score';
 const BASE = '/harness-score/';
+const FOOTER_COPYRIGHT =
+  'Copyright © 2026 <a href="https://paladini.github.io" target="_blank" rel="noopener">Fernando Paladini</a>';
 
 type SidebarItem = { text: string; link: string };
 
@@ -44,6 +46,7 @@ const guideItemsEs: SidebarItem[] = [
 
 const sharedTheme = {
   logo: '/logo.svg',
+  logoLink: BASE,
   socialLinks: [{ icon: 'github', link: 'https://github.com/paladini/harness-score' }],
   search: { provider: 'local' as const },
   outline: { level: [2, 3] as [number, number] },
@@ -73,7 +76,7 @@ export default defineConfig({
         sidebar: [{ text: 'The Guide', items: guideItemsEn.map((i) => ({ ...i })) }],
         footer: {
           message: 'Released under the MIT License.',
-          copyright: 'Copyright © 2026 Fernando Paladini',
+          copyright: FOOTER_COPYRIGHT,
         },
         docFooter: { prev: 'Previous', next: 'Next' },
         outline: { label: 'On this page' },
@@ -103,7 +106,7 @@ export default defineConfig({
         ],
         footer: {
           message: 'Licenciado sob MIT.',
-          copyright: 'Copyright © 2026 Fernando Paladini',
+          copyright: FOOTER_COPYRIGHT,
         },
         docFooter: { prev: 'Anterior', next: 'Próximo' },
         outline: { label: 'Nesta página' },
@@ -133,7 +136,7 @@ export default defineConfig({
         ],
         footer: {
           message: 'Publicado bajo licencia MIT.',
-          copyright: 'Copyright © 2026 Fernando Paladini',
+          copyright: FOOTER_COPYRIGHT,
         },
         docFooter: { prev: 'Anterior', next: 'Siguiente' },
         outline: { label: 'En esta página' },
@@ -151,7 +154,7 @@ export default defineConfig({
     const currentLocale = localeFromRelativePath(pageData.relativePath);
 
     const absoluteUrl = (locale: (typeof LOCALES)[number]['id']) => {
-      const path = localePath(locale, neutral);
+      const path = hreflangPath(locale, neutral);
       return path === '/' ? `${SITE}/` : `${SITE}${path}`;
     };
 

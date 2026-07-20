@@ -68,7 +68,7 @@ command/workflow ou subagent) ou maquinaria de hooks. Higiene básica segura —
 env ignorados, sem assinaturas de credencial em arquivos de harness. O harness
 agora viaja com o código e é revisado como código.
 
-### L3 · Sensorizado
+### L3 · Com sensores
 
 **Exige L2, mais: Sensors ≥ 60% · CI ≥ 50%.**
 

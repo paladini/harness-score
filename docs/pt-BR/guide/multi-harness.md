@@ -145,7 +145,7 @@ O scanner avalia cada dimensão via semântica OR, depois atribui um **nível de
 - **L0 · Sem harness** → padrão; nenhum requisito atendido.
 - **L1 · Documentado** → context ≥ 40% (guia raiz substantiva).
 - **L2 · Orientado** → context ≥ 60%, skills ≥ 30% **ou** hooks ≥ 30%, hygiene ≥ 50%.
-- **L3 · Sensorizado** → sensors ≥ 60% e CI ≥ 50%.
+- **L3 · Com sensores** → sensors ≥ 60% e CI ≥ 50%.
 - **L4 · Autocorretivo** → hooks ≥ 70% e pontuação total ≥ 80%.
 
 O nível aplica-se ao repositório inteiro, não por ferramenta. Isso é intencional: seu objetivo é elevar a qualidade geral do trabalho assistido por IA no projeto, independente da ferramenta que o dev escolheu. O modelo completo, com rationale por limiar, está no [modelo de maturidade](./maturity-model).

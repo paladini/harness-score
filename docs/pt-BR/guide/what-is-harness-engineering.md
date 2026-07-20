@@ -39,7 +39,7 @@ emprestadas da teoria de controle:
 Os princípios são os mesmos no Cursor, Claude Code, Windsurf e qualquer outra
 ferramenta de código com IA — o que muda é *onde* você configura (diretórios
 e formatos de frontmatter diferentes), não *o que* você está construindo. O
-Harness Score reconhece essas variantes via semântica OR, para o harness
+Harness Score reconhece essas variantes por **equivalência entre ferramentas** (semântica OR): basta uma ferramenta configurada corretamente para o harness
 funcionar em qualquer lugar.
 
 Um harness precisa dos dois. Guias sem sensores produzem saída confiante e

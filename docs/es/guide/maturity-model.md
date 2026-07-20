@@ -78,7 +78,7 @@ autocorrección: el agente puede *verificar su propio trabajo* con herramientas
 deterministas, y el pipeline atrapa lo que pierde. Para la mayoría de equipos,
 L3 es donde el desarrollo asistido por IA deja de sentirse arriesgado.
 
-### L4 · Autocorrector
+### L4 · Autocorrección
 
 **Requiere L3, más: Hooks ≥ 70% · puntuación total ≥ 80%.**
 

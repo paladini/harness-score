@@ -203,7 +203,7 @@ export const LANDING: Record<LocaleId, LandingCopy> = {
       { n: 0, name: 'Sem harness', hint: 'Recomeça do zero a cada sessão' },
       { n: 1, name: 'Documentado', hint: 'AGENTS.md orienta o agente' },
       { n: 2, name: 'Orientado', hint: 'Rules, skills, higiene' },
-      { n: 3, name: 'Sensorizado', hint: 'Testes, tipos e CI verificam' },
+      { n: 3, name: 'Com sensores', hint: 'Testes, tipos e CI verificam' },
       { n: 4, name: 'Autocorretivo', hint: 'Hooks fecham o loop' },
     ],
     toolStatus: { flagship: 'Principal', supported: 'Suportado' },
@@ -340,7 +340,7 @@ export const LANDING: Record<LocaleId, LandingCopy> = {
       { n: 1, name: 'Documentado', hint: 'AGENTS.md orienta al agente' },
       { n: 2, name: 'Guiado', hint: 'Rules, skills, higiene' },
       { n: 3, name: 'Con sensores', hint: 'Tests, tipos y CI verifican' },
-      { n: 4, name: 'Autocorrector', hint: 'Los hooks cierran el ciclo' },
+      { n: 4, name: 'Autocorrección', hint: 'Los hooks cierran el ciclo' },
     ],
     toolStatus: { flagship: 'Principal', supported: 'Compatible' },
     installs: [
@@ -433,7 +433,7 @@ export const LANDING: Record<LocaleId, LandingCopy> = {
       lede: 'Píldora 112×20 para filas de shields. CI la regenera, o fija un badge-lN.svg estático. Copia embeds en Markdown, HTML, iframe y JSX.',
       gallery: 'Galería',
       embeds: 'Snippets de embed',
-      cardAlt: 'Harness Score L4 · tarjeta de compartir autocorrector',
+      cardAlt: 'Harness Score L4 · tarjeta de compartir autocorrección',
     },
     products: {
       eyebrow: 'Qué incluye este repo',

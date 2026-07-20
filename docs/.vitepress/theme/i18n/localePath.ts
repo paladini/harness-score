@@ -33,6 +33,11 @@ export function localePath(locale: LocaleId, neutralPath: string): string {
   return slug ? `/${locale}/${slug}` : `/${locale}/`;
 }
 
+/** hreflang target — home is translated in every locale. */
+export function hreflangPath(locale: LocaleId, neutralPath: string): string {
+  return localePath(locale, neutralPath);
+}
+
 export function switchLocalePath(
   currentLocale: LocaleId,
   targetLocale: LocaleId,

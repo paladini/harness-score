@@ -146,7 +146,7 @@ El escáner evalúa cada dimensión vía semántica OR, luego asigna un **nivel 
 - **L1 · Documentado** → context ≥ 40% (guía raíz sustancial).
 - **L2 · Guiado** → context ≥ 60%, skills ≥ 30% **o** hooks ≥ 30%, hygiene ≥ 50%.
 - **L3 · Con sensores** → sensors ≥ 60% y CI ≥ 50%.
-- **L4 · Autocorrector** → hooks ≥ 70% y puntuación total ≥ 80%.
+- **L4 · Autocorrección** → hooks ≥ 70% y puntuación total ≥ 80%.
 
 El nivel aplica al repo entero, no por herramienta. Es intencional: tu objetivo es elevar la calidad general del trabajo asistido por IA en el proyecto, sin importar qué herramienta eligió el dev. El modelo completo, con rationale por umbral, está en el [modelo de madurez](./maturity-model).
 
