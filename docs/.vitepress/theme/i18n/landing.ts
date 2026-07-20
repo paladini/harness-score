@@ -483,7 +483,7 @@ export const LANDING: Record<LocaleId, LandingCopy> = {
       {
         title: '运行一次',
         cmd: 'npx harness-score',
-        note: '无需安装。指向任意仓库路径。',
+        note: '无需安装。可对任意仓库路径运行。',
         href: '/zh-CN/guide/measure-and-improve',
         external: false,
         primary: true,
@@ -524,14 +524,14 @@ export const LANDING: Record<LocaleId, LandingCopy> = {
     pitch: {
       eyebrow: '问题',
       title: 'AI 智能体的可靠性取决于周围的 harness。',
-      lede: '两个仓库可以运行同一模型，结果却天差地别。一个有引导智能体的指南、验证工作的传感器、阻止损害的 guardrails — 另一个什么都没有。Harness Score 在几秒内测量该 harness，适用于任何 AI 工具，并告诉你下一步该修什么。',
+      lede: '两个仓库可以运行同一模型，结果却天差地别。一个有引导智能体的指南、验证工作的传感器、阻止损害的 guardrails — 另一个什么都没有。Harness Score 在几秒内测量该 harness，适用于任何 AI 工具，并指出下一步该改进什么。',
     },
     steps: {
       eyebrow: '工作原理',
       items: [
         {
           title: '扫描',
-          body: '在仓库中运行 npx harness-score。CLI 读取文件系统 — 36 项 check，零 LLM 调用，零网络。',
+          body: '在仓库中运行 npx harness-score。CLI 只读文件系统 — 36 项 check，零大模型调用，零网络。',
         },
         {
           title: '定级',
@@ -546,7 +546,7 @@ export const LANDING: Record<LocaleId, LandingCopy> = {
     terminal: {
       eyebrow: '示例输出',
       title: '诊断，而非直觉',
-      lede: '确定性：同一 commit，同一分数 — 在笔记本或 CI 中。用 --min-level 3 门禁合并，让成熟度只升不降。',
+      lede: '确定性：同一 commit，同一分数 — 本地或 CI 结果一致。用 --min-level 3 门禁合并，让成熟度只升不降。',
       cta: '运行扫描器 →',
       ariaLabel: 'harness-score 示例输出',
     },
@@ -554,7 +554,7 @@ export const LANDING: Record<LocaleId, LandingCopy> = {
     maturity: {
       eyebrow: '成熟度阶梯',
       title: '五个可测量、可门禁的等级',
-      lede: '等级取决于 harness 的形态 — 不仅是分数。八十分文档零测试是 L1，不是 L3。',
+      lede: '等级取决于 harness 的形态 — 不仅是分数。文档满分但零测试仍是 L1，不是 L3。',
       cta: '完整成熟度模型 →',
     },
     tools: {
@@ -566,7 +566,7 @@ export const LANDING: Record<LocaleId, LandingCopy> = {
     showcase: {
       eyebrow: '展示分数',
       title: 'README 品牌徽章',
-      lede: '112×20 药丸形，用于 shield 行。CI 重新生成，或固定静态 badge-lN.svg。复制 Markdown、HTML、iframe 和 JSX 嵌入代码。',
+      lede: '112×20 胶囊形徽章，适合 README shield 行。CI 自动更新，或固定静态 badge-lN.svg。可复制 Markdown、HTML、iframe 与 JSX 嵌入代码。',
       gallery: '图库',
       embeds: '嵌入片段',
       cardAlt: 'Harness Score L4 · 自我纠正分享卡片',
