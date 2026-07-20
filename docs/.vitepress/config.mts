@@ -44,6 +44,18 @@ const guideItemsEs: SidebarItem[] = [
   { text: '9 · Referencias', link: '/guide/references' },
 ];
 
+const guideItemsZh: SidebarItem[] = [
+  { text: '1 · 什么是 harness 工程', link: '/guide/what-is-harness-engineering' },
+  { text: '2 · 多 harness 支持', link: '/guide/multi-harness' },
+  { text: '3 · Cursor harness 表面', link: '/guide/cursor-harness-surface' },
+  { text: '4 · 指南 — feedforward', link: '/guide/guides-feedforward' },
+  { text: '5 · 传感器 — feedback', link: '/guide/sensors-feedback' },
+  { text: '6 · Guardrails 与安全', link: '/guide/guardrails-and-safety' },
+  { text: '7 · 成熟度模型', link: '/guide/maturity-model' },
+  { text: '8 · 测量与改进', link: '/guide/measure-and-improve' },
+  { text: '9 · 参考资料', link: '/guide/references' },
+];
+
 const sharedTheme = {
   logo: '/logo.svg',
   logoLink: BASE,
@@ -145,6 +157,35 @@ export default defineConfig({
         returnToTopLabel: 'Volver arriba',
         darkModeSwitchLabel: 'Aparencia',
         sidebarMenuLabel: 'Menú',
+      },
+    },
+    'zh-CN': {
+      label: '中文',
+      lang: 'zh-CN',
+      link: '/zh-CN/',
+      description: '面向 AI 编码智能体的 harness 工程指南 — 用确定性扫描器测量 harness 成熟度。',
+      themeConfig: {
+        ...sharedTheme,
+        nav: [
+          { text: '指南', link: '/zh-CN/guide/what-is-harness-engineering' },
+          { text: '多 harness', link: '/zh-CN/guide/multi-harness' },
+          { text: '成熟度', link: '/zh-CN/guide/maturity-model' },
+          { text: '扫描器', link: '/zh-CN/guide/measure-and-improve' },
+        ],
+        sidebar: [
+          { text: '指南', items: guideItemsZh.map((i) => ({ text: i.text, link: `/zh-CN${i.link}` })) },
+        ],
+        footer: {
+          message: '基于 MIT 许可证发布。',
+          copyright: FOOTER_COPYRIGHT,
+        },
+        docFooter: { prev: '上一页', next: '下一页' },
+        outline: { label: '本页目录' },
+        lastUpdated: { text: '最后更新' },
+        langMenuLabel: '语言',
+        returnToTopLabel: '返回顶部',
+        darkModeSwitchLabel: '外观',
+        sidebarMenuLabel: '菜单',
       },
     },
   },

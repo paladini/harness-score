@@ -1,4 +1,4 @@
-export type LocaleId = 'root' | 'pt-BR' | 'es';
+export type LocaleId = 'root' | 'pt-BR' | 'es' | 'zh-CN';
 
 export interface LocaleMeta {
   id: LocaleId;
@@ -11,19 +11,30 @@ export const LOCALES: LocaleMeta[] = [
   { id: 'root', label: 'English', prefix: '', hreflang: 'en' },
   { id: 'pt-BR', label: 'Português', prefix: 'pt-BR', hreflang: 'pt-BR' },
   { id: 'es', label: 'Español', prefix: 'es', hreflang: 'es-419' },
+  { id: 'zh-CN', label: '中文', prefix: 'zh-CN', hreflang: 'zh-CN' },
 ];
 
+const PREFIXED_LOCALES = LOCALES.filter((locale) => locale.prefix !== '');
+
 export function localeFromRelativePath(relativePath: string): LocaleId {
-  if (relativePath === 'pt-BR/index.md' || relativePath.startsWith('pt-BR/')) return 'pt-BR';
-  if (relativePath === 'es/index.md' || relativePath.startsWith('es/')) return 'es';
+  for (const locale of PREFIXED_LOCALES) {
+    if (relativePath === `${locale.prefix}/index.md` || relativePath.startsWith(`${locale.prefix}/`)) {
+      return locale.id;
+    }
+  }
   return 'root';
 }
 
 /** Strip locale prefix and `.md` so `guide/foo.md` and `index.md` share one key. */
 export function neutralPagePath(relativePath: string): string {
   let path = relativePath;
-  if (path.startsWith('pt-BR/')) path = path.slice('pt-BR/'.length);
-  else if (path.startsWith('es/')) path = path.slice('es/'.length);
+  for (const locale of PREFIXED_LOCALES) {
+    const prefix = `${locale.prefix}/`;
+    if (path.startsWith(prefix)) {
+      path = path.slice(prefix.length);
+      break;
+    }
+  }
   return path.replace(/\.md$/, '').replace(/\/index$/, '') || 'index';
 }
 

@@ -36,7 +36,7 @@ describe('docs stay in sync with the scanner', () => {
 describe('translated measure-and-improve guides preserve anchors', () => {
   const enAnchors = extractAnchors(fs.readFileSync(GUIDE, 'utf8'));
 
-  for (const locale of ['pt-BR', 'es'] as const) {
+  for (const locale of ['pt-BR', 'es', 'zh-CN'] as const) {
     test(`${locale} has the same anchor set as English`, () => {
       const translated = path.join(REPO, 'docs', locale, 'guide', 'measure-and-improve.md');
       expect(fs.existsSync(translated), `${locale} guide missing`).toBe(true);

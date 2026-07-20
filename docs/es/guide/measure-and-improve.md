@@ -101,7 +101,7 @@ harness-score --diff baseline.json     # see what moved
 payload) y `--md` (agrega sección "Compared to baseline") — es lo que la
 GitHub Action usa para comentar "puntuación subió de L2 a L3" en PRs.
 
-## El plugin Cursor
+## El plugin Cursor {#the-cursor-plugin}
 
 Instala **Harness Score** desde [su directorio de plugin en este repo](https://github.com/paladini/harness-score/tree/main/plugins/cursor)
 (listado Cursor Marketplace enviado y pendiente de revisión — este enlace

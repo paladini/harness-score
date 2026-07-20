@@ -470,6 +470,142 @@ export const LANDING: Record<LocaleId, LandingCopy> = {
     measureEmbedPath: '/es/guide/measure-and-improve#embed-snippets',
     whatIsPath: '/es/guide/what-is-harness-engineering',
   },
+  'zh-CN': {
+    levels: [
+      { n: 0, name: '无 harness', hint: '每次会话从零开始' },
+      { n: 1, name: '已文档化', hint: 'AGENTS.md 引导智能体' },
+      { n: 2, name: '已引导', hint: 'Rules、skills、卫生规范' },
+      { n: 3, name: '有传感器', hint: '测试、类型与 CI 验证工作' },
+      { n: 4, name: '自我纠正', hint: 'Hooks 闭合反馈环' },
+    ],
+    toolStatus: { flagship: '旗舰', supported: '已支持' },
+    installs: [
+      {
+        title: '运行一次',
+        cmd: 'npx harness-score',
+        note: '无需安装。指向任意仓库路径。',
+        href: '/zh-CN/guide/measure-and-improve',
+        external: false,
+        primary: true,
+      },
+      {
+        title: 'npm',
+        cmd: 'npm i -g harness-score',
+        note: 'v1.1.0 在 npmjs.org',
+        href: 'https://www.npmjs.com/package/harness-score',
+        external: true,
+        primary: false,
+      },
+      {
+        title: 'Cursor 插件',
+        cmd: '/harness-audit',
+        note: '在仓库中 — Marketplace 尚未上线',
+        href: 'https://github.com/paladini/harness-score/tree/main/plugins/cursor',
+        external: true,
+        primary: false,
+      },
+      {
+        title: 'GitHub Action',
+        cmd: 'paladini/harness-score/action',
+        note: 'CI 门禁 + README 徽章',
+        href: 'https://github.com/paladini/harness-score/tree/main/action',
+        external: true,
+        primary: false,
+      },
+      {
+        title: 'JSR',
+        cmd: 'npx jsr add @paladini/harness-score',
+        note: 'Deno 与 Bun 用户',
+        href: 'https://jsr.io/@paladini/harness-score',
+        external: true,
+        primary: false,
+      },
+    ],
+    pitch: {
+      eyebrow: '问题',
+      title: 'AI 智能体的可靠性取决于周围的 harness。',
+      lede: '两个仓库可以运行同一模型，结果却天差地别。一个有引导智能体的指南、验证工作的传感器、阻止损害的 guardrails — 另一个什么都没有。Harness Score 在几秒内测量该 harness，适用于任何 AI 工具，并告诉你下一步该修什么。',
+    },
+    steps: {
+      eyebrow: '工作原理',
+      items: [
+        {
+          title: '扫描',
+          body: '在仓库中运行 npx harness-score。CLI 读取文件系统 — 36 项 check，零 LLM 调用，零网络。',
+        },
+        {
+          title: '定级',
+          body: '获得 L0–L4 成熟度等级、六个维度的 108 分细分，以及阻碍下一等级的具体差距。',
+        },
+        {
+          title: '修复',
+          body: '每项失败的 check 都链接到指南中的修复方案 — 或使用编辑器插件的 /harness-audit 命令应用修复。',
+        },
+      ],
+    },
+    terminal: {
+      eyebrow: '示例输出',
+      title: '诊断，而非直觉',
+      lede: '确定性：同一 commit，同一分数 — 在笔记本或 CI 中。用 --min-level 3 门禁合并，让成熟度只升不降。',
+      cta: '运行扫描器 →',
+      ariaLabel: 'harness-score 示例输出',
+    },
+    install: { eyebrow: '开始', title: '在任何工作环境中安装' },
+    maturity: {
+      eyebrow: '成熟度阶梯',
+      title: '五个可测量、可门禁的等级',
+      lede: '等级取决于 harness 的形态 — 不仅是分数。八十分文档零测试是 L1，不是 L3。',
+      cta: '完整成熟度模型 →',
+    },
+    tools: {
+      eyebrow: '兼容',
+      title: '任何 AI 编码工具',
+      lede: '一个 harness、一个成熟度模型、多种工具。配置 Cursor、Claude Code、Windsurf 或其他 AI 工具 — Harness Score 以相同方式测量它们。',
+      cta: '了解多 harness 支持 →',
+    },
+    showcase: {
+      eyebrow: '展示分数',
+      title: 'README 品牌徽章',
+      lede: '112×20 药丸形，用于 shield 行。CI 重新生成，或固定静态 badge-lN.svg。复制 Markdown、HTML、iframe 和 JSX 嵌入代码。',
+      gallery: '图库',
+      embeds: '嵌入片段',
+      cardAlt: 'Harness Score L4 · 自我纠正分享卡片',
+    },
+    products: {
+      eyebrow: '本仓库包含',
+      items: [
+        {
+          title: '指南',
+          body: '8 章 AI 编码智能体 harness 工程 — feedforward、传感器、guardrails。',
+          href: '/zh-CN/guide/what-is-harness-engineering',
+        },
+        {
+          title: 'CLI',
+          body: 'harness-score — JSON、markdown、徽章输出。零运行时依赖。',
+          href: '/zh-CN/guide/measure-and-improve',
+        },
+        {
+          title: 'Cursor 插件',
+          body: '/harness-audit 命令 + skill，修复扫描发现的每个差距。',
+          href: 'https://github.com/paladini/harness-score/tree/main/plugins/cursor',
+          external: true,
+        },
+        {
+          title: 'GitHub Action',
+          body: '每次 push 扫描，生成徽章，低于 --min-level 则失败。',
+          href: 'https://github.com/paladini/harness-score/tree/main/action',
+          external: true,
+        },
+      ],
+    },
+    guidePath: '/zh-CN/guide/measure-and-improve',
+    maturityPath: '/zh-CN/guide/maturity-model',
+    multiHarnessPath: '/zh-CN/guide/multi-harness',
+    measurePath: '/zh-CN/guide/measure-and-improve',
+    measureShowPath: '/zh-CN/guide/measure-and-improve#show-your-maturity',
+    measureEmbedPath: '/zh-CN/guide/measure-and-improve#embed-snippets',
+    whatIsPath: '/zh-CN/guide/what-is-harness-engineering',
+  },
 };
 
 export const SUPPORTED_TOOLS = ['Cursor', 'Claude Code', 'Windsurf', 'Cline', 'Continue', 'Codex'] as const;
