@@ -4,30 +4,30 @@ Contract for translators and reviewers. English is the source of truth for check
 
 ## Stable terms
 
-| English | Português (Brasil) | Español (LatAm) | 简体中文 (zh-CN) | Notes |
-|---|---|---|---|---|
-| harness | harness | harness | harness | Keep in English; explain on first use |
-| harness engineering | engenharia de harness | ingeniería de harness | harness 工程 | Same |
+| English | Português (Brasil) | Español (LatAm) | 简体中文 (zh-CN) | हिन्दी (hi-IN) | Notes |
+|---|---|---|---|---|---|
+| harness | harness | harness | harness | harness | Keep in English; explain on first use |
+| harness engineering | engenharia de harness | ingeniería de harness | harness 工程 | harness engineering | Same |
 | feedforward | feedforward | feedforward | feedforward | Control-theory term; gloss once |
 | feedback | feedback | feedback | feedback | Same |
-| guides | guias | guías | 指南 | Feedforward controls |
-| sensors | sensores | sensores | 传感器 | Feedback controls |
+| guides | guias | guías | 指南 | guides | Feedforward controls |
+| sensors | sensores | sensores | 传感器 | sensors | Feedback controls |
 | guardrails | guardrails | guardrails | guardrails | Runtime enforcement |
-| maturity level | nível de maturidade | nivel de madurez | 成熟度等级 | Always keep `L0`–`L4` |
-| check | verificação / check | verificación / check | check / 检查 | Prefer "check" when tied to IDs |
-| scanner | scanner | scanner | 扫描器 | Product name for CLI tool |
-| self-correcting | autocorretivo | autocorrección | 自我纠正 | Level name L4 in prose only |
-| OR semantics | equivalência entre ferramentas (semântica OR) | equivalencia entre herramientas (semántica OR) | 工具等价（OR 语义） | Scanner accepts Cursor *or* Claude Code equivalents |
+| maturity level | nível de maturidade | nivel de madurez | 成熟度等级 | परिपक्वता स्तर | Always keep `L0`–`L4` |
+| check | verificação / check | verificación / check | check / 检查 | check / जाँच | Prefer "check" when tied to IDs |
+| scanner | scanner | scanner | 扫描器 | scanner / स्कैनर | Product name for CLI tool |
+| self-correcting | autocorretivo | autocorrección | 自我纠正 | स्व-सुधार | Level name L4 in prose only |
+| OR semantics | equivalência entre ferramentas (semântica OR) | equivalencia entre herramientas (semántica OR) | 工具等价（OR 语义） | OR semantics | Scanner accepts Cursor *or* Claude Code equivalents |
 
 ## Level names (prose only — CLI output stays English)
 
-| EN | pt-BR | es | zh-CN |
-|---|---|---|---|
-| Unharnessed | Sem harness | Sin harness | 无 harness |
-| Documented | Documentado | Documentado | 已文档化 |
-| Guided | Orientado | Guiado | 已引导 |
-| Sensing | Com sensores | Con sensores | 有传感器 |
-| Self-correcting | Autocorretivo | Autocorrección | 自我纠正 |
+| EN | pt-BR | es | zh-CN | hi-IN |
+|---|---|---|---|---|
+| Unharnessed | Sem harness | Sin harness | 无 harness | harness रहित |
+| Documented | Documentado | Documentado | 已文档化 | दस्तावेज़ीकृत |
+| Guided | Orientado | Guiado | 已引导 | मार्गदर्शित |
+| Sensing | Com sensores | Con sensores | 有传感器 | sensors के साथ |
+| Self-correcting | Autocorretivo | Autocorrección | 自我纠正 | स्व-सुधार |
 
 ## Never translate
 
@@ -47,6 +47,7 @@ Contract for translators and reviewers. English is the source of truth for check
 - pt-BR: Brazilian Portuguese (not European).
 - es: neutral Latin American (tú/ustedes; avoid vosotros, ordenador, fichero).
 - zh-CN: mainland Simplified Chinese (简体中文); not Traditional (繁體).
+- hi-IN: Indian Hindi in Devanagari; formal **आप**; Western numerals; English loanwords OK for lint/CI/PR where Indian IT practice keeps them.
 
 ## Links in translated pages
 
@@ -61,4 +62,4 @@ Use relative paths within the locale (`./maturity-model`, `./measure-and-improve
 5. Extend `packages/cli/test/docs.test.ts` anchor parity loop.
 6. Add glossary column + tone note; run `npm test` and `npm run docs:build`.
 
-Future example: Hindi (`hi`) — same checklist; Devanagari font coverage may need a theme tweak.
+Example: Hindi (`hi-IN`) — prefix `hi-IN`, label `हिन्दी`. Devanagari font fallback (`Noto Sans Devanagari`) in theme CSS if conjuncts render poorly.

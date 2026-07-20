@@ -56,6 +56,18 @@ const guideItemsZh: SidebarItem[] = [
   { text: '9 · 参考资料', link: '/guide/references' },
 ];
 
+const guideItemsHi: SidebarItem[] = [
+  { text: '1 · harness engineering क्या है', link: '/guide/what-is-harness-engineering' },
+  { text: '2 · Multi-harness support', link: '/guide/multi-harness' },
+  { text: '3 · Cursor harness surface', link: '/guide/cursor-harness-surface' },
+  { text: '4 · Guides — feedforward', link: '/guide/guides-feedforward' },
+  { text: '5 · Sensors — feedback', link: '/guide/sensors-feedback' },
+  { text: '6 · Guardrails और safety', link: '/guide/guardrails-and-safety' },
+  { text: '7 · Maturity model', link: '/guide/maturity-model' },
+  { text: '8 · Measure और improve', link: '/guide/measure-and-improve' },
+  { text: '9 · References', link: '/guide/references' },
+];
+
 const sharedTheme = {
   logo: '/logo.svg',
   logoLink: BASE,
@@ -186,6 +198,36 @@ export default defineConfig({
         returnToTopLabel: '返回顶部',
         darkModeSwitchLabel: '外观',
         sidebarMenuLabel: '菜单',
+      },
+    },
+    'hi-IN': {
+      label: 'हिन्दी',
+      lang: 'hi-IN',
+      link: '/hi-IN/',
+      description:
+        'AI coding agents के लिए harness engineering गाइड — deterministic scanner से harness maturity मापें।',
+      themeConfig: {
+        ...sharedTheme,
+        nav: [
+          { text: 'गाइड', link: '/hi-IN/guide/what-is-harness-engineering' },
+          { text: 'Multi-harness', link: '/hi-IN/guide/multi-harness' },
+          { text: 'Maturity', link: '/hi-IN/guide/maturity-model' },
+          { text: 'Scanner', link: '/hi-IN/guide/measure-and-improve' },
+        ],
+        sidebar: [
+          { text: 'गाइड', items: guideItemsHi.map((i) => ({ text: i.text, link: `/hi-IN${i.link}` })) },
+        ],
+        footer: {
+          message: 'MIT License के तहत जारी।',
+          copyright: FOOTER_COPYRIGHT,
+        },
+        docFooter: { prev: 'पिछला', next: 'अगला' },
+        outline: { label: 'इस पृष्ठ पर' },
+        lastUpdated: { text: 'अंतिम अपडेट' },
+        langMenuLabel: 'भाषा',
+        returnToTopLabel: 'ऊपर जाएँ',
+        darkModeSwitchLabel: 'दिखावट',
+        sidebarMenuLabel: 'मेनू',
       },
     },
   },

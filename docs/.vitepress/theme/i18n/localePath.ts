@@ -1,4 +1,4 @@
-export type LocaleId = 'root' | 'pt-BR' | 'es' | 'zh-CN';
+export type LocaleId = 'root' | 'pt-BR' | 'es' | 'zh-CN' | 'hi-IN';
 
 export interface LocaleMeta {
   id: LocaleId;
@@ -12,6 +12,7 @@ export const LOCALES: LocaleMeta[] = [
   { id: 'pt-BR', label: 'Português', prefix: 'pt-BR', hreflang: 'pt-BR' },
   { id: 'es', label: 'Español', prefix: 'es', hreflang: 'es-419' },
   { id: 'zh-CN', label: '中文', prefix: 'zh-CN', hreflang: 'zh-CN' },
+  { id: 'hi-IN', label: 'हिन्दी', prefix: 'hi-IN', hreflang: 'hi-IN' },
 ];
 
 const PREFIXED_LOCALES = LOCALES.filter((locale) => locale.prefix !== '');
