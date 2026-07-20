@@ -4,7 +4,10 @@
 
 ### Minor Changes
 
-- Add full VitePress guide translations in English (default), Portuguese (Brazil), and Latin American Spanish, with an easy language switcher in the site header and landing page.
+- Fix `HKS-05` (hook scripts exist in the repository) to resolve both Claude Code interpolation forms for hook command paths:
+  - **Unbraced `$VAR/...` form:** `hookCommandPathsResolve` only stripped the braced `${VAR}/...` prefix before checking whether a hook command references a committed file. The unbraced form (`$CLAUDE_PROJECT_DIR/.claude/hooks/setup.sh`) is equally valid Claude Code syntax and was reported as a missing script even when the file exists and is committed — a false negative costing 2 points.
+  - **`node_modules/.bin/` binaries:** a hook command referencing a package-manager-installed binary (e.g. `${CLAUDE_PROJECT_DIR}/node_modules/.bin/block-no-verify`) is now treated as resolved. These are populated by `npm install`, not scripts a repository is expected to commit — the previous "commit the script" remediation didn't apply to them.
+- Add full VitePress guide translations in English (default), Portuguese (Brazil), and Latin American Spanish, with translated landing pages and language switcher on home and guide.
 
 ## 1.0.0
 
