@@ -359,43 +359,6 @@
   }
 }
 
-.hs-landing__lang {
-  margin: 0 0 1.5rem;
-}
-
-.hs-lang-switcher {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.35rem 0.5rem;
-  font-size: 0.92rem;
-}
-
-.hs-lang-switcher__sep {
-  color: var(--hs-muted);
-  user-select: none;
-}
-
-.hs-lang-switcher__link {
-  color: var(--vp-c-text-2);
-  text-decoration: none;
-  font-weight: 500;
-  padding: 0.15rem 0.35rem;
-  border-radius: 4px;
-  transition:
-    color 0.15s,
-    background 0.15s;
-}
-
-.hs-lang-switcher__link:hover {
-  color: var(--hs-emer);
-}
-
-.hs-lang-switcher__link.is-active {
-  color: var(--hs-emer);
-  font-weight: 700;
-}
-
 /* Match VitePress's stacked-hero breakpoint (960px), not just phones.
    Logo already appears in the header on these widths. */
 @media (max-width: 959px) {

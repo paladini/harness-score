@@ -3,7 +3,6 @@ import { useData, withBase } from 'vitepress';
 import { computed } from 'vue';
 import { LANDING, SUPPORTED_TOOLS, terminalSample } from '../i18n/landing';
 import { localeFromRelativePath } from '../i18n/localePath';
-import LanguageSwitcher from './LanguageSwitcher.vue';
 
 const { page } = useData();
 
@@ -20,8 +19,6 @@ const supportedTools = computed(() =>
 
 <template>
   <div class="hs-landing">
-    <LanguageSwitcher class="hs-landing__lang" />
-
     <section class="hs-landing__pitch">
       <p class="hs-landing__eyebrow">{{ copy.pitch.eyebrow }}</p>
       <h2 class="hs-landing__title">{{ copy.pitch.title }}</h2>
