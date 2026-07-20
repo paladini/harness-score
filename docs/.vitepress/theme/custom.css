@@ -52,3 +52,8 @@
   margin: 0.25rem 0 0;
   border-radius: 8px;
 }
+
+/* Devanagari (hi-IN): conjuncts and matras need a reliable fallback alongside Inter. */
+:root {
+  --vp-font-family-base: "Inter", "Noto Sans Devanagari", system-ui, sans-serif;
+}
