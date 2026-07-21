@@ -23,7 +23,7 @@ de la Action (`maturity` por defecto).
 | Scope | Significado | Qué se escanea |
 |---|---|---|
 | `repo` | Siempre activo | El directorio que pasas a `harness-score` (default `.`) |
-| `user` | Opt-in | Rutas allowlisted a nivel usuario: `~/.cursor/*`, `~/.claude/*`, `~/.codex/skills`, `~/.agents/skills`, `~/.config/opencode/agents`, configs globales de MCP/hooks, etc. |
+| `user` | Opt-in | Rutas allowlisted mapeadas a formas repo-relative: `~/.cursor/*`, `~/.claude/*`, `~/.codeium/windsurf/*` (alias Windsurf), `~/Documents/Cline/Rules` → `.clinerules/`, `~/.continue/{rules,prompts}`, `~/.agents/*`, `~/.zed/commands`, `~/.config/opencode/agents`, etc. Ver [multi-harness — user scope por herramienta](./multi-harness#user-scope-by-tool). **No incluye:** Copilot global (solo repo), reglas inline de Continue en `config.yaml`, User Rules de Cursor solo en UI. |
 | `system` | Opt-in | Reservado para instalaciones validadas a nivel sistema (mínimo en v1) |
 | `extraRoots` | Opt-in | Directorios adicionales (relativos o absolutos) cuyo árbol refleja el layout del harness — ej.: checkout compartido de harness del equipo |
 

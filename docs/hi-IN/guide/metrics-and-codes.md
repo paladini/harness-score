@@ -23,7 +23,7 @@ input से set करें (`maturity` default)।
 | Scope | अर्थ | क्या scan होता है |
 |---|---|---|
 | `repo` | हमेशा on | वह directory जो आप `harness-score` को pass करते हैं (default `.`) |
-| `user` | Opt-in | Allowlisted user-level paths: `~/.cursor/*`, `~/.claude/*`, `~/.codex/skills`, `~/.agents/skills`, `~/.config/opencode/agents`, global MCP/hooks configs, आदि |
+| `user` | Opt-in | Allowlisted paths repo-relative shapes में map: `~/.cursor/*`, `~/.claude/*`, `~/.codeium/windsurf/*` (Windsurf alias), `~/Documents/Cline/Rules` → `.clinerules/`, `~/.continue/{rules,prompts}`, `~/.agents/*`, `~/.zed/commands`, `~/.config/opencode/agents`, आदि। [multi-harness — user scope by tool](./multi-harness#user-scope-by-tool) देखें। **शामिल नहीं:** Copilot global (repo-only), Continue inline rules in `config.yaml`, IDE-only Cursor User Rules। |
 | `system` | Opt-in | Validated system-wide installs के लिए reserved (v1 में minimal) |
 | `extraRoots` | Opt-in | Additional directories (relative या absolute) जिनकी tree harness layout mirror करती है — जैसे shared team harness checkout |
 

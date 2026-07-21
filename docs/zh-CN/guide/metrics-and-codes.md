@@ -19,7 +19,7 @@
 | Scope | 含义 | 扫描内容 |
 |---|---|---|
 | `repo` | 始终开启 | 传给 `harness-score` 的目录（默认 `.`） |
-| `user` | 可选 | 白名单用户级路径：`~/.cursor/*`、`~/.claude/*`、`~/.codex/skills`、`~/.agents/skills`、`~/.config/opencode/agents`、全局 MCP/hooks 配置等 |
+| `user` | 可选 | allowlisted 用户级路径映射为 repo-relative 形状：`~/.cursor/*`、`~/.claude/*`、`~/.codeium/windsurf/*`（Windsurf 别名）、`~/Documents/Cline/Rules` → `.clinerules/`、`~/.continue/{rules,prompts}`、`~/.agents/*`、`~/.zed/commands`、`~/.config/opencode/agents` 等。见 [多 harness — 各工具 user scope](./multi-harness#user-scope-by-tool)。**不含：** Copilot 全局（仅 repo）、Continue 在 `config.yaml` 中的内联 rules、仅 UI 的 Cursor User Rules。 |
 | `system` | 可选 | 保留给已验证的系统级安装（v1 中极少） |
 | `extraRoots` | 可选 | 额外目录（相对或绝对），其目录树镜像 harness 布局 — 例如共享团队 harness checkout |
 

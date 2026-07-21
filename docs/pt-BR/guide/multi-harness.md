@@ -64,11 +64,31 @@ de usuário com `--scope user` ou `scopes.user` em
 | Local | Exemplos | Conta em maturity | Conta em effective (quando ativo) |
 |---|---|---|---|
 | Repositório | `.cursor/`, `AGENTS.md`, CI, testes | Sim | Sim |
-| Home do usuário | `~/.cursor/skills`, `~/.cursor/mcp.json`, `~/.claude/skills` | Não | Sim |
+| Home do usuário | `~/.cursor/…`, `~/.claude/…`, `~/.codeium/windsurf/…`, `~/Documents/Cline/Rules`, `~/.continue/…`, `~/.agents/…`, `~/.zed/…` | Não | Sim |
 | Checkout compartilhado | `extraRoots` para harness de equipe | Não | Sim |
 
 Caminhos globais são **allowlisted** por ferramenta — o scanner nunca varre
 todo `$HOME`. User Rules do Cursor só na UI do IDE não aparecem em nenhum score.
+
+### Cobertura do user scope por ferramenta {#user-scope-by-tool}
+
+Com `--scope user`, caminhos físicos são mapeados para as mesmas formas
+repo-relative do registry, para checks se comportarem como arquivos do repo.
+
+| Ferramenta | Caminhos user-scope (exemplos) | Notas |
+|---|---|---|
+| **Cursor** | `~/.cursor/{skills,commands,agents,rules}`, `~/.cursor/mcp.json` | User Rules só na UI continuam invisíveis |
+| **Claude Code** | `~/.claude/{skills,commands,agents}`, `~/.claude/settings.json`, `~/.mcp.json` | |
+| **Windsurf** | `~/.codeium/windsurf/memories/global_rules.md` → `.windsurf/rules/…`, `~/.windsurf/{rules,workflows}/`, alias MCP | Regras globais ficam no Codeium |
+| **Cline** | `~/Documents/Cline/Rules/*.md` → `.clinerules/…` | Fallback: `~/Cline/Rules` |
+| **Continue** | `~/.continue/{rules,prompts}/` | Regras inline em `config.yaml` não parseadas (v1) |
+| **Codex / Antigravity** | `~/.agents/{skills,rules,workflows}/`, `~/.agent/…`, `~/.gemini/rules/`, `~/.codex/skills`, `~/.agents/AGENTS.md` | |
+| **OpenCode** | `$XDG_CONFIG_HOME/opencode/agents/` | |
+| **Zed** | `~/.zed/commands/` | |
+| **GitHub Copilot** | — | Só repo: `.github/instructions/` |
+
+**GitHub Copilot** não tem caminho global documentado em disco — mantenha
+instruções de equipe no repositório para paridade maturity/effective.
 
 Tabela completa de escopos: [Métricas e códigos](./metrics-and-codes#scopes).
 

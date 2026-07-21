@@ -64,12 +64,34 @@ user-level installs when you pass `--scope user` or set `scopes.user` in
 | Location | Examples | Counted in maturity | Counted in effective (when enabled) |
 |---|---|---|---|
 | Repository | `.cursor/`, `AGENTS.md`, CI, tests | Yes | Yes |
-| User home | `~/.cursor/skills`, `~/.cursor/mcp.json`, `~/.claude/skills` | No | Yes |
+| User home | `~/.cursor/…`, `~/.claude/…`, `~/.codeium/windsurf/…`, `~/Documents/Cline/Rules`, `~/.continue/…`, `~/.agents/…`, `~/.zed/…` | No | Yes |
 | Shared checkout | `extraRoots` path to team harness repo | No | Yes |
 
 Global paths are **allowlisted** per tool — the scanner never walks all of
 `$HOME`. Cursor User Rules stored only in the IDE settings UI are invisible
 to both scores.
+
+### User-scope coverage by tool {#user-scope-by-tool}
+
+When `--scope user` is enabled, physical paths are mapped to the same
+repo-relative shapes the harness registry uses, so checks behave like repo
+files. See [Metrics & Codes — scopes](./metrics-and-codes#scopes) for the
+full list.
+
+| Tool | User-scope paths (examples) | Notes |
+|---|---|---|
+| **Cursor** | `~/.cursor/{skills,commands,agents,rules}`, `~/.cursor/mcp.json` | IDE-only User Rules still invisible |
+| **Claude Code** | `~/.claude/{skills,commands,agents}`, `~/.claude/settings.json`, `~/.mcp.json` | |
+| **Windsurf** | `~/.codeium/windsurf/memories/global_rules.md` → `.windsurf/rules/…`, `~/.windsurf/{rules,workflows}/`, MCP alias | Global rules live under Codeium, not `.windsurf/` |
+| **Cline** | `~/Documents/Cline/Rules/*.md` → `.clinerules/…` | Fallback: `~/Cline/Rules` |
+| **Continue** | `~/.continue/{rules,prompts}/` | Inline rules in `config.yaml` not parsed (v1) |
+| **Codex / Antigravity** | `~/.agents/{skills,rules,workflows}/`, `~/.agent/…`, `~/.gemini/rules/`, `~/.codex/skills`, `~/.agents/AGENTS.md` | |
+| **OpenCode** | `$XDG_CONFIG_HOME/opencode/agents/` | |
+| **Zed** | `~/.zed/commands/` | |
+| **GitHub Copilot** | — | Repo-only: `.github/instructions/` |
+
+**GitHub Copilot** has no documented on-disk global instructions path — keep
+team instructions in the repository for maturity and effective parity.
 
 See the full scope table in [Metrics & Codes](./metrics-and-codes#scopes).
 

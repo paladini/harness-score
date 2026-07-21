@@ -70,6 +70,54 @@ describe('buildUserOverlay', () => {
       }
     });
   });
+
+  test('maps Windsurf global_rules.md to .windsurf/rules/ for checks', () => {
+    withTempHome((home) => {
+      const globalRules = path.join(home, '.codeium', 'windsurf', 'memories', 'global_rules.md');
+      fs.mkdirSync(path.dirname(globalRules), { recursive: true });
+      fs.writeFileSync(globalRules, '# Global Windsurf rules\n', 'utf8');
+
+      const overlay = buildUserOverlay();
+      expect(overlay?.files.get('.windsurf/rules/global_rules.md')).toBe(globalRules);
+    });
+  });
+
+  test('collects Continue and Zed user-level harness dirs', () => {
+    withTempHome((home) => {
+      fs.mkdirSync(path.join(home, '.continue', 'rules'), { recursive: true });
+      fs.writeFileSync(path.join(home, '.continue', 'rules', 'style.md'), '# Style\n', 'utf8');
+      fs.mkdirSync(path.join(home, '.zed', 'commands'), { recursive: true });
+      fs.writeFileSync(path.join(home, '.zed', 'commands', 'review.md'), '# Review\n', 'utf8');
+
+      const overlay = buildUserOverlay();
+      expect(overlay?.files.has('.continue/rules/style.md')).toBe(true);
+      expect(overlay?.files.has('.zed/commands/review.md')).toBe(true);
+    });
+  });
+
+  test('maps Cline global rules from Documents/Cline/Rules to .clinerules/', () => {
+    withTempHome((home) => {
+      const rulesDir = path.join(home, 'Documents', 'Cline', 'Rules');
+      fs.mkdirSync(rulesDir, { recursive: true });
+      fs.writeFileSync(path.join(rulesDir, 'preferences.md'), '# Preferences\n', 'utf8');
+
+      const overlay = buildUserOverlay();
+      expect(overlay?.files.has('.clinerules/preferences.md')).toBe(true);
+    });
+  });
+
+  test('collects Antigravity user-level rules and workflows', () => {
+    withTempHome((home) => {
+      fs.mkdirSync(path.join(home, '.agents', 'rules'), { recursive: true });
+      fs.writeFileSync(path.join(home, '.agents', 'rules', 'core'), '# Core\n', 'utf8');
+      fs.mkdirSync(path.join(home, '.agents', 'workflows'), { recursive: true });
+      fs.writeFileSync(path.join(home, '.agents', 'workflows', 'release.md'), '# Release\n', 'utf8');
+
+      const overlay = buildUserOverlay();
+      expect(overlay?.files.has('.agents/rules/core')).toBe(true);
+      expect(overlay?.files.has('.agents/workflows/release.md')).toBe(true);
+    });
+  });
 });
 
 describe('buildExtraRootOverlay', () => {
