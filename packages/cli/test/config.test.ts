@@ -89,4 +89,26 @@ describe('loadConfigFile', () => {
     expect(loadConfigFile(file).scopes.user).toBe(true);
     fs.rmSync(dir, { recursive: true, force: true });
   });
+
+  test('throws when JSON is invalid', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hs-cfg-'));
+    const file = path.join(dir, 'bad.json');
+    fs.writeFileSync(file, '{not json', 'utf8');
+    expect(() => loadConfigFile(file)).toThrow(/could not read\/parse/);
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+});
+
+describe('resolveScanConfig extra roots', () => {
+  test('adds extra root ids to effectiveScopes', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hs-cfg-'));
+    fs.writeFileSync(
+      path.join(dir, '.harness-score.json'),
+      JSON.stringify({ extraRoots: [{ id: 'team-shared', path: '../shared' }] }),
+      'utf8',
+    );
+    const resolved = resolveScanConfig(dir);
+    expect(resolved.effectiveScopes).toEqual(['repo', 'team-shared']);
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
 });
