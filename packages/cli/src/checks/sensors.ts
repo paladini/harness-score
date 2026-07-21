@@ -69,6 +69,7 @@ export const sensorChecks: Check[] = [
       if (ctx.has('Cargo.toml') && ctx.matching(/(^|\/)tests\/[^/]+\.rs$/).length > 0) {
         evidence.push('Rust tests/ directory (cargo test built-in)');
       }
+      if (ctx.has('pom.xml')) evidence.push('Maven test lifecycle');
       return evidence.length > 0
         ? { passed: true, evidence: `${evidence.slice(0, 3).join('; ')}.` }
         : { passed: false, evidence: 'No test runner configuration or test script detected.' };
@@ -163,6 +164,11 @@ export const sensorChecks: Check[] = [
       }
       if (ecosystems.includes('go')) evidence.push('gofmt (built into Go toolchain)');
       if (ecosystems.includes('rust')) evidence.push('rustfmt (built into Rust toolchain)');
+      if (
+        ctx.has('pom.xml') &&
+        ctx.read('pom.xml')?.includes('<artifactId>spotless-maven-plugin</artifactId>')
+      )
+        evidence.push('spotless used in maven');
       return evidence.length > 0
         ? { passed: true, evidence: `${[...new Set(evidence)].slice(0, 3).join('; ')}.` }
         : { passed: false, evidence: 'No formatter configuration detected.' };
