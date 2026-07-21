@@ -1,5 +1,11 @@
 # harness-score
 
+## 1.3.1
+
+### Patch Changes
+
+- 4f4d771: Extend `--scope user` allowlist to cover all multi-harness tools with documented global paths (Windsurf, Cline, Continue, Zed, Antigravity), including path aliases where tools store globals outside the repo layout.
+
 ## 1.3.0
 
 ### Minor Changes
