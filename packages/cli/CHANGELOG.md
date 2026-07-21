@@ -1,5 +1,11 @@
 # harness-score
 
+## 1.3.0
+
+### Minor Changes
+
+- 64bee8d: Add harness scope configuration (`.harness-score.json`, `--scope`, `--gate`) with dual maturity/effective scores and global user-level overlay scanning.
+
 ## 1.2.0
 
 ### Minor Changes
