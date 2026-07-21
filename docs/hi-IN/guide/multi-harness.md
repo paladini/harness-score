@@ -62,11 +62,31 @@ Multi-tool repository के लिए typical upgrade path:
 | Location | Examples | maturity में | effective में (enabled) |
 |---|---|---|---|
 | Repository | `.cursor/`, `AGENTS.md`, CI, tests | Yes | Yes |
-| User home | `~/.cursor/skills`, `~/.cursor/mcp.json`, `~/.claude/skills` | No | Yes |
+| User home | `~/.cursor/…`, `~/.claude/…`, `~/.codeium/windsurf/…`, `~/Documents/Cline/Rules`, `~/.continue/…`, `~/.agents/…`, `~/.zed/…` | No | Yes |
 | Shared checkout | Team harness के लिए `extraRoots` | No | Yes |
 
 Global paths tool-wise **allowlisted** हैं — scanner पूरा `$HOME` walk नहीं करता।
 Cursor User Rules जो केवल IDE settings UI में हैं, दोनों scores में दिखाई नहीं देते।
+
+### Tool-wise user scope coverage {#user-scope-by-tool}
+
+`--scope user` पर physical paths registry की repo-relative shapes में map होते
+हैं ताकि checks repo files की तरह behave करें।
+
+| Tool | User-scope paths (उदाहरण) | Notes |
+|---|---|---|
+| **Cursor** | `~/.cursor/{skills,commands,agents,rules}`, `~/.cursor/mcp.json` | UI-only User Rules invisible |
+| **Claude Code** | `~/.claude/{skills,commands,agents}`, `~/.claude/settings.json`, `~/.mcp.json` | |
+| **Windsurf** | `~/.codeium/windsurf/memories/global_rules.md` → `.windsurf/rules/…`, `~/.windsurf/{rules,workflows}/`, MCP alias | Global rules Codeium के अंतर्गत |
+| **Cline** | `~/Documents/Cline/Rules/*.md` → `.clinerules/…` | Fallback: `~/Cline/Rules` |
+| **Continue** | `~/.continue/{rules,prompts}/` | `config.yaml` inline rules parse नहीं (v1) |
+| **Codex / Antigravity** | `~/.agents/{skills,rules,workflows}/`, `~/.agent/…`, `~/.gemini/rules/`, `~/.codex/skills`, `~/.agents/AGENTS.md` | |
+| **OpenCode** | `$XDG_CONFIG_HOME/opencode/agents/` | |
+| **Zed** | `~/.zed/commands/` | |
+| **GitHub Copilot** | — | Repo-only: `.github/instructions/` |
+
+**GitHub Copilot** का documented disk global path नहीं — team instructions repo
+में रखें maturity/effective parity के लिए।
 
 पूरी scope table: [Metrics & Codes](./metrics-and-codes#scopes)।
 

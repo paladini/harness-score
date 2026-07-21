@@ -23,7 +23,7 @@ input (`maturity` default).
 | Scope | Meaning | What is scanned |
 |---|---|---|
 | `repo` | Always on | The directory you pass to `harness-score` (default `.`) |
-| `user` | Opt-in | Allowlisted user-level paths: `~/.cursor/*`, `~/.claude/*`, `~/.codex/skills`, `~/.agents/skills`, `~/.config/opencode/agents`, global MCP/hooks configs, etc. |
+| `user` | Opt-in | Allowlisted user-level paths mapped to repo-relative shapes: `~/.cursor/*`, `~/.claude/*`, `~/.codeium/windsurf/*` (Windsurf global rules alias), `~/Documents/Cline/Rules` → `.clinerules/`, `~/.continue/{rules,prompts}`, `~/.agents/*`, `~/.zed/commands`, `~/.config/opencode/agents`, global MCP/hooks configs, etc. See [multi-harness — user-scope by tool](./multi-harness#user-scope-by-tool). **Not included:** Copilot global (repo-only), Continue inline rules in `config.yaml`, IDE-only Cursor User Rules. |
 | `system` | Opt-in | Reserved for validated system-wide installs (minimal in v1) |
 | `extraRoots` | Opt-in | Additional directories (relative or absolute) whose tree mirrors harness layout — e.g. a shared team harness checkout |
 

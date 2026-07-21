@@ -64,11 +64,31 @@ a nivel usuario con `--scope user` o `scopes.user` en
 | Ubicación | Ejemplos | Cuenta en maturity | Cuenta en effective (si activo) |
 |---|---|---|---|
 | Repositorio | `.cursor/`, `AGENTS.md`, CI, tests | Sí | Sí |
-| Home del usuario | `~/.cursor/skills`, `~/.cursor/mcp.json`, `~/.claude/skills` | No | Sí |
+| Home del usuario | `~/.cursor/…`, `~/.claude/…`, `~/.codeium/windsurf/…`, `~/Documents/Cline/Rules`, `~/.continue/…`, `~/.agents/…`, `~/.zed/…` | No | Sí |
 | Checkout compartido | `extraRoots` hacia harness de equipo | No | Sí |
 
 Rutas globales están **allowlisted** por herramienta — el escáner nunca recorre
 todo `$HOME`. User Rules de Cursor solo en la UI del IDE no aparecen en ningún score.
+
+### Cobertura user scope por herramienta {#user-scope-by-tool}
+
+Con `--scope user`, rutas físicas se mapean a las mismas formas repo-relative
+del registry para que los checks se comporten como archivos del repo.
+
+| Herramienta | Rutas user-scope (ejemplos) | Notas |
+|---|---|---|
+| **Cursor** | `~/.cursor/{skills,commands,agents,rules}`, `~/.cursor/mcp.json` | User Rules solo en UI siguen invisibles |
+| **Claude Code** | `~/.claude/{skills,commands,agents}`, `~/.claude/settings.json`, `~/.mcp.json` | |
+| **Windsurf** | `~/.codeium/windsurf/memories/global_rules.md` → `.windsurf/rules/…`, `~/.windsurf/{rules,workflows}/`, alias MCP | Reglas globales bajo Codeium |
+| **Cline** | `~/Documents/Cline/Rules/*.md` → `.clinerules/…` | Fallback: `~/Cline/Rules` |
+| **Continue** | `~/.continue/{rules,prompts}/` | Reglas inline en `config.yaml` no parseadas (v1) |
+| **Codex / Antigravity** | `~/.agents/{skills,rules,workflows}/`, `~/.agent/…`, `~/.gemini/rules/`, `~/.codex/skills`, `~/.agents/AGENTS.md` | |
+| **OpenCode** | `$XDG_CONFIG_HOME/opencode/agents/` | |
+| **Zed** | `~/.zed/commands/` | |
+| **GitHub Copilot** | — | Solo repo: `.github/instructions/` |
+
+**GitHub Copilot** no tiene ruta global documentada en disco — mantén
+instrucciones de equipo en el repositorio para paridad maturity/effective.
 
 Tabla completa de scopes: [Métricas y códigos](./metrics-and-codes#scopes).
 
