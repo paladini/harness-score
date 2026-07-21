@@ -25,8 +25,8 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.3",
-    "@changesets/cli": "^2.31.0",
+    "@biomejs/biome": "^2.5.5",
+    "@changesets/cli": "^2.31.1",
     "husky": "^9.1.7",
     "vitepress": "^1.6.0"
   },
