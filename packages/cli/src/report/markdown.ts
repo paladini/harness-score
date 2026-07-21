@@ -55,7 +55,19 @@ export function renderMarkdown(report: Report, diff?: ReportDiff | null): string
   lines.push(`# Harness Score Report`);
   lines.push('');
   lines.push(`**Maturity level:** L${report.level.index} · ${report.level.name}`);
-  lines.push(`**Score:** ${report.score.earned}/${report.score.max} (${report.score.percent}%)`);
+  lines.push(`**Maturity score:** ${report.score.earned}/${report.score.max} (${report.score.percent}%)`);
+  lines.push(`**Maturity scopes:** ${report.scopes.maturity.join(', ')}`);
+  if (
+    report.effective.level.index !== report.level.index ||
+    report.effective.score.percent !== report.score.percent
+  ) {
+    lines.push(`**Effective level:** L${report.effective.level.index} · ${report.effective.level.name}`);
+    lines.push(
+      `**Effective score:** ${report.effective.score.earned}/${report.effective.score.max} (${report.effective.score.percent}%)`,
+    );
+    lines.push(`**Effective scopes:** ${report.scopes.effective.join(', ')}`);
+  }
+  lines.push(`**Gate:** ${report.gate}`);
   const detected = report.detectedHarnesses ?? [];
   if (detected.length > 0) {
     lines.push(`**Detected harnesses:** ${detected.map(toolDisplayName).join(', ')}`);

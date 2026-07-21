@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
 import { score } from '../src/index.js';
 import { renderBadge } from '../src/report/badge.js';
-import { buildReport } from '../src/score.js';
+import { buildReportFromScanContext } from '../src/score.js';
 import { fakeContext } from './helpers.js';
 
 const FIXTURES = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..', 'fixtures');
@@ -13,7 +13,7 @@ describe('dimension roll-up (score.ts aggregating checks/*.ts output)', () => {
     // Only SKL-01 can pass here: a SKILL.md with no frontmatter and no
     // commands/subagents present, so SKL-02/03/04 and AGT-01/02 all fail.
     const ctx = fakeContext({ '.cursor/skills/deploy/SKILL.md': '# Deploy\nNo frontmatter here.' });
-    const report = buildReport(ctx);
+    const report = buildReportFromScanContext(ctx);
     const skills = report.dimensions.find((d) => d.id === 'skills')!;
 
     const skillsChecks = report.checks.filter((c) => c.dimension === 'skills');

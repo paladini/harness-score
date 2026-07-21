@@ -7,6 +7,7 @@
 डिज़ाइन लक्ष्य:
 
 - **निश्चित (deterministic)।** हर check filesystem fact है: file मौजूद है, parse होती है, pattern match। कोई model नहीं, judgment calls नहीं, network नहीं।
+- **दो scores।** **Maturity** (repo-only) CI और badges के लिए official level है। **Effective** (repo ∪ optional global scopes) developer machine पर agent को likely दिखने वाला harness — [Metrics & Codes](./metrics-and-codes#scores-maturity-vs-effective) देखें।
 - **Harness-agnostic, Cursor flagship example।** किसी supported AI-first tool (Cursor, Windsurf, Claude Code, Codex/Antigravity `.agents/`, OpenCode, Cline, Continue, Copilot instructions, Zed) के rules, skills, hooks, commands OR semantics से score — एक configured tool काफी। Universal harness infrastructure (tests, linters, types, CI) IDE से स्वतंत्र same control system बनाती है।
 - **Grade नहीं, सीढ़ी।** Levels harness के *संरचना* (कौन-से dimensions covered) पर gate — केवल raw percentage नहीं — guides के 80 points, sensors शून्य, परिपक्वता नहीं।
 
@@ -23,7 +24,7 @@
 | CI Feedback | 14 | Pipeline checks, pre-commit |
 | Hygiene & Safety | 23 | Secrets, env files, lockfile, license, MCP config |
 
-हर dimension individual checks का योग है (remediations सहित पूरा catalog [अध्याय 7](./measure-and-improve#the-check-catalog) में)।
+हर dimension individual checks का योग है (remediations सहित पूरा catalog [अध्याय 8](./measure-and-improve#the-check-catalog) में; ID reference [अध्याय 9 — Metrics & Codes](./metrics-and-codes) में)।
 
 ## पाँच levels
 

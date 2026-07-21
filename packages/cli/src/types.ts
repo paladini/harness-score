@@ -76,15 +76,35 @@ export interface LevelInfo {
   nextLevelGaps: string[];
 }
 
+/** One scored snapshot (maturity or effective). */
+export interface ScoreSnapshot {
+  level: LevelInfo;
+  score: { earned: number; max: number; percent: number };
+  dimensions: DimensionScore[];
+  checks: CheckResult[];
+  detectedHarnesses: string[];
+}
+
+import type { GateMode } from './config.js';
+
 export interface Report {
   tool: { name: string; version: string };
   root: string;
   /** True if the scan hit its file-count cap before fully walking the tree — results may be incomplete. */
   truncated: boolean;
-  /** Tool IDs with at least one harness artifact detected (informational; does not affect score). */
+  /** Scopes included in each score. */
+  scopes: { maturity: ['repo']; effective: Array<'repo' | 'user' | 'system' | string> };
+  /** Which score `--min-level` and CI gates use. */
+  gate: GateMode;
+  /** Absolute paths resolved for non-repo scopes (informational). */
+  resolvedRoots?: Array<{ scope: string; absPath: string }>;
+  /** Tool IDs with at least one harness artifact detected in the repo (informational). */
   detectedHarnesses: string[];
+  /** Repository-only score — canonical for CI when gate is maturity. */
   level: LevelInfo;
   score: { earned: number; max: number; percent: number };
   dimensions: DimensionScore[];
   checks: CheckResult[];
+  /** Repo ∪ configured global/extra scopes — what the agent likely sees on this machine. */
+  effective: ScoreSnapshot;
 }

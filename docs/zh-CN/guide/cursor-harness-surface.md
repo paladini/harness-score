@@ -20,6 +20,8 @@ Cursor 暴露的 harness 机制多于任何其他主流 AI 编辑器。
 
 一切均在仓库中 — 要点是：**harness 与代码一起发布**、与代码一起版本化、并像代码一样接受审查。
 
+Cursor 也支持**用户级**工件（`~/.cursor/skills`、`~/.cursor/mcp.json`、全局 commands），它们不会进入 git。它们不影响 **maturity** 分数（CI 可复现），但在启用 `--scope user` 时可能提高 **effective** — 见 [多 harness — 项目 vs 全局](./multi-harness#项目-vs-用户-全局-harness) 与 [指标与代码](./metrics-and-codes#scopes)。
+
 ## AGENTS.md — 前门
 
 仓库根目录的 `AGENTS.md` 是智能体读取的第一份文件。它是开放约定（Cursor、Claude Code 及多数智能体型工具均遵守），也是 harness 中杠杆最高的单文件。应简要回答：

@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import type { ReportDiff } from '../src/diff.js';
 import { renderMarkdown } from '../src/report/markdown.js';
-import type { CheckResult, DimensionScore, Report } from '../src/types.js';
+import type { CheckResult, DimensionScore, Report, ScoreSnapshot } from '../src/types.js';
 import { DIMENSIONS } from '../src/types.js';
 
 function makeDimensions(): DimensionScore[] {
@@ -23,16 +23,31 @@ function makeCheck(overrides: Partial<CheckResult> = {}): CheckResult {
   };
 }
 
-function makeReport(overrides: Partial<Report> = {}): Report {
+function makeSnapshot(overrides: Partial<ScoreSnapshot> = {}): ScoreSnapshot {
   return {
-    tool: { name: 'harness-score', version: '0.3.0' },
-    root: '/fake',
-    truncated: false,
-    detectedHarnesses: [],
     level: { index: 1, name: 'Documented', nextLevelGaps: [] },
     score: { earned: 50, max: 108, percent: 46 },
     dimensions: makeDimensions(),
     checks: [makeCheck()],
+    detectedHarnesses: [],
+    ...overrides,
+  };
+}
+
+function makeReport(overrides: Partial<Report> = {}): Report {
+  const snapshot = makeSnapshot();
+  return {
+    tool: { name: 'harness-score', version: '0.3.0' },
+    root: '/fake',
+    truncated: false,
+    scopes: { maturity: ['repo'], effective: ['repo'] },
+    gate: 'maturity',
+    detectedHarnesses: [],
+    level: snapshot.level,
+    score: snapshot.score,
+    dimensions: snapshot.dimensions,
+    checks: snapshot.checks,
+    effective: snapshot,
     ...overrides,
   };
 }

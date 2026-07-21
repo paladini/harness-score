@@ -13,6 +13,9 @@ Design goals:
 
 - **Deterministic.** Every check is a filesystem fact: a file exists, parses,
   matches a pattern. No model, no judgment calls, no network.
+- **Two scores.** **Maturity** (repo-only) is the official level for CI and
+  badges. **Effective** (repo ∪ optional global scopes) shows what a developer
+  machine likely exposes to the agent — see [Metrics & Codes](./metrics-and-codes#scores-maturity-vs-effective).
 - **Harness-agnostic, Cursor as flagship example.** Rules, skills, hooks, and
   commands from any supported AI-first tool (Cursor, Windsurf, Claude Code,
   Codex/Antigravity `.agents/`, OpenCode, Cline, Continue, Copilot
@@ -37,7 +40,8 @@ Design goals:
 | Hygiene & Safety | 23 | Secrets, env files, lockfile, license, MCP config |
 
 Each dimension is the sum of individual checks (full catalog with
-remediations in [chapter 7](/guide/measure-and-improve#the-check-catalog)).
+remediations in [chapter 8](./measure-and-improve#the-check-catalog); ID
+reference table in [chapter 9 — Metrics & Codes](./metrics-and-codes)).
 
 ## The five levels
 

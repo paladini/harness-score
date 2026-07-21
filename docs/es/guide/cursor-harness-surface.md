@@ -22,6 +22,13 @@ sistema de control.
 Todo vive en el repositorio — ese es el punto: **el harness viaja con el código**,
 se versiona con el código y se revisa como código.
 
+Cursor también soporta artefactos **a nivel usuario** (`~/.cursor/skills`,
+`~/.cursor/mcp.json`, commands globales) que nunca entran en git. No afectan la
+puntuación **maturity** (CI reproducible), pero pueden elevar la **effective**
+con `--scope user` — ver
+[Multi-harness — proyecto vs global](./multi-harness#harness-de-proyecto-vs-usuario-global)
+y [Métricas y códigos](./metrics-and-codes#scopes).
+
 ## AGENTS.md — la puerta de entrada
 
 `AGENTS.md` en la raíz del repo es lo primero que lee un agente. Es convención

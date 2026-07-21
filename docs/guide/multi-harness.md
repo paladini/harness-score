@@ -54,6 +54,25 @@ Here's a typical upgrade path for a multi-tool repository:
 3. **The harness stays in one place.** All sensors, guards, and guides are repo-level — every tool inherits them automatically.
 4. **Gate on maturity, not tools.** Your CI runs `harness-score --min-level 3` and holds every tool to the same standard.
 
+## Project vs user/global harness
+
+The **maturity** score counts only files in the repository — what your team
+reviews in pull requests. The optional **effective** score can include
+user-level installs when you pass `--scope user` or set `scopes.user` in
+[`.harness-score.json`](/guide/measure-and-improve#scan-configuration).
+
+| Location | Examples | Counted in maturity | Counted in effective (when enabled) |
+|---|---|---|---|
+| Repository | `.cursor/`, `AGENTS.md`, CI, tests | Yes | Yes |
+| User home | `~/.cursor/skills`, `~/.cursor/mcp.json`, `~/.claude/skills` | No | Yes |
+| Shared checkout | `extraRoots` path to team harness repo | No | Yes |
+
+Global paths are **allowlisted** per tool — the scanner never walks all of
+`$HOME`. Cursor User Rules stored only in the IDE settings UI are invisible
+to both scores.
+
+See the full scope table in [Metrics & Codes](./metrics-and-codes#scopes).
+
 ## Practical examples
 
 ### Example 1: Cursor-first repo adds Claude Code

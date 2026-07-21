@@ -45,17 +45,40 @@ import { score } from 'harness-score';
 
 const report = score('/path/to/repo');
 console.log(report.level.name, report.score.percent, report.dimensions);
+// With global scopes: score(path, { scopeFlags: ['user'] })
+console.log(report.effective.level.index);
 ```
 
-`Report`、`Check`、`CheckResult`、`DimensionScore`、`LevelInfo` 及所有其他类型均以 TypeScript 声明导出 — 通过显式 `"types"` 字段解析，编辑器与 `tsc` 无需额外配置即可识别。更低层构建块同样导出，供 `score()` 未直接覆盖的场景使用：
+`Report`、`Check`、`CheckResult`、`DimensionScore`、`LevelInfo`、`ScoreSnapshot` 及所有其他类型均以 TypeScript 声明导出 — 通过显式 `"types"` 字段解析，编辑器与 `tsc` 无需额外配置即可识别。更低层构建块同样导出，供 `score()` 未直接覆盖的场景使用：
 
 ```ts
-import { createScanContext, buildReport, computeDiff, renderMarkdown } from 'harness-score';
+import { score, computeDiff, renderMarkdown } from 'harness-score';
 
-const ctx = createScanContext('/path/to/repo');   // walk the filesystem once
-const report = buildReport(ctx);                  // run all 36 checks against it
+const report = score('/path/to/repo');
 const markdown = renderMarkdown(report);          // same renderer the CLI's --md uses
 ```
+
+## 扫描配置 {#scan-configuration}
+
+默认情况下，扫描器仅测量**仓库成熟度** — 随代码一起流转、在 CI 中可复现的 harness。可选包含用户级或共享 harness 树以得到 **effective** 分数（开发者笔记本上 agent 可能看到的内容）。
+
+```json
+{
+  "scopes": { "user": false, "system": false },
+  "extraRoots": [{ "id": "team-shared", "path": "../shared-harness" }],
+  "gate": "maturity"
+}
+```
+
+保存为扫描根目录的 `.harness-score.json`，或传递 `--config <file>`。完整键参考：[指标与代码 — 配置](./metrics-and-codes#configuration-file-harness-scorejson)。
+
+```bash
+harness-score --scope user              # repo + ~/.cursor, ~/.claude, …
+harness-score --scope user,system
+harness-score --gate effective --min-level 2   # gate on effective score
+```
+
+终端报告显示 **Maturity**（repo）与 **Effective**（当两者不同时）。CI 应保持 `gate: maturity`，除非你刻意在带有用户 harness 的自托管 runner 上运行。
 
 ## CLI 参考
 
@@ -64,8 +87,11 @@ harness-score [path]              # human report (default: current directory)
 harness-score --json              # full report as JSON
 harness-score --md report.md      # markdown report (use "-" for stdout)
 harness-score --badge badge.svg   # SVG pill: harness + detected level (L0–L4)
-harness-score --min-level 3       # exit 1 if below L3 — the CI gate
-harness-score --diff base.json    # compare against a previous --json report
+harness-score --min-level 3       # exit 1 if below L3 — the CI gate (uses gate mode)
+harness-score --diff base.json    # compare maturity against a previous --json report
+harness-score --config .harness-score.json
+harness-score --scope user        # include user-level harness in effective score
+harness-score --gate maturity     # or effective — which score --min-level uses
 ```
 
 ### 随时间跟踪分数 {#diff-mode}

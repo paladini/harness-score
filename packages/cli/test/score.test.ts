@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { buildReport, LEVEL_REQUIREMENTS, TOOL_VERSION } from '../src/score.js';
+import { buildReportFromScanContext, LEVEL_REQUIREMENTS, TOOL_VERSION } from '../src/score.js';
 import type { DimensionId, DimensionScore } from '../src/types.js';
 import { DIMENSIONS } from '../src/types.js';
 import { fakeContext } from './helpers.js';
@@ -49,7 +49,7 @@ describe('computeLevel — stops at the first unmet level', () => {
   test('a context-only repo fails at L1 and reports only L1 gaps', () => {
     // Empty repo: fails L1's context requirement outright, so the loop must
     // break before ever evaluating L2/L3/L4 — gaps should be L1-only.
-    const report = buildReport(fakeContext({}));
+    const report = buildReportFromScanContext(fakeContext({}));
     expect(report.level.index).toBe(0);
     expect(report.level.nextLevelGaps).toEqual(['context ≥ 40%']);
   });
@@ -58,7 +58,9 @@ describe('computeLevel — stops at the first unmet level', () => {
 describe('buildReport shape', () => {
   test('carries tool version, root, and truncated straight from the context', () => {
     const ctx = fakeContext({ 'AGENTS.md': '# hi' });
-    const report = buildReport(ctx);
+    const report = buildReportFromScanContext(ctx);
+    expect(report.scopes.maturity).toEqual(['repo']);
+    expect(report.effective).toBeDefined();
     expect(report.tool.name).toBe('harness-score');
     expect(report.tool.version).toBe(TOOL_VERSION);
     expect(report.root).toBe(ctx.root);

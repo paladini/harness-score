@@ -2,7 +2,7 @@
 
 Sensors यह सत्यापित करते हैं कि एजेंट ने क्या किया। वे वह feedback loop बंद करते हैं जिससे स्व-सुधार संभव हो: अच्छे sensors वाला एजेंट अपनी गलतियाँ आपके देखने से पहले ठीक कर लेता है; sensors के बिना वह आत्मविश्वास भरे सारांश के साथ उन्हें जारी कर देता है।
 
-## Sensor stack
+## सेंसर stack
 
 गति और लागत के अनुसार क्रम — सबसे तेज़ पहले — यही क्रम **«गुणवत्ता को बाएँ रखें»** सिद्धांत है:
 
@@ -86,7 +86,7 @@ Local sensors advisory हैं — एजेंट (या merge करने 
 
 Pre-commit tooling (husky + lint-staged, `pre-commit`, lefthook) on-edit hooks और CI के बीच की खाई भरती है: commit exist होने से पहले की अंतिम निश्चित check।
 
-## Inferential sensors: AI reviewing AI
+## Inferential sensors: AI द्वारा AI की समीक्षा
 
 LLM-based review (Cursor का Bugbot, judge agents, review plugins) computation जो check नहीं कर सकता वहाँ अपनी लागत justify करता है: क्या यह बदलाव *सही* चीज़ का मतलब है? क्या यह abstraction sane है? दो rules इसे honest रखते हैं:
 

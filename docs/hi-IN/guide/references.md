@@ -11,7 +11,7 @@
   अनुभवजन्य केस: मॉडल untouched, Terminal Bench 2.0 पर 52.8% → 66.5%। स्व-सत्यापन loops, context assembly middleware, loop detection, reasoning sandwich।
 - **[deepagents](https://github.com/langchain-ai/deepagents)** — LangChain का ओपन-सोर्स «batteries-included agent harness»; ठोस harness implementation पढ़ने के लिए उपयोगी।
 
-## Tool documentation
+## टूल दस्तावेज़
 
 ### Cursor (flagship)
 
@@ -26,7 +26,7 @@
 
 [Multi-Harness Support](./multi-harness) देखें — Harness Score Claude Code (`.claude/agents/`, hooks), Windsurf (`.windsurf/rules/`), Cline (`.clinerules/`), Continue, Codex, और अन्य टूल के समकक्ष artifacts कैसे पहचानता है।
 
-## Adjacent work
+## संबंधित कार्य
 
 - Anthropic effective agents और agent SDKs पर — अधिकांश context-engineering सलाह Cursor harnesses में सीधे transfer होती है।
 - Agent Skills open standard — Cursor skills portable क्यों हैं।
