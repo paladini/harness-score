@@ -54,6 +54,24 @@ Camino típico de upgrade para repo multi-herramienta:
 3. **El harness queda en un lugar.** Sensores, guardrails y guías son nivel repo — toda herramienta hereda automáticamente.
 4. **Exige madurez, no herramientas.** CI corre `harness-score --min-level 3` y mantiene la misma barra para todas.
 
+## Harness de proyecto vs usuario/global
+
+La puntuación **maturity** cuenta solo archivos del repositorio — lo que el
+equipo revisa en pull requests. La **effective** opcional incluye instalaciones
+a nivel usuario con `--scope user` o `scopes.user` en
+[`.harness-score.json`](./measure-and-improve#scan-configuration).
+
+| Ubicación | Ejemplos | Cuenta en maturity | Cuenta en effective (si activo) |
+|---|---|---|---|
+| Repositorio | `.cursor/`, `AGENTS.md`, CI, tests | Sí | Sí |
+| Home del usuario | `~/.cursor/skills`, `~/.cursor/mcp.json`, `~/.claude/skills` | No | Sí |
+| Checkout compartido | `extraRoots` hacia harness de equipo | No | Sí |
+
+Rutas globales están **allowlisted** por herramienta — el escáner nunca recorre
+todo `$HOME`. User Rules de Cursor solo en la UI del IDE no aparecen en ningún score.
+
+Tabla completa de scopes: [Métricas y códigos](./metrics-and-codes#scopes).
+
 ## Ejemplos prácticos
 
 ### Ejemplo 1: Repo Cursor-first agrega Claude Code

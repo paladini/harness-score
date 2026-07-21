@@ -36,6 +36,22 @@ inputs:
       Opt-in: the calling workflow must grant `pull-requests: write`.
     required: false
     default: 'false'
+  include-user-harness:
+    description: 'Include user-level harness artifacts (~/.cursor, ~/.claude, etc.) in the effective score.'
+    required: false
+    default: 'false'
+  include-system-harness:
+    description: 'Include system-level harness artifacts in the effective score (minimal support in v1).'
+    required: false
+    default: 'false'
+  gate:
+    description: 'Which score --min-level compares against: maturity (repo-only, default) or effective.'
+    required: false
+    default: 'maturity'
+  config:
+    description: 'Path to a harness-score JSON config file (default: .harness-score.json in the scan root).'
+    required: false
+    default: ''
 
 outputs:
   level:
@@ -45,8 +61,14 @@ outputs:
     description: 'Maturity level name (Unharnessed … Self-correcting).'
     value: ${{ steps.scan.outputs.level-name }}
   percent:
-    description: 'Total score percentage.'
+    description: 'Maturity score percentage.'
     value: ${{ steps.scan.outputs.percent }}
+  effective-level:
+    description: 'Effective level index when global scopes are enabled.'
+    value: ${{ steps.scan.outputs.effective-level }}
+  effective-percent:
+    description: 'Effective score percentage when global scopes are enabled.'
+    value: ${{ steps.scan.outputs.effective-percent }}
 
 runs:
   using: 'composite'
@@ -59,24 +81,38 @@ runs:
         ARGS=(--quiet --json)
         [ -n "${{ inputs.badge }}" ] && ARGS+=(--badge "${{ inputs.badge }}")
         [ -n "${{ inputs.report }}" ] && ARGS+=(--md "${{ inputs.report }}")
+        [ -n "${{ inputs.config }}" ] && ARGS+=(--config "${{ inputs.config }}")
+        [ "${{ inputs.include-user-harness }}" = "true" ] && ARGS+=(--scope user)
+        [ "${{ inputs.include-system-harness }}" = "true" ] && ARGS+=(--scope system)
+        [ -n "${{ inputs.gate }}" ] && ARGS+=(--gate "${{ inputs.gate }}")
         npx -y "harness-score@${{ inputs.version }}" . "${ARGS[@]}" > harness-report.json
 
         LEVEL=$(node -p "JSON.parse(require('fs').readFileSync('harness-report.json','utf8')).level.index")
         NAME=$(node -p "JSON.parse(require('fs').readFileSync('harness-report.json','utf8')).level.name")
         PERCENT=$(node -p "JSON.parse(require('fs').readFileSync('harness-report.json','utf8')).score.percent")
+        EFF_LEVEL=$(node -p "JSON.parse(require('fs').readFileSync('harness-report.json','utf8')).effective.level.index")
+        EFF_PERCENT=$(node -p "JSON.parse(require('fs').readFileSync('harness-report.json','utf8')).effective.score.percent")
+        GATE=$(node -p "JSON.parse(require('fs').readFileSync('harness-report.json','utf8')).gate")
+        GATE_LEVEL=$(node -p "const r=JSON.parse(require('fs').readFileSync('harness-report.json','utf8')); (r.gate==='effective'?r.effective:r).level.index")
+        GATE_GAPS=$(node -p "const r=JSON.parse(require('fs').readFileSync('harness-report.json','utf8')); (r.gate==='effective'?r.effective:r).level.nextLevelGaps.join('; ')")
         echo "level=$LEVEL" >> "$GITHUB_OUTPUT"
         echo "level-name=$NAME" >> "$GITHUB_OUTPUT"
         echo "percent=$PERCENT" >> "$GITHUB_OUTPUT"
-        echo "## Harness Score: L$LEVEL · $NAME ($PERCENT%)" >> "$GITHUB_STEP_SUMMARY"
+        echo "effective-level=$EFF_LEVEL" >> "$GITHUB_OUTPUT"
+        echo "effective-percent=$EFF_PERCENT" >> "$GITHUB_OUTPUT"
+        echo "## Harness Score: L$LEVEL · $NAME ($PERCENT% maturity)" >> "$GITHUB_STEP_SUMMARY"
+        if [ "$EFF_LEVEL" != "$LEVEL" ] || [ "$EFF_PERCENT" != "$PERCENT" ]; then
+          echo "Effective: L$EFF_LEVEL ($EFF_PERCENT%) · gate: $GATE" >> "$GITHUB_STEP_SUMMARY"
+        fi
         node -e "
           const r = JSON.parse(require('fs').readFileSync('harness-report.json','utf8'));
           const rows = r.dimensions.map(d => '| ' + d.title + ' | ' + d.earned + '/' + d.max + ' | ' + d.percent + '% |').join('\n');
           require('fs').appendFileSync(process.env.GITHUB_STEP_SUMMARY, '\n| Dimension | Score | % |\n|---|---|---|\n' + rows + '\n');
         "
 
-        if [ "$LEVEL" -lt "${{ inputs.min-level }}" ]; then
-          echo "::error::Harness maturity L$LEVEL is below required L${{ inputs.min-level }}."
-          node -p "JSON.parse(require('fs').readFileSync('harness-report.json','utf8')).level.nextLevelGaps.join('; ')"
+        if [ "$GATE_LEVEL" -lt "${{ inputs.min-level }}" ]; then
+          echo "::error::Harness ${GATE} L${GATE_LEVEL} is below required L${{ inputs.min-level }}."
+          echo "$GATE_GAPS"
           exit 1
         fi
 

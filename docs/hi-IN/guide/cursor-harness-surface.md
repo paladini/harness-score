@@ -21,6 +21,8 @@ Cursor किसी भी mainstream AI editor से अधिक harness mach
 सब कुछ रिपॉज़िटरी में रहता है — यही मुख्य बात है: **harness code के साथ ship होता है**,
 code के साथ version होता है, और code की तरह review होता है।
 
+Cursor **user-level** artifacts (`~/.cursor/skills`, `~/.cursor/mcp.json`, global commands) भी support करता है जो git में नहीं आते। वे **maturity** score affect नहीं करते (CI reproducible), पर `--scope user` से **effective** बढ़ सकता है — [Multi-harness — project vs global](./multi-harness#project-vs-user-global-harness) और [Metrics & Codes](./metrics-and-codes#scopes) देखें।
+
 ## AGENTS.md — मुख्य प्रवेश
 
 रिपॉज़िटरी root पर `AGENTS.md` पहली चीज़ है जो एजेंट पढ़ता है। यह open convention है (Cursor, Claude Code, और ज़्यादातर agentic tools इसे मानते हैं) और harness में सबसे अधिक प्रभाव वाली single file। संक्षेप में इनका उत्तर दें:

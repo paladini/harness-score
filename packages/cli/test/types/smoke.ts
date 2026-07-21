@@ -38,7 +38,7 @@ import {
 
 const checks: Check[] = ALL_CHECKS;
 const ctx: ScanContext = createScanContext('.');
-const built: Report = buildReport(ctx);
+const built: Report = buildReport('.');
 const scored: Report = score('.');
 const diff: ReportDiff = computeDiff(built, scored);
 const badge: string = renderBadge(scored);

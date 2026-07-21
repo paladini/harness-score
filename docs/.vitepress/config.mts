@@ -17,7 +17,8 @@ const guideItemsEn: SidebarItem[] = [
   { text: '6 · Guardrails & Safety', link: '/guide/guardrails-and-safety' },
   { text: '7 · The Maturity Model', link: '/guide/maturity-model' },
   { text: '8 · Measure & Improve', link: '/guide/measure-and-improve' },
-  { text: '9 · References', link: '/guide/references' },
+  { text: '9 · Metrics & Codes', link: '/guide/metrics-and-codes' },
+  { text: '10 · References', link: '/guide/references' },
 ];
 
 const guideItemsPt: SidebarItem[] = [
@@ -29,7 +30,8 @@ const guideItemsPt: SidebarItem[] = [
   { text: '6 · Guardrails e segurança', link: '/guide/guardrails-and-safety' },
   { text: '7 · O modelo de maturidade', link: '/guide/maturity-model' },
   { text: '8 · Medir e melhorar', link: '/guide/measure-and-improve' },
-  { text: '9 · Referências', link: '/guide/references' },
+  { text: '9 · Métricas e códigos', link: '/guide/metrics-and-codes' },
+  { text: '10 · Referências', link: '/guide/references' },
 ];
 
 const guideItemsEs: SidebarItem[] = [
@@ -41,7 +43,8 @@ const guideItemsEs: SidebarItem[] = [
   { text: '6 · Guardrails y seguridad', link: '/guide/guardrails-and-safety' },
   { text: '7 · El modelo de madurez', link: '/guide/maturity-model' },
   { text: '8 · Medir y mejorar', link: '/guide/measure-and-improve' },
-  { text: '9 · Referencias', link: '/guide/references' },
+  { text: '9 · Métricas y códigos', link: '/guide/metrics-and-codes' },
+  { text: '10 · Referencias', link: '/guide/references' },
 ];
 
 const guideItemsZh: SidebarItem[] = [
@@ -53,7 +56,8 @@ const guideItemsZh: SidebarItem[] = [
   { text: '6 · Guardrails 与安全', link: '/guide/guardrails-and-safety' },
   { text: '7 · 成熟度模型', link: '/guide/maturity-model' },
   { text: '8 · 测量与改进', link: '/guide/measure-and-improve' },
-  { text: '9 · 参考资料', link: '/guide/references' },
+  { text: '9 · 指标与代码', link: '/guide/metrics-and-codes' },
+  { text: '10 · 参考资料', link: '/guide/references' },
 ];
 
 const guideItemsHi: SidebarItem[] = [
@@ -65,7 +69,8 @@ const guideItemsHi: SidebarItem[] = [
   { text: '6 · Guardrails और सुरक्षा', link: '/guide/guardrails-and-safety' },
   { text: '7 · परिपक्वता मॉडल', link: '/guide/maturity-model' },
   { text: '8 · मापें और सुधारें', link: '/guide/measure-and-improve' },
-  { text: '9 · संदर्भ', link: '/guide/references' },
+  { text: '9 · Metrics & Codes', link: '/guide/metrics-and-codes' },
+  { text: '10 · संदर्भ', link: '/guide/references' },
 ];
 
 const sharedTheme = {

@@ -14,6 +14,9 @@ Contract for translators and reviewers. English is the source of truth for check
 | sensors | sensores | sensores | 传感器 | sensors | Feedback controls |
 | guardrails | guardrails | guardrails | guardrails | Runtime enforcement |
 | maturity level | nível de maturidade | nivel de madurez | 成熟度等级 | परिपक्वता स्तर | Always keep `L0`–`L4` |
+| maturity (score) | maturity | maturity | maturity | maturity | Repo-only official score |
+| effective (score) | effective | effective | effective | effective | Repo ∪ global scopes |
+| scope | escopo | alcance | 范围 | scope | `repo`, `user`, `system` |
 | check | verificação / check | verificación / check | check / 检查 | check / जाँच | Prefer "check" when tied to IDs |
 | scanner | scanner | scanner | 扫描器 | scanner / स्कैनर | Product name for CLI tool |
 | self-correcting | autocorretivo | autocorrección | 自我纠正 | स्व-सुधार | Level name L4 in prose only |
@@ -58,7 +61,7 @@ Use relative paths within the locale (`./maturity-model`, `./measure-and-improve
 1. Register in `docs/.vitepress/theme/i18n/localePath.ts` (`LocaleId`, `LOCALES`, path helpers).
 2. Add nav/sidebar chrome in `docs/.vitepress/config.mts`.
 3. Add landing copy in `docs/.vitepress/theme/i18n/landing.ts`.
-4. Mirror ten markdown files under `docs/<locale>/` (home + nine guide chapters).
+4. Mirror eleven markdown files under `docs/<locale>/` (home + ten guide chapters).
 5. Extend `packages/cli/test/docs.test.ts` anchor parity loop.
 6. Add glossary column + tone note; run `npm test` and `npm run docs:build`.
 

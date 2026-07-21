@@ -14,6 +14,10 @@ Objetivos de design:
 
 - **Determinístico.** Cada check é um fato do filesystem: um arquivo existe,
   parseia, combina com um padrão. Sem modelo, sem julgamento, sem rede.
+- **Duas pontuações.** **Maturity** (somente repo) é o nível oficial para CI e
+  badges. **Effective** (repo ∪ escopos globais opcionais) mostra o que a máquina
+  do desenvolvedor provavelmente expõe ao agente — veja
+  [Métricas e códigos](./metrics-and-codes#scores-maturity-vs-effective).
 - **Agnóstico de ferramenta, Cursor como exemplo principal.** Rules, skills,
   hooks e commands de qualquer ferramenta de IA suportada (Cursor, Windsurf,
   Claude Code, Codex/Antigravity `.agents/`, OpenCode, Cline, Continue,
@@ -38,7 +42,8 @@ Objetivos de design:
 | Hygiene & Safety | 23 | Segredos, env files, lockfile, licença, config MCP |
 
 Cada dimensão é a soma de checks individuais (catálogo completo com
-remediações no [capítulo 7](./measure-and-improve#the-check-catalog)).
+remediações no [capítulo 8](./measure-and-improve#the-check-catalog);
+tabela de IDs no [capítulo 9 — Métricas e códigos](./metrics-and-codes)).
 
 ## Os cinco níveis
 
@@ -127,4 +132,4 @@ determinístico pode afirmar com honestidade.
 3. Exija o nível no CI (`--min-level`) para a maturidade só subir.
 4. Mostre — badge no README (`harness` · `L4`) e [share card](./measure-and-improve#show-your-maturity) opcional. Mesma pílula do CI (`--badge`) ou arquivo estático fixo.
 
-O capítulo 7 percorre cada passo, check a check.
+O capítulo 8 percorre cada passo, check a check.

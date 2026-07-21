@@ -42,6 +42,17 @@ const MAX_FILES = 20000;
 /** Never read file bodies larger than this (binary/artifact protection). */
 const MAX_READ_BYTES = 512 * 1024;
 
+export interface ScanOverlay {
+  label: string;
+  /** Repo-relative path → absolute path for reading (repo wins on conflict). */
+  files: Map<string, string>;
+  truncated?: boolean;
+}
+
+export interface CreateScanOptions {
+  overlays?: ScanOverlay[];
+}
+
 function safeRealpath(p: string): string | null {
   try {
     return fs.realpathSync(p);
@@ -106,15 +117,19 @@ function walk(root: string): { files: string[]; truncated: boolean } {
   return { files, truncated };
 }
 
-export function createScanContext(rootInput: string): ScanContext {
-  const root = path.resolve(rootInput);
-  const { files, truncated } = walk(root);
-  const fileSet = new Set(files);
+function buildContext(
+  root: string,
+  repoFiles: string[],
+  truncated: boolean,
+  overlayAbsByRel: Map<string, string>,
+): ScanContext {
+  const repoSet = new Set(repoFiles);
+  const fileSet = new Set(repoFiles);
+  for (const rel of overlayAbsByRel.keys()) {
+    if (!fileSet.has(rel)) fileSet.add(rel);
+  }
+  const files = [...fileSet].sort();
   const contentCache = new Map<string, string | null>();
-  // `files` is fixed once the walk completes, so matching(re) is a pure
-  // function of re's source+flags — several checks re-query the exact same
-  // pattern (e.g. every CTX-* rule check matches RULE_RE independently),
-  // and this cache turns those repeats into a single filter() per pattern.
   const matchCache = new Map<string, string[]>();
 
   return {
@@ -127,9 +142,14 @@ export function createScanContext(rootInput: string): ScanContext {
     read(relPath: string): string | null {
       if (contentCache.has(relPath)) return contentCache.get(relPath)!;
       let content: string | null = null;
-      if (fileSet.has(relPath)) {
+      let abs: string | null = null;
+      if (repoSet.has(relPath)) {
+        abs = path.join(root, relPath);
+      } else {
+        abs = overlayAbsByRel.get(relPath) ?? null;
+      }
+      if (abs) {
         try {
-          const abs = path.join(root, relPath);
           const stat = fs.statSync(abs);
           if (stat.size <= MAX_READ_BYTES) {
             content = fs.readFileSync(abs, 'utf8');
@@ -150,4 +170,28 @@ export function createScanContext(rootInput: string): ScanContext {
       return result;
     },
   };
+}
+
+export function createScanContext(rootInput: string, options: CreateScanOptions = {}): ScanContext {
+  const root = path.resolve(rootInput);
+  const { files: repoFiles, truncated: repoTruncated } = walk(root);
+  const overlays = options.overlays ?? [];
+
+  const overlayAbsByRel = new Map<string, string>();
+  let overlayTruncated = false;
+  const repoSet = new Set(repoFiles);
+
+  for (const overlay of overlays) {
+    if (overlay.truncated) overlayTruncated = true;
+    for (const [rel, abs] of overlay.files) {
+      if (repoSet.has(rel)) continue;
+      overlayAbsByRel.set(rel, abs);
+    }
+  }
+
+  if (overlays.length === 0) {
+    return buildContext(root, repoFiles, repoTruncated, overlayAbsByRel);
+  }
+
+  return buildContext(root, repoFiles, repoTruncated || overlayTruncated, overlayAbsByRel);
 }

@@ -1,5 +1,8 @@
 import { ALL_CHECKS } from './checks/index.js';
+import type { ResolvedScanConfig } from './config.js';
+import { buildOverlays } from './harness/global-paths.js';
 import { detectHarnesses } from './harness/index.js';
+import { createScanContext } from './scan.js';
 import type {
   CheckOutcome,
   CheckResult,
@@ -8,6 +11,7 @@ import type {
   LevelInfo,
   Report,
   ScanContext,
+  ScoreSnapshot,
 } from './types.js';
 import { DIMENSIONS } from './types.js';
 
@@ -101,20 +105,90 @@ function computeLevel(dimensions: DimensionScore[], totalPercent: number): Level
   return { index, name: LEVEL_NAMES[index]!, nextLevelGaps: gaps };
 }
 
-export function buildReport(ctx: ScanContext): Report {
+function buildSnapshot(ctx: ScanContext): ScoreSnapshot {
   const checks = runChecks(ctx);
   const dimensions = scoreDimensions(checks);
   const earned = checks.reduce((sum, c) => sum + c.earned, 0);
   const max = checks.reduce((sum, c) => sum + c.points, 0);
   const percent = max === 0 ? 0 : Math.round((earned / max) * 100);
   return {
-    tool: { name: 'harness-score', version: TOOL_VERSION },
-    root: ctx.root,
-    truncated: ctx.truncated,
-    detectedHarnesses: detectHarnesses(ctx),
     level: computeLevel(dimensions, percent),
     score: { earned, max, percent },
     dimensions,
     checks,
+    detectedHarnesses: detectHarnesses(ctx),
   };
+}
+
+function snapshotsEqual(a: ScoreSnapshot, b: ScoreSnapshot): boolean {
+  if (a.level.index !== b.level.index || a.score.percent !== b.score.percent) return false;
+  if (a.checks.length !== b.checks.length) return false;
+  for (let i = 0; i < a.checks.length; i += 1) {
+    if (a.checks[i]!.passed !== b.checks[i]!.passed) return false;
+  }
+  return true;
+}
+
+export function buildReportFromContext(
+  maturityCtx: ScanContext,
+  effectiveCtx: ScanContext,
+  config: ResolvedScanConfig,
+  resolvedRoots: Report['resolvedRoots'],
+): Report {
+  const maturity = buildSnapshot(maturityCtx);
+  let effective = maturity;
+  if (effectiveCtx !== maturityCtx) {
+    const effSnapshot = buildSnapshot(effectiveCtx);
+    if (!snapshotsEqual(maturity, effSnapshot)) {
+      effective = effSnapshot;
+    }
+  }
+
+  return {
+    tool: { name: 'harness-score', version: TOOL_VERSION },
+    root: maturityCtx.root,
+    truncated: maturityCtx.truncated || effectiveCtx.truncated,
+    scopes: { maturity: ['repo'], effective: config.effectiveScopes },
+    gate: config.gate,
+    resolvedRoots: resolvedRoots && resolvedRoots.length > 0 ? resolvedRoots : undefined,
+    detectedHarnesses: maturity.detectedHarnesses,
+    level: maturity.level,
+    score: maturity.score,
+    dimensions: maturity.dimensions,
+    checks: maturity.checks,
+    effective,
+  };
+}
+
+/** Build a full report for a repository root with optional scope configuration. */
+export function buildReport(rootInput: string, config?: ResolvedScanConfig): Report {
+  const root = rootInput;
+  const resolved = config ?? {
+    scopes: { user: false, system: false },
+    extraRoots: [],
+    gate: 'maturity' as const,
+    effectiveScopes: ['repo'] as const,
+  };
+
+  const maturityCtx = createScanContext(root);
+  const hasExtraScopes = resolved.scopes.user || resolved.scopes.system || resolved.extraRoots.length > 0;
+
+  if (!hasExtraScopes) {
+    return buildReportFromContext(maturityCtx, maturityCtx, resolved, undefined);
+  }
+
+  const { overlays, resolvedRoots } = buildOverlays(root, resolved.scopes, resolved.extraRoots);
+  const effectiveCtx = createScanContext(root, { overlays });
+  return buildReportFromContext(maturityCtx, effectiveCtx, resolved, resolvedRoots);
+}
+
+/** @deprecated Prefer buildReport(root, config). Kept for internal use with a pre-built context. */
+export function buildReportFromScanContext(ctx: ScanContext): Report {
+  const defaultConfig: ResolvedScanConfig = {
+    scopes: { user: false, system: false },
+    extraRoots: [],
+    gate: 'maturity',
+    effectiveScopes: ['repo'],
+  };
+  return buildReportFromContext(ctx, ctx, defaultConfig, undefined);
 }

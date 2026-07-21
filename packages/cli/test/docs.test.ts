@@ -7,6 +7,15 @@ import { ALL_CHECKS } from '../src/index.js';
 const REPO = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 
 const GUIDE = path.join(REPO, 'docs', 'guide', 'measure-and-improve.md');
+const GUIDE_DIR = path.join(REPO, 'docs', 'guide');
+const LOCALES = ['pt-BR', 'es', 'zh-CN', 'hi-IN'] as const;
+
+function listGuideFiles(dir: string): string[] {
+  return fs
+    .readdirSync(dir)
+    .filter((name) => name.endsWith('.md'))
+    .sort();
+}
 
 function extractAnchors(content: string): string[] {
   const matches = content.matchAll(/\{#([a-z0-9-]+)\}/g);
@@ -36,12 +45,24 @@ describe('docs stay in sync with the scanner', () => {
 describe('translated measure-and-improve guides preserve anchors', () => {
   const enAnchors = extractAnchors(fs.readFileSync(GUIDE, 'utf8'));
 
-  for (const locale of ['pt-BR', 'es', 'zh-CN', 'hi-IN'] as const) {
+  for (const locale of LOCALES) {
     test(`${locale} has the same anchor set as English`, () => {
       const translated = path.join(REPO, 'docs', locale, 'guide', 'measure-and-improve.md');
       expect(fs.existsSync(translated), `${locale} guide missing`).toBe(true);
       const localeAnchors = extractAnchors(fs.readFileSync(translated, 'utf8'));
       expect(localeAnchors).toEqual(enAnchors);
+    });
+  }
+});
+
+describe('translated guides mirror English chapter set', () => {
+  const enFiles = listGuideFiles(GUIDE_DIR);
+
+  for (const locale of LOCALES) {
+    test(`${locale} has the same guide files as English`, () => {
+      const localeDir = path.join(REPO, 'docs', locale, 'guide');
+      expect(fs.existsSync(localeDir), `${locale} guide dir missing`).toBe(true);
+      expect(listGuideFiles(localeDir)).toEqual(enFiles);
     });
   }
 });

@@ -8,6 +8,7 @@
 设计目标：
 
 - **确定性。** 每个 check 都是 filesystem 事实：文件是否存在、能否解析、是否匹配某模式。不调用 model、不做 judgment calls、不访问 network。
+- **两种分数。** **Maturity**（仅 repo）是 CI 与 badge 的官方等级。**Effective**（repo ∪ 可选全局 scope）反映开发者机器上 agent 可能看到的内容 — 见 [指标与代码](./metrics-and-codes#scores-maturity-vs-effective)。
 - **Harness 无关，Cursor 为旗舰示例。** 任意受支持的 AI-first 工具的 rules、skills、hooks、commands（Cursor、Windsurf、Claude Code、Codex/Antigravity `.agents/`、OpenCode、Cline、Continue、Copilot instructions、Zed）均通过 OR 语义评分 — 配置一个工具即可。Universal harness 基础设施（tests、linters、types、CI）无论 IDE 如何，都构成同一套控制系统。
 - **阶梯，而非 grade。** Levels 按 harness *形态*（哪些 dimensions 被覆盖）门禁，而不只看 raw percentage — 八十分的 guides 配零 sensors，称不上 maturity。
 
@@ -24,7 +25,7 @@
 | CI Feedback | 14 | Pipeline checks、pre-commit |
 | Hygiene & Safety | 23 | Secrets、env files、lockfile、license、MCP config |
 
-每个 dimension 由若干 checks 累加而成（完整 catalog 与修复方案见 [第 7 章](./measure-and-improve#the-check-catalog)）。
+每个 dimension 由若干 checks 累加而成（完整 catalog 与修复方案见 [第 8 章](./measure-and-improve#the-check-catalog)；ID 参考表见 [第 9 章 — 指标与代码](./metrics-and-codes)）。
 
 ## 五个等级
 

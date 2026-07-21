@@ -1,0 +1,56 @@
+---
+description: Guide docs must stay in sync across all VitePress locales (en + pt-BR, es, zh-CN, hi-IN)
+globs: docs/**/guide/**/*.md,docs/i18n/glossary.md,docs/.vitepress/config.mts
+alwaysApply: false
+---
+
+# Guide i18n parity (mandatory)
+
+This site ships **five locales** with the same ten guide chapters:
+
+| Locale | Path |
+|---|---|
+| English (root) | `docs/guide/` |
+| pt-BR | `docs/pt-BR/guide/` |
+| es | `docs/es/guide/` |
+| zh-CN | `docs/zh-CN/guide/` |
+| hi-IN | `docs/hi-IN/guide/` |
+
+## Non-negotiable
+
+When you **add, remove, rename, or substantively change** any guide chapter or section in **one** locale, you **must** update **all other locales** in the same PR:
+
+1. **Same file set** — every locale has the same `*.md` filenames under `guide/`.
+2. **Same anchor slugs** — `{#scan-configuration}`, `{#ctx-01}`, etc. stay identical across locales (English slugs; never translate). CI enforces anchor parity for `measure-and-improve.md`; treat all chapters the same way.
+3. **Same factual content** — new features (CLI flags, scores, scopes, check behavior) must appear in every locale. Wording is translated per `docs/i18n/glossary.md`; IDs, paths, JSON keys, and CLI stay English.
+4. **Sidebar** — add/reorder entries in **all five** sidebar blocks in `docs/.vitepress/config.mts`.
+5. **Glossary** — new stable terms go in `docs/i18n/glossary.md`.
+
+## Workflow
+
+```
+Edit docs/guide/foo.md (English source of truth for structure)
+  → mirror docs/pt-BR/guide/foo.md
+  → mirror docs/es/guide/foo.md
+  → mirror docs/zh-CN/guide/foo.md
+  → mirror docs/hi-IN/guide/foo.md
+  → update sidebars if chapter list changed
+  → npm run docs:build && npm test
+```
+
+If a locale is temporarily behind, **do not merge** until parity is restored.
+
+## Editorial rules (from glossary)
+
+- Use **relative links within the locale** (`./metrics-and-codes#scopes`), not `/guide/...` (escapes to English).
+- Do not translate check IDs, anchor slugs, file paths, or CLI examples.
+- pt-BR: Brazilian Portuguese; es: Latin American; zh-CN: Simplified Chinese; hi-IN: Hindi (Devanagari), formal **आप**.
+
+## CI enforcement
+
+`packages/cli/test/docs.test.ts` verifies:
+
+- Every locale has the same guide filenames as English.
+- `measure-and-improve.md` anchor sets match English in all locales.
+
+Run `npm test` before committing doc changes.

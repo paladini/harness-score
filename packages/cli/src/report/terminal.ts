@@ -4,7 +4,7 @@ import type { Report } from '../types.js';
 
 const useColor = process.stdout.isTTY === true && process.env.NO_COLOR === undefined;
 
-const paint = (code: string) => (text: string) => (useColor ? `[${code}m${text}[0m` : text);
+const paint = (code: string) => (text: string) => (useColor ? `\u001b[${code}m${text}\u001b[0m` : text);
 const bold = paint('1');
 const dim = paint('2');
 const red = paint('31');
@@ -12,11 +12,18 @@ const green = paint('32');
 const yellow = paint('33');
 const cyan = paint('36');
 
+const MIDDOT = '\u00b7';
+const ARROW = '\u2192';
+const BLOCK = '\u2588';
+const BLOCK_LIGHT = '\u2591';
+const WARN = '\u26a0';
+const CROSS = '\u2717';
+
 const LEVEL_COLOR = [red, yellow, yellow, green, green];
 
 function bar(percent: number, width = 20): string {
   const filled = Math.round((percent / 100) * width);
-  return '█'.repeat(filled) + '░'.repeat(width - filled);
+  return BLOCK.repeat(filled) + BLOCK_LIGHT.repeat(width - filled);
 }
 
 function signed(n: number): string {
@@ -29,22 +36,22 @@ function renderDiffSection(diff: ReportDiff): string[] {
   if (diff.maturityModelChanged) {
     lines.push(
       yellow(
-        '  ⚠ Baseline is from a different tool version or maturity model total — some deltas below may reflect that, not repository changes.',
+        `  ${WARN} Baseline is from a different tool version or maturity model total ${MIDDOT} some deltas below may reflect that, not repository changes.`,
       ),
     );
   }
   lines.push(
-    `    Level: L${diff.level.before} · ${diff.level.beforeName} → ` +
-      `L${diff.level.after} · ${diff.level.afterName} (${signed(diff.level.delta)})`,
+    `    Level: L${diff.level.before} ${MIDDOT} ${diff.level.beforeName} ${ARROW} ` +
+      `L${diff.level.after} ${MIDDOT} ${diff.level.afterName} (${signed(diff.level.delta)})`,
   );
   lines.push(
-    `    Score: ${diff.score.before.earned}/${diff.score.before.max} (${diff.score.before.percent}%) → ` +
+    `    Score: ${diff.score.before.earned}/${diff.score.before.max} (${diff.score.before.percent}%) ${ARROW} ` +
       `${diff.score.after.earned}/${diff.score.after.max} (${diff.score.after.percent}%) ` +
       `(${signed(diff.score.deltaPercent)}pp)`,
   );
   for (const d of diff.dimensions) {
     if (d.delta === 0) continue;
-    lines.push(`    ${d.title.padEnd(20)} ${d.before}% → ${d.after}% (${signed(d.delta)}pp)`);
+    lines.push(`    ${d.title.padEnd(20)} ${d.before}% ${ARROW} ${d.after}% (${signed(d.delta)}pp)`);
   }
   const gained = diff.checksChanged.filter((c) => c.change === 'newly-passing');
   const lost = diff.checksChanged.filter((c) => c.change === 'newly-failing');
@@ -61,6 +68,17 @@ function renderDiffSection(diff: ReportDiff): string[] {
   return lines;
 }
 
+function effectiveDiffers(report: Report): boolean {
+  return (
+    report.effective.level.index !== report.level.index ||
+    report.effective.score.percent !== report.score.percent
+  );
+}
+
+function formatScopes(scopes: string[]): string {
+  return scopes.join(', ');
+}
+
 export function renderTerminal(report: Report, diff?: ReportDiff | null): string {
   const lines: string[] = [];
   const levelPaint = LEVEL_COLOR[report.level.index] ?? red;
@@ -69,14 +87,28 @@ export function renderTerminal(report: Report, diff?: ReportDiff | null): string
   lines.push('');
   if (report.truncated) {
     lines.push(
-      yellow('  ⚠ Scan stopped early after hitting the file-count cap — results below may be incomplete.'),
+      yellow(
+        `  ${WARN} Scan stopped early after hitting the file-count cap ${MIDDOT} results below may be incomplete.`,
+      ),
     );
     lines.push('');
   }
   lines.push(
-    `  ${bold('Maturity:')} ${levelPaint(bold(`L${report.level.index} · ${report.level.name}`))}` +
-      `   ${bold('Score:')} ${report.score.earned}/${report.score.max} (${report.score.percent}%)`,
+    `  ${bold('Maturity:')} ${levelPaint(bold(`L${report.level.index} ${MIDDOT} ${report.level.name}`))}` +
+      `   ${bold('Score:')} ${report.score.earned}/${report.score.max} (${report.score.percent}%)` +
+      dim(`   scopes: ${formatScopes(report.scopes.maturity)}`),
   );
+  if (effectiveDiffers(report)) {
+    const effPaint = LEVEL_COLOR[report.effective.level.index] ?? red;
+    lines.push(
+      `  ${bold('Effective:')} ${effPaint(bold(`L${report.effective.level.index} ${MIDDOT} ${report.effective.level.name}`))}` +
+        `   ${bold('Score:')} ${report.effective.score.earned}/${report.effective.score.max} (${report.effective.score.percent}%)` +
+        dim(`   scopes: ${formatScopes(report.scopes.effective)}`),
+    );
+  }
+  if (report.gate === 'effective' && effectiveDiffers(report)) {
+    lines.push(dim('  Gate: effective (--min-level uses the effective score)'));
+  }
   const detected = report.detectedHarnesses ?? [];
   if (detected.length > 0) {
     lines.push(dim(`  Detected: ${detected.map(toolDisplayName).join(', ')}`));
@@ -95,11 +127,11 @@ export function renderTerminal(report: Report, diff?: ReportDiff | null): string
 
   const failed = report.checks.filter((c) => !c.passed);
   if (failed.length === 0) {
-    lines.push(green('  All checks passed — this repository is fully harnessed. 🏆'));
+    lines.push(green(`  All checks passed ${MIDDOT} this repository is fully harnessed.`));
   } else {
     lines.push(bold(`  Improvements (${failed.length}):`));
     for (const check of failed) {
-      lines.push(`   ${red('✗')} ${bold(check.id)} ${check.title} ${dim(`(+${check.points} pts)`)}`);
+      lines.push(`   ${red(CROSS)} ${bold(check.id)} ${check.title} ${dim(`(+${check.points} pts)`)}`);
       lines.push(`     ${check.remediation}`);
       lines.push(`     ${dim(check.evidence)}`);
       lines.push(`     ${cyan(check.docsUrl)}`);

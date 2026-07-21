@@ -22,6 +22,13 @@ de controle.
 Tudo vive no repositório — esse é o ponto: **o harness viaja com o código**,
 é versionado com o código e revisado como código.
 
+O Cursor também suporta artefatos **em nível de usuário** (`~/.cursor/skills`,
+`~/.cursor/mcp.json`, commands globais) que nunca entram no git. Eles não
+afetam a pontuação **maturity** (CI reprodutível), mas podem elevar a
+**effective** com `--scope user` — veja
+[Multi-harness — projeto vs global](./multi-harness#harness-de-projeto-vs-usuário-global)
+e [Métricas e códigos](./metrics-and-codes#scopes).
+
 ## AGENTS.md — a porta da frente
 
 `AGENTS.md` na raiz do repositório é a primeira coisa que um agente lê. É

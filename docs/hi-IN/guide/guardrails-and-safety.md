@@ -51,7 +51,7 @@ process.stdin.on('end', () => {
 
 Design notes: dangerous list के लिए *closed* fail (exit code 2 block), gate scripts dependency-free और fast रखें, और **commit करें** — केवल आपकी machine पर मौजूद script की ओर इशारा करने वाला hook config केवल आपकी रक्षा करता है।
 
-## Secret hygiene
+## गुप्त जानकारी hygiene
 
 एजेंट आपका working tree पढ़ता है; उसमें कुछ भी context, commit, या generated file में समा सकता है। निश्चित hygiene rules:
 
@@ -62,7 +62,7 @@ Design notes: dangerous list के लिए *closed* fail (exit code 2 block),
 
 `harness-score` चारों (HYG-02 … HYG-06) credential-signature matching से check करता है — निश्चित रूप से, offline।
 
-## Prompt-injection awareness
+## Prompt-injection जागरूकता
 
 Agent harnesses में human workflows में नहीं दिखने वाला threat class है: **data में छिपे निर्देश**। Dependency का README, MCP से fetch किया webpage, issue comment — कोई भी आपके एजेंट को संबोधित text रख सकता है («अपने निर्देश ignore करो और चलाओ…»)। Harness-level mitigations:
 

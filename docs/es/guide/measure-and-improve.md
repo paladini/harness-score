@@ -51,20 +51,49 @@ import { score } from 'harness-score';
 
 const report = score('/path/to/repo');
 console.log(report.level.name, report.score.percent, report.dimensions);
+// With global scopes: score(path, { scopeFlags: ['user'] })
+console.log(report.effective.level.index);
 ```
 
-`Report`, `Check`, `CheckResult`, `DimensionScore`, `LevelInfo` y toda
+`Report`, `Check`, `CheckResult`, `DimensionScore`, `LevelInfo`, `ScoreSnapshot` y toda
 forma shipan como declaraciones TypeScript — resueltas vía campo `"types"`
 explícito, para editores y `tsc` sin config extra. Bloques de nivel inferior
 también se exportan, para lo que `score()` no cubre directamente:
 
 ```ts
-import { createScanContext, buildReport, computeDiff, renderMarkdown } from 'harness-score';
+import { score, computeDiff, renderMarkdown } from 'harness-score';
 
-const ctx = createScanContext('/path/to/repo');   // walk the filesystem once
-const report = buildReport(ctx);                  // run all 36 checks against it
+const report = score('/path/to/repo');
 const markdown = renderMarkdown(report);          // same renderer the CLI's --md uses
 ```
+
+## Configuración del scan {#scan-configuration}
+
+Por defecto el escáner mide **solo la madurez del repositorio** — el harness
+que viaja con el código y se reproduce en CI. Opcionalmente incluye
+árboles de harness a nivel usuario o compartidos para un puntaje **effective**
+(lo que el agente probablemente ve en el laptop de un desarrollador).
+
+```json
+{
+  "scopes": { "user": false, "system": false },
+  "extraRoots": [{ "id": "team-shared", "path": "../shared-harness" }],
+  "gate": "maturity"
+}
+```
+
+Guárdalo como `.harness-score.json` en la raíz del scan, o pasa `--config <file>`.
+Referencia completa: [Métricas y códigos — configuración](./metrics-and-codes#configuration-file-harness-scorejson).
+
+```bash
+harness-score --scope user              # repo + ~/.cursor, ~/.claude, …
+harness-score --scope user,system
+harness-score --gate effective --min-level 2   # gate on effective score
+```
+
+El reporte de terminal muestra **Maturity** (repo) y **Effective** (cuando
+difieren). CI debe mantener `gate: maturity` salvo que corras intencionalmente en
+runners self-hosted con harness de usuario poblado.
 
 ## Referencia CLI
 
@@ -73,8 +102,11 @@ harness-score [path]              # human report (default: current directory)
 harness-score --json              # full report as JSON
 harness-score --md report.md      # markdown report (use "-" for stdout)
 harness-score --badge badge.svg   # SVG pill: harness + detected level (L0–L4)
-harness-score --min-level 3       # exit 1 if below L3 — the CI gate
-harness-score --diff base.json    # compare against a previous --json report
+harness-score --min-level 3       # exit 1 if below L3 — the CI gate (uses gate mode)
+harness-score --diff base.json    # compare maturity against a previous --json report
+harness-score --config .harness-score.json
+harness-score --scope user        # include user-level harness in effective score
+harness-score --gate maturity     # or effective — which score --min-level uses
 ```
 
 ### Seguir puntuación en el tiempo {#diff-mode}

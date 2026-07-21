@@ -16,7 +16,7 @@ describe('score()', () => {
   test('composes createScanContext + buildReport identically to calling them directly', () => {
     const fixture = path.join(FIXTURES, 'level-2');
     const viaScore = score(fixture);
-    const viaDirect = buildReport(createScanContext(fixture));
+    const viaDirect = buildReport(fixture);
     expect(viaScore).toEqual(viaDirect);
   });
 });
