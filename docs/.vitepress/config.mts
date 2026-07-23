@@ -3,7 +3,7 @@ import { hreflangPath, LOCALES, localeFromRelativePath, neutralPagePath } from '
 
 const SITE = 'https://paladini.github.io/harness-score';
 const BASE = '/harness-score/';
-const SHOWCASE = '/harness-maturity-showcase/';
+const SHOWCASE = 'https://paladini.io/harness-maturity-showcase/';
 const FOOTER_COPYRIGHT =
   'Copyright © 2026 <a href="https://paladini.github.io" target="_blank" rel="noopener">Fernando Paladini</a>';
 
@@ -111,7 +111,7 @@ export default defineConfig({
         nav: [
           { text: 'Guide', link: '/guide/what-is-harness-engineering' },
           { text: 'Maturity Model', link: '/guide/maturity-model' },
-          { text: 'Showcase', link: SHOWCASE },
+          { text: 'Showcase', link: SHOWCASE, target: '_self' },
         ],
         sidebar: [{ text: 'The Guide', items: guideItemsEn.map((i) => ({ ...i })) }],
         footer: {
@@ -138,7 +138,7 @@ export default defineConfig({
         nav: [
           { text: 'Guia', link: '/pt-BR/guide/what-is-harness-engineering' },
           { text: 'Maturidade', link: '/pt-BR/guide/maturity-model' },
-          { text: 'Showcase', link: SHOWCASE },
+          { text: 'Showcase', link: SHOWCASE, target: '_self' },
         ],
         sidebar: [
           { text: 'O guia', items: guideItemsPt.map((i) => ({ text: i.text, link: `/pt-BR${i.link}` })) },
@@ -167,7 +167,7 @@ export default defineConfig({
         nav: [
           { text: 'Guía', link: '/es/guide/what-is-harness-engineering' },
           { text: 'Madurez', link: '/es/guide/maturity-model' },
-          { text: 'Showcase', link: SHOWCASE },
+          { text: 'Showcase', link: SHOWCASE, target: '_self' },
         ],
         sidebar: [
           { text: 'La guía', items: guideItemsEs.map((i) => ({ text: i.text, link: `/es${i.link}` })) },
@@ -195,7 +195,7 @@ export default defineConfig({
         nav: [
           { text: '指南', link: '/zh-CN/guide/what-is-harness-engineering' },
           { text: '成熟度', link: '/zh-CN/guide/maturity-model' },
-          { text: 'Showcase', link: SHOWCASE },
+          { text: 'Showcase', link: SHOWCASE, target: '_self' },
         ],
         sidebar: [
           { text: '指南', items: guideItemsZh.map((i) => ({ text: i.text, link: `/zh-CN${i.link}` })) },
@@ -223,7 +223,7 @@ export default defineConfig({
         nav: [
           { text: 'गाइड', link: '/hi-IN/guide/what-is-harness-engineering' },
           { text: 'परिपक्वता', link: '/hi-IN/guide/maturity-model' },
-          { text: 'Showcase', link: SHOWCASE },
+          { text: 'Showcase', link: SHOWCASE, target: '_self' },
         ],
         sidebar: [
           { text: 'गाइड', items: guideItemsHi.map((i) => ({ text: i.text, link: `/hi-IN${i.link}` })) },
