@@ -3,6 +3,7 @@ import { hreflangPath, LOCALES, localeFromRelativePath, neutralPagePath } from '
 
 const SITE = 'https://paladini.github.io/harness-score';
 const BASE = '/harness-score/';
+const SHOWCASE = 'https://paladini.io/harness-maturity-showcase/';
 const FOOTER_COPYRIGHT =
   'Copyright © 2026 <a href="https://paladini.github.io" target="_blank" rel="noopener">Fernando Paladini</a>';
 
@@ -109,9 +110,8 @@ export default defineConfig({
         ...sharedTheme,
         nav: [
           { text: 'Guide', link: '/guide/what-is-harness-engineering' },
-          { text: 'Multi-Harness', link: '/guide/multi-harness' },
           { text: 'Maturity Model', link: '/guide/maturity-model' },
-          { text: 'Scanner', link: '/guide/measure-and-improve' },
+          { text: 'Showcase', link: SHOWCASE },
         ],
         sidebar: [{ text: 'The Guide', items: guideItemsEn.map((i) => ({ ...i })) }],
         footer: {
@@ -137,9 +137,8 @@ export default defineConfig({
         ...sharedTheme,
         nav: [
           { text: 'Guia', link: '/pt-BR/guide/what-is-harness-engineering' },
-          { text: 'Multi-harness', link: '/pt-BR/guide/multi-harness' },
           { text: 'Maturidade', link: '/pt-BR/guide/maturity-model' },
-          { text: 'Scanner', link: '/pt-BR/guide/measure-and-improve' },
+          { text: 'Showcase', link: SHOWCASE },
         ],
         sidebar: [
           { text: 'O guia', items: guideItemsPt.map((i) => ({ text: i.text, link: `/pt-BR${i.link}` })) },
@@ -167,9 +166,8 @@ export default defineConfig({
         ...sharedTheme,
         nav: [
           { text: 'Guía', link: '/es/guide/what-is-harness-engineering' },
-          { text: 'Multi-harness', link: '/es/guide/multi-harness' },
           { text: 'Madurez', link: '/es/guide/maturity-model' },
-          { text: 'Escáner', link: '/es/guide/measure-and-improve' },
+          { text: 'Showcase', link: SHOWCASE },
         ],
         sidebar: [
           { text: 'La guía', items: guideItemsEs.map((i) => ({ text: i.text, link: `/es${i.link}` })) },
@@ -196,9 +194,8 @@ export default defineConfig({
         ...sharedTheme,
         nav: [
           { text: '指南', link: '/zh-CN/guide/what-is-harness-engineering' },
-          { text: '多 harness', link: '/zh-CN/guide/multi-harness' },
           { text: '成熟度', link: '/zh-CN/guide/maturity-model' },
-          { text: '扫描器', link: '/zh-CN/guide/measure-and-improve' },
+          { text: 'Showcase', link: SHOWCASE },
         ],
         sidebar: [
           { text: '指南', items: guideItemsZh.map((i) => ({ text: i.text, link: `/zh-CN${i.link}` })) },
@@ -225,9 +222,8 @@ export default defineConfig({
         ...sharedTheme,
         nav: [
           { text: 'गाइड', link: '/hi-IN/guide/what-is-harness-engineering' },
-          { text: 'Multi-harness', link: '/hi-IN/guide/multi-harness' },
           { text: 'परिपक्वता', link: '/hi-IN/guide/maturity-model' },
-          { text: 'स्कैनर', link: '/hi-IN/guide/measure-and-improve' },
+          { text: 'Showcase', link: SHOWCASE },
         ],
         sidebar: [
           { text: 'गाइड', items: guideItemsHi.map((i) => ({ text: i.text, link: `/hi-IN${i.link}` })) },
