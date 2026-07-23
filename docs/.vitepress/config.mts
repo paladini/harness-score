@@ -3,7 +3,7 @@ import { hreflangPath, LOCALES, localeFromRelativePath, neutralPagePath } from '
 
 const SITE = 'https://paladini.github.io/harness-score';
 const BASE = '/harness-score/';
-const SHOWCASE = 'https://paladini.io/harness-maturity-showcase/';
+const SHOWCASE = '/harness-maturity-showcase/';
 const FOOTER_COPYRIGHT =
   'Copyright © 2026 <a href="https://paladini.github.io" target="_blank" rel="noopener">Fernando Paladini</a>';
 
