@@ -77,6 +77,7 @@ const guideItemsHi: SidebarItem[] = [
 const sharedTheme = {
   logo: '/logo.svg',
   logoLink: BASE,
+  siteTitle: '<span class="hs-product-wordmark"><b>harness</b><i>score</i></span>',
   socialLinks: [{ icon: 'github', link: 'https://github.com/paladini/harness-score' }],
   search: { provider: 'local' as const },
   outline: { level: [2, 3] as [number, number] },

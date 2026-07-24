@@ -56,6 +56,84 @@
 /* CJK + Devanagari: web fonts plus slightly taller line-height for matras and hanzi. */
 :root {
   --vp-font-family-base: "Inter", "Noto Sans SC", "Noto Sans Devanagari", system-ui, sans-serif;
+  --hs-header-paper: #f1f4ec;
+  --hs-header-ink: #0d1b17;
+  --hs-header-line: #cbd4c7;
+  --hs-header-green: #119366;
+}
+
+/* Shared product header: mirrors the Harness Maturity Showcase shell. */
+.VPNav,
+.VPNavBar {
+  background: var(--hs-header-paper);
+}
+
+.VPNavBar {
+  border-bottom: 1px solid var(--hs-header-line);
+}
+
+.VPNavBar .wrapper {
+  padding: 0 32px;
+}
+
+.VPNavBar .container {
+  max-width: none;
+}
+
+.VPNavBarTitle .title {
+  gap: 10px;
+  color: var(--hs-header-ink);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.hs-product-wordmark {
+  display: inline-flex;
+}
+
+.hs-product-wordmark b,
+.hs-product-wordmark i {
+  font-style: normal;
+  font-weight: inherit;
+}
+
+.hs-product-wordmark i {
+  margin-left: 4px;
+  color: var(--hs-header-green);
+  font-weight: 600;
+}
+
+.VPNavBarTitle .logo {
+  width: 24px;
+  height: 24px;
+}
+
+.VPNavBarMenuLink {
+  color: var(--hs-header-ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.VPNavBarMenuLink:hover,
+.VPNavBarMenuLink.active {
+  color: var(--hs-header-green);
+}
+
+.VPNavBarMenuLink.active::after {
+  background-color: var(--hs-header-green);
+}
+
+.VPNavBarAppearance,
+.VPNavBarTranslations,
+.VPNavBarSocialLinks {
+  color: var(--hs-header-ink);
+}
+
+@media (max-width: 640px) {
+  .VPNavBar .wrapper {
+    padding: 0 18px;
+  }
 }
 
 html[lang="hi-IN"] .vp-doc p,
