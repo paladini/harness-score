@@ -1,0 +1,17 @@
+name: Legacy Action license fixture
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  harness:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: paladini/harness-score/action@e0ba97e1ecdb5e48ee8c6142c36e84b4c5c30755
+        with:
+          min-level: '0'
