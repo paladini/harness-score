@@ -1,4 +1,4 @@
-name: Legacy Action license fixture
+name: Root Action license fixture
 
 on:
   workflow_dispatch:
@@ -12,6 +12,6 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      - uses: paladini/harness-score/action@e0ba97e1ecdb5e48ee8c6142c36e84b4c5c30755
+      - uses: paladini/harness-score@6d4aace760e315554db49f6d6c244e24e6671b4c
         with:
           min-level: '0'
