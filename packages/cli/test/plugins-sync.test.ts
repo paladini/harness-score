@@ -14,6 +14,14 @@ describe('plugins/shared path config sync', () => {
     expect(legacy).toBe(canonical);
   });
 
+  test('the legacy GitHub Action ships the repository license', () => {
+    const repoRoot = path.resolve(import.meta.dirname, '../../..');
+    const canonical = fs.readFileSync(path.join(repoRoot, 'LICENSE'), 'utf8');
+    const legacy = fs.readFileSync(path.join(repoRoot, 'action/LICENSE'), 'utf8');
+
+    expect(legacy).toBe(canonical);
+  });
+
   test('generated TOOL_PATHS matches PLUGIN_TOOL_PATHS from the CLI harness registry exactly', () => {
     for (const [toolId, paths] of Object.entries(PLUGIN_TOOL_PATHS)) {
       const tool = TOOL_PATHS[toolId as keyof typeof TOOL_PATHS];
