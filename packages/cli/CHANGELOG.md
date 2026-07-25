@@ -1,5 +1,15 @@
 # harness-score
 
+## 1.5.0
+
+### Minor Changes
+
+- cbc7b98: Add ESLint-flavored team customization to `.harness-score.json`: `extends` (named, maintainer-curated presets) and `rules` (per-check severity override, `"off"` or `"error"`). Ships one built-in preset, `no-hooks`, for environments where local hook execution is disallowed by policy.
+
+  Excluded checks are removed from both the numerator and denominator of their dimension's score — never penalized, never silently hidden. If a preset excludes every check in a dimension a maturity-level requirement depends on, that level is now correctly reported as `capped` (with a `capReason`) instead of showing a misleading "0%, keep trying" gap — L4 in particular is definitionally tied to the Hooks & Guardrails dimension, so a repo under `no-hooks` can climb every other dimension freely but stays capped at L3.
+
+  New additive `Report` fields: `preset` (what customization was actually applied), `checks[].severity`, `dimensions[].applicable`, `level.capped`/`level.capReason`. `--diff` gains a `presetChanged` flag mirroring the existing `maturityModelChanged`.
+
 ## 1.3.3
 
 ### Patch Changes

@@ -153,6 +153,10 @@ runs:
             ? '> ⚠ Baseline is from a different tool version or maturity model total — some deltas below may reflect that, not repository changes.\n\n'
             : '';
 
+          const presetWarning = diff.presetChanged
+            ? '> ⚠ Baseline used a different `.harness-score.json` extends/rules config — some deltas below may reflect that, not repository changes.\n\n'
+            : '';
+
           const movedDims = diff.dimensions.filter((d) => d.delta !== 0);
           const dimTable = movedDims.length
             ? [
@@ -169,7 +173,7 @@ runs:
             marker,
             `### ${arrow} Harness Score: L${diff.level.before} · ${diff.level.beforeName} → L${diff.level.after} · ${diff.level.afterName}`,
             '',
-            modelWarning + `**Score:** ${diff.score.before.earned}/${diff.score.before.max} (${diff.score.before.percent}%) → ` +
+            modelWarning + presetWarning + `**Score:** ${diff.score.before.earned}/${diff.score.before.max} (${diff.score.before.percent}%) → ` +
               `${diff.score.after.earned}/${diff.score.after.max} (${diff.score.after.percent}%) (${sign(diff.score.deltaPercent)}pp)`,
             '',
             dimTable,
