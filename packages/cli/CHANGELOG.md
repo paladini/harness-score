@@ -1,5 +1,12 @@
 # harness-score
 
+## 1.5.2
+
+### Patch Changes
+
+- 98e1127: Credit Birgitta Böckeler (not Martin Fowler) for the harness engineering articles, and fix related secondary attributions.
+- 9959ce8: Keep the navigation header legible after scrolling in dark mode.
+
 ## 1.5.1
 
 ### Patch Changes

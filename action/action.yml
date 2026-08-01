@@ -27,7 +27,7 @@ inputs:
   version:
     description: 'harness-score npm version or package spec to run.'
     required: false
-    default: '1.5.1'
+    default: '1.5.2'
   comment:
     description: >-
       Post (or update) a sticky pull-request comment showing the harness
