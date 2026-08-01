@@ -132,7 +132,7 @@ es ambiguo.
 
 ## Qué el modelo deliberadamente no mide
 
-Honestidad sobre los límites del determinismo (el caveat de Fowler de que
+Honestidad sobre los límites del determinismo (el caveat de Böckeler de que
 "behavior harness is immature" aplica también a la medición):
 
 - **Si tus tests son buenos** — solo que existen, corren y gatean.

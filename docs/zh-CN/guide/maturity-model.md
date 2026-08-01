@@ -76,7 +76,7 @@ Loop 在 runtime 闭合。Gate hooks 让破坏性操作不可能发生，而不�
 
 ## 模型刻意不测量什么
 
-对 determinism 的边界保持诚实（Fowler 关于「behavior harness 尚不成熟」的 caveat，同样适用于 measurement）：
+对 determinism 的边界保持诚实（Böckeler 关于「behavior harness 尚不成熟」的 caveat，同样适用于 measurement）：
 
 - **你的 tests 是否足够好** — 只检查是否存在、能否运行、是否 gate。
 - **你的 rules 是否仍然正确** — stale rule 与 fresh rule 得分相同。

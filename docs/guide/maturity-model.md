@@ -129,7 +129,7 @@ ambiguous.
 
 ## What the model deliberately does not measure
 
-Honesty about the limits of determinism (Fowler's "behavior harness is
+Honesty about the limits of determinism (Böckeler's "behavior harness is
 immature" caveat applies to measurement too):
 
 - **Whether your tests are good** — only that they exist, run, and gate.

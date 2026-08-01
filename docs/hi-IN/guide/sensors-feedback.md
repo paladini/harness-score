@@ -35,7 +35,7 @@ Strict type checker एजेंट कार्य के लिए सबस�
 1. **तेज़।** Seconds में चलने वाला suite हर बदलाव के बाद चलता है; 20-minute suite कभी नहीं। Fast subset (`npm test`) रखें, भले full suite धीमा हो।
 2. **एक स्पष्ट command से चलने योग्य**, `AGENTS.md` में documented। Tests को तीन env vars और database चाहिए तो setup script लिखें।
 3. **निश्चित (deterministic)।** Flaky tests एजेंट (और मनुष्य) को red ignore करना सिखाते हैं।
-4. **Behavioral।** Implementation details pin करने वाले tests वैध refactors रोकते हैं; behavior pin करने वाले real regressions पकड़ते हैं। Fowler का «approved fixtures» pattern — humans review golden files, machines check — एजेंट-heavy codebases में अच्छा काम करता है।
+4. **Behavioral।** Implementation details pin करने वाले tests वैध refactors रोकते हैं; behavior pin करने वाले real regressions पकड़ते हैं। [approved fixtures](https://lexler.github.io/augmented-coding-patterns/patterns/approved-fixtures/) pattern — humans review golden files, machines check — जिसे Böckeler के अनुसार सहयोगी selective तरीके से उपयोग करते हैं, एजेंट-heavy codebases में अच्छा काम करता है।
 
 और rules में रखने लायक convention: **नया behavior test के साथ land हो, और failing test green जाने के लिए कभी delete न हो।** अनुमति मिले तो एजेंट दोनों करेगा।
 
@@ -51,7 +51,7 @@ Strict type checker एजेंट कार्य के लिए सबस�
 
 ## Architecture fitness: structure के sensors
 
-Fowler का दूसरा regulation dimension architectural fitness है — structure verify करने वाले sensors, केवल syntax नहीं:
+Böckeler का दूसरा regulation dimension architectural fitness है — structure verify करने वाले sensors, केवल syntax नहीं:
 
 - **Dependency rules**: «core कभी api से import नहीं» — ArchUnit (JVM), dependency-cruiser (JS/TS), import-linter (Python)।
 - Monorepos में **module boundaries**: Nx/Turborepo boundary checks।

@@ -75,7 +75,7 @@ Scanner सटीक print करता है कौन-सी requirement अ�
 
 ## Model जानबूझकर क्या measure नहीं करता
 
-Determinism की सीमाओं पर ईमानदारी (Fowler का «behavior harness immature» caveat measurement पर भी):
+Determinism की सीमाओं पर ईमानदारी (Böckeler का «behavior harness immature» caveat measurement पर भी):
 
 - **आपके tests अच्छे हैं या नहीं** — केवल exist, run, gate।
 - **आपकी rules सच हैं या नहीं** — stale rule fresh जैसा score।

@@ -54,8 +54,11 @@ muda o que "bons testes" significam:
    vermelho.
 4. **Comportamentais.** Testes que fixam detalhes de implementação bloqueiam
    refactors legítimos; testes que fixam comportamento pegam regressões reais.
-   O padrão "approved fixtures" de Fowler — arquivos golden revisados por
-   humanos, checados por máquinas — funciona bem em codebases com muitos agentes.
+   O padrão
+   [approved fixtures](https://lexler.github.io/augmented-coding-patterns/patterns/approved-fixtures/)
+   — arquivos golden revisados por humanos, checados por máquinas — que
+   Böckeler observa colegas usarem de forma seletiva, funciona bem em
+   codebases com muitos agentes.
 
 E uma convenção que vale colocar em rule: **comportamento novo chega com teste,
 e teste falhando nunca é apagado para ficar verde.** Agentes farão os dois se
@@ -77,7 +80,7 @@ Prioridade para trabalho com agente:
 
 ## Fitness arquitetural: sensores de estrutura
 
-A segunda dimensão de regulação de Fowler é fitness arquitetural — sensores
+A segunda dimensão de regulação de Böckeler é fitness arquitetural — sensores
 que verificam estrutura, não só sintaxe:
 
 - **Regras de dependência**: "core nunca importa de api" — ArchUnit (JVM),

@@ -53,9 +53,11 @@ cambia qué significa "buenos tests":
 3. **Deterministas.** Tests flaky enseñan a agentes (como humanos) a ignorar rojo.
 4. **Comportamentales.** Tests que fijan detalles de implementación bloquean
    refactors legítimos; tests que fijan comportamiento atrapan regresiones
-   reales. El patrón "approved fixtures" de Fowler — archivos golden revisados
-   por humanos, checados por máquinas — funciona bien en codebases con muchos
-   agentes.
+   reales. El patrón
+   [approved fixtures](https://lexler.github.io/augmented-coding-patterns/patterns/approved-fixtures/)
+   — archivos golden revisados por humanos, checados por máquinas — que
+   Böckeler observa que colegas usan de forma selectiva, funciona bien en
+   codebases con muchos agentes.
 
 Y una convención que vale poner en rule: **comportamiento nuevo llega con test,
 y un test fallando nunca se borra para quedar verde.** Los agentes harán ambos
@@ -77,7 +79,7 @@ Prioridad para trabajo con agente:
 
 ## Fitness arquitectónico: sensores de estructura
 
-La segunda dimensión de regulación de Fowler es fitness arquitectónico —
+La segunda dimensión de regulación de Böckeler es fitness arquitectónico —
 sensores que verifican estructura, no solo sintaxis:
 
 - **Reglas de dependencia**: "core nunca importa de api" — ArchUnit (JVM),

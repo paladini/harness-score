@@ -102,7 +102,7 @@ Do not fix anything unless explicitly asked.
 
 ## 引导脚本与模板
 
-Fowler 将引导（bootstrap）工具列为 feedforward 控制：从已知良好骨架启动智能体的生成器与模板（`npm run new:endpoint`、预装可观测性的服务模板）。当某种模式必须精确重复时，生成器胜过对模式的描述 — 又是确定性。在 `AGENTS.md` 中提及此类脚本，让智能体使用它们，而非手工拼凑。
+Böckeler 将引导（bootstrap）工具列为 feedforward 控制：从已知良好骨架启动智能体的生成器与模板（`npm run new:endpoint`、预装可观测性的服务模板）。当某种模式必须精确重复时，生成器胜过对模式的描述 — 又是确定性。在 `AGENTS.md` 中提及此类脚本，让智能体使用它们，而非手工拼凑。
 
 ## 指南如何失败，什么能捕获
 

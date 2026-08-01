@@ -102,7 +102,7 @@ Do not fix anything unless explicitly asked.
 
 ## Bootstrap scripts और templates
 
-Fowler bootstrap tooling को feedforward नियंत्रणों में गिनता है: generators और templates जो एजेंट को ज्ञात-अच्छे skeleton से शुरू करते हैं (`npm run new:endpoint`, observability wired-in service template)। जब pattern बिल्कुल वैसा ही दोहराना हो, generator pattern के description से बेहतर — फिर से determinism। ऐसे scripts `AGENTS.md` में उल्लेख करें ताकि एजेंट hand-rolling के बजाय उन्हें इस्तेमाल करें।
+Böckeler bootstrap tooling को feedforward नियंत्रणों में गिनती हैं: generators और templates जो एजेंट को ज्ञात-अच्छे skeleton से शुरू करते हैं (`npm run new:endpoint`, observability wired-in service template)। जब pattern बिल्कुल वैसा ही दोहराना हो, generator pattern के description से बेहतर — फिर से determinism। ऐसे scripts `AGENTS.md` में उल्लेख करें ताकि एजेंट hand-rolling के बजाय उन्हें इस्तेमाल करें।
 
 ## Guides कैसे विफल होते हैं, और क्या पकड़ता है
 

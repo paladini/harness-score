@@ -4,9 +4,9 @@
 
 ## Harness engineering
 
-- **[Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html)** — martinfowler.com, अप्रैल 2026.
+- **[Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html)** — Birgitta Böckeler, martinfowler.com, अप्रैल 2026.
   एजेंट *उपयोग* करने वाली टीमों के लिए अनुशासन का ढाँचा: guides बनाम sensors, गणनात्मक बनाम अनुमानात्मक checks, तीन नियमन आयाम (रखरखाव, आर्किटेक्चर fitness, व्यवहार), «गुणवत्ता को बाएँ रखें», और harnessability को रिपॉज़िटरी की विशेषता के रूप में।
-- **[Harness Engineering — first thoughts](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html)** — *Exploring Gen AI* series की प्रारंभिक मेमो जहाँ यह शब्द आकार लेता है।
+- **[Harness Engineering — first thoughts](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html)** — Birgitta Böckeler की *Exploring Gen AI* series की प्रारंभिक मेमो जहाँ यह शब्द आकार लेता है।
 - **[Improving Deep Agents with harness engineering](https://www.langchain.com/blog/improving-deep-agents-with-harness-engineering)** — LangChain, 2026.
   अनुभवजन्य केस: मॉडल untouched, Terminal Bench 2.0 पर 52.8% → 66.5%। स्व-सत्यापन loops, context assembly middleware, loop detection, reasoning sandwich।
 - **[deepagents](https://github.com/langchain-ai/deepagents)** — LangChain का ओपन-सोर्स «batteries-included agent harness»; ठोस harness implementation पढ़ने के लिए उपयोगी।

@@ -149,7 +149,7 @@ with a concrete definition of what counts as public API:
 
 | Piece | What | Where |
 |---|---|---|
-| 📖 **The Guide** | Harness engineering for AI coding agents: guides (feedforward), sensors (feedback), guardrails, and the 5-level maturity model. Consolidates Martin Fowler's harness engineering articles, LangChain's harness lessons, and Cursor's own docs. | [paladini.github.io/harness-score](https://paladini.github.io/harness-score/) |
+| 📖 **The Guide** | Harness engineering for AI coding agents: guides (feedforward), sensors (feedback), guardrails, and the 5-level maturity model. Consolidates Birgitta Böckeler's harness engineering articles (on martinfowler.com), LangChain's harness lessons, and Cursor's own docs. | [paladini.github.io/harness-score](https://paladini.github.io/harness-score/) |
 | 🔍 **The CLI** | `npx harness-score` — 36 checks across 6 dimensions, maturity level L0–L4, JSON/markdown/badge output, `--diff` mode, `--min-level` CI gate. Scores harnesses for Cursor, Claude Code, Windsurf, Cline, Continue, Codex, and other tools via OR semantics. Zero runtime dependencies, fully-typed programmatic API. | [packages/cli](packages/cli) |
 | 🧩 **Editor/agent plugins** | `/harness-audit` command + `harness-engineering` skill: audit the open workspace and let the agent fix the gaps following the guide's recipes. Cursor is the flagship; Claude Code and Windsurf support in progress (see [PLUGINS-ROADMAP.md](PLUGINS-ROADMAP.md) for the rest). | [plugins](plugins) |
 | ⚙️ **The GitHub Action** | Run the scan on every push, gate on a minimum level, emit the badge. Multi-harness aware. | [action](action) |

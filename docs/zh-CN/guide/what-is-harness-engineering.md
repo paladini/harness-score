@@ -4,9 +4,9 @@
 
 当 AI 编码智能体在你的仓库中工作时，其行为只有一部分来自模型本身。其余来自模型*周围*的一切：它加载的指令、可调用的工具、对输出运行的检查，以及阻止破坏性操作的门禁。这套外围机制就是 **harness**（智能体驾驭层），刻意构建它就是 **harness 工程**。
 
-这一术语在 2026 年初逐渐成型。Martin Fowler 网站发表了
+这一术语在 2026 年初逐渐成型。Birgitta Böckeler 在 Martin Fowler 网站发表了
 [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html)
-（基于更早的
+（基于她在 *Exploring Gen AI* 系列中更早的
 [memo](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html)），
 为*使用*智能体的团队框定了这一学科。几乎同时，LangChain 展示了另一面：只改进编码智能体的 harness、从不更换模型，他们在 Terminal Bench 2.0 上从 **52.8% 提升到 66.5%**，从前 30 名之外进入前 5
 （[Improving Deep Agents with harness engineering](https://www.langchain.com/blog/improving-deep-agents-with-harness-engineering)）。
@@ -15,7 +15,7 @@
 
 ## 指南与传感器
 
-Fowler 的框架将 harness 控制分为两大家族，借自控制论：
+Böckeler 的框架将 harness 控制分为两大家族，借自控制论与控制系统：
 
 | | **指南**（feedforward） | **传感器**（feedback） |
 |---|---|---|
@@ -30,7 +30,7 @@ harness 需要两者兼备。只有指南、没有传感器，会产生自信但
 
 ## 计算型检查 vs 推理型检查
 
-Fowler 还划出第二道界限，本指南 — 以及 `harness-score` 扫描器 — 同样严肃对待：
+Böckeler 还划出第二道界限，本指南 — 以及 `harness-score` 扫描器 — 同样严肃对待：
 
 - **计算型检查**是确定性的：linter、类型检查、测试、结构分析。毫秒到秒级完成，几乎零成本，每次结果相同。应放在*尽可能靠前*的位置：hooks、pre-commit、CI。
 - **推理型检查**使用模型：AI 代码审查、LLM-as-judge、语义审计。强大但慢、贵、且带概率性。只在语义重要、计算无法覆盖时使用。
@@ -50,7 +50,7 @@ LangChain 在 Terminal Bench 上的提升，是 harness 工程作为实证实践
 
 ## 可 harness 化：有些代码库更容易驾驭
 
-Fowler 提到 **环境 affordance**（环境 affordance）— 使智能体更易治理的环境特征：
+Böckeler 将此表述为 **harnessability**。同事 Ned Letcher 的术语 **环境 affordance**（ambient affordances）— 她在文中引用 — 指使智能体更易治理的环境特征：
 
 - **类型化语言**为每次编辑提供免费、即时的传感器（编译器）。
 - **清晰的模块边界**缩小智能体每个任务所需的上下文。

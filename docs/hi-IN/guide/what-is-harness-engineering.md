@@ -4,11 +4,11 @@
 
 जब कोई AI coding एजेंट आपके रिपॉज़िटरी में काम करता है, तो उसका व्यवहार केवल मॉडल से नहीं आता। बाकी हिस्सा मॉडल के *आस-पास* की चीज़ों से आता है — वे निर्देश जो वह लोड करता है, टूल जिन्हें वह चला सकता है, आउटपुट पर चलने वाली checks, और वे gates जो नुकसान पहुँचाने वाले काम रोकते हैं। इस पूरे घेरे को **harness** कहते हैं; इसे जानबूझकर बनाना **harness engineering** है।
 
-यह शब्द 2026 की शुरुआत में स्पष्ट हुआ। Martin Fowler की साइट ने
+यह शब्द 2026 की शुरुआत में स्पष्ट हुआ। Birgitta Böckeler ने Martin Fowler की साइट पर
 [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html)
-(पहले के
+प्रकाशित किया (*Exploring Gen AI* series में अपने पहले
 [memo](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html)
-पर आधारित) प्रकाशित किया,
+पर आधारित),
 जो उन टीमों के लिए यह अनुशासन परिभाषित करता है जो एजेंट *उपयोग* करती हैं। लगभग उसी समय LangChain ने सिक्के का दूसरा पहलू दिखाया: coding एजेंट का harness सुधारकर — मॉडल को छुए बिना — उन्होंने Terminal Bench 2.0 पर **52.8% से 66.5%** तक पहुँचा, top 30 से बाहर से top 5 में
 ([Improving Deep Agents with harness engineering](https://www.langchain.com/blog/improving-deep-agents-with-harness-engineering))।
 
@@ -16,7 +16,7 @@
 
 ## Guides और Sensors
 
-Fowler का framework harness controls को दो परिवारों में बाँटता है, control theory से उधार:
+Böckeler का framework harness controls को दो परिवारों में बाँटता है, cybernetics और control systems से लिया गया:
 
 | | **Guides** (feedforward) | **Sensors** (feedback) |
 |---|---|---|
@@ -31,7 +31,7 @@ harness को दोनों चाहिए। Guides बिना sensors �
 
 ## गणनात्मक बनाम अनुमानात्मक checks
 
-Fowler एक और अंतर करता है, जिसे यह गाइड — और `harness-score` scanner — गंभीरता से लेता है:
+Böckeler एक और अंतर करता है, जिसे यह गाइड — और `harness-score` scanner — गंभीरता से लेता है:
 
 - **Computational checks** निश्चित (deterministic) होती हैं: linters, type checkers, tests, structural analysis। milliseconds से seconds में चलती हैं, लागत शून्य, हर बार वही जवाब। ये *हर जगह* होनी चाहिए: hooks, pre-commit, CI में।
 - **Inferential checks** मॉडल उपयोग करती हैं: AI code review, LLM-as-judge, semantic audits। शक्तिशाली हैं पर धीमी, महँगी और probabilistic। जहाँ semantics मायने रखती हैं और computation नहीं पहुँच पाता, वहाँ उपयोग करें।
@@ -51,7 +51,7 @@ LangChain की Terminal Bench climb harness engineering का सबसे �
 
 ## Harnessability: कुछ codebases harness करना आसान होते हैं
 
-Fowler **ambient affordances** (परिवेश की सुविधाएँ) की बात करता है — environment की properties जो एजेंटों को अधिक governable बनाती हैं:
+Böckeler इसे **harnessability** कहती हैं। उनके सहयोगी Ned Letcher का शब्द **ambient affordances** (परिवेश की सुविधाएँ) — जिसे वे उद्धृत करती हैं — उन environment properties को नाम देता है जो एजेंटों को अधिक governable बनाती हैं:
 
 - **Typed भाषाएँ** हर edit को free, instant sensor देती हैं (compiler)।
 - **Clear module boundaries** प्रति task ज़रूरी context छोटा करती हैं।

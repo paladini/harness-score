@@ -127,7 +127,7 @@ Do not fix anything unless explicitly asked.
 
 ## Bootstrap scripts and templates
 
-Fowler lists bootstrap tooling among feedforward controls: generators and
+Böckeler lists bootstrap tooling among feedforward controls: generators and
 templates that start the agent from a known-good skeleton (`npm run
 new:endpoint`, a service template with observability wired in). When a
 pattern must be repeated exactly, a generator beats a description of the

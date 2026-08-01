@@ -127,7 +127,7 @@ Do not fix anything unless explicitly asked.
 
 ## Scripts bootstrap e templates
 
-Fowler lista ferramentas bootstrap entre controles feedforward: geradores e
+Böckeler lista ferramentas bootstrap entre controles feedforward: geradores e
 templates que iniciam o agente a partir de um esqueleto conhecido-bom (`npm run
 new:endpoint`, template de serviço com observabilidade). Quando um padrão deve
 se repetir exatamente, um gerador vence uma descrição do padrão — determinismo

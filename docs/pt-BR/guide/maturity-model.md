@@ -132,7 +132,7 @@ O scanner imprime exatamente qual requisito bloqueia o próximo nível
 
 ## O que o modelo deliberadamente não mede
 
-Honestidade sobre os limites do determinismo (o caveat de Fowler de que "behavior
+Honestidade sobre os limites do determinismo (o caveat de Böckeler de que "behavior
 harness is immature" vale também para medição):
 
 - **Se seus testes são bons** — só que existem, rodam e gateiam.

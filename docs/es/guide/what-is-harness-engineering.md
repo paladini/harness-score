@@ -9,14 +9,15 @@ verificaciones que corren sobre su salida, los gates que evitan acciones
 destructivas. Esa maquinaria circundante es el **harness**, y construirla de
 forma deliberada es **ingeniería de harness**.
 
-El término cristalizó a principios de 2026. El sitio de Martin Fowler publicó
+El término cristalizó a principios de 2026. Birgitta Böckeler publicó
 [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html)
-(basado en un
+en el sitio de Martin Fowler (basado en su
 [memo](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html)
-anterior), enmarcando la disciplina para equipos que *usan* agentes. Por la
-misma época, LangChain mostró el otro lado: mejorando solo el harness de su
-agente de código — sin tocar el modelo — pasó de **52,8% a 66,5%** en Terminal
-Bench 2.0, de fuera del top 30 al top 5
+anterior de la serie *Exploring Gen AI*), enmarcando la disciplina para
+equipos que *usan* agentes. Por la misma época, LangChain mostró el otro
+lado: mejorando solo el harness de su agente de código — sin tocar el
+modelo — pasó de **52,8% a 66,5%** en Terminal Bench 2.0, de fuera del top
+30 al top 5
 ([Improving Deep Agents with harness engineering](https://www.langchain.com/blog/improving-deep-agents-with-harness-engineering)).
 
 La idea central de ambos: **la confiabilidad es propiedad del sistema
@@ -26,8 +27,8 @@ frontier.
 
 ## Guías y sensores
 
-El marco de Fowler divide los controles del harness en dos familias,
-tomadas de la teoría de control:
+El marco de Böckeler divide los controles del harness en dos familias,
+tomadas de la cibernética y los sistemas de control:
 
 | | **Guías** (feedforward) | **Sensores** (feedback) |
 |---|---|---|
@@ -48,7 +49,7 @@ el agente nunca fue instruido para evitarlos.
 
 ## Verificaciones computacionales vs. inferenciales
 
-Fowler traza una segunda distinción que esta guía — y el escáner
+Böckeler traza una segunda distinción que esta guía — y el escáner
 `harness-score` — toma en serio:
 
 - **Verificaciones computacionales** son deterministas: linters, type checkers,
@@ -91,8 +92,9 @@ equivalentes directos en un repo Cursor — de eso trata el resto de esta guía.
 
 ## Harnessability: algunos codebases son más fáciles de preparar
 
-Fowler destaca **affordances ambientales** — propiedades del entorno que hacen
-a los agentes más gobernables:
+Böckeler enmarca esto como **harnessability**. El término **affordances
+ambientales** de su colega Ned Letcher — que ella cita — nombra propiedades
+del entorno que hacen a los agentes más gobernables:
 
 - **Lenguajes tipados** dan a cada edición un sensor gratis e instantáneo (el
   compilador).

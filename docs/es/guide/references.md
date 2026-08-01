@@ -4,12 +4,12 @@ Las fuentes que esta guía consolida, aproximadamente por orden de influencia.
 
 ## Ingeniería de harness
 
-- **[Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html)** — martinfowler.com, abril de 2026.
+- **[Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html)** — Birgitta Böckeler, martinfowler.com, abril de 2026.
   El artículo que enmarcó la disciplina para equipos que *usan* agentes: guías vs.
   sensores, verificaciones computacionales vs. inferenciales, las tres dimensiones
   de regulación (mantenibilidad, fitness arquitectónico, comportamiento), "mantener
   la calidad a la izquierda" y harnessability como propiedad de codebases.
-- **[Harness Engineering — first thoughts](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html)** — el memo anterior de la serie
+- **[Harness Engineering — first thoughts](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html)** — el memo anterior de Birgitta Böckeler en la serie
   *Exploring Gen AI* donde el término toma forma.
 - **[Improving Deep Agents with harness engineering](https://www.langchain.com/blog/improving-deep-agents-with-harness-engineering)** — LangChain, 2026.
   El caso empírico: 52,8% → 66,5% en Terminal Bench 2.0 sin tocar el modelo.

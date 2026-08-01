@@ -4,9 +4,9 @@
 
 ## Harness 工程
 
-- **[Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html)** — martinfowler.com，2026 年 4 月。
+- **[Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html)** — Birgitta Böckeler，martinfowler.com，2026 年 4 月。
   为*使用*智能体的团队框定这一学科的文章：指南 vs 传感器、计算型 vs 推理型检查、三个调节维度（可维护性、架构 fitness、行为）、「质量左移」，以及 harnessability 作为代码库属性。
-- **[Harness Engineering — first thoughts](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html)** — *Exploring Gen AI* 系列中术语逐渐成型的较早 memo。
+- **[Harness Engineering — first thoughts](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html)** — Birgitta Böckeler 在 *Exploring Gen AI* 系列中术语逐渐成型的较早 memo。
 - **[Improving Deep Agents with harness engineering](https://www.langchain.com/blog/improving-deep-agents-with-harness-engineering)** — LangChain，2026。
   实证案例：未更换模型，Terminal Bench 2.0 上从 52.8% 提升到 66.5%。自验证循环、上下文组装中间件、循环检测，以及推理三明治。
 - **[deepagents](https://github.com/langchain-ai/deepagents)** — LangChain 开源的「开箱即用 agent harness」；可作为具体 harness 实现来阅读。
