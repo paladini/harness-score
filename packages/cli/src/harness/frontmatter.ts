@@ -10,6 +10,10 @@ import type { ToolId } from './registry.js';
  */
 function autoLoadsWithoutFrontmatter(path: string, toolId: ToolId): boolean {
   if (toolId === 'continue' && /(^|\/)\.continue\/rules\//.test(path)) return true;
+  if (toolId === 'claude-code' && /(^|\/)\.claude\/rules\//.test(path)) return true;
+  if (toolId === 'kiro' && /(^|\/)\.kiro\/steering\//.test(path)) return true;
+  if (toolId === 'junie' && /(^|\/)\.junie\/AGENTS\.md$/.test(path)) return true;
+  if (toolId === 'roo-code') return true;
   return /\/(AGENTS|CLAUDE|GEMINI)\.md$/.test(path);
 }
 
@@ -70,6 +74,12 @@ export function ruleIsScoped(
       const continueRules = allRules.filter((r) => r.toolId === 'continue');
       return continueRules.length > 1;
     }
+    case 'claude-code':
+      return Boolean(fm?.paths);
+    case 'kiro':
+      return fm?.inclusion?.toLowerCase() === 'filematch' || Boolean(fm?.fileMatchPattern);
+    case 'roo-code':
+      return /(^|\/)\.roo\/rules-[^/]+\//.test(path) || /(^|\/)\.roorules-[^/]+$/.test(path);
     case 'antigravity':
       return Boolean(fm?.globs || (fm?.trigger && isGlobLike(fm.trigger)));
     default:

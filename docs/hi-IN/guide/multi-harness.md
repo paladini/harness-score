@@ -27,21 +27,26 @@ Harness Score ये artifacts पहचानता है (exact patterns scan
 | Tool | Rules | Skills | Commands / workflows | Subagents | Hooks | MCP |
 |---|---|---|---|---|---|---|
 | **Cursor** | `.cursor/rules/*.mdc` | `.cursor/skills/*/SKILL.md` | `.cursor/commands/*.md` | `.cursor/agents/*.md` | `.cursor/hooks.json` | `.cursor/mcp.json` |
-| **Claude Code** | nested `CLAUDE.md` files | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json` (`hooks` key) | `.mcp.json` |
-| **Windsurf** | `.windsurf/rules/*.md` | — | `.windsurf/workflows/*.md` | — | — | — |
-| **Cline** | `.clinerules/*.md` | — | — | — | — | — |
-| **Continue** | `.continue/rules/*.md` | — | `.continue/prompts/*` | — | — | — |
-| **GitHub Copilot** | `.github/instructions/*.instructions.md` | — | — | — | — | — |
-| **Codex** | nested `AGENTS.md` files | `.agents/skills/*/SKILL.md` | — | — | — | — |
-| **Gemini / Antigravity** | `.agents/rules/`, `.agent/rules/`, `.gemini/rules/`, nested `GEMINI.md` | `.agents/skills/*/SKILL.md` | `.agents/workflows/`, `.agent/workflows/` | — | — | `.agents/mcp_config.json`, `.agent/mcp_config.json` |
-| **OpenCode** | — | — | — | `.opencode/agents/*.md` | — | — |
-| **Zed** | — | — | `.zed/commands/*.md` | — | — | — |
+| **Claude Code** | `CLAUDE.md`, `.claude/rules/**/*.md` | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json` | `.mcp.json` |
+| **Windsurf** | `.windsurf/rules/*.md` | `.windsurf/skills/*/SKILL.md` | `.windsurf/workflows/*.md` | - | `.windsurf/hooks.json` | - |
+| **Cline** | `.clinerules/**/*.{md,txt}` | `.cline/skills/*/SKILL.md` | - | - | `.clinerules/hooks/<Event>[.ps1]` | - |
+| **Continue** | `.continue/rules/*.md` | - | `.continue/prompts/*` | - | - | `.continue/mcpServers/*.{yaml,yml}`, `.continue/config.yaml` |
+| **GitHub Copilot** | `.github/instructions/*.instructions.md` | `.github/skills/*/SKILL.md` | `.github/prompts/*.prompt.md` | `.github/agents/*.md` | `.github/hooks/*.json` | - |
+| **Codex** | `AGENTS.md` | `.agents/skills/*/SKILL.md` | - | - | - | - |
+| **Gemini CLI** | `GEMINI.md` | `.gemini/skills/*/SKILL.md` | `.gemini/commands/**/*.toml` | `.gemini/agents/*.md` | `.gemini/settings.json` | `.gemini/settings.json` (`mcpServers`) |
+| **Antigravity** | `.agents/rules/`, `.agent/rules/`, `.gemini/rules/` | shared `.agents/skills/` | `.agents/workflows/`, `.agent/workflows/` | - | `.agents/hooks.json` | `.agents/mcp_config.json`, `.agent/mcp_config.json` |
+| **OpenCode** | - | `.opencode/skills/*/SKILL.md` | - | `.opencode/agents/*.md` | - | - |
+| **Zed** | shared `AGENTS.md` | shared `.agents/skills/` | `.zed/commands/*.md` | - | - | - |
+| **Kiro** | `.kiro/steering/**/*.md` | `.kiro/skills/*/SKILL.md` | - | `.kiro/agents/**/*.{md,json}` | `.kiro/hooks/*.json` | `.kiro/settings/mcp.json`, inline `mcpServers` |
+| **JetBrains Junie** | `.junie/AGENTS.md` | `.junie/skills/*/SKILL.md` | - | `.junie/agents/*.md`, shared `.agents/*.md` | - | - |
+| **Roo Code** | `.roo/rules*/`, `.roorules*` | `.roo/skills*/*/SKILL.md` | - | `.roomodes` | - | `.roo/mcp.json` |
+| **Devin** | shared `AGENTS.md` | `.cognition/skills/*/SKILL.md` | - | - | - | - |
 
 Root context files (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`) हर tool के लिए गिनती हैं।
 और सबसे महत्वपूर्ण artifacts **tool-agnostic** हैं: tests, CI pipelines, linters, type checkers, `.gitignore`, lockfiles, और `SECURITY.md` — कौन सा tool उपयोग करें, score समान।
 
 ::: tip किसी tool का column sparse होना penalty नहीं है
-Windsurf के लिए scanner hooks system recognize नहीं करता — पर hooks छह dimensions में से एक हैं। rules, sensors और CI मजबूत Windsurf-only repository भी L3 तक पहुँच सकती है। L4 के लिए gate hooks चाहिए, जिसका मतलब आज `.cursor/hooks.json` या Claude Code `settings.json` primary tool के साथ।
+Hook JSON schemas interchangeable नहीं हैं और Cline executable files उपयोग करता है। Harness Score समान HKS-01 से HKS-05 checks लगाने से पहले हर format normalize करता है।
 :::
 
 ## अपना harness एक बार बनाएँ

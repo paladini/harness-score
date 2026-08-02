@@ -28,21 +28,26 @@ O Harness Score reconhece estes artefatos (padrões exatos no registry do scanne
 | Ferramenta | Rules | Skills | Commands / workflows | Subagents | Hooks | MCP |
 |---|---|---|---|---|---|---|
 | **Cursor** | `.cursor/rules/*.mdc` | `.cursor/skills/*/SKILL.md` | `.cursor/commands/*.md` | `.cursor/agents/*.md` | `.cursor/hooks.json` | `.cursor/mcp.json` |
-| **Claude Code** | `CLAUDE.md` aninhados | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json` (`hooks`) | `.mcp.json` |
-| **Windsurf** | `.windsurf/rules/*.md` | — | `.windsurf/workflows/*.md` | — | — | — |
-| **Cline** | `.clinerules/*.md` | — | — | — | — | — |
-| **Continue** | `.continue/rules/*.md` | — | `.continue/prompts/*` | — | — | — |
-| **GitHub Copilot** | `.github/instructions/*.instructions.md` | — | — | — | — | — |
-| **Codex** | `AGENTS.md` aninhados | `.agents/skills/*/SKILL.md` | — | — | — | — |
-| **Gemini / Antigravity** | `.agents/rules/`, `.agent/rules/`, `.gemini/rules/`, `GEMINI.md` aninhados | `.agents/skills/*/SKILL.md` | `.agents/workflows/`, `.agent/workflows/` | — | — | `.agents/mcp_config.json`, `.agent/mcp_config.json` |
-| **OpenCode** | — | — | — | `.opencode/agents/*.md` | — | — |
-| **Zed** | — | — | `.zed/commands/*.md` | — | — | — |
+| **Claude Code** | `CLAUDE.md` aninhados, `.claude/rules/**/*.md` | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json` | `.mcp.json` |
+| **Windsurf** | `.windsurf/rules/*.md` | `.windsurf/skills/*/SKILL.md` | `.windsurf/workflows/*.md` | - | `.windsurf/hooks.json` | - |
+| **Cline** | `.clinerules/**/*.{md,txt}` | `.cline/skills/*/SKILL.md` | - | - | `.clinerules/hooks/<Evento>[.ps1]` | - |
+| **Continue** | `.continue/rules/*.md` | - | `.continue/prompts/*` | - | - | `.continue/mcpServers/*.{yaml,yml}`, `.continue/config.yaml` |
+| **GitHub Copilot** | `.github/instructions/*.instructions.md` | `.github/skills/*/SKILL.md` | `.github/prompts/*.prompt.md` | `.github/agents/*.md` | `.github/hooks/*.json` | - |
+| **Codex** | `AGENTS.md` aninhados | `.agents/skills/*/SKILL.md` | - | - | - | - |
+| **Gemini CLI** | `GEMINI.md` aninhados | `.gemini/skills/*/SKILL.md` | `.gemini/commands/**/*.toml` | `.gemini/agents/*.md` | `.gemini/settings.json` | `.gemini/settings.json` (`mcpServers`) |
+| **Antigravity** | `.agents/rules/`, `.agent/rules/`, `.gemini/rules/` | `.agents/skills/` compartilhado | `.agents/workflows/`, `.agent/workflows/` | - | `.agents/hooks.json` | `.agents/mcp_config.json`, `.agent/mcp_config.json` |
+| **OpenCode** | - | `.opencode/skills/*/SKILL.md` | - | `.opencode/agents/*.md` | - | - |
+| **Zed** | `AGENTS.md` compartilhado | `.agents/skills/` compartilhado | `.zed/commands/*.md` | - | - | - |
+| **Kiro** | `.kiro/steering/**/*.md` | `.kiro/skills/*/SKILL.md` | - | `.kiro/agents/**/*.{md,json}` | `.kiro/hooks/*.json` | `.kiro/settings/mcp.json`, `mcpServers` inline no agente |
+| **JetBrains Junie** | `.junie/AGENTS.md` | `.junie/skills/*/SKILL.md` | - | `.junie/agents/*.md`, `.agents/*.md` compartilhado | - | - |
+| **Roo Code** | `.roo/rules*/`, `.roorules*` | `.roo/skills*/*/SKILL.md` | - | `.roomodes` | - | `.roo/mcp.json` |
+| **Devin** | `AGENTS.md` compartilhado | `.cognition/skills/*/SKILL.md` | - | - | - | - |
 
 Arquivos de contexto na raiz (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`) contam para toda ferramenta.
 E os artefatos mais importantes são **agnósticos de ferramenta**: testes, CI, linters, type checkers, `.gitignore`, lockfiles e `SECURITY.md` pontuam igual independente da ferramenta.
 
 ::: tip Coluna esparça de uma ferramenta não é penalidade
-Windsurf não tem sistema de hooks reconhecido pelo scanner — mas hooks são só uma dimensão de seis. Repositório só Windsurf com rules, sensores e CI fortes ainda sobe a L3. L4 exige gate hooks, o que hoje significa `.cursor/hooks.json` ou `settings.json` do Claude Code junto da ferramenta principal.
+Schemas JSON de hooks não são intercambiáveis, e o Cline usa arquivos executáveis. O Harness Score normaliza cada formato antes de aplicar os mesmos checks HKS-01 a HKS-05.
 :::
 
 ## Construindo o harness uma vez

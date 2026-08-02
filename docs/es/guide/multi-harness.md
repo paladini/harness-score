@@ -28,21 +28,26 @@ Harness Score reconoce estos artefactos (patrones exactos en el registry del esc
 | Herramienta | Rules | Skills | Commands / workflows | Subagents | Hooks | MCP |
 |---|---|---|---|---|---|---|
 | **Cursor** | `.cursor/rules/*.mdc` | `.cursor/skills/*/SKILL.md` | `.cursor/commands/*.md` | `.cursor/agents/*.md` | `.cursor/hooks.json` | `.cursor/mcp.json` |
-| **Claude Code** | `CLAUDE.md` anidados | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json` (`hooks`) | `.mcp.json` |
-| **Windsurf** | `.windsurf/rules/*.md` | — | `.windsurf/workflows/*.md` | — | — | — |
-| **Cline** | `.clinerules/*.md` | — | — | — | — | — |
-| **Continue** | `.continue/rules/*.md` | — | `.continue/prompts/*` | — | — | — |
-| **GitHub Copilot** | `.github/instructions/*.instructions.md` | — | — | — | — | — |
-| **Codex** | `AGENTS.md` anidados | `.agents/skills/*/SKILL.md` | — | — | — | — |
-| **Gemini / Antigravity** | `.agents/rules/`, `.agent/rules/`, `.gemini/rules/`, `GEMINI.md` anidados | `.agents/skills/*/SKILL.md` | `.agents/workflows/`, `.agent/workflows/` | — | — | `.agents/mcp_config.json`, `.agent/mcp_config.json` |
-| **OpenCode** | — | — | — | `.opencode/agents/*.md` | — | — |
-| **Zed** | — | — | `.zed/commands/*.md` | — | — | — |
+| **Claude Code** | `CLAUDE.md`, `.claude/rules/**/*.md` | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json` | `.mcp.json` |
+| **Windsurf** | `.windsurf/rules/*.md` | `.windsurf/skills/*/SKILL.md` | `.windsurf/workflows/*.md` | - | `.windsurf/hooks.json` | - |
+| **Cline** | `.clinerules/**/*.{md,txt}` | `.cline/skills/*/SKILL.md` | - | - | `.clinerules/hooks/<Evento>[.ps1]` | - |
+| **Continue** | `.continue/rules/*.md` | - | `.continue/prompts/*` | - | - | `.continue/mcpServers/*.{yaml,yml}`, `.continue/config.yaml` |
+| **GitHub Copilot** | `.github/instructions/*.instructions.md` | `.github/skills/*/SKILL.md` | `.github/prompts/*.prompt.md` | `.github/agents/*.md` | `.github/hooks/*.json` | - |
+| **Codex** | `AGENTS.md` | `.agents/skills/*/SKILL.md` | - | - | - | - |
+| **Gemini CLI** | `GEMINI.md` | `.gemini/skills/*/SKILL.md` | `.gemini/commands/**/*.toml` | `.gemini/agents/*.md` | `.gemini/settings.json` | `.gemini/settings.json` (`mcpServers`) |
+| **Antigravity** | `.agents/rules/`, `.agent/rules/`, `.gemini/rules/` | `.agents/skills/` compartido | `.agents/workflows/`, `.agent/workflows/` | - | `.agents/hooks.json` | `.agents/mcp_config.json`, `.agent/mcp_config.json` |
+| **OpenCode** | - | `.opencode/skills/*/SKILL.md` | - | `.opencode/agents/*.md` | - | - |
+| **Zed** | `AGENTS.md` compartido | `.agents/skills/` compartido | `.zed/commands/*.md` | - | - | - |
+| **Kiro** | `.kiro/steering/**/*.md` | `.kiro/skills/*/SKILL.md` | - | `.kiro/agents/**/*.{md,json}` | `.kiro/hooks/*.json` | `.kiro/settings/mcp.json`, `mcpServers` inline |
+| **JetBrains Junie** | `.junie/AGENTS.md` | `.junie/skills/*/SKILL.md` | - | `.junie/agents/*.md`, `.agents/*.md` compartido | - | - |
+| **Roo Code** | `.roo/rules*/`, `.roorules*` | `.roo/skills*/*/SKILL.md` | - | `.roomodes` | - | `.roo/mcp.json` |
+| **Devin** | `AGENTS.md` compartido | `.cognition/skills/*/SKILL.md` | - | - | - | - |
 
 Archivos de contexto en raíz (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`) cuentan para toda herramienta.
 Y los artefactos más importantes son **agnósticos de herramienta**: tests, CI, linters, type checkers, `.gitignore`, lockfiles y `SECURITY.md` puntúan igual sin importar la herramienta.
 
 ::: tip Columna escasa de una herramienta no es penalización
-Windsurf no tiene sistema de hooks reconocido por el escáner — pero hooks son solo una dimensión de seis. Repo solo Windsurf con rules, sensores y CI fuertes aún sube a L3. L4 requiere gate hooks, lo que hoy significa `.cursor/hooks.json` o `settings.json` de Claude Code junto a la herramienta principal.
+Los esquemas JSON de hooks no son intercambiables y Cline usa archivos ejecutables. Harness Score normaliza cada formato antes de aplicar los mismos checks HKS-01 a HKS-05.
 :::
 
 ## Construyendo el harness una vez

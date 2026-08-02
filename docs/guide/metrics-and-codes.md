@@ -84,14 +84,14 @@ Stable IDs — linked to remediation in [Measure & Improve](./measure-and-improv
 | SKL-02 | 3 | Every skill has `name:` and `description:` in frontmatter | [skl-02](./measure-and-improve#skl-02) |
 | SKL-03 | 3 | Command/workflow files exist for any supported tool | [skl-03](./measure-and-improve#skl-03) |
 | SKL-04 | 2 | Skill descriptions are ≥40 characters | [skl-04](./measure-and-improve#skl-04) |
-| AGT-01 | 3 | At least one subagent markdown file | [agt-01](./measure-and-improve#agt-01) |
-| AGT-02 | 2 | Every subagent has `name:` and `description:` frontmatter | [agt-02](./measure-and-improve#agt-02) |
+| AGT-01 | 3 | At least one recognized subagent definition | [agt-01](./measure-and-improve#agt-01) |
+| AGT-02 | 2 | Every subagent has vendor-required identity metadata | [agt-02](./measure-and-improve#agt-02) |
 
 ### Hooks & Guardrails
 
 | ID | Pts | Analyzes exactly | Remediation |
 |---|---|---|---|
-| HKS-01 | 4 | Hooks config exists and parses as JSON | [hks-01](./measure-and-improve#hks-01) |
+| HKS-01 | 4 | A recognized JSON or executable hooks mechanism is valid | [hks-01](./measure-and-improve#hks-01) |
 | HKS-02 | 2 | Hooks declare version/metadata and known event names | [hks-02](./measure-and-improve#hks-02) |
 | HKS-03 | 4 | A gate-class hook is registered (shell/MCP/read/tool gate) | [hks-03](./measure-and-improve#hks-03) |
 | HKS-04 | 2 | A feedback-class hook is registered (post-edit/tool) | [hks-04](./measure-and-improve#hks-04) |

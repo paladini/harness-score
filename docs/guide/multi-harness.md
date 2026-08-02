@@ -28,21 +28,44 @@ harness registry — [`registry.ts`](https://github.com/paladini/harness-score/b
 | Tool | Rules | Skills | Commands / workflows | Subagents | Hooks | MCP |
 |---|---|---|---|---|---|---|
 | **Cursor** | `.cursor/rules/*.mdc` | `.cursor/skills/*/SKILL.md` | `.cursor/commands/*.md` | `.cursor/agents/*.md` | `.cursor/hooks.json` | `.cursor/mcp.json` |
-| **Claude Code** | nested `CLAUDE.md` files | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json` (`hooks` key) | `.mcp.json` |
-| **Windsurf** | `.windsurf/rules/*.md` | — | `.windsurf/workflows/*.md` | — | — | — |
-| **Cline** | `.clinerules/*.md` | — | — | — | — | — |
-| **Continue** | `.continue/rules/*.md` | — | `.continue/prompts/*` | — | — | — |
-| **GitHub Copilot** | `.github/instructions/*.instructions.md` | — | — | — | — | — |
-| **Codex** | nested `AGENTS.md` files | `.agents/skills/*/SKILL.md` | — | — | — | — |
-| **Gemini / Antigravity** | `.agents/rules/`, `.agent/rules/`, `.gemini/rules/`, nested `GEMINI.md` | `.agents/skills/*/SKILL.md` | `.agents/workflows/`, `.agent/workflows/` | — | — | `.agents/mcp_config.json`, `.agent/mcp_config.json` |
-| **OpenCode** | — | — | — | `.opencode/agents/*.md` | — | — |
-| **Zed** | — | — | `.zed/commands/*.md` | — | — | — |
+| **Claude Code** | nested `CLAUDE.md`, `.claude/rules/**/*.md` | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json` | `.mcp.json` |
+| **Windsurf** | `.windsurf/rules/*.md` | `.windsurf/skills/*/SKILL.md` | `.windsurf/workflows/*.md` | - | `.windsurf/hooks.json` | - |
+| **Cline** | `.clinerules/**/*.{md,txt}` | `.cline/skills/*/SKILL.md` | - | - | `.clinerules/hooks/<Event>[.ps1]` | - |
+| **Continue** | `.continue/rules/*.md` | - | `.continue/prompts/*` | - | - | `.continue/mcpServers/*.{yaml,yml}`, `.continue/config.yaml` |
+| **GitHub Copilot** | `.github/instructions/*.instructions.md` | `.github/skills/*/SKILL.md` | `.github/prompts/*.prompt.md` | `.github/agents/*.md` | `.github/hooks/*.json` | - |
+| **Codex** | nested `AGENTS.md` files | `.agents/skills/*/SKILL.md` | - | - | - | - |
+| **Gemini CLI** | nested `GEMINI.md` | `.gemini/skills/*/SKILL.md` | `.gemini/commands/**/*.toml` | `.gemini/agents/*.md` | `.gemini/settings.json` | `.gemini/settings.json` (`mcpServers`) |
+| **Antigravity** | `.agents/rules/`, `.agent/rules/`, `.gemini/rules/` | shared `.agents/skills/` | `.agents/workflows/`, `.agent/workflows/` | - | `.agents/hooks.json` | `.agents/mcp_config.json`, `.agent/mcp_config.json` |
+| **OpenCode** | - | `.opencode/skills/*/SKILL.md` | - | `.opencode/agents/*.md` | - | - |
+| **Zed** | shared `AGENTS.md` | shared `.agents/skills/` | `.zed/commands/*.md` | - | - | - |
+| **Kiro** | `.kiro/steering/**/*.md` | `.kiro/skills/*/SKILL.md` | - | `.kiro/agents/**/*.{md,json}` | `.kiro/hooks/*.json` | `.kiro/settings/mcp.json`, inline agent `mcpServers` |
+| **JetBrains Junie** | `.junie/AGENTS.md` | `.junie/skills/*/SKILL.md` | - | `.junie/agents/*.md`, shared `.agents/*.md` | - | - |
+| **Roo Code** | `.roo/rules*/`, `.roorules*` | `.roo/skills*/*/SKILL.md` | - | `.roomodes` | - | `.roo/mcp.json` |
+| **Devin** | shared `AGENTS.md` | `.cognition/skills/*/SKILL.md` | - | - | - | - |
 
 Root context files (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`) count for every tool.
 And the most important artifacts are **tool-agnostic** anyway: tests, CI pipelines, linters, type checkers, `.gitignore`, lockfiles, and `SECURITY.md` score the same no matter which tool you use.
 
-::: tip A tool's column being sparse is not a penalty
-Windsurf has no hooks system for the scanner to recognize — but hooks are only one dimension of six. A Windsurf-only repository with strong rules, sensors, and CI still climbs to L3. L4 requires gate hooks, which today means a `.cursor/hooks.json` or a Claude Code `settings.json` alongside your primary tool.
+Shared standards such as `AGENTS.md` and `.agents/skills/` earn points once but
+do not identify every compatible vendor as installed. `detectedHarnesses`
+only reports a vendor when the repository contains a vendor-specific surface.
+
+The 1.6 registry is grounded in the vendors' repository-format references:
+[GitHub Copilot customization](https://docs.github.com/en/copilot/reference/customization-cheat-sheet),
+[Claude Code hooks](https://code.claude.com/docs/en/hooks),
+[Windsurf hooks](https://docs.windsurf.com/windsurf/cascade/hooks),
+[Cline hooks](https://docs.cline.bot/customization/hooks),
+[Gemini CLI hooks](https://geminicli.com/docs/hooks/),
+[Antigravity hooks](https://ai.google.dev/gemini-api/docs/agent-hooks),
+[Kiro hooks](https://kiro.dev/docs/hooks/),
+[Junie subagents](https://junie.jetbrains.com/docs/junie-cli-subagents.html),
+[Roo Code skills](https://roocodeinc.github.io/Roo-Code/features/skills/), and
+[Devin skills](https://docs.devin.ai/product-guides/skills).
+
+::: tip Hook formats are vendor-specific
+JSON hook schemas are not interchangeable, and Cline uses executable files.
+Harness Score normalizes each format before applying the same HKS-01 through
+HKS-05 maturity checks.
 :::
 
 ## Building your harness once

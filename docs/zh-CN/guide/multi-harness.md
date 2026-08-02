@@ -27,21 +27,26 @@ Harness Score 识别以下工件（精确模式见扫描器 harness registry —
 | 工具 | Rules | Skills | Commands / workflows | Subagents | Hooks | MCP |
 |---|---|---|---|---|---|---|
 | **Cursor** | `.cursor/rules/*.mdc` | `.cursor/skills/*/SKILL.md` | `.cursor/commands/*.md` | `.cursor/agents/*.md` | `.cursor/hooks.json` | `.cursor/mcp.json` |
-| **Claude Code** | 嵌套 `CLAUDE.md` | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json`（`hooks` 键） | `.mcp.json` |
-| **Windsurf** | `.windsurf/rules/*.md` | — | `.windsurf/workflows/*.md` | — | — | — |
-| **Cline** | `.clinerules/*.md` | — | — | — | — | — |
-| **Continue** | `.continue/rules/*.md` | — | `.continue/prompts/*` | — | — | — |
-| **GitHub Copilot** | `.github/instructions/*.instructions.md` | — | — | — | — | — |
-| **Codex** | 嵌套 `AGENTS.md` | `.agents/skills/*/SKILL.md` | — | — | — | — |
-| **Gemini / Antigravity** | `.agents/rules/`、`.agent/rules/`、`.gemini/rules/`、嵌套 `GEMINI.md` | `.agents/skills/*/SKILL.md` | `.agents/workflows/`、`.agent/workflows/` | — | — | `.agents/mcp_config.json`、`.agent/mcp_config.json` |
-| **OpenCode** | — | — | — | `.opencode/agents/*.md` | — | — |
-| **Zed** | — | — | `.zed/commands/*.md` | — | — | — |
+| **Claude Code** | `CLAUDE.md`、`.claude/rules/**/*.md` | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json` | `.mcp.json` |
+| **Windsurf** | `.windsurf/rules/*.md` | `.windsurf/skills/*/SKILL.md` | `.windsurf/workflows/*.md` | - | `.windsurf/hooks.json` | - |
+| **Cline** | `.clinerules/**/*.{md,txt}` | `.cline/skills/*/SKILL.md` | - | - | `.clinerules/hooks/<Event>[.ps1]` | - |
+| **Continue** | `.continue/rules/*.md` | - | `.continue/prompts/*` | - | - | `.continue/mcpServers/*.{yaml,yml}`、`.continue/config.yaml` |
+| **GitHub Copilot** | `.github/instructions/*.instructions.md` | `.github/skills/*/SKILL.md` | `.github/prompts/*.prompt.md` | `.github/agents/*.md` | `.github/hooks/*.json` | - |
+| **Codex** | `AGENTS.md` | `.agents/skills/*/SKILL.md` | - | - | - | - |
+| **Gemini CLI** | `GEMINI.md` | `.gemini/skills/*/SKILL.md` | `.gemini/commands/**/*.toml` | `.gemini/agents/*.md` | `.gemini/settings.json` | `.gemini/settings.json`（`mcpServers`） |
+| **Antigravity** | `.agents/rules/`、`.agent/rules/`、`.gemini/rules/` | 共享 `.agents/skills/` | `.agents/workflows/`、`.agent/workflows/` | - | `.agents/hooks.json` | `.agents/mcp_config.json`、`.agent/mcp_config.json` |
+| **OpenCode** | - | `.opencode/skills/*/SKILL.md` | - | `.opencode/agents/*.md` | - | - |
+| **Zed** | 共享 `AGENTS.md` | 共享 `.agents/skills/` | `.zed/commands/*.md` | - | - | - |
+| **Kiro** | `.kiro/steering/**/*.md` | `.kiro/skills/*/SKILL.md` | - | `.kiro/agents/**/*.{md,json}` | `.kiro/hooks/*.json` | `.kiro/settings/mcp.json`、内联 `mcpServers` |
+| **JetBrains Junie** | `.junie/AGENTS.md` | `.junie/skills/*/SKILL.md` | - | `.junie/agents/*.md`、共享 `.agents/*.md` | - | - |
+| **Roo Code** | `.roo/rules*/`、`.roorules*` | `.roo/skills*/*/SKILL.md` | - | `.roomodes` | - | `.roo/mcp.json` |
+| **Devin** | 共享 `AGENTS.md` | `.cognition/skills/*/SKILL.md` | - | - | - | - |
 
 根上下文文件（`AGENTS.md`、`CLAUDE.md`、`GEMINI.md`）对所有工具均计数。
 而最重要的工件**本就与工具无关**：测试、CI 流水线、linter、类型检查器、`.gitignore`、锁文件与 `SECURITY.md`，无论使用哪种工具，得分方式相同。
 
 ::: tip 某工具列较稀疏并非扣分
-Windsurf 没有扫描器可识别的 hooks 系统 — 但 hooks 只是六个维度之一。仅有 Windsurf、rules/传感器/CI 配置扎实的仓库，仍可升至 L3。L4 需要门禁 hooks，目前意味着 `.cursor/hooks.json` 或 Claude Code 的 `settings.json` 需与主工具并存。
+Hooks 的 JSON schema 不可互换，Cline 使用可执行文件。Harness Score 会先规范化每种格式，再应用相同的 HKS-01 到 HKS-05 检查。
 :::
 
 ## 一次构建 harness

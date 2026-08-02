@@ -54,10 +54,11 @@ export function contextRootFile(ctx: ScanContext): string | null {
 /** Tools with at least one harness artifact anywhere in the tree. */
 export function detectHarnesses(ctx: ScanContext): ToolId[] {
   const tools = new Set<ToolId>();
-  if (ctx.has('GEMINI.md')) tools.add('antigravity');
+  if (ctx.has('GEMINI.md')) tools.add('gemini-cli');
   if (ctx.has('CLAUDE.md')) tools.add('claude-code');
   for (const kind of ['rules', 'skills', 'commands', 'subagents', 'hooks', 'mcp'] as HarnessKind[]) {
     for (const spec of specsForKind(kind)) {
+      if (spec.detectTool === false) continue;
       if (ctx.matching(spec.pathRegex).length > 0) tools.add(spec.toolId);
     }
   }

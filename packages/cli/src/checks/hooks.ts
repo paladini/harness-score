@@ -1,38 +1,50 @@
-import { hookCommandPathsResolve, readNormalizedHooks } from '../harness/hooks.js';
-import type { Check } from '../types.js';
+import { hookCommandPathsResolve, readNormalizedHookSets } from '../harness/hooks.js';
+import type { Check, ScanContext } from '../types.js';
+
+function hookSets(ctx: ScanContext) {
+  return readNormalizedHookSets(ctx);
+}
 
 export const hookChecks: Check[] = [
   {
     id: 'HKS-01',
     dimension: 'hooks',
-    title: 'Hooks configuration present and valid JSON',
+    title: 'Recognized hooks configuration is valid',
     points: 4,
     remediation:
-      'Create a hooks configuration (.cursor/hooks.json or .claude/settings.json hooks key) — hooks are the harness layer that can observe and control the agent loop deterministically.',
+      'Create a recognized repository hooks configuration or executable hook script for deterministic control of the agent loop.',
     run(ctx) {
-      const hooks = readNormalizedHooks(ctx);
+      const hooks = hookSets(ctx).find((candidate) => candidate.events.length > 0);
       if (!hooks) {
-        return {
-          passed: false,
-          evidence: 'No .cursor/hooks.json or .claude/settings.json hooks configuration found.',
-        };
+        return { passed: false, evidence: 'No valid recognized repository hooks configuration found.' };
       }
-      return { passed: true, evidence: `${hooks.source} parses as JSON.` };
+      return {
+        passed: true,
+        evidence:
+          hooks.format === 'executable'
+            ? `${hooks.source} is a recognized executable hook.`
+            : `${hooks.source} parses as a recognized JSON hooks configuration.`,
+      };
     },
   },
   {
     id: 'HKS-02',
     dimension: 'hooks',
-    title: 'Hooks use known events and a version field',
+    title: 'Hooks use known events and required metadata',
     points: 2,
     remediation:
-      'Register handlers only on documented events for your tool (Cursor: beforeShellExecution, afterFileEdit, …; Claude Code: PreToolUse, PostToolUse, …) — typos fail silently.',
+      'Use documented event names and include version metadata only where the vendor schema requires it.',
     run(ctx) {
-      const hooks = readNormalizedHooks(ctx);
-      if (!hooks) {
-        return { passed: false, evidence: 'No parseable hooks configuration.' };
-      }
-      const passed = hooks.hasVersion && hooks.events.length > 0 && hooks.unknownEvents.length === 0;
+      const candidates = hookSets(ctx);
+      const hooks =
+        candidates.find(
+          (candidate) =>
+            candidate.hasRequiredMetadata &&
+            candidate.events.length > 0 &&
+            candidate.unknownEvents.length === 0,
+        ) ?? candidates[0];
+      if (!hooks) return { passed: false, evidence: 'No parseable hooks configuration.' };
+      const passed = hooks.hasRequiredMetadata && hooks.events.length > 0 && hooks.unknownEvents.length === 0;
       return {
         passed,
         evidence:
@@ -40,7 +52,9 @@ export const hookChecks: Check[] = [
             ? `${hooks.source} has no registered events.`
             : hooks.unknownEvents.length > 0
               ? `Unknown event name(s): ${hooks.unknownEvents.join(', ')}`
-              : `${hooks.source}: events: ${hooks.events.join(', ')}.`,
+              : !hooks.hasRequiredMetadata
+                ? `${hooks.source} is missing required vendor metadata or version information.`
+                : `${hooks.source}: events: ${hooks.events.join(', ')}.`,
       };
     },
   },
@@ -50,18 +64,13 @@ export const hookChecks: Check[] = [
     title: 'Gate hook guards risky operations',
     points: 4,
     remediation:
-      'Register a gate hook (Cursor: beforeShellExecution / beforeMCPExecution / preToolUse; Claude Code: PreToolUse) that returns allow/deny/ask for destructive operations.',
+      'Register a vendor-supported pre-tool, command, file, prompt, or permission hook that can block risky operations.',
     run(ctx) {
-      const hooks = readNormalizedHooks(ctx);
-      if (!hooks) {
-        return { passed: false, evidence: 'No parseable hooks configuration.' };
-      }
+      const hooks = hookSets(ctx).find((candidate) => candidate.gateEvents.length > 0);
+      if (!hooks) return { passed: false, evidence: 'No parseable hooks configuration.' };
       return hooks.gateEvents.length > 0
         ? { passed: true, evidence: `Gate hook(s) registered on: ${hooks.gateEvents.join(', ')}.` }
-        : {
-            passed: false,
-            evidence: `No gate hooks registered in ${hooks.source}.`,
-          };
+        : { passed: false, evidence: `No gate hooks registered in ${hooks.source}.` };
     },
   },
   {
@@ -70,21 +79,13 @@ export const hookChecks: Check[] = [
     title: 'Feedback hook observes agent output',
     points: 2,
     remediation:
-      'Register a feedback hook (Cursor: afterFileEdit / postToolUse / stop; Claude Code: PostToolUse) — e.g. auto-format edited files or run a quick lint.',
+      'Register a vendor-supported post-tool, post-edit, response, stop, or task-completion hook for fast feedback.',
     run(ctx) {
-      const hooks = readNormalizedHooks(ctx);
-      if (!hooks) {
-        return { passed: false, evidence: 'No parseable hooks configuration.' };
-      }
+      const hooks = hookSets(ctx).find((candidate) => candidate.feedbackEvents.length > 0);
+      if (!hooks) return { passed: false, evidence: 'No parseable hooks configuration.' };
       return hooks.feedbackEvents.length > 0
-        ? {
-            passed: true,
-            evidence: `Feedback hook(s) registered on: ${hooks.feedbackEvents.join(', ')}.`,
-          }
-        : {
-            passed: false,
-            evidence: `No feedback hooks registered in ${hooks.source}.`,
-          };
+        ? { passed: true, evidence: `Feedback hook(s) registered on: ${hooks.feedbackEvents.join(', ')}.` }
+        : { passed: false, evidence: `No feedback hooks registered in ${hooks.source}.` };
     },
   },
   {
@@ -92,29 +93,31 @@ export const hookChecks: Check[] = [
     dimension: 'hooks',
     title: 'Hook scripts exist in the repository',
     points: 2,
-    remediation:
-      'Commit the scripts referenced by your hooks config — a hook pointing at a missing script fails open on every machine but yours.',
+    remediation: 'Commit every in-repository script referenced by a hook configuration.',
     run(ctx) {
-      const hooks = readNormalizedHooks(ctx);
-      if (!hooks) {
-        return { passed: false, evidence: 'No parseable hooks configuration.' };
-      }
-      if (hooks.commands.length === 0) {
-        return { passed: false, evidence: 'No hook commands declared.' };
-      }
-      const { validated, missing } = hookCommandPathsResolve(hooks.commands, (p) => ctx.has(p));
-      if (validated === 0) {
-        return {
-          passed: true,
-          evidence: 'Hook commands do not reference in-repo paths (nothing to resolve).',
-        };
-      }
-      return missing.length === 0
-        ? {
+      const candidates = hookSets(ctx).filter((candidate) => candidate.commands.length > 0);
+      if (candidates.length === 0) return { passed: false, evidence: 'No hook commands declared.' };
+      const allMissing: string[] = [];
+      for (const hooks of candidates) {
+        const { validated, missing } = hookCommandPathsResolve(hooks.commands, (path) => ctx.has(path));
+        if (validated === 0) {
+          return {
             passed: true,
-            evidence: `All ${validated} path-referencing hook command(s) resolve to committed files.`,
-          }
-        : { passed: false, evidence: `Hook command(s) reference missing files: ${missing.join(' | ')}` };
+            evidence: `${hooks.source}: hook commands do not reference in-repo paths (nothing to resolve).`,
+          };
+        }
+        if (missing.length === 0) {
+          return {
+            passed: true,
+            evidence: `${hooks.source}: all ${validated} path-referencing hook command(s) resolve.`,
+          };
+        }
+        allMissing.push(...missing);
+      }
+      return {
+        passed: false,
+        evidence: `Hook command(s) reference missing files: ${allMissing.join(' | ')}`,
+      };
     },
   },
 ];

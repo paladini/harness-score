@@ -64,6 +64,28 @@ function credentialShapedValues(node: unknown, keyIsCredential = false): string[
   return values;
 }
 
+function yamlCredentialShapedValues(content: string): string[] {
+  const values: string[] = [];
+  for (const line of content.split(/\r?\n/)) {
+    const match = line.match(/^\s*([^#][^:]*):\s*(.*?)\s*(?:#.*)?$/);
+    if (!match) continue;
+    const key = match[1] ?? '';
+    const raw = (match[2] ?? '').trim();
+    if (!isCredentialShapedKey(key.trim())) continue;
+    if (!raw) continue;
+    const candidates = raw.startsWith('[') && raw.endsWith(']') ? raw.slice(1, -1).split(',') : [raw];
+    for (const candidate of candidates) {
+      values.push(candidate.trim().replace(/^['"]|['"]$/g, ''));
+    }
+  }
+  return values;
+}
+
+function mcpContent(file: string, content: string): string {
+  if (!/(^|\/)\.kiro\/agents\/.+\.md$/.test(file)) return content;
+  return content.match(/^---\s*\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? '';
+}
+
 function gitignoreCoversEnv(ctx: ScanContext): boolean {
   const content = ctx.read('.gitignore');
   if (content === null) return false;
@@ -149,7 +171,7 @@ export const hygieneChecks: Check[] = [
         return { passed: true, evidence: 'No MCP config in repository (nothing to leak).' };
       }
       for (const file of mcpFiles) {
-        const content = ctx.read(file) ?? '';
+        const content = mcpContent(file, ctx.read(file) ?? '');
         const secret = findSecret(content);
         if (secret) {
           return { passed: false, evidence: `${file} contains what looks like a ${secret}.` };
@@ -241,15 +263,16 @@ export const hygieneChecks: Check[] = [
         };
       }
       for (const file of mcpFiles) {
-        const content = ctx.read(file) ?? '';
+        const content = mcpContent(file, ctx.read(file) ?? '');
         if (findSecret(content)) {
           return { passed: false, evidence: `${file} contains a literal credential signature (see HYG-04).` };
         }
-        const parsed = safeJsonParse(content);
-        if (parsed === undefined) {
+        const yaml = /\.ya?ml$/i.test(file) || /(^|\/)\.kiro\/agents\/.+\.md$/.test(file);
+        const parsed = yaml ? null : safeJsonParse(content);
+        if (!yaml && parsed === undefined) {
           return { passed: false, evidence: `${file} is not valid JSON.` };
         }
-        const credentialValues = credentialShapedValues(parsed);
+        const credentialValues = yaml ? yamlCredentialShapedValues(content) : credentialShapedValues(parsed);
         const uninterpolated = credentialValues.filter((v) => !ENV_INTERPOLATION_RE.test(v));
         if (uninterpolated.length > 0) {
           return {
