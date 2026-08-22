@@ -387,6 +387,42 @@ describe('ci checks', () => {
     expect((await check('CI-03')).run(ctx).passed).toBe(true);
   });
 
+  test('CI-01 detects cloudbuild/**/*.yml and reports its path', async () => {
+    const file = 'cloudbuild/test/test.yml';
+    const ctx = fakeContext({ [file]: 'steps:\n  - name: node:20\n    args: ["test"]' });
+    const outcome = (await check('CI-01')).run(ctx);
+    expect(outcome.passed).toBe(true);
+    expect(outcome.evidence).toBe(`Found: ${file}.`);
+  });
+
+  test('CI-01 detects cloudbuild/**/*.yaml only (not arbitrary YAML)', async () => {
+    const cloudbuild = fakeContext({ 'cloudbuild/prod/pipeline.yaml': 'steps: []' });
+    expect((await check('CI-01')).run(cloudbuild).passed).toBe(true);
+
+    const nonCiYaml = fakeContext({ 'docs/cloudbuild.yaml': 'steps: []' });
+    expect((await check('CI-01')).run(nonCiYaml).passed).toBe(false);
+  });
+
+  test('CI-02 recognizes npm test and npm run test in Cloud Build', async () => {
+    const npmTest = fakeContext({
+      'cloudbuild/test/test.yml': 'steps:\n  - args: ["test"]\n    entrypoint: npm',
+    });
+    expect((await check('CI-02')).run(npmTest).passed).toBe(true);
+
+    const npmRunTest = fakeContext({
+      'cloudbuild/test/test.yml': 'steps:\n  - args: ["run", "test"]\n    entrypoint: npm',
+    });
+    expect((await check('CI-02')).run(npmRunTest).passed).toBe(true);
+  });
+
+  test('CI-03 recognizes npm run lint and npm run type-check in Cloud Build', async () => {
+    const ctx = fakeContext({
+      'cloudbuild/test/test.yml':
+        'steps:\n  - args: ["run", "lint"]\n    entrypoint: npm\n  - args: ["run", "type-check"]\n    entrypoint: npm',
+    });
+    expect((await check('CI-03')).run(ctx).passed).toBe(true);
+  });
+
   test('CI-01 does not match a filename that merely ends with a CI file name', async () => {
     const ctx = fakeContext({ 'docs/not-a-Jenkinsfile': 'x', 'docs/Jenkinsfile.md': 'x' });
     expect((await check('CI-01')).run(ctx).passed).toBe(false);
