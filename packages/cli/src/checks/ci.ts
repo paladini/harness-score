@@ -12,6 +12,7 @@ const OTHER_CI_RES = [
   /(^|\/)\.circleci\/config\.yml$/,
   /(^|\/)Jenkinsfile$/,
   /(^|\/)bitbucket-pipelines\.yml$/,
+  /(^|\/)cloudbuild\/.+\.(yml|yaml)$/,
 ];
 
 function ciFiles(ctx: ScanContext): string[] {
