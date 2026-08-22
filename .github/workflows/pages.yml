@@ -43,7 +43,7 @@ jobs:
           cp "brand/maturity/card-l${LEVEL}.svg" docs/public/harness-card.svg
       - run: npm run docs:build
       - uses: actions/configure-pages@v6
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: docs/.vitepress/dist
 
