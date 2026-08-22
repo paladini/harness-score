@@ -605,7 +605,8 @@ At least one actual test file in the tree.
 ### CI Feedback (14 pts)
 
 #### CI-01 · CI pipeline configured — 4 pts {#ci-01}
-GitHub Actions workflow (or GitLab/CircleCI/Jenkins equivalent).
+Flujo de trabajo de GitHub Actions (o equivalente de GitLab/CircleCI/Jenkins),
+incluida una configuración de Google Cloud Build en `cloudbuild/`.
 La detección se basa en el filesystem y funciona a cualquier profundidad por
 debajo de la raíz del scan. Por lo tanto, también cuentan los archivos de CI en
 proyectos anidados de un workspace. No verifica si el proveedor realmente

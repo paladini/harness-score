@@ -573,7 +573,8 @@ tree में कम से कम एक वास्तविक test फ़�
 ### CI Feedback (14 pts)
 
 #### CI-01 · CI pipeline configured — 4 pts {#ci-01}
-GitHub Actions workflow (या GitLab/CircleCI/Jenkins equivalent)।
+GitHub Actions workflow (या GitLab/CircleCI/Jenkins equivalent), जिसमें
+`cloudbuild/` के अंतर्गत Google Cloud Build configuration भी शामिल है।
 Detection filesystem पर आधारित है और scan root के नीचे किसी भी depth पर लागू
 होती है; इसलिए nested workspace projects की CI files भी count होती हैं। यह
 verify नहीं करती कि provider वास्तव में उस file को execute करता है।
