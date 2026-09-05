@@ -6,17 +6,35 @@ import { ALL_CHECKS } from '../src/checks/index.js';
 import { LEVEL_REQUIREMENTS } from '../src/score.js';
 import { DIMENSIONS } from '../src/types.js';
 
-const MATURITY_MODEL = path.join(
-  path.dirname(fileURLToPath(import.meta.url)),
-  '..',
-  '..',
-  '..',
-  'docs',
-  'guide',
-  'maturity-model.md',
-);
+const REPO = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 
-const content = fs.readFileSync(MATURITY_MODEL, 'utf8');
+const MATURITY_MODELS = [
+  {
+    locale: 'en',
+    path: path.join(REPO, 'docs', 'guide', 'maturity-model.md'),
+    totalRe: /(\d+) points across/,
+  },
+  {
+    locale: 'pt-BR',
+    path: path.join(REPO, 'docs', 'pt-BR', 'guide', 'maturity-model.md'),
+    totalRe: /(\d+) pontos em/,
+  },
+  {
+    locale: 'es',
+    path: path.join(REPO, 'docs', 'es', 'guide', 'maturity-model.md'),
+    totalRe: /(\d+) puntos en/,
+  },
+  {
+    locale: 'zh-CN',
+    path: path.join(REPO, 'docs', 'zh-CN', 'guide', 'maturity-model.md'),
+    totalRe: /共\s*(\d+)\s*分/,
+  },
+  {
+    locale: 'hi-IN',
+    path: path.join(REPO, 'docs', 'hi-IN', 'guide', 'maturity-model.md'),
+    totalRe: /(?:^|\n)(\d+) points, छह dimensions में:/,
+  },
+] as const;
 
 function shortLabel(id: string): string {
   const dim = DIMENSIONS.find((d) => d.id === id);
@@ -24,10 +42,10 @@ function shortLabel(id: string): string {
   return dim.title.split(' ')[0]!;
 }
 
-function levelSection(level: number): string {
+function levelSection(content: string, level: number, locale: string): string {
   const startRe = new RegExp(`### L${level} ·`);
   const startMatch = startRe.exec(content);
-  if (!startMatch) throw new Error(`maturity-model.md has no "### L${level} ·" heading`);
+  if (!startMatch) throw new Error(`${locale} maturity-model.md has no "### L${level} ·" heading`);
   const from = startMatch.index;
   const afterHeading = content.slice(from + startMatch[0].length);
   const nextHeading = /\n#{2,3} /.exec(afterHeading);
@@ -48,60 +66,62 @@ function extractPairs(label: string): Array<{ id: string; pct: string }> {
 }
 
 describe('maturity-model.md stays in sync with the implementation (score.ts + types.ts)', () => {
-  test('per-dimension point totals in the guide match the sum of ALL_CHECKS', () => {
-    for (const dim of DIMENSIONS) {
-      const computed = ALL_CHECKS.filter((c) => c.dimension === dim.id).reduce((sum, c) => sum + c.points, 0);
-      const escaped = dim.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const rowRe = new RegExp(`\\|\\s*${escaped}\\s*\\|\\s*(\\d+)\\s*\\|`);
-      const row = rowRe.exec(content);
+  for (const model of MATURITY_MODELS) {
+    const content = fs.readFileSync(model.path, 'utf8');
+
+    test(`${model.locale}: per-dimension point totals match the sum of ALL_CHECKS`, () => {
+      for (const dim of DIMENSIONS) {
+        const computed = ALL_CHECKS.filter((c) => c.dimension === dim.id).reduce(
+          (sum, c) => sum + c.points,
+          0,
+        );
+        const escaped = dim.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const rowRe = new RegExp(`\\|\\s*${escaped}\\s*\\|\\s*(\\d+)\\s*\\|`);
+        const row = rowRe.exec(content);
+        expect(row, `${model.locale}: no dimension-points table row found for "${dim.title}"`).not.toBeNull();
+        const documented = Number(row![1]);
+        expect(
+          documented,
+          `${model.locale}: ${dim.title} says ${documented} pts, ALL_CHECKS sums to ${computed}`,
+        ).toBe(computed);
+      }
+    });
+
+    test(`${model.locale}: total point count matches the sum of ALL_CHECKS`, () => {
+      const computed = ALL_CHECKS.reduce((sum, c) => sum + c.points, 0);
+      const match = model.totalRe.exec(content);
+      expect(match, `${model.locale}: no total-points sentence found`).not.toBeNull();
       expect(
-        row,
-        `no dimension-points table row found for "${dim.title}" in maturity-model.md`,
-      ).not.toBeNull();
-      const documented = Number(row![1]);
-      expect(documented, `${dim.title}: guide says ${documented} pts, ALL_CHECKS sums to ${computed}`).toBe(
-        computed,
-      );
-    }
-  });
+        Number(match![1]),
+        `${model.locale}: guide says ${match![1]} points, ALL_CHECKS sums to ${computed}`,
+      ).toBe(computed);
+    });
 
-  test('the total point count in the guide matches the sum of ALL_CHECKS', () => {
-    const computed = ALL_CHECKS.reduce((sum, c) => sum + c.points, 0);
-    const totalRe = /(\d+) points across/;
-    const match = totalRe.exec(content);
-    expect(match, 'no "<N> points across ..." sentence found in maturity-model.md').not.toBeNull();
-    expect(Number(match![1]), `guide says ${match![1]} points, ALL_CHECKS sums to ${computed}`).toBe(
-      computed,
-    );
-  });
-
-  test('every LEVEL_REQUIREMENTS percentage is mirrored in the matching level section', () => {
-    for (const [levelIdx, requirements] of LEVEL_REQUIREMENTS.entries()) {
-      const level = levelIdx + 1;
-      const section = levelSection(level);
-      for (const requirement of requirements) {
-        const pairs = extractPairs(requirement.label);
-        for (const { id, pct } of pairs) {
-          if (id === 'total') {
-            const hasTotal = section.includes(`total ≥ ${pct}%`) || section.includes(`total score ≥ ${pct}%`);
+    test(`${model.locale}: every LEVEL_REQUIREMENTS percentage is mirrored in the matching level section`, () => {
+      for (const [levelIdx, requirements] of LEVEL_REQUIREMENTS.entries()) {
+        const level = levelIdx + 1;
+        const section = levelSection(content, level, model.locale);
+        for (const requirement of requirements) {
+          const pairs = extractPairs(requirement.label);
+          for (const { id, pct } of pairs) {
+            if (id === 'total') {
+              const totalLabels = ['total', 'total score', 'pontuação total', 'puntuación total', '总分'];
+              const hasTotal = totalLabels.some((label) => section.includes(`${label} ≥ ${pct}%`));
+              expect(hasTotal, `${model.locale}: L${level} has no total-score threshold of ${pct}%`).toBe(
+                true,
+              );
+              continue;
+            }
+            const dim = DIMENSIONS.find((d) => d.id === id)!;
+            const short = `${shortLabel(id)} ≥ ${pct}%`;
+            const full = `${dim.title} ≥ ${pct}%`;
             expect(
-              hasTotal,
-              `L${level}: expected "total (score) ≥ ${pct}%" somewhere in its guide section`,
+              section.includes(short) || section.includes(full),
+              `${model.locale}: L${level} is missing "${short}" or "${full}" from "${requirement.label}"`,
             ).toBe(true);
-            continue;
           }
-          const dim = DIMENSIONS.find((d) => d.id === id)!;
-          // Accept either the full dimension title ("Context & Guides ≥ 40%",
-          // used in the L1 prose) or its short form ("Context ≥ 60%", used
-          // from L2 on) — both unambiguously name the same dimension.
-          const short = `${shortLabel(id)} ≥ ${pct}%`;
-          const full = `${dim.title} ≥ ${pct}%`;
-          expect(
-            section.includes(short) || section.includes(full),
-            `L${level}: expected "${short}" or "${full}" (derived from LEVEL_REQUIREMENTS label "${requirement.label}") in its guide section, got:\n${section}`,
-          ).toBe(true);
         }
       }
-    }
-  });
+    });
+  }
 });

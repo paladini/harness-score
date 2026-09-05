@@ -108,21 +108,21 @@
 |---|---|---|---|
 | CI-01 | 4 | 存在 CI pipeline 文件（GitHub Actions、GitLab CI 等） | [ci-01](./measure-and-improve#ci-01) |
 | CI-02 | 4 | CI 运行测试套件 | [ci-02](./measure-and-improve#ci-02) |
-| CI-03 | 4 | CI 运行 lint 或 typecheck | [ci-03](./measure-and-improve#ci-03) |
-| CI-04 | 2 | 安装了 pre-commit 或 git hook 工具 | [ci-04](./measure-and-improve#ci-04) |
+| CI-03 | 3 | CI 运行 lint 或 typecheck | [ci-03](./measure-and-improve#ci-03) |
+| CI-04 | 3 | 安装了 pre-commit 或 git hook 工具 | [ci-04](./measure-and-improve#ci-04) |
 
 ### Hygiene & Safety
 
 | ID | 分 | 精确分析 | 修复 |
 |---|---|---|---|
-| HYG-01 | 4 | 存在 `.gitignore` | [hyg-01](./measure-and-improve#hyg-01) |
+| HYG-01 | 2 | 存在 `.gitignore` | [hyg-01](./measure-and-improve#hyg-01) |
 | HYG-02 | 3 | `.gitignore` 覆盖环境文件 | [hyg-02](./measure-and-improve#hyg-02) |
 | HYG-03 | 4 | 无未保护的 `.env` 文件（无 `.env.example` 模式） | [hyg-03](./measure-and-improve#hyg-03) |
 | HYG-04 | 4 | MCP JSON 配置无 inline 凭证模式 | [hyg-04](./measure-and-improve#hyg-04) |
 | HYG-05 | 2 | 存在 `LICENSE` 文件 | [hyg-05](./measure-and-improve#hyg-05) |
-| HYG-06 | 3 | harness markdown/JSON 中无类凭证签名 | [hyg-06](./measure-and-improve#hyg-06) |
+| HYG-06 | 2 | harness markdown/JSON 中无类凭证签名 | [hyg-06](./measure-and-improve#hyg-06) |
 | HYG-07 | 3 | 已提交依赖 lockfile | [hyg-07](./measure-and-improve#hyg-07) |
-| HYG-08 | 4 | MCP 配置对 secrets 使用 env 插值 | [hyg-08](./measure-and-improve#hyg-08) |
+| HYG-08 | 3 | MCP 配置对 secrets 使用 env 插值 | [hyg-08](./measure-and-improve#hyg-08) |
 
 ## 配置文件（`.harness-score.json`）{#configuration-file-harness-scorejson}
 

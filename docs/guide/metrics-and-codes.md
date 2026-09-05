@@ -113,21 +113,21 @@ Stable IDs — linked to remediation in [Measure & Improve](./measure-and-improv
 |---|---|---|---|
 | CI-01 | 4 | CI pipeline file present (GitHub Actions, GitLab CI, …) | [ci-01](./measure-and-improve#ci-01) |
 | CI-02 | 4 | CI runs the test suite | [ci-02](./measure-and-improve#ci-02) |
-| CI-03 | 4 | CI runs lint or typecheck | [ci-03](./measure-and-improve#ci-03) |
-| CI-04 | 2 | Pre-commit or git hook tooling installed | [ci-04](./measure-and-improve#ci-04) |
+| CI-03 | 3 | CI runs lint or typecheck | [ci-03](./measure-and-improve#ci-03) |
+| CI-04 | 3 | Pre-commit or git hook tooling installed | [ci-04](./measure-and-improve#ci-04) |
 
 ### Hygiene & Safety
 
 | ID | Pts | Analyzes exactly | Remediation |
 |---|---|---|---|
-| HYG-01 | 4 | `.gitignore` present | [hyg-01](./measure-and-improve#hyg-01) |
+| HYG-01 | 2 | `.gitignore` present | [hyg-01](./measure-and-improve#hyg-01) |
 | HYG-02 | 3 | `.gitignore` covers environment files | [hyg-02](./measure-and-improve#hyg-02) |
 | HYG-03 | 4 | No unprotected `.env` files (without `.env.example` pattern) | [hyg-03](./measure-and-improve#hyg-03) |
 | HYG-04 | 4 | MCP JSON configs contain no inline credential patterns | [hyg-04](./measure-and-improve#hyg-04) |
 | HYG-05 | 2 | `LICENSE` file present | [hyg-05](./measure-and-improve#hyg-05) |
-| HYG-06 | 3 | No credential-like signatures in harness markdown/JSON | [hyg-06](./measure-and-improve#hyg-06) |
+| HYG-06 | 2 | No credential-like signatures in harness markdown/JSON | [hyg-06](./measure-and-improve#hyg-06) |
 | HYG-07 | 3 | Dependency lockfile committed | [hyg-07](./measure-and-improve#hyg-07) |
-| HYG-08 | 4 | MCP configs use env interpolation for secrets | [hyg-08](./measure-and-improve#hyg-08) |
+| HYG-08 | 3 | MCP configs use env interpolation for secrets | [hyg-08](./measure-and-improve#hyg-08) |
 
 ## Configuration file (`.harness-score.json`)
 
