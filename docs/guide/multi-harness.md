@@ -38,6 +38,25 @@ harness registry — [`registry.ts`](https://github.com/paladini/harness-score/b
 | **OpenCode** | — | — | — | `.opencode/agents/*.md` | — | — |
 | **Zed** | — | — | `.zed/commands/*.md` | — | — | — |
 
+### Devbox environment compatibility
+
+Harness Score supports repositories that use [Devbox](https://www.jetify.com/docs/devbox)
+as their development environment. This is filesystem compatibility, not AI-harness
+detection: Devbox does not appear in `detectedHarnesses`, and its configuration does
+not earn maturity points.
+
+Devbox creates a project-local `.devbox/` directory for the isolated environment.
+That directory can contain generated state such as `.devbox/virtenv/` and the
+`.devbox/bin/devbox` symlink used inside a pure shell. Harness Score skips the entire
+`.devbox/` directory, including symlinks, so generated environment files do not make
+the scan incomplete. See the [Devbox FAQ](https://www.jetify.com/docs/devbox/faq)
+and the [Devbox implementation](https://github.com/jetify-com/devbox/blob/main/internal/devbox/pure_shell.go)
+for the upstream paths.
+
+Keep project configuration in `devbox.json`, `devbox.lock`, and `devbox.d/` at the
+project root. Those paths remain scan-visible. Files placed under `.devbox/` are
+intentionally not scored as harness artifacts.
+
 Root context files (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`) count for every tool.
 And the most important artifacts are **tool-agnostic** anyway: tests, CI pipelines, linters, type checkers, `.gitignore`, lockfiles, and `SECURITY.md` score the same no matter which tool you use.
 

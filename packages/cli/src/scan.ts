@@ -29,6 +29,7 @@ const SKIP_DIRS = new Set([
   '.pytest_cache',
   '.mypy_cache',
   '.ruff_cache',
+  '.devbox',
 ]);
 
 /**

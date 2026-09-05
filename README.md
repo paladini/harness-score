@@ -133,6 +133,13 @@ trees above 1,000,000 files; hitting that fuse, finding an out-of-root symlink,
 or encountering an unreadable relevant path marks the affected snapshot as
 incomplete instead of publishing its score as authoritative.
 
+Repositories using [Devbox](https://www.jetify.com/docs/devbox) are supported:
+the scanner skips Devbox's generated `.devbox/` directory, including its
+`.devbox/bin/devbox` symlink and generated virtual-environment state. Project
+configuration such as `devbox.json`, `devbox.lock`, and `devbox.d/` remains
+visible to the scan. Devbox is an environment manager, not a detected AI
+harness, so it does not add maturity points or appear in `detectedHarnesses`.
+
 ## Stability & versioning
 
 As of **v1.0.0**, Harness Score follows [semantic versioning](https://semver.org/)

@@ -176,6 +176,28 @@ describe('createScanContext — symlinks', () => {
     expect(ctx.incompleteReasons).toEqual([]);
   });
 
+  test('skips a devbox binary symlink that resolves outside the repo root', () => {
+    const root = mkTmpDir();
+    const repo = path.join(root, 'repo');
+    const outside = path.join(root, 'outside');
+    fs.mkdirSync(repo);
+    fs.mkdirSync(outside);
+    const devboxBin = path.join(outside, 'devbox');
+    fs.writeFileSync(devboxBin, 'must stay outside');
+    fs.mkdirSync(path.join(repo, '.devbox', 'bin'), { recursive: true });
+    try {
+      fs.symlinkSync(devboxBin, path.join(repo, '.devbox', 'bin', 'devbox'), 'file');
+    } catch {
+      return;
+    }
+
+    const ctx = createScanContext(repo);
+
+    expect(ctx.files).toEqual([]);
+    expect(ctx.truncated).toBe(false);
+    expect(ctx.incompleteReasons).toEqual([]);
+  });
+
   test('does not enumerate an external directory symlink and fails closed with its path', () => {
     const root = mkTmpDir();
     const repo = path.join(root, 'repo');
@@ -280,6 +302,7 @@ describe('createScanContext — preserved safety boundaries', () => {
       '.pytest_cache',
       '.mypy_cache',
       '.ruff_cache',
+      '.devbox',
     ];
     for (const directory of skippedDirectories) {
       fs.mkdirSync(path.join(root, directory), { recursive: true });

@@ -38,6 +38,27 @@ Harness Score reconoce estos artefactos (patrones exactos en el registry del esc
 | **OpenCode** | — | — | — | `.opencode/agents/*.md` | — | — |
 | **Zed** | — | — | `.zed/commands/*.md` | — | — | — |
 
+### Compatibilidad con el entorno Devbox
+
+Harness Score admite repositorios que usan [Devbox](https://www.jetify.com/docs/devbox)
+como entorno de desarrollo. Esta es compatibilidad del sistema de archivos, no
+detección de un harness de IA: Devbox no aparece en `detectedHarnesses` y su
+configuración no suma puntos de madurez.
+
+Devbox crea un directorio `.devbox/` local al proyecto para el entorno aislado.
+Puede contener estado generado, como `.devbox/virtenv/`, y el enlace simbólico
+`.devbox/bin/devbox` que se usa dentro de un shell puro. Harness Score omite todo
+`.devbox/`, incluidos los enlaces simbólicos, para que los archivos generados del
+entorno no marquen el escaneo como incompleto. Consulta el
+[FAQ de Devbox](https://www.jetify.com/docs/devbox/faq) y la
+[implementación de Devbox](https://github.com/jetify-com/devbox/blob/main/internal/devbox/pure_shell.go)
+para conocer las rutas upstream.
+
+Mantén la configuración del proyecto en `devbox.json`, `devbox.lock` y `devbox.d/`
+en la raíz del proyecto. Esas rutas siguen siendo visibles para el escaneo. Los
+archivos dentro de `.devbox/` no se puntúan intencionadamente como artefactos de
+harness.
+
 Archivos de contexto en raíz (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`) cuentan para toda herramienta.
 Y los artefactos más importantes son **agnósticos de herramienta**: tests, CI, linters, type checkers, `.gitignore`, lockfiles y `SECURITY.md` puntúan igual sin importar la herramienta.
 

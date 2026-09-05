@@ -37,6 +37,21 @@ Harness Score 识别以下工件（精确模式见扫描器 harness registry —
 | **OpenCode** | — | — | — | `.opencode/agents/*.md` | — | — |
 | **Zed** | — | — | `.zed/commands/*.md` | — | — | — |
 
+### Devbox 环境兼容性
+
+Harness Score 支持使用 [Devbox](https://www.jetify.com/docs/devbox) 作为开发环境的仓库。
+这表示文件系统兼容，而不是 AI harness 检测：Devbox 不会出现在 `detectedHarnesses` 中，
+其配置也不会获得成熟度分数。
+
+Devbox 会在项目中创建本地 `.devbox/` 目录，用于隔离环境。该目录可能包含
+`.devbox/virtenv/` 等生成状态，以及纯 shell 中使用的 `.devbox/bin/devbox` 符号链接。
+Harness Score 会跳过整个 `.devbox/` 目录（包括符号链接），因此生成的环境文件不会把扫描
+标记为不完整。有关 upstream 路径，请参阅 [Devbox FAQ](https://www.jetify.com/docs/devbox/faq)
+和 [Devbox 实现](https://github.com/jetify-com/devbox/blob/main/internal/devbox/pure_shell.go)。
+
+请将项目配置保存在项目根目录的 `devbox.json`、`devbox.lock` 和 `devbox.d/` 中。
+这些路径仍会被扫描。`.devbox/` 下的文件不会被计为 harness 工件，这是有意为之。
+
 根上下文文件（`AGENTS.md`、`CLAUDE.md`、`GEMINI.md`）对所有工具均计数。
 而最重要的工件**本就与工具无关**：测试、CI 流水线、linter、类型检查器、`.gitignore`、锁文件与 `SECURITY.md`，无论使用哪种工具，得分方式相同。
 
