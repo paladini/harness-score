@@ -6,3 +6,6 @@ Skip `.devbox/` during scans. Devbox provisions this directory with binary
 symlinks (e.g. `.devbox/bin/devbox`) that resolve outside the repo root,
 which previously made the whole scan report incomplete via
 `outside-root-symlink`.
+
+Thanks to [@PAHJunior](https://github.com/PAHJunior) for contributing this
+fix.
