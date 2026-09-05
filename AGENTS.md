@@ -24,6 +24,13 @@ dogfoods its own scanner: it must always score **L4** (`npm run scan`).
 - `fixtures/level-0..4/` — sample repos pinned to each maturity level by
   tests. Changing a check usually changes a fixture.
 
+Project-local agent skill:
+
+- `.agents/skills/pr-release-audit/SKILL.md` — complete PR/release audit,
+  including current official vendor documentation, site/docs parity, release
+  metadata, and explicit contributor credit. Use it for PR and release work;
+  its release-note and attribution gates are mandatory.
+
 ## Build & test
 
 - `npm test` — builds the CLI (`tsup`), typechecks `packages/cli/src/` and the
