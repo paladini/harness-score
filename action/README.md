@@ -96,7 +96,7 @@ concurrency:
 | `badge` | `harness-badge.svg` | SVG pill (`harness` + level); empty to skip |
 | `report` | _(empty)_ | Markdown report output path |
 | `working-directory` | `.` | Directory to scan |
-| `version` | `1.6.3` | harness-score npm version or package spec |
+| `version` | `1.6.4` | harness-score npm version or package spec |
 | `comment` | `false` | Post/update a sticky PR comment with the score delta (`pull_request` events only; requires `pull-requests: write`) |
 | `include-user-harness` | `false` | Include the user-level harness in the effective snapshot |
 | `include-system-harness` | `false` | Include the system-level harness in the effective snapshot |

@@ -1,5 +1,14 @@
 # harness-score
 
+## 1.6.4
+
+### Patch Changes
+
+- Synchronize the compact check catalog with the implemented Harness Score weights in English,
+  Portuguese, Spanish, Simplified Chinese, and Hindi. Documentation tests now protect check
+  weights, complete table rows, dimension totals, detailed catalog headings, overall totals,
+  and maturity thresholds across all five locales.
+
 ## 1.6.3
 
 ### Patch Changes
