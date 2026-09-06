@@ -1,0 +1,97 @@
+name: Prepare release
+run-name: Prepare v${{ inputs.version }} release draft
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Stable version already merged to main (X.Y.Z)
+        required: true
+        type: string
+      title:
+        description: Short human-readable release title (without the version)
+        required: true
+        type: string
+      summary:
+        description: One-sentence release introduction
+        required: true
+        type: string
+
+permissions: {}
+
+jobs:
+  draft:
+    name: Validate and create draft
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      RELEASE_SUMMARY: ${{ inputs.summary }}
+      RELEASE_TITLE: ${{ inputs.title }}
+      RELEASE_VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+      - uses: actions/setup-node@v7
+        with:
+          cache: npm
+          node-version: 22
+      - run: npm ci
+      - name: Validate versioned release surfaces
+        run: node scripts/validate-release.mjs --version "$RELEASE_VERSION"
+      - name: Run release gates
+        run: |
+          npm test
+          npm run lint
+          npm run scan
+          npm run docs:build
+      - name: Refuse an existing tag or release
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="v$RELEASE_VERSION"
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
+            echo "::error::Tag $TAG already exists. Refusing to move or replace a release tag."
+            exit 1
+          fi
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "::error::Release $TAG already exists."
+            exit 1
+          fi
+      - name: Generate polished release notes
+        run: |
+          node scripts/release-notes.mjs \
+            --version "$RELEASE_VERSION" \
+            --summary "$RELEASE_SUMMARY" \
+            --output "$RUNNER_TEMP/release-notes.md"
+      - name: Create tagged draft release
+        id: release
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="v$RELEASE_VERSION"
+          RELEASE_URL="$(gh release create "$TAG" \
+            --draft \
+            --notes-file "$RUNNER_TEMP/release-notes.md" \
+            --target "$GITHUB_SHA" \
+            --title "$TAG — $RELEASE_TITLE")"
+          echo "url=$RELEASE_URL" >> "$GITHUB_OUTPUT"
+      - name: Show the manual Marketplace gate
+        env:
+          RELEASE_URL: ${{ steps.release.outputs.url }}
+        run: |
+          {
+            echo "## Release draft created"
+            echo
+            echo "- Draft: [$RELEASE_URL]($RELEASE_URL)"
+            echo "- Tag: \`v$RELEASE_VERSION\` at \`$GITHUB_SHA\`"
+            echo "- Notes: generated from the matching changelog entry, including contributor credits"
+            echo
+            echo "Before publishing, edit the draft and select **Publish this Action to the GitHub Marketplace**."
+            echo "Use **Code quality** as the primary category and **Continuous integration** as the secondary category."
+            echo "GitHub does not expose that Marketplace selection through its Actions or Releases APIs."
+          } >> "$GITHUB_STEP_SUMMARY"

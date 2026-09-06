@@ -112,6 +112,14 @@ Before merge or release:
 7. If a PR is already merged and its pending release artifact lacks credit,
    report the gap and prepare a follow-up change only with user authorization;
    do not rewrite history or fabricate attribution.
+8. For Harness Score, run `npm run release:notes` to preview the generated
+   notes and `node scripts/validate-release.mjs --version X.Y.Z` to verify all
+   version surfaces before a release. The publication workflow must not move
+   the stable Action major tag until npm, GitHub Packages, and JSR all succeed.
+9. Treat GitHub Marketplace publication as a separate public-state check. The
+   Marketplace checkbox is a manual GitHub release-UI gate and the advertised
+   latest release must be verified after publication; a moved `v1` tag alone
+   is not Marketplace proof.
 
 ## 6. Validate proportionally
 

@@ -17,6 +17,7 @@ coverage/
 .cache/
 .harness-eval/
 .husky/_/
+.release/
 
 # OS / editor noise
 .DS_Store

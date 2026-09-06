@@ -1,35 +1,117 @@
-name: Release
+name: Publish release
+run-name: Publish ${{ github.event.release.tag_name }}
 
 on:
   release:
     types: [published]
-  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: publish-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
 
 jobs:
-  npm:
+  validate:
+    name: Validate release
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write # required for npm Trusted Publishing (OIDC) — no token/secret needed
+    outputs:
+      major-tag: ${{ steps.metadata.outputs.major-tag }}
+      version: ${{ steps.metadata.outputs.version }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.release.tag_name }}
+      - uses: actions/setup-node@v7
+        with:
+          cache: npm
+          node-version: 22
+      - run: npm ci
+      - name: Resolve stable release metadata
+        id: metadata
+        env:
+          RELEASE_PRERELEASE: ${{ github.event.release.prerelease }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RELEASE_PRERELEASE" = "true" ]; then
+            echo "::error::This workflow publishes stable releases only."
+            exit 1
+          fi
+          VERSION="${RELEASE_TAG#v}"
+          if [ "v$VERSION" != "$RELEASE_TAG" ]; then
+            echo "::error::Release tag must use the vX.Y.Z form."
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "major-tag=v${VERSION%%.*}" >> "$GITHUB_OUTPUT"
+      - name: Read the public release notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: gh api "repos/$GITHUB_REPOSITORY/releases/tags/$RELEASE_TAG" --jq .body > "$RUNNER_TEMP/release-body.md"
+      - name: Validate versions, notes, and contributor credits
+        env:
+          RELEASE_VERSION: ${{ steps.metadata.outputs.version }}
+        run: node scripts/validate-release.mjs --version "$RELEASE_VERSION" --release-body "$RUNNER_TEMP/release-body.md"
+      - name: Verify Marketplace publication
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          node --input-type=module <<'NODE'
+          const marker = `"latestRelease":{"tagName":"${process.env.RELEASE_TAG}"`;
+          for (let attempt = 1; attempt <= 12; attempt += 1) {
+            const response = await fetch('https://github.com/marketplace/actions/harness-score');
+            const body = await response.text();
+            if (response.ok && body.includes(marker)) process.exit(0);
+            if (attempt < 12) await new Promise((resolve) => setTimeout(resolve, 10_000));
+          }
+          console.error(`::error::${process.env.RELEASE_TAG} is not the Marketplace's latest release. Was the Marketplace checkbox selected?`);
+          process.exit(1);
+          NODE
+      - name: Run release gates
+        run: |
+          npm test
+          npm run lint
+          npm run scan
+          npm run docs:build
+
+  npm:
+    name: Publish npm
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
       - uses: actions/setup-node@v7
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
-      - run: npm install -g npm@latest # Trusted Publishing needs a recent npm CLI
+      - run: npm install -g npm@latest
       - run: npm ci
       - run: npm run build -w harness-score
       - name: Publish to npmjs.org (Trusted Publishing / OIDC)
         run: npm publish -w harness-score --provenance --access public
 
   github-packages:
+    name: Publish GitHub Packages
+    needs: validate
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
       - uses: actions/setup-node@v7
         with:
           node-version: 22
@@ -45,15 +127,132 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   jsr:
+    name: Publish JSR
+    needs: validate
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
       - uses: actions/setup-node@v7
         with:
           node-version: 22
       - name: Publish to JSR
         working-directory: packages/cli
         run: npx -y jsr publish --allow-slow-types
+
+  action:
+    name: Move stable Action tag
+    needs: [validate, npm, github-packages, jsr]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.release.tag_name }}
+      - name: Move the stable major tag after every registry succeeds
+        env:
+          MAJOR_TAG: ${{ needs.validate.outputs.major-tag }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git tag --force "$MAJOR_TAG" "$RELEASE_TAG"
+          git push origin "refs/tags/$MAJOR_TAG" --force
+
+  verify:
+    name: Verify public release
+    needs: [validate, action]
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      packages: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      MAJOR_TAG: ${{ needs.validate.outputs.major-tag }}
+      NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      RELEASE_TAG: ${{ github.event.release.tag_name }}
+      RELEASE_VERSION: ${{ needs.validate.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.release.tag_name }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          registry-url: https://npm.pkg.github.com
+          scope: '@paladini'
+      - name: Verify registries, GitHub Release, Action, Marketplace, and Pages
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          retry() {
+            local attempt
+            for attempt in {1..12}; do
+              if "$@"; then return 0; fi
+              echo "Attempt $attempt did not observe the artifact yet; retrying in 10 seconds."
+              sleep 10
+            done
+            return 1
+          }
+
+          check_npm() {
+            [ "$(npm view "harness-score@$RELEASE_VERSION" version --registry=https://registry.npmjs.org)" = "$RELEASE_VERSION" ]
+          }
+          check_github_packages() {
+            [ "$(npm view "@paladini/harness-score@$RELEASE_VERSION" version --registry=https://npm.pkg.github.com)" = "$RELEASE_VERSION" ]
+          }
+          check_jsr() {
+            node -e "fetch('https://jsr.io/@paladini/harness-score/meta.json').then(r=>{if(!r.ok)throw Error(r.status);return r.json()}).then(j=>{if(!j.versions?.[process.env.RELEASE_VERSION])process.exit(1)})"
+          }
+          check_action() {
+            local expected remote
+            expected="$(git rev-parse "${RELEASE_TAG}^{commit}")"
+            remote="$(git ls-remote --tags origin "refs/tags/$MAJOR_TAG" | cut -f1)"
+            [ "$remote" = "$expected" ]
+          }
+          check_release() {
+            gh release view "$RELEASE_TAG" --json isDraft,isPrerelease --jq 'select(.isDraft == false and .isPrerelease == false)' >/dev/null
+          }
+          check_marketplace() {
+            node -e 'fetch("https://github.com/marketplace/actions/harness-score").then(r=>{if(!r.ok)throw Error(r.status);return r.text()}).then(t=>{const marker=`"latestRelease":{"tagName":"${process.env.RELEASE_TAG}"`;if(!t.includes(marker))process.exit(1)})'
+          }
+          check_pages() {
+            local expected runs
+            expected="$(git rev-parse "${RELEASE_TAG}^{commit}")"
+            runs="$(gh run list --workflow pages.yml --commit "$expected" --status success --limit 1 --json databaseId --jq length)"
+            [ "$runs" -ge 1 ] && node -e 'fetch("https://paladini.github.io/harness-score/").then(r=>{if(!r.ok)throw Error(r.status)})'
+          }
+
+          retry check_npm
+          retry check_github_packages
+          retry check_jsr
+          retry check_action
+          retry check_release
+          retry check_marketplace
+          retry check_pages
+      - name: Publish verification summary
+        run: |
+          {
+            echo "## Harness Score $RELEASE_VERSION published"
+            echo
+            echo "| Surface | Published reference |"
+            echo "|---|---|"
+            echo "| npm | \`harness-score@$RELEASE_VERSION\` |"
+            echo "| GitHub Packages | \`@paladini/harness-score@$RELEASE_VERSION\` |"
+            echo "| JSR | \`@paladini/harness-score@$RELEASE_VERSION\` |"
+            echo "| GitHub Action | \`paladini/harness-score@$MAJOR_TAG\` |"
+            echo "| GitHub Marketplace | \`$RELEASE_TAG\` |"
+            echo "| GitHub Release | \`$RELEASE_TAG\` |"
+            echo "| Documentation | Pages deployment for the release commit |"
+            echo
+            echo "The Marketplace checkbox remains a manual GitHub UI gate because GitHub exposes no API for it."
+          } >> "$GITHUB_STEP_SUMMARY"
