@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "build": "npm run build -w harness-score",
-    "test": "npm run test -w harness-score",
+    "test": "npm run test -w harness-score && npm run test:release",
+    "test:release": "node --test scripts/release.test.mjs",
     "test:coverage": "npm run test:coverage -w harness-score",
     "scan": "node packages/cli/dist/cli.js .",
     "plugins:sync": "node plugins/shared/generate-tools.mjs",
@@ -23,6 +24,8 @@
     "format": "biome check --write .",
     "changeset": "changeset",
     "version-packages": "changeset version && node scripts/sync-version.mjs",
+    "release:notes": "node scripts/release-notes.mjs",
+    "release:prepare": "npm run version-packages && npm test && npm run lint && npm run scan && npm run docs:build && npm run release:notes",
     "prepare": "husky"
   },
   "devDependencies": {
