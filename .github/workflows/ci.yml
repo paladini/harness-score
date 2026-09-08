@@ -27,6 +27,23 @@ jobs:
       - name: test
         run: npm test
 
+  harness-toolkit:
+    name: Harness Toolkit pilot (isolated, Node 24)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Materialize the pinned isolated runtime
+        run: npm run harness:setup
+      - name: Exercise real Cursor and Claude hook entrypoints with Bun and Node fallback
+        run: npm run test:harness:integration
+      - name: Confirm runtime health and global isolation
+        run: npm run harness:status
+
   checks:
     name: Full checks (ubuntu-latest, Node 22)
     runs-on: ubuntu-latest

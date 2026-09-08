@@ -1,0 +1,207 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "./.cursor/hooks/guard-shell.js",
+              "--claude"
+            ],
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "./scripts/harness/hook.mjs",
+              "claude",
+              "tool-before"
+            ],
+            "timeout": 900
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "./.cursor/hooks/format-on-edit.js"
+            ],
+            "timeout": 30
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "./scripts/harness/hook.mjs",
+              "claude",
+              "tool-after"
+            ],
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "./scripts/harness/hook.mjs",
+              "claude",
+              "session-start"
+            ],
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "./scripts/harness/hook.mjs",
+              "claude",
+              "session-end"
+            ],
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "./scripts/harness/hook.mjs",
+              "claude",
+              "prompt-submit"
+            ],
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "./scripts/harness/hook.mjs",
+              "claude",
+              "tool-failure"
+            ],
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "./scripts/harness/hook.mjs",
+              "claude",
+              "subagent-start"
+            ],
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "./scripts/harness/hook.mjs",
+              "claude",
+              "subagent-stop"
+            ],
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "./scripts/harness/hook.mjs",
+              "claude",
+              "stop"
+            ],
+            "timeout": 900
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "./scripts/harness/hook.mjs",
+              "claude",
+              "compact-before"
+            ],
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "MessageDisplay": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "./scripts/harness/hook.mjs",
+              "claude",
+              "response-after"
+            ],
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

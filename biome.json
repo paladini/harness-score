@@ -9,7 +9,10 @@
       "!docs/.vitepress/cache",
       "!package-lock.json",
       "!.claude",
-      "!.harness-eval"
+      "!.harness-eval",
+      "!.cache",
+      "!.tlc/harness/state",
+      "!.cursor/rules/harness-lessons.mdc"
     ]
   },
   "formatter": {
