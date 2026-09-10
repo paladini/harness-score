@@ -30,6 +30,46 @@ Project-local agent skill:
   including current official vendor documentation, site/docs parity, release
   metadata, and explicit contributor credit. Use it for PR and release work;
   its release-note and attribution gates are mandatory.
+- `.agents/skills/tlc-discover/SKILL.md`, `.agents/skills/tlc-plan/SKILL.md`,
+  `.agents/skills/tlc-implement/SKILL.md`, and
+  `.agents/skills/the-judge/SKILL.md` — the TLC AI Dev Flow. Route work through
+  these skills as described in [AI-DEV-FLOW.md](AI-DEV-FLOW.md); do not
+  substitute `tlc-spec-driven` for this workflow.
+
+## TLC AI Dev Flow
+
+Use the smallest applicable entry point:
+
+- Unshaped feature, unclear problem, or consequential direction choice:
+  `tlc-discover`.
+- Decided work that still needs observable vertical slices: `tlc-plan`.
+- Concrete ticket, task, or reproducible bug whose expected behavior is
+  already decided: `tlc-implement`.
+- Pull-request code review: `the-judge`. This does not replace
+  `pr-release-audit` for merge or release readiness.
+
+Do not force the full flow onto typo-only or similarly trivial, reversible
+changes. TLC artifacts are written in the request's language, while headings
+required by the skills and code identifiers remain literal.
+
+## tlc-implement
+
+profile: standard
+handoff: on
+
+Harness-Score proof rules:
+
+- Each check names a focused proof. The final feature gate still runs
+  `npm test`, `npm run lint`, `npm run scan`, `npm run docs:build`, and
+  `npm run plugins:sync-check` when the affected surface makes it relevant.
+- A new behavioral test must fail against the feature base before the
+  implementation is accepted as proof. Never weaken, delete, or silently
+  rewrite a pre-existing test to obtain green.
+- The author does not verify their own implementation. A fresh verifier reads
+  the complete checklist and `<feature-base>..HEAD` diff.
+- Local edits and commits stay within the approved checklist. Pushes, deploys,
+  production changes, and posting a GitHub review require explicit user
+  authorization.
 
 ## Build & test
 

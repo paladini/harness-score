@@ -9,8 +9,9 @@
   ],
   "scripts": {
     "build": "npm run build -w harness-score",
-    "test": "npm run test -w harness-score && npm run test:release",
+    "test": "npm run test -w harness-score && npm run test:release && npm run test:skills",
     "test:release": "node --test scripts/release.test.mjs",
+    "test:skills": "node --test scripts/tlc-ai-dev-flow.test.mjs",
     "test:coverage": "npm run test:coverage -w harness-score",
     "scan": "node packages/cli/dist/cli.js .",
     "plugins:sync": "node plugins/shared/generate-tools.mjs",
