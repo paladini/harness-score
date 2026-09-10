@@ -17,16 +17,25 @@ function filesUnder(directory, prefix = '') {
   });
 }
 
+function normalizeLineEndings(source) {
+  return source.replaceAll('\r\n', '\n');
+}
+
 function treeSha256(directory, files) {
   const digest = createHash('sha256');
   for (const relative of [...files].sort()) {
     digest.update(relative);
     digest.update('\0');
-    digest.update(readFileSync(path.join(directory, relative)));
+    const source = normalizeLineEndings(readFileSync(path.join(directory, relative), 'utf8'));
+    digest.update(source);
     digest.update('\0');
   }
   return digest.digest('hex');
 }
+
+test('normalizes checkout line endings before hashing', () => {
+  assert.equal(normalizeLineEndings('first\r\nsecond\r\n'), 'first\nsecond\n');
+});
 
 test('pins a reproducible TLC AI Dev Flow source', () => {
   const lock = JSON.parse(readFileSync(LOCK_PATH, 'utf8'));
@@ -42,6 +51,7 @@ test('pins a reproducible TLC AI Dev Flow source', () => {
     name: '@tech-leads-club/skills-catalog',
     versionAtSourceRef: '0.17.7',
   });
+  assert.equal(lock.hashNormalization, 'UTF-8 text with CRLF normalized to LF');
 });
 
 test('installs the complete four-skill core loop with matching metadata', () => {

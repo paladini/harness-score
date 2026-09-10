@@ -10,6 +10,7 @@
     "name": "@tech-leads-club/skills-catalog",
     "versionAtSourceRef": "0.17.7"
   },
+  "hashNormalization": "UTF-8 text with CRLF normalized to LF",
   "skills": [
     {
       "name": "tlc-discover",
