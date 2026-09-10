@@ -1,0 +1,41 @@
+{
+  "source": "https://github.com/tech-leads-club/agent-skills",
+  "sourceRef": "e7baf4217e57bbcd9cdddfa830546c6a013db845",
+  "catalogPackage": "@tech-leads-club/agent-skills",
+  "catalogPackageVersion": "1.4.10",
+  "skills": [
+    {
+      "name": "tlc-discover",
+      "version": "0.8.0",
+      "files": ["SKILL.md", "references/document-format.md"]
+    },
+    {
+      "name": "tlc-plan",
+      "version": "0.1.1",
+      "files": ["SKILL.md", "references/document-format.md"]
+    },
+    {
+      "name": "tlc-implement",
+      "version": "0.1.0",
+      "files": [
+        "SKILL.md",
+        "references/checklist-format.md",
+        "references/screens.md",
+        "references/test-policy.md",
+        "references/verify.md"
+      ]
+    },
+    {
+      "name": "the-judge",
+      "version": "1.4.0",
+      "files": [
+        "SKILL.md",
+        "references/comment-voice.md",
+        "references/review-standards.md",
+        "scripts/post_review.py",
+        "scripts/review_gate.py",
+        "scripts/scan_bypasses.py"
+      ]
+    }
+  ]
+}

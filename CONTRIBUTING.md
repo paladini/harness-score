@@ -39,6 +39,12 @@ action/          the composite GitHub Action wrapping the CLI
 Full conventions — written for agents, equally useful for humans — live in
 [AGENTS.md](AGENTS.md). Read it before touching `packages/cli`.
 
+AI-assisted contributions can use the repository's vendored
+[TLC AI Dev Flow](AI-DEV-FLOW.md). It turns an unclear request into durable
+decisions, vertical slices, check-level proofs, independent verification, and
+an evidence-first PR review. Small, reversible edits can use the normal
+workflow directly.
+
 ## The three invariants that matter most
 
 1. **The CLI stays deterministic.** No LLM calls, no network, no telemetry,
