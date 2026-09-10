@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import * as path from 'node:path';
 import { test } from 'node:test';
@@ -16,13 +17,31 @@ function filesUnder(directory, prefix = '') {
   });
 }
 
+function treeSha256(directory, files) {
+  const digest = createHash('sha256');
+  for (const relative of [...files].sort()) {
+    digest.update(relative);
+    digest.update('\0');
+    digest.update(readFileSync(path.join(directory, relative)));
+    digest.update('\0');
+  }
+  return digest.digest('hex');
+}
+
 test('pins a reproducible TLC AI Dev Flow source', () => {
   const lock = JSON.parse(readFileSync(LOCK_PATH, 'utf8'));
 
   assert.equal(lock.source, 'https://github.com/tech-leads-club/agent-skills');
   assert.equal(lock.sourceRef, 'e7baf4217e57bbcd9cdddfa830546c6a013db845');
-  assert.equal(lock.catalogPackage, '@tech-leads-club/agent-skills');
-  assert.equal(lock.catalogPackageVersion, '1.4.10');
+  assert.deepEqual(lock.installerPackage, {
+    name: '@tech-leads-club/agent-skills',
+    publishedVersionAtInstall: '1.4.10',
+    versionAtSourceRef: '1.5.0',
+  });
+  assert.deepEqual(lock.skillsCatalogPackage, {
+    name: '@tech-leads-club/skills-catalog',
+    versionAtSourceRef: '0.17.7',
+  });
 });
 
 test('installs the complete four-skill core loop with matching metadata', () => {
@@ -37,10 +56,12 @@ test('installs the complete four-skill core loop with matching metadata', () => 
 
     assert.ok(existsSync(skillPath), `${skill.name} must include SKILL.md`);
     assert.deepEqual(filesUnder(directory).sort(), [...skill.files].sort());
+    assert.equal(treeSha256(directory, skill.files), skill.treeSha256);
 
     const source = readFileSync(skillPath, 'utf8');
     assert.match(source, new RegExp(`^name: ${skill.name}$`, 'm'));
     assert.match(source, new RegExp(`^  version: ${skill.version.replaceAll('.', '\\.')}$`, 'm'));
+    assert.match(source, new RegExp(`^  author: ${skill.author.replaceAll('.', '\\.')}$`, 'm'));
     assert.match(source, /^license: CC-BY-4\.0$/m);
   }
 });

@@ -1,22 +1,35 @@
 {
   "source": "https://github.com/tech-leads-club/agent-skills",
   "sourceRef": "e7baf4217e57bbcd9cdddfa830546c6a013db845",
-  "catalogPackage": "@tech-leads-club/agent-skills",
-  "catalogPackageVersion": "1.4.10",
+  "installerPackage": {
+    "name": "@tech-leads-club/agent-skills",
+    "publishedVersionAtInstall": "1.4.10",
+    "versionAtSourceRef": "1.5.0"
+  },
+  "skillsCatalogPackage": {
+    "name": "@tech-leads-club/skills-catalog",
+    "versionAtSourceRef": "0.17.7"
+  },
   "skills": [
     {
       "name": "tlc-discover",
       "version": "0.8.0",
+      "author": "Tech Leads Club - github.com/tech-leads-club",
+      "treeSha256": "f12dbbe5bd8f9ca6897c2d15a16978f86e68cb46eed7bd27bc484461b95fe023",
       "files": ["SKILL.md", "references/document-format.md"]
     },
     {
       "name": "tlc-plan",
       "version": "0.1.1",
+      "author": "Tech Leads Club - github.com/tech-leads-club",
+      "treeSha256": "84d268d39def828bbe61966173eab6ef832f755547c36c833116e650108493e2",
       "files": ["SKILL.md", "references/document-format.md"]
     },
     {
       "name": "tlc-implement",
       "version": "0.1.0",
+      "author": "Tech Leads Club - github.com/tech-leads-club",
+      "treeSha256": "ad66285e5477d80ec3b641e90c9a9636943dfa79e66236aa000d3c6488d71d68",
       "files": [
         "SKILL.md",
         "references/checklist-format.md",
@@ -28,6 +41,8 @@
     {
       "name": "the-judge",
       "version": "1.4.0",
+      "author": "Felipe Rodrigues - github.com/felipfr",
+      "treeSha256": "2464ec315efb3d97ffa51183c4d357653731094824b672c9a8c14fb8f2107e26",
       "files": [
         "SKILL.md",
         "references/comment-voice.md",
