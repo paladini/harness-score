@@ -36,10 +36,13 @@ jobs:
         with:
           node-version: 24
           cache: npm
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.13
       - run: npm ci
       - name: Materialize the pinned isolated runtime
         run: npm run harness:setup
-      - name: Exercise real Cursor and Claude hook entrypoints with Bun and Node fallback
+      - name: Exercise real Cursor, Claude, and Codex hook entrypoints with Bun and Node fallback
         run: npm run test:harness:integration
       - name: Confirm runtime health and global isolation
         run: npm run harness:status
