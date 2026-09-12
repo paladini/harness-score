@@ -68,24 +68,32 @@ function event(root, provider, kind, extra = {}) {
       }
     : { hook_event_name: names[kind][1], session_id: 'integration', cwd: root, tool_name: 'Bash', ...extra };
 }
-function invoke(root, handler, payload) {
-  const result = spawnSync(process.execPath, [join(paths(root).runtime, 'bin/tlc-exec.mjs'), handler], {
-    cwd: root,
-    env: isolatedEnv(root),
-    input: JSON.stringify(payload),
-    encoding: 'utf8',
-    timeout: 30_000,
-  });
+function invoke(root, provider, handler, payload) {
+  const result = spawnSync(
+    process.execPath,
+    [join(paths(root).runtime, 'bin/tlc-exec.mjs'), '--provider', provider, handler],
+    {
+      cwd: root,
+      env: isolatedEnv(root),
+      input: JSON.stringify(payload),
+      encoding: 'utf8',
+      timeout: 30_000,
+    },
+  );
   assert.equal(result.status, 0, result.stderr);
   return JSON.parse(result.stdout.trim() || '{}');
 }
-function invokeAsync(root, handler, payload) {
+function invokeAsync(root, provider, handler, payload) {
   return new Promise((resolve, reject) => {
-    const child = spawn(process.execPath, [join(paths(root).runtime, 'bin/tlc-exec.mjs'), handler], {
-      cwd: root,
-      env: isolatedEnv(root),
-      stdio: ['pipe', 'pipe', 'pipe'],
-    });
+    const child = spawn(
+      process.execPath,
+      [join(paths(root).runtime, 'bin/tlc-exec.mjs'), '--provider', provider, handler],
+      {
+        cwd: root,
+        env: isolatedEnv(root),
+        stdio: ['pipe', 'pipe', 'pipe'],
+      },
+    );
     let stdout = '';
     let stderr = '';
     child.stdout.on('data', (chunk) => (stdout += chunk));
@@ -107,10 +115,10 @@ function denied(output) {
   );
 }
 for (const engine of ['bun', 'node']) {
-  for (const provider of ['cursor', 'claude']) {
+  for (const provider of ['cursor', 'claude', 'codex']) {
     test(`${provider}/${engine}: real entrypoints produce review proof and reject a stale commit`, (t) => {
       const root = fixture(t, engine);
-      invoke(root, 'session-start', event(root, provider, 'start'));
+      invoke(root, provider, 'session-start', event(root, provider, 'start'));
       const command = 'rtk proxy gh pr ready';
       const payload = event(
         root,
@@ -118,9 +126,10 @@ for (const engine of ['bun', 'node']) {
         'before',
         provider === 'cursor' ? { command } : { tool_input: { command } },
       );
-      assert.equal(denied(invoke(root, 'tool-before', payload)), true);
+      assert.equal(denied(invoke(root, provider, 'tool-before', payload)), true);
       invoke(
         root,
+        provider,
         'subagent-stop',
         event(root, provider, 'reviewer', {
           subagent_type: 'harness-reviewer',
@@ -129,7 +138,7 @@ for (const engine of ['bun', 'node']) {
           status: 'completed',
         }),
       );
-      const output = invoke(root, 'tool-before', payload);
+      const output = invoke(root, provider, 'tool-before', payload);
       assert.equal(denied(output), false, JSON.stringify(output));
       git(root, [
         '-c',
@@ -143,25 +152,25 @@ for (const engine of ['bun', 'node']) {
         '-qm',
         'new head',
       ]);
-      assert.equal(denied(invoke(root, 'tool-before', payload)), true);
+      assert.equal(denied(invoke(root, provider, 'tool-before', payload)), true);
     });
     test(`${provider}/${engine}: failing gate produces feedback, then passes after correction`, (t) => {
       const root = fixture(t, engine);
-      invoke(root, 'session-start', event(root, provider, 'start'));
+      invoke(root, provider, 'session-start', event(root, provider, 'start'));
       writeFileSync(join(root, 'src/example.js'), 'export const value = 2;\n');
       writeFileSync(join(root, 'fail'), 'fail test');
-      const failed = invoke(root, 'stop', event(root, provider, 'stop', { loop_count: 0 }));
+      const failed = invoke(root, provider, 'stop', event(root, provider, 'stop', { loop_count: 0 }));
       assert.equal(denied(failed), true, JSON.stringify(failed));
       assert.equal(readJson(join(root, '.tlc/harness/state/last-gate.json'))?.passed, false);
       rmSync(join(root, 'fail'));
       writeFileSync(join(root, 'src/example.js'), 'export const value = 3;\n');
-      const passed = invoke(root, 'stop', event(root, provider, 'stop', { loop_count: 1 }));
+      const passed = invoke(root, provider, 'stop', event(root, provider, 'stop', { loop_count: 1 }));
       assert.equal(denied(passed), false, JSON.stringify(passed));
       assert.equal(readJson(join(root, '.tlc/harness/state/last-gate.json'))?.passed, true);
     });
     test(`${provider}/${engine}: secret read is denied without reading a credential`, (t) => {
       const root = fixture(t, engine);
-      invoke(root, 'session-start', event(root, provider, 'start'));
+      invoke(root, provider, 'session-start', event(root, provider, 'start'));
       const command = 'cat .env';
       const payload = event(
         root,
@@ -169,7 +178,7 @@ for (const engine of ['bun', 'node']) {
         'before',
         provider === 'cursor' ? { command } : { tool_input: { command } },
       );
-      assert.equal(denied(invoke(root, 'tool-before', payload)), true);
+      assert.equal(denied(invoke(root, provider, 'tool-before', payload)), true);
     });
   }
 }
@@ -177,12 +186,14 @@ for (const engine of ['bun', 'node']) {
 test('two provider sessions can start concurrently without corrupting presence state', async (t) => {
   const root = fixture(t, 'node');
   await Promise.all([
-    invokeAsync(root, 'session-start', event(root, 'cursor', 'start')),
-    invokeAsync(root, 'session-start', event(root, 'claude', 'start')),
+    invokeAsync(root, 'cursor', 'session-start', event(root, 'cursor', 'start')),
+    invokeAsync(root, 'claude', 'session-start', event(root, 'claude', 'start')),
+    invokeAsync(root, 'codex', 'session-start', event(root, 'codex', 'start')),
   ]);
   const presence = join(root, '.tlc/harness/state/presence');
   assert.equal(readJson(join(presence, 'cursor-integration.json'))?.provider, 'cursor');
   assert.equal(readJson(join(presence, 'claude-integration.json'))?.provider, 'claude');
+  assert.equal(readJson(join(presence, 'codex-integration.json'))?.provider, 'codex');
 });
 
 test('installed version and complete project hook coverage match the isolated provider documents', () => {
@@ -190,6 +201,7 @@ test('installed version and complete project hook coverage match the isolated pr
   for (const [provider, source, target] of [
     ['cursor', join(paths(ROOT).cursor, 'hooks.json'), '.cursor/hooks.json'],
     ['claude', join(paths(ROOT).claude, 'settings.json'), '.claude/settings.json'],
+    ['codex', join(paths(ROOT).codex, 'hooks.json'), '.codex/hooks.json'],
   ]) {
     const generated = JSON.parse(readFileSync(source, 'utf8'));
     const project = readJson(join(ROOT, target));
@@ -200,4 +212,37 @@ test('installed version and complete project hook coverage match the isolated pr
       );
     }
   }
+});
+
+test('project Codex commands resolve the repository from a subdirectory', () => {
+  const document = readJson(join(ROOT, '.codex/hooks.json'));
+  const groups = document.hooks.PreToolUse;
+  const payload = JSON.stringify({
+    hook_event_name: 'PreToolUse',
+    cwd: join(ROOT, 'packages/cli'),
+    tool_name: 'Bash',
+    tool_input: { command: 'npm publish' },
+    transcript_path: join(ROOT, '.codex/sessions/integration.jsonl'),
+  });
+  for (const marker of ['guard-shell.js', 'scripts/harness/hook.mjs']) {
+    const hook = groups
+      .flatMap((group) => group.hooks)
+      .find((candidate) => candidate.command.includes(marker));
+    assert.ok(hook, `missing Codex project command for ${marker}`);
+    const command = process.platform === 'win32' ? hook.commandWindows : hook.command;
+    const result = spawnSync(command, {
+      cwd: join(ROOT, 'packages/cli'),
+      shell: true,
+      input: payload,
+      encoding: 'utf8',
+      timeout: 30_000,
+    });
+    assert.equal(result.status, 0, result.stderr);
+    assert.doesNotThrow(() => JSON.parse(result.stdout.trim() || '{}'));
+  }
+  assert.equal(
+    existsSync(join(ROOT, 'packages/cli/.tlc')),
+    false,
+    'Codex hook state must remain anchored at the repository root',
+  );
 });

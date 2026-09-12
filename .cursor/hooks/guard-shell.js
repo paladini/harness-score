@@ -12,12 +12,12 @@ process.stdin.on('end', () => {
   }
   const destructive =
     /\brm\s+(-[a-z]*r[a-z]*f|-[a-z]*f[a-z]*r)[a-z]*\s+([/~]|\.\.)|\bgit\s+push\s+.*--force\b|\bgit\s+reset\s+--hard\b|\bdrop\s+(table|database)\b|\bnpm\s+publish\b/i;
-  const claude = process.argv.includes('--claude');
+  const structured = process.argv.includes('--claude') || process.argv.includes('--codex');
   if (destructive.test(command)) {
     const reason = `Blocked by project guard: "${command.slice(0, 80)}" matches a destructive pattern. Run it manually if intended.`;
     process.stdout.write(
       JSON.stringify(
-        claude
+        structured
           ? {
               hookSpecificOutput: {
                 hookEventName: 'PreToolUse',
@@ -33,6 +33,6 @@ process.stdin.on('end', () => {
       ),
     );
   } else {
-    process.stdout.write(JSON.stringify(claude ? {} : { permission: 'allow' }));
+    process.stdout.write(JSON.stringify(structured ? {} : { permission: 'allow' }));
   }
 });

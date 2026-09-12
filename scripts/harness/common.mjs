@@ -13,8 +13,12 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
-export const VERSION = '0.11.1';
+export const VERSION = '0.10.6';
 export const PACKAGE = '@tech-leads-club/harness-toolkit';
+export const SOURCE_REPOSITORY = 'https://github.com/tech-leads-club/harness-toolkit';
+export const SOURCE_BRANCH = 'feature/add-providers';
+export const SOURCE_COMMIT = '87a7565546bf5764cb8710319d110cfa59b4c732';
+export const SOURCE_SPEC = `git+${SOURCE_REPOSITORY}.git#${SOURCE_COMMIT}`;
 export const TIMEOUT = 600_000;
 export function paths(root = ROOT) {
   const cache = join(root, '.cache', 'harness-toolkit');
@@ -25,8 +29,11 @@ export function paths(root = ROOT) {
     prefix: join(cache, 'package'),
     cursor: join(runtime, 'providers', 'cursor'),
     claude: join(runtime, 'providers', 'claude'),
+    codex: join(runtime, 'providers', 'codex'),
+    copilot: join(runtime, 'providers', 'copilot'),
     bin: join(runtime, 'bin-links'),
     enabled: join(cache, 'enabled.json'),
+    source: join(cache, 'source.json'),
     evidence: join(cache, 'evidence'),
     lock: join(cache, 'verification.lock'),
   };
@@ -94,6 +101,8 @@ export function isolatedEnv(root, overrides = {}) {
     TLC_BIN_DIR: p.bin,
     CURSOR_CONFIG_DIR: p.cursor,
     CLAUDE_CONFIG_DIR: p.claude,
+    CODEX_HOME: p.codex,
+    COPILOT_CONFIG_DIR: p.copilot,
     CURSOR_PROJECT_DIR: root,
     TLC_PROJECT_DIR: root,
     CLAUDE_PROJECT_DIR: root,
@@ -111,6 +120,9 @@ export function runtimeHealth(
   const manifest = readJson(join(p.runtime, 'package.json'));
   if (manifest?.version !== VERSION)
     return `Expected toolkit ${VERSION}; found ${manifest?.version ?? 'no runtime'}`;
+  const source = readJson(p.source);
+  if (source?.commit !== SOURCE_COMMIT)
+    return `Expected toolkit source ${SOURCE_COMMIT}; found ${source?.commit ?? 'no provenance'}`;
   for (const file of ['bin/tlc-exec.mjs', 'dist/tool-before.mjs', 'dist/stop.mjs', 'dist/tlc-cli.mjs']) {
     if (!existsSync(join(p.runtime, file))) return `Missing toolkit runtime file: ${file}`;
   }

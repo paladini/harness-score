@@ -1,6 +1,17 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { isolatedEnv, paths, ROOT, readJson, run, runtimeHealth, VERSION } from './common.mjs';
+import {
+  isolatedEnv,
+  paths,
+  ROOT,
+  readJson,
+  run,
+  runtimeHealth,
+  SOURCE_BRANCH,
+  SOURCE_COMMIT,
+  SOURCE_REPOSITORY,
+  VERSION,
+} from './common.mjs';
 import { disable, globalSnapshot, setup } from './setup.mjs';
 import { verify } from './verify.mjs';
 
@@ -21,6 +32,7 @@ async function main() {
       JSON.stringify(
         {
           version: VERSION,
+          source: { repository: SOURCE_REPOSITORY, branch: SOURCE_BRANCH, commit: SOURCE_COMMIT },
           enabled,
           runtime: p.runtime,
           problem,

@@ -3,7 +3,7 @@ import { dirname, join } from 'node:path';
 import { git, paths, ROOT, VERSION } from './common.mjs';
 
 export const SCENARIOS = ['simple', 'tested-fix', 'docs', 'generated-plugin', 'config-dependency', 'review'];
-const PROVIDERS = ['cursor', 'claude'];
+const PROVIDERS = ['cursor', 'claude', 'codex'];
 const MODES = ['baseline', 'toolkit'];
 const METRICS = [
   'durationMs',
@@ -118,5 +118,5 @@ if (action === 'record') record(args);
 else if (action === 'report') report();
 else
   throw new Error(
-    'Use record --runId ... --provider cursor|claude --mode baseline|toolkit --scenario ... --model ... --objective ... plus all numeric metrics, or report.',
+    'Use record --runId ... --provider cursor|claude|codex --mode baseline|toolkit --scenario ... --model ... --objective ... plus all numeric metrics, or report.',
   );

@@ -1,9 +1,9 @@
 {
-  "$schema": "https://unpkg.com/@tech-leads-club/harness-toolkit@0.11.1/schema.json",
+  "$schema": "https://raw.githubusercontent.com/tech-leads-club/harness-toolkit/87a7565546bf5764cb8710319d110cfa59b4c732/schema.json",
   "version": 1,
   "projectName": "harness-score-pilot",
   "mode": "solo",
-  "codePaths": ["packages", "scripts", "action", "plugins", ".cursor/hooks", ".claude"],
+  "codePaths": ["packages", "scripts", "action", "plugins", ".cursor/hooks", ".claude", ".codex"],
   "grind": {
     "enabled": true,
     "maxLoops": 3,
@@ -22,7 +22,6 @@
   "subagents": { "enforceAllowlist": false, "requireModel": false, "blockParentFast": false },
   "shell": { "catastrophicAsk": true, "stallDetection": false },
   "untrustedContent": { "enabled": true, "mode": "frame" },
-  "secrets": { "redactOutput": true },
   "obs": { "globalSpool": false, "includePayloads": false, "retentionDays": 14 },
   "intelligence": {
     "gapFeedback": true,
@@ -32,6 +31,11 @@
     "autopilot": true,
     "idleTurnGate": false,
     "budgetContinue": false,
-    "lessons": { "enabled": true, "maxCharsSession": 900, "maxCharsRetry": 1400 }
+    "lessons": {
+      "enabled": true,
+      "maxInjectSession": 6,
+      "maxCharsSession": 5000,
+      "maxCharsRetry": 5000
+    }
   }
 }

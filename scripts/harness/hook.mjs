@@ -28,7 +28,25 @@ export function deliveryCommand(command) {
       token === 'gh' && words[index + 1] === 'pr' && ['create', 'ready'].includes(words[index + 2]),
   );
 }
-export function denial(provider, handler, reason) {
+export function denial(provider, handler, reason, payload = {}) {
+  if (provider === 'codex') {
+    if (handler === 'stop') return { decision: 'block', reason };
+    if (payload.hook_event_name === 'PermissionRequest') {
+      return {
+        hookSpecificOutput: {
+          hookEventName: 'PermissionRequest',
+          decision: { behavior: 'deny', message: reason },
+        },
+      };
+    }
+    return {
+      hookSpecificOutput: {
+        hookEventName: payload.hook_event_name ?? 'PreToolUse',
+        permissionDecision: 'deny',
+        permissionDecisionReason: reason,
+      },
+    };
+  }
   if (provider === 'claude')
     return handler === 'stop'
       ? { decision: 'block', reason }
@@ -48,26 +66,37 @@ export function dispatch(
   payload,
   { execute = spawnSync, health = runtimeHealth } = {},
 ) {
-  if (!['cursor', 'claude'].includes(provider)) throw new Error('Unknown provider');
+  if (!['cursor', 'claude', 'codex'].includes(provider)) throw new Error('Unknown provider');
   if (!existsSync(paths(root).enabled)) return {};
   const problem = health(root);
   if (problem) {
     console.error(`HARNESS DEGRADED: ${problem}`);
-    return ['tool-before', 'stop'].includes(handler) ? denial(provider, handler, problem) : {};
+    return ['tool-before', 'stop'].includes(handler) ? denial(provider, handler, problem, payload) : {};
   }
   const command = payload.command ?? payload.tool_input?.command ?? '';
   if (handler === 'tool-before' && deliveryCommand(command)) {
     try {
       assertReady(root);
     } catch (error) {
-      return denial(provider, handler, error.message);
+      return denial(provider, handler, error.message, payload);
     }
   }
   const p = paths(root);
-  const result = execute(process.execPath, [join(p.runtime, 'bin', 'tlc-exec.mjs'), handler], {
+  const runtimeArgs = [join(p.runtime, 'bin', 'tlc-exec.mjs')];
+  if (provider === 'codex') runtimeArgs.push('--provider', 'codex');
+  runtimeArgs.push(handler);
+  // The feature/add-providers Codex adapter treats payload.cwd as the project
+  // root. Codex reports the session working directory instead, which can be a
+  // repository subdirectory. Anchor Toolkit state and policy to the actual
+  // repository while retaining the original value for future adapters.
+  const runtimePayload =
+    provider === 'codex' && payload.cwd !== root
+      ? { ...payload, tlc_original_cwd: payload.cwd, cwd: root }
+      : payload;
+  const result = execute(process.execPath, runtimeArgs, {
     cwd: root,
     env: isolatedEnv(root),
-    input: JSON.stringify(payload),
+    input: JSON.stringify(runtimePayload),
     encoding: 'utf8',
     timeout: 850_000,
     maxBuffer: 4 * 1024 * 1024,
@@ -76,7 +105,7 @@ export function dispatch(
   if (result.error || result.status !== 0) {
     const reason = `HARNESS DEGRADED: ${handler} failed (${result.status ?? result.error?.code})`;
     console.error(reason);
-    return ['tool-before', 'stop'].includes(handler) ? denial(provider, handler, reason) : {};
+    return ['tool-before', 'stop'].includes(handler) ? denial(provider, handler, reason, payload) : {};
   }
   return result.stdout?.trim() ? JSON.parse(result.stdout) : {};
 }

@@ -33,8 +33,8 @@ Project-local agent skill:
 
 ## Build & test
 
-Optional internal toolkit pilot: see `HARNESS-TOOLKIT.md`. Set it up explicitly
-with `npm run harness:setup`; it never installs global editor hooks. On coding
+Optional internal toolkit pilot: see `HARNESS-TOOLKIT.md`. It is pinned to the Toolkit
+`feature/add-providers` branch for Cursor, Claude Code and Codex. Set it up explicitly with `npm run harness:setup`; it never installs global editor hooks. On coding
 tasks in an active pilot, declare `HARNESS_PLAN: <paths>` and explain deviations
 with `HARNESS_PLAN_DEVIATION: <path> — <reason>`. Follow the existing authorization
 boundary: prepare a PR only when requested, and never infer merge or release

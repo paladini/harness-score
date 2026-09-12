@@ -2,7 +2,7 @@
 
 This repository uses Harness Toolkit as optional, project-local development infrastructure. The pilot raises the chance that an agent finishes the intended work and produces evidence tied to the exact repository state. It does not change the scanner, its public API, its score, or its zero-runtime-dependency contract.
 
-The pinned reference is `@tech-leads-club/harness-toolkit@0.11.1`. Setup needs Node 24 or newer because that is the toolkit's development-runtime requirement. The published scanner continues to support Node 18 or newer.
+The pinned reference is the Toolkit branch `feature/add-providers` at commit `87a7565546bf5764cb8710319d110cfa59b4c732`. Its manifest currently reports package version `0.10.6`; branch and commit, rather than that development version, are the source of truth. Setup needs Node 24 or newer and Bun because the branch builds its runtime bundles with Bun. The published scanner continues to support Node 18 or newer.
 
 ```mermaid
 flowchart LR
@@ -19,7 +19,7 @@ flowchart LR
 
 ## Isolation and ownership
 
-`npm run harness:setup` installs the exact package version under `.cache/harness-toolkit/`, materializes its runtime there, and generates provider wiring in isolated config directories. It then merges project launchers into `.cursor/hooks.json` and `.claude/settings.json`. The setup snapshots the relevant global Cursor, Claude and TLC paths before and after installation and refuses activation if any changed. It does not add a package dependency, update the global `PATH`, or install global hooks.
+`npm run harness:setup` installs the exact upstream commit under `.cache/harness-toolkit/`, builds and materializes its runtime there, and generates provider wiring in isolated config directories. It then merges portable project launchers into `.cursor/hooks.json`, `.claude/settings.json`, and `.codex/hooks.json`. The setup also isolates the branch's VS Code/Copilot destination, snapshots the relevant global Cursor, Claude, Codex, Copilot and TLC paths before and after installation, and refuses activation if any changed. It does not add a package dependency, update the global `PATH`, or install global hooks.
 
 The versioned policy is `.tlc/harness/config.json`. Runtime, state, logs, lessons, evaluation records and verification evidence are ignored. Every hook invokes `scripts/harness/hook.mjs`, which supplies the isolated environment explicitly. An enabled pilot with a missing runtime reports `HARNESS DEGRADED` and denies acting events; it cannot silently count the toolkit as operational.
 
@@ -29,7 +29,7 @@ The project's existing controls remain authoritative:
 | --- | --- |
 | `guard-shell.js` | Project-specific destructive-command policy, including npm publication and hard reset. |
 | `format-on-edit.js` | Advisory formatting with the repository-pinned Biome binary; it never downloads a formatter. |
-| Harness Toolkit | Session context, grind feedback, policy gates, lessons, redaction, observations and review evidence. |
+| Harness Toolkit | Session context, grind feedback, policy gates, lessons, observations and review evidence across Cursor, Claude Code and Codex. |
 | Husky | Exact-content test gate before commit and full delivery gate before push, including work outside an editor. |
 | CI | Re-runs repository checks on the pushed commit in a separate environment. |
 
@@ -45,7 +45,11 @@ npm run harness:status
 npm run test:harness:integration
 ```
 
-Use `npm run harness:toolkit -- <command>` instead of a global `tlc` command. This is deliberate: toolkit 0.11.1 does not create a CLI link for a relocated installation. Its Windows doctor also reports the two valid project-isolated `harness-init` links as outside the runtime because it compares mixed path separators. These three doctor failures are known 0.11.1 diagnostics under this isolation model; `harness:status` checks the runtime version/files and verifies that global files remain unchanged. The upstream capability inventory also lists `docsGate` as off when `docs.command` is an argv array, although the stop gate consumes that command. Integration tests exercise the real hook entrypoints instead of treating those doctor rows as proof.
+Use `npm run harness:toolkit -- <command>` instead of a global `tlc` command. This is deliberate: the relocated installation has no global CLI link. On Windows, `doctor` currently reports that missing link and the two valid isolated `harness-init` links as three failures; these are known diagnostics of the isolation model. It also reports the captured VS Code hook as not user-wired, which is intentional while the provider remains preview-only here. `harness:status` is the authoritative local health check: it validates runtime files, branch provenance and unchanged global configuration. Integration tests exercise the real hook entrypoints instead of treating diagnostic rows as proof.
+
+Codex loads the project hook layer only after trust review. After setup, restart the Codex project session, open `/hooks`, review `.codex/hooks.json`, and trust its current hash. Any hook change requires review again. The current session cannot retroactively load hooks written after it started.
+
+The upstream feature-branch adapter currently treats the hook payload's `cwd` as the project root. Because Codex can start a session from a repository subdirectory, the project wrapper anchors that field to the Git root before invoking Toolkit and retains the reported directory as `tlc_original_cwd`. This keeps policy, lessons and presence state in the repository-level `.tlc/` directory.
 
 Verification commands are proportional:
 
@@ -63,13 +67,13 @@ The full gate runs canonical tests, lint, coverage, consumer type checking, publ
 
 ## Reviewer contract
 
-Cursor and Claude Code both receive a read-only `harness-reviewer`. Give it the objective, base commit, final HEAD, full diff and verification evidence. It must report the reviewed HEAD, findings ordered by severity, affected contracts, inspected evidence, limitations and an approve/request-changes verdict. If it finds a problem, change the code, commit, verify and review the new HEAD again.
+Cursor, Claude Code and Codex receive a read-only `harness-reviewer`; the Codex definition is `.codex/agents/harness-reviewer.toml`. Give it the objective, base commit, final HEAD, full diff and verification evidence. It must report the reviewed HEAD, findings ordered by severity, affected contracts, inspected evidence, limitations and an approve/request-changes verdict. If it finds a problem, change the code, commit, verify and review the new HEAD again.
 
 The observation proves that the reviewer ran. It does not prove that its judgment is correct. Deterministic checks and CI remain separate sources of evidence.
 
 ## Policy choices
 
-The project policy enables grind with three loops and no automatic file attachment; failure feedback and classification; progressive handoff/context; autopilot; lessons; plan, supply-chain, documentation and operator rules; framed external content; secret-output redaction; and local observability without payloads for 14 days.
+The project policy enables grind with three loops and no automatic file attachment; failure feedback and classification; progressive handoff/context; autopilot; lessons with enough session budget for the shipped core corrections; plan, supply-chain, documentation and operator rules; framed external content; and local observability without payloads for 14 days.
 
 Comment enforcement remains observational. Duplication checks are disabled because generated plugin content and deliberate monorepo repetition would add noise. Model allowlists, Fast blocking, repeated-command blocking, idle-turn blocking, budget continuation, global spool, ship claims and empty-diff anti-ship are disabled. Delivery relies on content-bound checks and review evidence instead of textual PASS markers.
 
@@ -77,19 +81,19 @@ For implementation work, state `HARNESS_PLAN: <paths>` before editing. If scope 
 
 ## Acceptance evaluation
 
-Run the same objective and model with and without the toolkit for six scenarios in each editor: simple edit, tested fix, documentation, generated plugin, configuration/dependency and review-required change. Record duration, human interventions, pre-delivery failures caught, false blocks, retries, check time and injected context size:
+Run the same objective and model with and without the toolkit for six scenarios in each host: simple edit, tested fix, documentation, generated plugin, configuration/dependency and review-required change. Record duration, human interventions, pre-delivery failures caught, false blocks, retries, check time and injected context size:
 
 ```powershell
 npm run harness:evaluate -- record --runId run-01 --provider claude --mode toolkit --scenario tested-fix --model model-name --objective objective-id --durationMs 120000 --interventions 1 --failuresDetected 1 --falseBlocks 0 --retries 1 --checkMs 30000 --contextChars 900
 npm run harness:evaluate -- report
 ```
 
-Promotion requires all 24 provider/mode/scenario records, no protection regression, no writes outside the listed destinations, every seeded critical failure caught before delivery, no ready PR with missing/stale evidence, no unbounded loop, median overhead of at most 20% for already-passing simple work, and evidence of reduced intervention or successful correction in failing scenarios. Cursor and Claude Code are promoted independently. A synthetic entrypoint test does not substitute for a real editor session.
+Promotion requires all 36 provider/mode/scenario records, no protection regression, no writes outside the listed destinations, every seeded critical failure caught before delivery, no ready PR with missing/stale evidence, no unbounded loop, median overhead of at most 20% for already-passing simple work, and evidence of reduced intervention or successful correction in failing scenarios. Cursor, Claude Code and Codex are promoted independently. A synthetic entrypoint test does not substitute for a real host session.
 
 ## Disable, recover and update
 
-`npm run harness:disable` removes only toolkit launchers from the two project hook documents. It preserves project guards, formatter hooks, runtime and evidence for diagnosis. Running setup again is idempotent.
+`npm run harness:disable` removes only toolkit launchers from the three project hook documents. It preserves project guards, formatter hooks, runtime and evidence for diagnosis. Running setup again is idempotent.
 
-Before updating, compare `npm view @tech-leads-club/harness-toolkit version` with the pinned `VERSION` in `scripts/harness/common.mjs`, inspect upstream hook/config changes, change the exact version, run setup twice, run unit and integration tests, exercise one real session per editor, and repeat the full verification. Promote the new version only after both editors meet their own acceptance criteria.
+Before updating, fetch `feature/add-providers`, inspect the commits and hook/config changes since `SOURCE_COMMIT`, then update `SOURCE_COMMIT`, `VERSION`, and the schema URL together. Run setup twice, run unit and integration tests, exercise one real session per host, and repeat the full verification. Promote the new commit only after every host meets its own acceptance criteria.
 
 The design shifts memory and repetition away from the developer: the human chooses the goal and trade-offs; the implementing agent changes the repository; deterministic tools verify concrete properties; an independent agent challenges the reasoning; CI verifies the delivered commit. The remaining human work is judgment about product value, adequacy of the criteria and acceptable cost.

@@ -2,13 +2,28 @@ import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
-import { isolatedEnv, PACKAGE, paths, readJson, run, runtimeHealth, VERSION, writeJson } from './common.mjs';
+import {
+  isolatedEnv,
+  paths,
+  readJson,
+  run,
+  runtimeHealth,
+  SOURCE_BRANCH,
+  SOURCE_COMMIT,
+  SOURCE_REPOSITORY,
+  SOURCE_SPEC,
+  VERSION,
+  writeJson,
+} from './common.mjs';
 
 export function globalSnapshot() {
   return Object.fromEntries(
     [
       '.cursor/hooks.json',
       '.claude/settings.json',
+      '.codex/hooks.json',
+      '.codex/config.toml',
+      '.copilot/hooks/tlc-harness.json',
       '.tlc/harness/config.json',
       '.local/bin/tlc',
       '.local/bin/tlc.cmd',
@@ -50,6 +65,19 @@ export function mergeHooks(existing, provider, generated) {
           ...(event === 'stop' ? { loop_limit: 3 } : {}),
         };
       }
+      if (provider === 'codex') {
+        return {
+          ...entry,
+          hooks: entry.hooks.map((hook) => {
+            const handler = hook.command.trim().split(/\s+/).at(-1);
+            return {
+              ...hook,
+              command: `node "$(git rev-parse --show-toplevel)/scripts/harness/hook.mjs" codex ${handler}`,
+              commandWindows: `powershell -NoProfile -Command "$root = git rev-parse --show-toplevel; node (Join-Path $root 'scripts/harness/hook.mjs') codex ${handler}"`,
+            };
+          }),
+        };
+      }
       return {
         ...entry,
         hooks: entry.hooks.map((hook) => ({
@@ -71,6 +99,8 @@ export async function setup(root) {
   const before = globalSnapshot();
   mkdirSync(p.cursor, { recursive: true });
   mkdirSync(p.claude, { recursive: true });
+  mkdirSync(p.codex, { recursive: true });
+  mkdirSync(p.copilot, { recursive: true });
   run(root, 'npm', [
     'install',
     '--prefix',
@@ -78,19 +108,27 @@ export async function setup(root) {
     '--no-save',
     '--package-lock=false',
     '--ignore-scripts',
-    `${PACKAGE}@${VERSION}`,
+    SOURCE_SPEC,
   ]);
   const origin = join(p.prefix, 'node_modules', '@tech-leads-club', 'harness-toolkit');
+  run(root, 'bun', [join(origin, 'bin', 'tlc-build.mjs')]);
   // The delivery package must resolve itself on the first install, not a nonexistent destination.
   const env = isolatedEnv(root, { TLC_HOME: origin, TLC_ORIGIN: origin });
   mkdirSync(p.runtime, { recursive: true });
   writeJson(join(p.runtime, 'config.json'), { version: 1 });
   run(root, process.execPath, [join(origin, 'bin', 'tlc.mjs'), 'harness', 'install'], { env });
+  writeJson(p.source, {
+    repository: SOURCE_REPOSITORY,
+    branch: SOURCE_BRANCH,
+    commit: SOURCE_COMMIT,
+    packageVersion: VERSION,
+  });
   const problem = runtimeHealth(root);
   if (problem) throw new Error(problem);
   for (const [provider, relative, generated] of [
     ['cursor', '.cursor/hooks.json', join(p.cursor, 'hooks.json')],
     ['claude', '.claude/settings.json', join(p.claude, 'settings.json')],
+    ['codex', '.codex/hooks.json', join(p.codex, 'hooks.json')],
   ]) {
     const target = join(root, relative);
     const source = readJson(generated);
@@ -107,19 +145,23 @@ export async function setup(root) {
   });
   if (JSON.stringify(before) !== JSON.stringify(after))
     throw new Error('Global configuration changed; pilot activation refused. See isolation.json.');
-  writeJson(p.enabled, { version: VERSION });
+  writeJson(p.enabled, { version: VERSION, branch: SOURCE_BRANCH, commit: SOURCE_COMMIT });
   console.log(
-    `Toolkit ${VERSION} enabled only in ${root}. Restart the project session; run npm run harness:status.`,
+    `Toolkit ${SOURCE_BRANCH}@${SOURCE_COMMIT.slice(0, 12)} enabled only in ${root}. Restart the project session; run npm run harness:status.`,
   );
 }
 export function disable(root) {
-  for (const relative of ['.cursor/hooks.json', '.claude/settings.json']) {
+  for (const relative of ['.cursor/hooks.json', '.claude/settings.json', '.codex/hooks.json']) {
     const path = join(root, relative);
     const document = readJson(path);
     if (document?.hooks)
       writeJson(
         path,
-        mergeHooks(document, relative.startsWith('.cursor') ? 'cursor' : 'claude', { hooks: {} }),
+        mergeHooks(
+          document,
+          relative.startsWith('.cursor') ? 'cursor' : relative.startsWith('.claude') ? 'claude' : 'codex',
+          { hooks: {} },
+        ),
       );
   }
   rmSync(paths(root).enabled, { force: true });
