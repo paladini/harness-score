@@ -1,0 +1,1 @@
+node scripts/harness/cli.mjs verify prepush

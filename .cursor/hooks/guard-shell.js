@@ -5,20 +5,34 @@ process.stdin.on('data', (chunk) => (input += chunk));
 process.stdin.on('end', () => {
   let command = '';
   try {
-    command = String(JSON.parse(input || '{}').command ?? '');
+    const payload = JSON.parse(input || '{}');
+    command = String(payload.command ?? payload.tool_input?.command ?? '');
   } catch {
     // Unparseable payload: allow — this gate only targets known-destructive patterns.
   }
   const destructive =
     /\brm\s+(-[a-z]*r[a-z]*f|-[a-z]*f[a-z]*r)[a-z]*\s+([/~]|\.\.)|\bgit\s+push\s+.*--force\b|\bgit\s+reset\s+--hard\b|\bdrop\s+(table|database)\b|\bnpm\s+publish\b/i;
+  const structured = process.argv.includes('--claude') || process.argv.includes('--codex');
   if (destructive.test(command)) {
+    const reason = `Blocked by project guard: "${command.slice(0, 80)}" matches a destructive pattern. Run it manually if intended.`;
     process.stdout.write(
-      JSON.stringify({
-        permission: 'deny',
-        userMessage: `Blocked by .cursor/hooks/guard-shell.js: "${command.slice(0, 80)}" matches a destructive pattern. Run it manually if intended.`,
-      }),
+      JSON.stringify(
+        structured
+          ? {
+              hookSpecificOutput: {
+                hookEventName: 'PreToolUse',
+                permissionDecision: 'deny',
+                permissionDecisionReason: reason,
+              },
+            }
+          : {
+              permission: 'deny',
+              user_message: reason,
+              agent_message: reason,
+            },
+      ),
     );
   } else {
-    process.stdout.write(JSON.stringify({ permission: 'allow' }));
+    process.stdout.write(JSON.stringify(structured ? {} : { permission: 'allow' }));
   }
 });

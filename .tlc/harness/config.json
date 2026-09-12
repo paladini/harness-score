@@ -1,0 +1,41 @@
+{
+  "$schema": "https://raw.githubusercontent.com/tech-leads-club/harness-toolkit/87a7565546bf5764cb8710319d110cfa59b4c732/schema.json",
+  "version": 1,
+  "projectName": "harness-score-pilot",
+  "mode": "solo",
+  "codePaths": ["packages", "scripts", "action", "plugins", ".cursor/hooks", ".claude", ".codex"],
+  "grind": {
+    "enabled": true,
+    "maxLoops": 3,
+    "appendFiles": "never",
+    "lintCommand": ["node", "scripts/harness/cli.mjs", "verify", "lint"],
+    "testCommand": ["node", "scripts/harness/cli.mjs", "verify", "test"]
+  },
+  "docs": { "command": ["node", "scripts/harness/cli.mjs", "verify", "docs"], "severity": "deny" },
+  "shipGate": { "enabled": false, "emptyDiffAntiShip": false },
+  "planGate": { "enabled": true, "windowMinutes": 120 },
+  "rules": { "enabled": true },
+  "supplyChain": { "enabled": true },
+  "duplication": { "enabled": false },
+  "comments": { "enabled": false },
+  "observe": { "enabled": true, "rails": ["comments"] },
+  "subagents": { "enforceAllowlist": false, "requireModel": false, "blockParentFast": false },
+  "shell": { "catastrophicAsk": true, "stallDetection": false },
+  "untrustedContent": { "enabled": true, "mode": "frame" },
+  "obs": { "globalSpool": false, "includePayloads": false, "retentionDays": 14 },
+  "intelligence": {
+    "gapFeedback": true,
+    "failureClassification": true,
+    "progressiveHandoff": true,
+    "progressiveContext": true,
+    "autopilot": true,
+    "idleTurnGate": false,
+    "budgetContinue": false,
+    "lessons": {
+      "enabled": true,
+      "maxInjectSession": 6,
+      "maxCharsSession": 5000,
+      "maxCharsRetry": 5000
+    }
+  }
+}

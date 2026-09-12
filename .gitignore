@@ -25,3 +25,8 @@ Thumbs.db
 
 # Marketing drafts (not part of the product, not for the public repo)
 marketing/
+
+# Optional harness runtime and session-derived context
+.tlc/harness/state/
+.tlc/harness/lessons.md
+.cursor/rules/harness-lessons.mdc

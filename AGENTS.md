@@ -33,6 +33,14 @@ Project-local agent skill:
 
 ## Build & test
 
+Optional internal toolkit pilot: see `HARNESS-TOOLKIT.md`. It is pinned to the Toolkit
+`feature/add-providers` branch for Cursor, Claude Code and Codex. Set it up explicitly with `npm run harness:setup`; it never installs global editor hooks. On coding
+tasks in an active pilot, declare `HARNESS_PLAN: <paths>` and explain deviations
+with `HARNESS_PLAN_DEVIATION: <path> — <reason>`. Follow the existing authorization
+boundary: prepare a PR only when requested, and never infer merge or release
+authorization. Before ready-for-review, run full verification on the final clean
+commit and invoke `harness-reviewer`. Resolve findings and repeat after changes.
+
 - `npm test` — builds the CLI (`tsup`), typechecks `packages/cli/src/` and the
   packaging-level consumer smoke test (`packages/cli/test/types/smoke.ts`, imports from
   `dist/`, not `src/`), then runs vitest.

@@ -1,0 +1,137 @@
+{
+  "description": "Project-local Harness Toolkit pilot and repository-specific safety guard.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^Bash$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.cursor/hooks/guard-shell.js\" --codex",
+            "commandWindows": "powershell -NoProfile -Command \"$root = git rev-parse --show-toplevel; node (Join-Path $root '.cursor/hooks/guard-shell.js') --codex\"",
+            "timeout": 10,
+            "statusMessage": "Checking repository safety policy"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/harness/hook.mjs\" codex tool-before",
+            "timeout": 10,
+            "commandWindows": "powershell -NoProfile -Command \"$root = git rev-parse --show-toplevel; node (Join-Path $root 'scripts/harness/hook.mjs') codex tool-before\""
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/harness/hook.mjs\" codex session-start",
+            "timeout": 10,
+            "commandWindows": "powershell -NoProfile -Command \"$root = git rev-parse --show-toplevel; node (Join-Path $root 'scripts/harness/hook.mjs') codex session-start\""
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/harness/hook.mjs\" codex session-end",
+            "timeout": 3,
+            "commandWindows": "powershell -NoProfile -Command \"$root = git rev-parse --show-toplevel; node (Join-Path $root 'scripts/harness/hook.mjs') codex session-end\""
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/harness/hook.mjs\" codex prompt-submit",
+            "timeout": 5,
+            "commandWindows": "powershell -NoProfile -Command \"$root = git rev-parse --show-toplevel; node (Join-Path $root 'scripts/harness/hook.mjs') codex prompt-submit\""
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/harness/hook.mjs\" codex tool-before",
+            "timeout": 10,
+            "commandWindows": "powershell -NoProfile -Command \"$root = git rev-parse --show-toplevel; node (Join-Path $root 'scripts/harness/hook.mjs') codex tool-before\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/harness/hook.mjs\" codex tool-after",
+            "timeout": 10,
+            "commandWindows": "powershell -NoProfile -Command \"$root = git rev-parse --show-toplevel; node (Join-Path $root 'scripts/harness/hook.mjs') codex tool-after\""
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/harness/hook.mjs\" codex subagent-start",
+            "timeout": 5,
+            "commandWindows": "powershell -NoProfile -Command \"$root = git rev-parse --show-toplevel; node (Join-Path $root 'scripts/harness/hook.mjs') codex subagent-start\""
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/harness/hook.mjs\" codex subagent-stop",
+            "timeout": 5,
+            "commandWindows": "powershell -NoProfile -Command \"$root = git rev-parse --show-toplevel; node (Join-Path $root 'scripts/harness/hook.mjs') codex subagent-stop\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/harness/hook.mjs\" codex stop",
+            "timeout": 120,
+            "commandWindows": "powershell -NoProfile -Command \"$root = git rev-parse --show-toplevel; node (Join-Path $root 'scripts/harness/hook.mjs') codex stop\""
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/harness/hook.mjs\" codex compact-before",
+            "timeout": 5,
+            "commandWindows": "powershell -NoProfile -Command \"$root = git rev-parse --show-toplevel; node (Join-Path $root 'scripts/harness/hook.mjs') codex compact-before\""
+          }
+        ]
+      }
+    ]
+  }
+}

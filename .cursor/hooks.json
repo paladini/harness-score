@@ -5,12 +5,124 @@
       {
         "command": "node ./.cursor/hooks/guard-shell.js",
         "timeout": 10
+      },
+      {
+        "command": "node ./scripts/harness/hook.mjs cursor tool-before",
+        "timeout": 900,
+        "failClosed": true
       }
     ],
     "afterFileEdit": [
       {
         "command": "node ./.cursor/hooks/format-on-edit.js",
         "timeout": 30
+      },
+      {
+        "command": "node ./scripts/harness/hook.mjs cursor tool-after",
+        "timeout": 30,
+        "matcher": "Write"
+      }
+    ],
+    "sessionStart": [
+      {
+        "command": "node ./scripts/harness/hook.mjs cursor session-start",
+        "timeout": 10
+      }
+    ],
+    "sessionEnd": [
+      {
+        "command": "node ./scripts/harness/hook.mjs cursor session-end",
+        "timeout": 10
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "node ./scripts/harness/hook.mjs cursor prompt-submit",
+        "timeout": 5
+      }
+    ],
+    "afterAgentThought": [
+      {
+        "command": "node ./scripts/harness/hook.mjs cursor tool-after",
+        "timeout": 5
+      }
+    ],
+    "preCompact": [
+      {
+        "command": "node ./scripts/harness/hook.mjs cursor compact-before",
+        "timeout": 5
+      }
+    ],
+    "subagentStart": [
+      {
+        "command": "node ./scripts/harness/hook.mjs cursor subagent-start",
+        "timeout": 5,
+        "failClosed": true
+      }
+    ],
+    "subagentStop": [
+      {
+        "command": "node ./scripts/harness/hook.mjs cursor subagent-stop",
+        "timeout": 5
+      }
+    ],
+    "preToolUse": [
+      {
+        "command": "node ./scripts/harness/hook.mjs cursor tool-before",
+        "timeout": 900,
+        "failClosed": true
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": "node ./scripts/harness/hook.mjs cursor tool-after",
+        "timeout": 5
+      }
+    ],
+    "postToolUseFailure": [
+      {
+        "command": "node ./scripts/harness/hook.mjs cursor tool-failure",
+        "timeout": 5
+      }
+    ],
+    "afterShellExecution": [
+      {
+        "command": "node ./scripts/harness/hook.mjs cursor tool-after",
+        "timeout": 10
+      }
+    ],
+    "beforeMCPExecution": [
+      {
+        "command": "node ./scripts/harness/hook.mjs cursor tool-before",
+        "timeout": 10,
+        "failClosed": true
+      }
+    ],
+    "afterMCPExecution": [
+      {
+        "command": "node ./scripts/harness/hook.mjs cursor tool-after",
+        "timeout": 5
+      }
+    ],
+    "beforeReadFile": [
+      {
+        "command": "node ./scripts/harness/hook.mjs cursor tool-before",
+        "timeout": 5,
+        "failClosed": true
+      }
+    ],
+    "stop": [
+      {
+        "command": "node ./scripts/harness/hook.mjs cursor stop",
+        "timeout": 900,
+        "loop_limit": 3
+      }
+    ],
+    "afterAgentResponse": [
+      {
+        "command": "node ./scripts/harness/hook.mjs cursor response-after",
+        "timeout": 5,
+        "matcher": "AgentResponse"
       }
     ]
   }
