@@ -47,12 +47,13 @@ Thanks also to [@person](https://github.com/person) for another fix.`);
 
 test('validates the repository release surfaces and contributor notes', () => {
   const packageJson = JSON.parse(readFileSync(path.join(ROOT, 'packages', 'cli', 'package.json'), 'utf8'));
+  const section = extractReleaseSection(
+    readFileSync(path.join(ROOT, 'packages', 'cli', 'CHANGELOG.md'), 'utf8'),
+    packageJson.version,
+  );
   const body = generateReleaseNotes({
     version: packageJson.version,
-    section: extractReleaseSection(
-      readFileSync(path.join(ROOT, 'packages', 'cli', 'CHANGELOG.md'), 'utf8'),
-      packageJson.version,
-    ),
+    section,
     summary: 'A tested release.',
   });
   const result = validateRepositoryRelease({
@@ -60,23 +61,32 @@ test('validates the repository release surfaces and contributor notes', () => {
     releaseBody: body,
     root: ROOT,
   });
+  const expectedHandles = extractContributors(section).map(({ handle }) => handle);
 
   assert.deepEqual(result.errors, []);
   assert.deepEqual(
     result.contributors.map(({ handle }) => handle),
-    ['diegoflassa'],
+    expectedHandles,
   );
 });
 
 test('rejects release notes that omit required contributor credit', () => {
   const packageJson = JSON.parse(readFileSync(path.join(ROOT, 'packages', 'cli', 'package.json'), 'utf8'));
+  const section = extractReleaseSection(
+    readFileSync(path.join(ROOT, 'packages', 'cli', 'CHANGELOG.md'), 'utf8'),
+    packageJson.version,
+  );
+  const required = extractContributors(section);
+  assert.ok(required.length > 0, 'current release changelog must credit at least one contributor');
   const result = validateRepositoryRelease({
     expectedVersion: packageJson.version,
     releaseBody: `Harness Score v${packageJson.version}`,
     root: ROOT,
   });
 
-  assert.ok(result.errors.some((error) => error.includes('@diegoflassa')));
+  for (const { handle } of required) {
+    assert.ok(result.errors.some((error) => error.includes(`@${handle}`)));
+  }
 });
 
 test('publishes only after a release event and moves the stable tag after registries', () => {

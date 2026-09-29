@@ -1,5 +1,13 @@
 # harness-score
 
+## 1.7.1
+
+### Patch Changes
+
+- 19feb7d: Recognize PHP sensor tooling (PHPUnit/Pest, PHPStan/Psalm, PHPCS/Rector, Pint/PHP-CS-Fixer) and resolve Composer script bodies when inspecting CI workflows.
+
+  Thanks to [@andersonRogani](https://github.com/andersonRogani) for reporting the gap and suggesting detection signals in issue #72.
+
 ## 1.7.0
 
 ### Minor Changes
