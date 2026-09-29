@@ -1,5 +1,14 @@
 # harness-score
 
+## 1.7.0
+
+### Minor Changes
+
+- 5bebb05: Recognize Devin skills (`.devin/skills/*/SKILL.md`) and hooks (standalone `.devin/hooks.v1.json` or the `hooks` key in `.devin/config.json`), including event validation, config precedence, and `${DEVIN_PROJECT_DIR}` script path resolution.
+
+  Thanks to [@diegoflassa](https://github.com/diegoflassa) for contributing this
+  change.
+
 ## 1.6.5
 
 ### Patch Changes

@@ -64,7 +64,7 @@ test('validates the repository release surfaces and contributor notes', () => {
   assert.deepEqual(result.errors, []);
   assert.deepEqual(
     result.contributors.map(({ handle }) => handle),
-    ['PAHJunior'],
+    ['diegoflassa'],
   );
 });
 
@@ -76,7 +76,7 @@ test('rejects release notes that omit required contributor credit', () => {
     root: ROOT,
   });
 
-  assert.ok(result.errors.some((error) => error.includes('@PAHJunior')));
+  assert.ok(result.errors.some((error) => error.includes('@diegoflassa')));
 });
 
 test('publishes only after a release event and moves the stable tag after registries', () => {
