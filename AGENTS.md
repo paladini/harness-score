@@ -63,6 +63,11 @@ Project-local agent skill:
   change, not a drive-by tweak.
 - User-facing changes get a changeset (`npm run changeset` at the repo
   root) in the same PR — see `RELEASING.md`.
+- **Credit issue reporters and external contributors.** When a fix closes a
+  community-reported bug or lands work suggested in an issue, name the reporter
+  in the PR body, the changeset (per `RELEASING.md`), and the eventual release
+  notes — even if they did not open the PR. Use their public GitHub handle; do
+  not invent attribution.
 - **Public GitHub communication is English.** PR and issue comments, review
   bodies, and maintainer replies on this repository must be written in English,
   even when a contributor wrote in another language. (You may use another

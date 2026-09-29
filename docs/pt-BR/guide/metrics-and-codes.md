@@ -112,8 +112,8 @@ IDs estáveis — vinculados à remediação em [Medir e melhorar](./measure-and
 | ID | Pts | Analisa exatamente | Remediação |
 |---|---|---|---|
 | CI-01 | 4 | Arquivo de pipeline CI presente (GitHub Actions, GitLab CI, …) | [ci-01](./measure-and-improve#ci-01) |
-| CI-02 | 4 | CI executa a suíte de testes | [ci-02](./measure-and-improve#ci-02) |
-| CI-03 | 3 | CI executa lint ou typecheck (inclui corpos de scripts Composer) | [ci-03](./measure-and-improve#ci-03) |
+| CI-02 | 4 | CI executa a suíte de testes (phpunit, pest, …; resolve scripts Composer referenciados) | [ci-02](./measure-and-improve#ci-02) |
+| CI-03 | 3 | CI executa lint ou typecheck (phpstan, pint, phpcs, …; resolve scripts Composer referenciados) | [ci-03](./measure-and-improve#ci-03) |
 | CI-04 | 3 | Ferramenta pre-commit ou git hook instalada | [ci-04](./measure-and-improve#ci-04) |
 
 ### Hygiene & Safety

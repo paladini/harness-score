@@ -588,15 +588,10 @@ verify नहीं करती कि provider वास्तव में �
 **सुधार:** `.github/workflows/ci.yml` जोड़ें जो हर push पर sensors चलाए।
 
 #### CI-02 · CI runs the tests — 4 pts {#ci-02}
-phpunit, pest और अन्य test invocations पहचानता है, जिसमें `composer <script>`
-से reference किए Composer scripts के अंदर के commands भी (script names non-English
-हो सकते हैं)।
 **सुधार:** कोई agent-authored change merge योग्य नहीं होना चाहिए बिना suite
 fire किए।
 
 #### CI-03 · CI runs lint/typecheck — 3 pts {#ci-03}
-phpstan, pint, phpcs और similar tools पहचानता है, workflow से reference किए
-Composer scripts के अंदर के commands सहित (केवल English script names नहीं)।
 **सुधार:** सस्ते computational sensors हर push पर belong — **गुणवत्ता को बाएँ रखें**।
 
 #### CI-04 · Pre-commit checks installed — 3 pts {#ci-04}

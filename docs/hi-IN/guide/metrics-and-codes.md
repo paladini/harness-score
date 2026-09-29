@@ -112,8 +112,8 @@ Stable IDs — remediation से linked [मापन और सुधार](.
 | ID | Pts | Analyzes exactly | Remediation |
 |---|---|---|---|
 | CI-01 | 4 | CI pipeline file present (GitHub Actions, GitLab CI, …) | [ci-01](./measure-and-improve#ci-01) |
-| CI-02 | 4 | CI test suite चलाता है | [ci-02](./measure-and-improve#ci-02) |
-| CI-03 | 3 | CI lint या typecheck चलाता है (Composer script bodies सहित) | [ci-03](./measure-and-improve#ci-03) |
+| CI-02 | 4 | CI test suite चलाता है (phpunit, pest, …; referenced Composer scripts resolve) | [ci-02](./measure-and-improve#ci-02) |
+| CI-03 | 3 | CI lint या typecheck चलाता है (phpstan, pint, phpcs, …; referenced Composer scripts resolve) | [ci-03](./measure-and-improve#ci-03) |
 | CI-04 | 3 | Pre-commit या git hook tooling installed | [ci-04](./measure-and-improve#ci-04) |
 
 ### Hygiene & Safety

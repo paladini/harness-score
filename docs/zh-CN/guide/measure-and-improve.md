@@ -573,13 +573,9 @@ GitHub Actions workflow（或 GitLab/CircleCI/Jenkins 等价物），也包括
 **修复：** 添加 `.github/workflows/ci.yml`，每次 push 运行传感器。
 
 #### CI-02 · CI runs the tests — 4 pts {#ci-02}
-识别 phpunit、pest 等测试调用，包括 `composer <script>` 引用的 Composer
-脚本中的命令（脚本名可以不是英文）。
 **修复：** 任何由智能体编写的变更，在未跑测试套件的情况下都不应可合并。
 
 #### CI-03 · CI runs lint/typecheck — 3 pts {#ci-03}
-识别 phpstan、pint、phpcs 等工具，包括 workflow 引用的 Composer
-脚本中的命令（不限于英文脚本名）。
 **修复：** 廉价的计算型传感器应随每次 push 运行 — 质量左移。
 
 #### CI-04 · Pre-commit checks installed — 3 pts {#ci-04}

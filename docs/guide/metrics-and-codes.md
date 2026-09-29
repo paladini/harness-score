@@ -112,8 +112,8 @@ Stable IDs — linked to remediation in [Measure & Improve](./measure-and-improv
 | ID | Pts | Analyzes exactly | Remediation |
 |---|---|---|---|
 | CI-01 | 4 | CI pipeline file present (GitHub Actions, GitLab CI, …) | [ci-01](./measure-and-improve#ci-01) |
-| CI-02 | 4 | CI runs the test suite | [ci-02](./measure-and-improve#ci-02) |
-| CI-03 | 3 | CI runs lint or typecheck (including Composer script bodies) | [ci-03](./measure-and-improve#ci-03) |
+| CI-02 | 4 | CI runs the test suite (phpunit, pest, …; resolves referenced Composer script bodies) | [ci-02](./measure-and-improve#ci-02) |
+| CI-03 | 3 | CI runs lint or typecheck (phpstan, pint, phpcs, …; resolves referenced Composer script bodies) | [ci-03](./measure-and-improve#ci-03) |
 | CI-04 | 3 | Pre-commit or git hook tooling installed | [ci-04](./measure-and-improve#ci-04) |
 
 ### Hygiene & Safety

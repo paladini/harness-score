@@ -95,6 +95,8 @@ Before merge or release:
 
 1. Identify the PR author and every real contributor from PR metadata, commits,
    review history, linked issues, and explicit user-provided attribution.
+   When the PR fixes a linked issue, credit the **issue author** who reported
+   or diagnosed the problem, not only whoever opened the PR.
 2. Never invent a name or handle. Preserve the exact public GitHub handle when
    available; ask when attribution is ambiguous.
 3. Ensure the source release artifact (changeset, changelog entry, or release

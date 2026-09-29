@@ -621,15 +621,10 @@ ejecuta el archivo.
 **Corrección:** add `.github/workflows/ci.yml` running your sensors on every push.
 
 #### CI-02 · CI runs the tests — 4 pts {#ci-02}
-Recognizes phpunit, pest, and other test invocations, including commands
-inside Composer scripts referenced as `composer <script>` (script names may be
-non-English).
 **Corrección:** no agent-authored change should be mergeable without the suite
 firing.
 
 #### CI-03 · CI runs lint/typecheck — 3 pts {#ci-03}
-Recognizes phpstan, pint, phpcs, and similar tools, including commands inside
-Composer scripts referenced from the workflow (not only English script names).
 **Corrección:** cheap computational sensors belong on every push — keep quality
 left.
 

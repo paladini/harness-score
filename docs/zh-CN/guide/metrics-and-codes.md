@@ -107,8 +107,8 @@
 | ID | 分 | 精确分析 | 修复 |
 |---|---|---|---|
 | CI-01 | 4 | 存在 CI pipeline 文件（GitHub Actions、GitLab CI 等） | [ci-01](./measure-and-improve#ci-01) |
-| CI-02 | 4 | CI 运行测试套件 | [ci-02](./measure-and-improve#ci-02) |
-| CI-03 | 3 | CI 运行 lint 或 typecheck（含 Composer 脚本内容） | [ci-03](./measure-and-improve#ci-03) |
+| CI-02 | 4 | CI 运行测试套件（phpunit、pest 等；解析 workflow 引用的 Composer 脚本） | [ci-02](./measure-and-improve#ci-02) |
+| CI-03 | 3 | CI 运行 lint 或 typecheck（phpstan、pint、phpcs 等；解析引用的 Composer 脚本） | [ci-03](./measure-and-improve#ci-03) |
 | CI-04 | 3 | 安装了 pre-commit 或 git hook 工具 | [ci-04](./measure-and-improve#ci-04) |
 
 ### Hygiene & Safety
