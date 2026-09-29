@@ -1,5 +1,6 @@
 import type { Check, ScanContext } from '../types.js';
 import { safeJsonParse } from '../util.js';
+import { hasComposerPackage } from './composer.js';
 
 type Ecosystem = 'node' | 'python' | 'go' | 'rust' | 'java' | 'ruby' | 'php' | 'dotnet';
 
@@ -39,6 +40,18 @@ function pyprojectHas(ctx: ScanContext, needle: string): boolean {
   return content?.includes(needle) ?? false;
 }
 
+function phpstanConfigEvidence(ctx: ScanContext): string | null {
+  const paths = [
+    ...ctx.matching(/(^|\/)phpstan\.neon(\.dist)?$/),
+    ...ctx.matching(/(^|\/)phpstan\.dist\.neon$/),
+  ];
+  if (paths.length === 0) return null;
+  const path = paths[0]!;
+  const content = ctx.read(path) ?? '';
+  const levelMatch = /^\s*level\s*:\s*(\d+)/m.exec(content);
+  return levelMatch ? `${path} (level: ${levelMatch[1]})` : path;
+}
+
 const TEST_FILE_RE =
   /(\.(test|spec)\.[jt]sx?$)|(_test\.go$)|((^|\/)test_[^/]+\.py$)|([^/]+_test\.py$)|(Test\.java$)|(_spec\.rb$)|((^|\/)tests?\/[^/]+)/;
 
@@ -70,6 +83,22 @@ export const sensorChecks: Check[] = [
         evidence.push('Rust tests/ directory (cargo test built-in)');
       }
       if (ctx.has('pom.xml')) evidence.push('Maven test lifecycle');
+      for (const f of [
+        'phpunit.xml',
+        'phpunit.xml.dist',
+        'phpunit.dist.xml',
+        'pest.php',
+        'codeception.yml',
+        'codeception.yml.dist',
+        'behat.yml',
+        'behat.yml.dist',
+      ]) {
+        if (ctx.has(f)) evidence.push(f);
+      }
+      if (ctx.has('tests/Pest.php')) evidence.push('tests/Pest.php');
+      for (const runner of ['phpunit/phpunit', 'pestphp/pest', 'codeception/codeception', 'behat/behat']) {
+        if (hasComposerPackage(ctx, runner)) evidence.push(`${runner} in composer.json`);
+      }
       return evidence.length > 0
         ? { passed: true, evidence: `${evidence.slice(0, 3).join('; ')}.` }
         : { passed: false, evidence: 'No test runner configuration or test script detected.' };
@@ -95,8 +124,14 @@ export const sensorChecks: Check[] = [
         ...ctx.matching(/(^|\/)\.rubocop\.yml$/),
         ...ctx.matching(/(^|\/)checkstyle\.xml$/),
         ...ctx.matching(/(^|\/)phpcs\.xml(\.dist)?$/),
+        ...ctx.matching(/(^|\/)\.phpcs\.xml(\.dist)?$/),
+        ...ctx.matching(/(^|\/)ecs\.php$/),
+        ...ctx.matching(/(^|\/)rector\.php$/),
       ];
       if (pyprojectHas(ctx, '[tool.ruff')) configs.push('pyproject.toml [tool.ruff]');
+      for (const pkg of ['squizlabs/php_codesniffer', 'symplify/easy-coding-standard', 'rector/rector']) {
+        if (hasComposerPackage(ctx, pkg)) configs.push(`${pkg} in composer.json`);
+      }
       const pkg = rootPackageJson(ctx);
       if (hasDep(pkg, 'eslint') || hasDep(pkg, '@biomejs/biome') || hasDep(pkg, 'oxlint')) {
         configs.push('linter in package.json devDependencies');
@@ -125,6 +160,14 @@ export const sensorChecks: Check[] = [
       if (ctx.has('mypy.ini') || pyprojectHas(ctx, '[tool.mypy')) evidence.push('mypy configuration');
       if (ctx.has('pyrightconfig.json') || pyprojectHas(ctx, '[tool.pyright'))
         evidence.push('pyright configuration');
+      const phpstan = phpstanConfigEvidence(ctx);
+      if (phpstan) evidence.push(phpstan);
+      for (const f of ['psalm.xml', 'psalm.xml.dist']) {
+        if (ctx.has(f)) evidence.push(f);
+      }
+      for (const pkg of ['phpstan/phpstan', 'larastan/larastan', 'vimeo/psalm']) {
+        if (hasComposerPackage(ctx, pkg)) evidence.push(`${pkg} in composer.json`);
+      }
       if (staticLangs.length > 0) {
         evidence.push(`statically typed language(s): ${staticLangs.join(', ')} (compiler-enforced)`);
       }
@@ -169,6 +212,13 @@ export const sensorChecks: Check[] = [
         ctx.read('pom.xml')?.includes('<artifactId>spotless-maven-plugin</artifactId>')
       )
         evidence.push('spotless used in maven');
+      if (ctx.has('pint.json')) evidence.push('pint.json');
+      for (const f of ['.php-cs-fixer.php', '.php-cs-fixer.dist.php', '.php_cs', '.php_cs.dist']) {
+        if (ctx.has(f)) evidence.push(f);
+      }
+      for (const pkg of ['laravel/pint', 'friendsofphp/php-cs-fixer']) {
+        if (hasComposerPackage(ctx, pkg)) evidence.push(`${pkg} in composer.json`);
+      }
       return evidence.length > 0
         ? { passed: true, evidence: `${[...new Set(evidence)].slice(0, 3).join('; ')}.` }
         : { passed: false, evidence: 'No formatter configuration detected.' };

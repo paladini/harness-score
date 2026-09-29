@@ -552,22 +552,25 @@ script नहीं होता, इसलिए वे pass होते ह�
 ### Sensors & Feedback (20 pts)
 
 #### SNS-01 · Test runner configured — 6 pts {#sns-01}
-वास्तविक test script/config (vitest, jest, pytest, go test, cargo test…)।
+वास्तविक test script/config (vitest, jest, pytest, go test, cargo test,
+phpunit.xml, pest.php, …) या Composer में declared test package
+(`phpunit/phpunit`, `pestphp/pest`, …)।
 **सुधार:** runner wire करें एक obvious entry point के साथ और AGENTS.md में document करें —
 tests वह तरीका हैं जिससे एजेंट अपना काम verify करता है।
 
 #### SNS-02 · Linter configured — 5 pts {#sns-02}
-eslint/biome, ruff, golangci-lint, rubocop, या equivalent।
+eslint/biome, ruff, golangci-lint, rubocop, phpcs/rector, या equivalent।
 **सुधार:** हर convention जो lint rule के रूप में express हो सकती है, prose की ज़रूरत नहीं रहती।
 
 #### SNS-03 · Type checking in place — 4 pts {#sns-03}
-tsconfig (आदर्श रूप से `strict: true`), mypy/pyright, या statically typed
+tsconfig (आदर्श रूप से `strict: true`), mypy/pyright, phpstan/psalm, या statically typed
 language।
 **सुधार:** type checker वह एकमात्र sensor है जो हर agent edit की
 मुफ़्त review करता है — [अध्याय 4](./sensors-feedback#type-checking-the-free-sensor)।
 
 #### SNS-04 · Formatter configured — 3 pts {#sns-04}
-prettier/biome, black/ruff-format, gofmt/rustfmt।
+prettier/biome, black/ruff-format, gofmt/rustfmt, pint, या php-cs-fixer
+(जब config file न हो तो `composer.json` में `laravel/pint` भी गिनता है)।
 **सुधार:** diffs में formatting noise review में real mistakes छिपा देता है।
 
 #### SNS-05 · Test files exist — 2 pts {#sns-05}
@@ -585,10 +588,15 @@ verify नहीं करती कि provider वास्तव में �
 **सुधार:** `.github/workflows/ci.yml` जोड़ें जो हर push पर sensors चलाए।
 
 #### CI-02 · CI runs the tests — 4 pts {#ci-02}
+phpunit, pest और अन्य test invocations पहचानता है, जिसमें `composer <script>`
+से reference किए Composer scripts के अंदर के commands भी (script names non-English
+हो सकते हैं)।
 **सुधार:** कोई agent-authored change merge योग्य नहीं होना चाहिए बिना suite
 fire किए।
 
 #### CI-03 · CI runs lint/typecheck — 3 pts {#ci-03}
+phpstan, pint, phpcs और similar tools पहचानता है, workflow से reference किए
+Composer scripts के अंदर के commands सहित (केवल English script names नहीं)।
 **सुधार:** सस्ते computational sensors हर push पर belong — **गुणवत्ता को बाएँ रखें**।
 
 #### CI-04 · Pre-commit checks installed — 3 pts {#ci-04}

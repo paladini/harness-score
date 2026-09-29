@@ -101,10 +101,10 @@ IDs estables — vinculados a remediación en [Medir y mejorar](./measure-and-im
 
 | ID | Pts | Analiza exactamente | Remediación |
 |---|---|---|---|
-| SNS-01 | 6 | Test runner configurado (script en `package.json`, pytest, go test, etc.) | [sns-01](./measure-and-improve#sns-01) |
-| SNS-02 | 5 | Linter configurado (eslint, biome, ruff, golangci-lint, …) | [sns-02](./measure-and-improve#sns-02) |
-| SNS-03 | 4 | Type checking configurado (tsconfig, mypy, pyright, …) | [sns-03](./measure-and-improve#sns-03) |
-| SNS-04 | 3 | Formatter configurado (prettier, black, gofmt, …) | [sns-04](./measure-and-improve#sns-04) |
+| SNS-01 | 6 | Test runner configurado (script en `package.json`, pytest, phpunit.xml, pest, go test, …) | [sns-01](./measure-and-improve#sns-01) |
+| SNS-02 | 5 | Linter configurado (eslint, biome, ruff, phpcs, rector, golangci-lint, …) | [sns-02](./measure-and-improve#sns-02) |
+| SNS-03 | 4 | Type checking configurado (tsconfig, mypy, pyright, phpstan, psalm, …) | [sns-03](./measure-and-improve#sns-03) |
+| SNS-04 | 3 | Formatter configurado (prettier, black, pint, php-cs-fixer, gofmt, …) | [sns-04](./measure-and-improve#sns-04) |
 | SNS-05 | 2 | Al menos un archivo de test existe en el árbol | [sns-05](./measure-and-improve#sns-05) |
 
 ### CI Feedback
@@ -113,7 +113,7 @@ IDs estables — vinculados a remediación en [Medir y mejorar](./measure-and-im
 |---|---|---|---|
 | CI-01 | 4 | Archivo de pipeline CI presente (GitHub Actions, GitLab CI, …) | [ci-01](./measure-and-improve#ci-01) |
 | CI-02 | 4 | CI ejecuta la suite de tests | [ci-02](./measure-and-improve#ci-02) |
-| CI-03 | 3 | CI ejecuta lint o typecheck | [ci-03](./measure-and-improve#ci-03) |
+| CI-03 | 3 | CI ejecuta lint o typecheck (incluye cuerpos de scripts Composer) | [ci-03](./measure-and-improve#ci-03) |
 | CI-04 | 3 | Herramienta pre-commit o git hook instalada | [ci-04](./measure-and-improve#ci-04) |
 
 ### Hygiene & Safety

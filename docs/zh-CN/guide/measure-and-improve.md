@@ -540,21 +540,24 @@ Claude Code：`PostToolUse`；Devin：`PostToolUse` 或 `Stop`）。
 ### Sensors & Feedback (20 pts)
 
 #### SNS-01 · Test runner configured — 6 pts {#sns-01}
-存在真实的测试脚本/配置（vitest、jest、pytest、go test、cargo test 等）。
+存在真实的测试脚本/配置（vitest、jest、pytest、go test、cargo test、
+phpunit.xml、pest.php 等），或在 Composer 中声明的测试包
+（`phpunit/phpunit`、`pestphp/pest` 等）。
 **修复：** 配置 runner 并提供一个明确的入口，在 AGENTS.md 中记录 —
 测试是智能体验证自身工作的方式。
 
 #### SNS-02 · Linter configured — 5 pts {#sns-02}
-eslint/biome、ruff、golangci-lint、rubocop 或等价工具。
+eslint/biome、ruff、golangci-lint、rubocop、phpcs/rector 或等价工具。
 **修复：** 能用 lint rule 表达的约定就不再需要文字说明。
 
 #### SNS-03 · Type checking in place — 4 pts {#sns-03}
-tsconfig（理想情况下 `strict: true`）、mypy/pyright，或静态类型语言。
+tsconfig（理想情况下 `strict: true`）、mypy/pyright、phpstan/psalm，或静态类型语言。
 **修复：** 类型检查器是唯一免费审查每次智能体编辑的传感器 —
 [第 4 章](./sensors-feedback#type-checking-the-free-sensor)。
 
 #### SNS-04 · Formatter configured — 3 pts {#sns-04}
-prettier/biome、black/ruff-format、gofmt/rustfmt。
+prettier/biome、black/ruff-format、gofmt/rustfmt、pint 或 php-cs-fixer
+（无配置文件时，`composer.json` 中的 `laravel/pint` 也算）。
 **修复：** diff 中的格式噪音会掩盖审查中的真实错误。
 
 #### SNS-05 · Test files exist — 2 pts {#sns-05}
@@ -570,9 +573,13 @@ GitHub Actions workflow（或 GitLab/CircleCI/Jenkins 等价物），也包括
 **修复：** 添加 `.github/workflows/ci.yml`，每次 push 运行传感器。
 
 #### CI-02 · CI runs the tests — 4 pts {#ci-02}
+识别 phpunit、pest 等测试调用，包括 `composer <script>` 引用的 Composer
+脚本中的命令（脚本名可以不是英文）。
 **修复：** 任何由智能体编写的变更，在未跑测试套件的情况下都不应可合并。
 
 #### CI-03 · CI runs lint/typecheck — 3 pts {#ci-03}
+识别 phpstan、pint、phpcs 等工具，包括 workflow 引用的 Composer
+脚本中的命令（不限于英文脚本名）。
 **修复：** 廉价的计算型传感器应随每次 push 运行 — 质量左移。
 
 #### CI-04 · Pre-commit checks installed — 3 pts {#ci-04}

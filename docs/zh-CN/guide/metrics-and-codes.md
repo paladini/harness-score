@@ -96,10 +96,10 @@
 
 | ID | 分 | 精确分析 | 修复 |
 |---|---|---|---|
-| SNS-01 | 6 | 配置了 test runner（`package.json` script、pytest、go test 等） | [sns-01](./measure-and-improve#sns-01) |
-| SNS-02 | 5 | 配置了 linter（eslint、biome、ruff、golangci-lint 等） | [sns-02](./measure-and-improve#sns-02) |
-| SNS-03 | 4 | 配置了 type checking（tsconfig、mypy、pyright 等） | [sns-03](./measure-and-improve#sns-03) |
-| SNS-04 | 3 | 配置了 formatter（prettier、black、gofmt 等） | [sns-04](./measure-and-improve#sns-04) |
+| SNS-01 | 6 | 配置了 test runner（`package.json` script、pytest、phpunit.xml、pest、go test 等） | [sns-01](./measure-and-improve#sns-01) |
+| SNS-02 | 5 | 配置了 linter（eslint、biome、ruff、phpcs、rector、golangci-lint 等） | [sns-02](./measure-and-improve#sns-02) |
+| SNS-03 | 4 | 配置了 type checking（tsconfig、mypy、pyright、phpstan、psalm 等） | [sns-03](./measure-and-improve#sns-03) |
+| SNS-04 | 3 | 配置了 formatter（prettier、black、pint、php-cs-fixer、gofmt 等） | [sns-04](./measure-and-improve#sns-04) |
 | SNS-05 | 2 | 目录树中至少存在一个测试文件 | [sns-05](./measure-and-improve#sns-05) |
 
 ### CI Feedback
@@ -108,7 +108,7 @@
 |---|---|---|---|
 | CI-01 | 4 | 存在 CI pipeline 文件（GitHub Actions、GitLab CI 等） | [ci-01](./measure-and-improve#ci-01) |
 | CI-02 | 4 | CI 运行测试套件 | [ci-02](./measure-and-improve#ci-02) |
-| CI-03 | 3 | CI 运行 lint 或 typecheck | [ci-03](./measure-and-improve#ci-03) |
+| CI-03 | 3 | CI 运行 lint 或 typecheck（含 Composer 脚本内容） | [ci-03](./measure-and-improve#ci-03) |
 | CI-04 | 3 | 安装了 pre-commit 或 git hook 工具 | [ci-04](./measure-and-improve#ci-04) |
 
 ### Hygiene & Safety

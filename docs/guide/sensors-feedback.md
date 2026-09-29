@@ -33,6 +33,8 @@ error messages are precise enough for an agent to act on autonomously.
 - TypeScript: `"strict": true` — non-strict TS silently forfeits most of the
   value.
 - Python: mypy or pyright, in CI, not just in the IDE.
+- PHP: phpstan or psalm (read `level:` in `phpstan.neon*` when present), in
+  CI, not just locally.
 - Go, Rust, Java, C#: the compiler already does this; make sure the agent
   builds before it declares done.
 

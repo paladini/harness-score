@@ -675,6 +675,43 @@ describe('ci checks', () => {
     expect((await check('CI-03')).run(ctx).passed).toBe(true);
   });
 
+  test('CI-03 resolves Portuguese composer script names to phpstan/pint commands', async () => {
+    const composer = JSON.stringify({
+      scripts: {
+        analise: 'vendor/bin/phpstan analyse',
+        estilo: 'vendor/bin/pint',
+        teste: 'vendor/bin/pest',
+      },
+    });
+    const ciPhpstan = fakeContext({
+      'composer.json': composer,
+      '.github/workflows/ci.yml': 'run: composer analise',
+    });
+    expect((await check('CI-03')).run(ciPhpstan).passed).toBe(true);
+
+    const ciPint = fakeContext({
+      'composer.json': composer,
+      '.github/workflows/ci.yml': 'run: composer estilo',
+    });
+    expect((await check('CI-03')).run(ciPint).passed).toBe(true);
+  });
+
+  test('CI-02 resolves composer teste script to pest', async () => {
+    const ctx = fakeContext({
+      'composer.json': JSON.stringify({ scripts: { teste: 'vendor/bin/pest' } }),
+      '.github/workflows/ci.yml': 'run: composer teste',
+    });
+    expect((await check('CI-02')).run(ctx).passed).toBe(true);
+  });
+
+  test('CI-03 does not pass when CI only invokes a pest composer script', async () => {
+    const ctx = fakeContext({
+      'composer.json': JSON.stringify({ scripts: { teste: 'vendor/bin/pest' } }),
+      '.github/workflows/ci.yml': 'run: composer teste',
+    });
+    expect((await check('CI-03')).run(ctx).passed).toBe(false);
+  });
+
   test('CI-04 fails with no pre-commit tooling', async () => {
     const ctx = fakeContext({ 'package.json': JSON.stringify({}) });
     expect((await check('CI-04')).run(ctx).passed).toBe(false);
@@ -913,6 +950,47 @@ describe('sensor checks', () => {
   test('SNS-05 passes with at least one test file', async () => {
     const ctx = fakeContext({ 'src/foo.test.ts': 'test stuff' });
     expect((await check('SNS-05')).run(ctx).passed).toBe(true);
+  });
+
+  test('SNS-01 passes with phpunit.xml (issue #72 Laravel case)', async () => {
+    const ctx = fakeContext({
+      'phpunit.xml': '<phpunit></phpunit>',
+      'tests/FooTest.php': '<?php',
+      'composer.json': '{}',
+    });
+    expect((await check('SNS-01')).run(ctx).passed).toBe(true);
+    expect((await check('SNS-05')).run(ctx).passed).toBe(true);
+  });
+
+  test('SNS-01 fails with composer.json alone and no PHP test config', async () => {
+    const ctx = fakeContext({ 'composer.json': '{}' });
+    expect((await check('SNS-01')).run(ctx).passed).toBe(false);
+  });
+
+  test('SNS-03 passes with phpstan.neon.dist and reports level', async () => {
+    const ctx = fakeContext({
+      'composer.json': '{}',
+      'phpstan.neon.dist': 'parameters:\n    level: 8\n',
+    });
+    const outcome = (await check('SNS-03')).run(ctx);
+    expect(outcome.passed).toBe(true);
+    expect(outcome.evidence).toContain('level: 8');
+    expect((await check('SNS-02')).run(ctx).passed).toBe(false);
+  });
+
+  test('SNS-04 passes with pint.json or laravel/pint in composer require-dev', async () => {
+    const withConfig = fakeContext({ 'pint.json': '{}' });
+    expect((await check('SNS-04')).run(withConfig).passed).toBe(true);
+
+    const withPackage = fakeContext({
+      'composer.json': JSON.stringify({ 'require-dev': { 'laravel/pint': '^1.0' } }),
+    });
+    expect((await check('SNS-04')).run(withPackage).passed).toBe(true);
+  });
+
+  test('SNS-02 passes with phpcs.xml or rector.php', async () => {
+    expect((await check('SNS-02')).run(fakeContext({ 'phpcs.xml': '<ruleset/>' })).passed).toBe(true);
+    expect((await check('SNS-02')).run(fakeContext({ 'rector.php': '<?php' })).passed).toBe(true);
   });
 });
 

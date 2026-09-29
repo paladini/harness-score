@@ -1,5 +1,6 @@
 import type { Check, ScanContext } from '../types.js';
 import { safeJsonParse } from '../util.js';
+import { expandCiWithComposerScripts } from './composer.js';
 
 // Every provider is matched depth-independently: in a workspace layout the
 // agent harness lives in a control repo at the root and the code repos are
@@ -25,10 +26,14 @@ function ciContent(ctx: ScanContext): string {
     .join('\n');
 }
 
+function ciInspectableContent(ctx: ScanContext): string {
+  return expandCiWithComposerScripts(ciContent(ctx), ctx);
+}
+
 const TEST_CMD_RE =
-  /((npm|pnpm|yarn|bun)\s+(run\s+)?test)|vitest|\bjest\b|pytest|go\s+test|cargo\s+test|mvn\s+(test|verify)|gradle\w*\s+(test|check)|rake\s+test|phpunit|dotnet\s+test|\btest\b/i;
+  /((npm|pnpm|yarn|bun)\s+(run\s+)?test)|vitest|\bjest\b|pytest|go\s+test|cargo\s+test|mvn\s+(test|verify)|gradle\w*\s+(test|check)|rake\s+test|phpunit|\bpest\b|paratest|codeception|behat|dotnet\s+test|\btest\b/i;
 const LINT_CMD_RE =
-  /\blint\b|eslint|biome|ruff|flake8|pylint|clippy|golangci|tsc\b|typecheck|type-check|mypy|pyright|rubocop|phpstan|checkstyle/i;
+  /\blint\b|eslint|biome|ruff|flake8|pylint|clippy|golangci|tsc\b|typecheck|type-check|mypy|pyright|rubocop|phpstan|psalm|\bphpcs\b|\bpint\b|php-cs-fixer|rector|\becs\b|checkstyle/i;
 
 export const ciChecks: Check[] = [
   {
@@ -56,7 +61,7 @@ export const ciChecks: Check[] = [
       if (ciFiles(ctx).length === 0) {
         return { passed: false, evidence: 'No CI configuration to inspect.' };
       }
-      const match = ciContent(ctx).match(TEST_CMD_RE);
+      const match = ciInspectableContent(ctx).match(TEST_CMD_RE);
       return match
         ? { passed: true, evidence: `CI invokes tests ("${match[0]}").` }
         : { passed: false, evidence: 'CI configuration does not appear to run tests.' };
@@ -73,7 +78,7 @@ export const ciChecks: Check[] = [
       if (ciFiles(ctx).length === 0) {
         return { passed: false, evidence: 'No CI configuration to inspect.' };
       }
-      const match = ciContent(ctx).match(LINT_CMD_RE);
+      const match = ciInspectableContent(ctx).match(LINT_CMD_RE);
       return match
         ? { passed: true, evidence: `CI invokes static checks ("${match[0]}").` }
         : { passed: false, evidence: 'CI configuration does not appear to run lint or type checks.' };

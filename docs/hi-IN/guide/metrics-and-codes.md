@@ -101,10 +101,10 @@ Stable IDs — remediation से linked [मापन और सुधार](.
 
 | ID | Pts | Analyzes exactly | Remediation |
 |---|---|---|---|
-| SNS-01 | 6 | Test runner configured (`package.json` script, pytest, go test, etc.) | [sns-01](./measure-and-improve#sns-01) |
-| SNS-02 | 5 | Linter configured (eslint, biome, ruff, golangci-lint, …) | [sns-02](./measure-and-improve#sns-02) |
-| SNS-03 | 4 | Type checking configured (tsconfig, mypy, pyright, …) | [sns-03](./measure-and-improve#sns-03) |
-| SNS-04 | 3 | Formatter configured (prettier, black, gofmt, …) | [sns-04](./measure-and-improve#sns-04) |
+| SNS-01 | 6 | Test runner configured (`package.json` script, pytest, phpunit.xml, pest, go test, …) | [sns-01](./measure-and-improve#sns-01) |
+| SNS-02 | 5 | Linter configured (eslint, biome, ruff, phpcs, rector, golangci-lint, …) | [sns-02](./measure-and-improve#sns-02) |
+| SNS-03 | 4 | Type checking configured (tsconfig, mypy, pyright, phpstan, psalm, …) | [sns-03](./measure-and-improve#sns-03) |
+| SNS-04 | 3 | Formatter configured (prettier, black, pint, php-cs-fixer, gofmt, …) | [sns-04](./measure-and-improve#sns-04) |
 | SNS-05 | 2 | Tree में कम से कम एक test file exists | [sns-05](./measure-and-improve#sns-05) |
 
 ### CI Feedback
@@ -113,7 +113,7 @@ Stable IDs — remediation से linked [मापन और सुधार](.
 |---|---|---|---|
 | CI-01 | 4 | CI pipeline file present (GitHub Actions, GitLab CI, …) | [ci-01](./measure-and-improve#ci-01) |
 | CI-02 | 4 | CI test suite चलाता है | [ci-02](./measure-and-improve#ci-02) |
-| CI-03 | 3 | CI lint या typecheck चलाता है | [ci-03](./measure-and-improve#ci-03) |
+| CI-03 | 3 | CI lint या typecheck चलाता है (Composer script bodies सहित) | [ci-03](./measure-and-improve#ci-03) |
 | CI-04 | 3 | Pre-commit या git hook tooling installed | [ci-04](./measure-and-improve#ci-04) |
 
 ### Hygiene & Safety

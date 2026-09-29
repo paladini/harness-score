@@ -24,6 +24,7 @@
 
 - TypeScript：`"strict": true` — 非 strict 的 TS 会静默放弃大部分价值。
 - Python：mypy 或 pyright，放在 CI 中，而非仅在 IDE。
+- PHP：phpstan 或 psalm（存在时在 `phpstan.neon*` 中读取 `level:`），放在 CI 中，而非仅在本地。
 - Go、Rust、Java、C#：编译器已承担此职责；确保智能体宣布完成前先完成构建。
 
 这也是语言策略上的论据：类型化代码库在度量上更*易于 harness 化* — 编译器免费监督每一次智能体编辑。

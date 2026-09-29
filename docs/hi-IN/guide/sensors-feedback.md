@@ -24,6 +24,8 @@ Strict type checker एजेंट कार्य के लिए सबस�
 
 - TypeScript: `"strict": true` — non-strict TS अधिकांश मूल्य चुपचाप खो देता है।
 - Python: mypy या pyright, CI में, केवल IDE में नहीं।
+- PHP: phpstan या psalm (जब मौजूद हो `phpstan.neon*` में `level:` पढ़ें), CI में,
+  केवल locally नहीं।
 - Go, Rust, Java, C#: compiler पहले से यह करता है; एजेंट «पूर्ण» घोषित करने से पहले build करे, यह सुनिश्चित करें।
 
 यह भाषा रणनीति का भी तर्क है: typed codebases मापने योग्य रूप से अधिक *harnessable* हैं — compiler हर एजेंट edit की मुफ़्त में देखरेख करता है।
