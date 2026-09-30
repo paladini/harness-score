@@ -12,11 +12,11 @@ Harness Score makes this explicit: you measure once, any tool benefits. You don'
 
 The scanner uses **OR semantics** for tool-specific artifacts. Each check asks "does *any* recognized tool provide this?" — not "does Cursor provide this?". For example:
 
-- `.cursor/rules/*.mdc` **or** `.windsurf/rules/*.md` **or** `.clinerules/*.md` **or** a nested `CLAUDE.md` → counts toward **rules**
+- `.cursor/rules/*.mdc` **or** `.windsurf/rules/*.md` **or** `.clinerules/*.md` **or** `.claude/rules/**/*.md` **or** a nested `AGENTS.md` / `CLAUDE.md` in a code subdirectory → counts toward **rules**
 - `.cursor/hooks.json` **or** a `.claude/settings.json` with a `hooks` section **or** `.devin/hooks.v1.json` **or** a `.devin/config.json` with a `hooks` section → counts toward **hooks**
 - `.cursor/skills/<name>/SKILL.md` **or** `.claude/skills/<name>/SKILL.md` **or** `.devin/skills/<name>/SKILL.md` → counts toward **skills**
 - `.cursor/agents/*.md` **or** `.claude/agents/*.md` **or** `.opencode/agents/*.md` → counts toward **subagents**
-- A root `AGENTS.md` **or** `CLAUDE.md` **or** `GEMINI.md` → counts toward **context guides**
+- A root `AGENTS.md` **or** `CLAUDE.md` **or** `GEMINI.md` **or** `.claude/CLAUDE.md` **or** `.claude/AGENTS.md` → counts toward **context guides**
 
 You don't need to configure all of them — one is enough. And since v0.5.0, adding a second tool can never *lower* your score: when several hooks configs exist, the one with the most registered events wins.
 
@@ -28,7 +28,7 @@ harness registry — [`registry.ts`](https://github.com/paladini/harness-score/b
 | Tool | Rules | Skills | Commands / workflows | Subagents | Hooks | MCP |
 |---|---|---|---|---|---|---|
 | **Cursor** | `.cursor/rules/*.mdc` | `.cursor/skills/*/SKILL.md` | `.cursor/commands/*.md` | `.cursor/agents/*.md` | `.cursor/hooks.json` | `.cursor/mcp.json` |
-| **Claude Code** | nested `CLAUDE.md` files | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json` (`hooks` key) | `.mcp.json` |
+| **Claude Code** | `.claude/rules/**/*.md`, nested `AGENTS.md` / `CLAUDE.md` in code dirs | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json` (`hooks` key) | `.mcp.json` |
 | **Devin** | — | `.devin/skills/*/SKILL.md` | — | — | `.devin/hooks.v1.json` (standalone event map) or `.devin/config.json` (`hooks` key) | — |
 | **Windsurf** | `.windsurf/rules/*.md` | — | `.windsurf/workflows/*.md` | — | — | — |
 | **Cline** | `.clinerules/*.md` | — | — | — | — | — |

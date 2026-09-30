@@ -44,6 +44,7 @@ const canonicalExamples = [
   '.agents/rules/example',
   '.agent/rules/example',
   '.gemini/rules/example',
+  '.claude/rules/example.md',
   '.cursor/skills/example/SKILL.md',
   '.claude/skills/example/SKILL.md',
   '.devin/skills/example/SKILL.md',

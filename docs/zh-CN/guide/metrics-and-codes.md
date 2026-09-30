@@ -62,9 +62,9 @@
 
 | ID | 分 | 精确分析 | 修复 |
 |---|---|---|---|
-| CTX-01 | 4 | 根目录存在 `AGENTS.md`、`CLAUDE.md` 或 `GEMINI.md` | [ctx-01](./measure-and-improve#ctx-01) |
+| CTX-01 | 4 | 根目录 `AGENTS.md`、`CLAUDE.md` 或 `GEMINI.md`，或 `.claude/CLAUDE.md` / `.claude/AGENTS.md` | [ctx-01](./measure-and-improve#ctx-01) |
 | CTX-02 | 3 | 上下文文件 ≥20 行有意义内容且 ≥2 个 heading | [ctx-02](./measure-and-improve#ctx-02) |
-| CTX-03 | 4 | 至少一个 scoped rule 文件（任意支持工具）或嵌套上下文文件 | [ctx-03](./measure-and-improve#ctx-03) |
+| CTX-03 | 4 | 至少一个 scoped rule 文件（任意支持工具）、`.claude/rules/**/*.md`，或代码子目录中的嵌套上下文文件 | [ctx-03](./measure-and-improve#ctx-03) |
 | CTX-04 | 3 | 每条 rule 在 frontmatter 中声明激活元数据 | [ctx-04](./measure-and-improve#ctx-04) |
 | CTX-05 | 2 | 并非所有 rule 都是 blanket always-on | [ctx-05](./measure-and-improve#ctx-05) |
 | CTX-06 | 2 | 无单个 rule 文件超过 500 行 | [ctx-06](./measure-and-improve#ctx-06) |

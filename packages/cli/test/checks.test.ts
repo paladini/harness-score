@@ -1036,6 +1036,78 @@ describe('multi-harness equivalence regressions (field-tested)', () => {
     const ctx = fakeContext({ 'AGENTS.md': '# Root only' });
     expect((await check('CTX-03')).run(ctx).passed).toBe(false);
   });
+
+  test('CTX-01/03: .claude/CLAUDE.md is project guide, not scoped rules', async () => {
+    const guide = `# Project\n\n## Overview\n${'line\n'.repeat(25)}## Conventions\nmore\n`;
+    const ctx = fakeContext({ '.claude/CLAUDE.md': guide });
+    expect((await check('CTX-01')).run(ctx).passed).toBe(true);
+    expect((await check('CTX-02')).run(ctx).passed).toBe(true);
+    expect((await check('CTX-03')).run(ctx).passed).toBe(false);
+  });
+
+  test('CTX-01/03: .claude/AGENTS.md is project guide, not scoped rules', async () => {
+    const guide = `# Project\n\n## Overview\n${'line\n'.repeat(25)}## Conventions\nmore\n`;
+    const ctx = fakeContext({ '.claude/AGENTS.md': guide });
+    expect((await check('CTX-01')).run(ctx).passed).toBe(true);
+    expect((await check('CTX-03')).run(ctx).passed).toBe(false);
+  });
+
+  test('CTX-03/04/05: .claude/rules with paths frontmatter (string)', async () => {
+    const ctx = fakeContext({
+      'AGENTS.md': '# Root',
+      '.claude/rules/api.md': '---\npaths: src/**/*.ts\n---\n# API rules\n',
+    });
+    expect((await check('CTX-03')).run(ctx).passed).toBe(true);
+    expect((await check('CTX-04')).run(ctx).passed).toBe(true);
+    expect((await check('CTX-05')).run(ctx).passed).toBe(true);
+  });
+
+  test('CTX-03/04/05: .claude/rules with paths frontmatter (YAML list)', async () => {
+    const ctx = fakeContext({
+      'AGENTS.md': '# Root',
+      '.claude/rules/api.md': '---\npaths:\n  - "src/**/*.ts"\n---\n# API rules\n',
+    });
+    expect((await check('CTX-03')).run(ctx).passed).toBe(true);
+    expect((await check('CTX-04')).run(ctx).passed).toBe(true);
+    expect((await check('CTX-05')).run(ctx).passed).toBe(true);
+  });
+
+  test('CTX-03/04/05: single always-on .claude/rules file still passes CTX-05', async () => {
+    const ctx = fakeContext({
+      'AGENTS.md': '# Root',
+      '.claude/rules/global.md': '# Always-on team standards\n',
+    });
+    expect((await check('CTX-03')).run(ctx).passed).toBe(true);
+    expect((await check('CTX-04')).run(ctx).passed).toBe(true);
+    expect((await check('CTX-05')).run(ctx).passed).toBe(true);
+  });
+
+  test('CTX-05: two always-on .claude/rules files fail scope check', async () => {
+    const ctx = fakeContext({
+      'AGENTS.md': '# Root',
+      '.claude/rules/a.md': '# Rule A\n',
+      '.claude/rules/b.md': '# Rule B\n',
+    });
+    expect((await check('CTX-05')).run(ctx).passed).toBe(false);
+  });
+
+  test('CTX-03/04/05: nested packages/api/AGENTS.md and CLAUDE.md still count as rules', async () => {
+    const ctxAgents = fakeContext({
+      'AGENTS.md': '# Root',
+      'packages/api/AGENTS.md': '# API guidance\n',
+    });
+    expect((await check('CTX-03')).run(ctxAgents).passed).toBe(true);
+    expect((await check('CTX-04')).run(ctxAgents).passed).toBe(true);
+    expect((await check('CTX-05')).run(ctxAgents).passed).toBe(true);
+
+    const ctxClaude = fakeContext({
+      'CLAUDE.md': '# Root context',
+      'packages/api/CLAUDE.md': '# API guidance - Fastify plugins only.',
+    });
+    expect((await check('CTX-03')).run(ctxClaude).passed).toBe(true);
+    expect((await check('CTX-04')).run(ctxClaude).passed).toBe(true);
+    expect((await check('CTX-05')).run(ctxClaude).passed).toBe(true);
+  });
 });
 
 describe('every check has a direct test', () => {

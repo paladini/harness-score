@@ -17,7 +17,8 @@ export const contextChecks: Check[] = [
         ? { passed: true, evidence: `Found ${file} at repository root.` }
         : {
             passed: false,
-            evidence: 'No AGENTS.md, CLAUDE.md, or GEMINI.md at repository root.',
+            evidence:
+              'No AGENTS.md, CLAUDE.md, or GEMINI.md at repository root, and no .claude/CLAUDE.md or .claude/AGENTS.md project instructions.',
           };
     },
   },
@@ -49,7 +50,7 @@ export const contextChecks: Check[] = [
     title: 'Scoped rules in use',
     points: 4,
     remediation:
-      'Add at least one scoped rule file for your AI tool (e.g. .cursor/rules/*.mdc, .windsurf/rules/*.md, .clinerules/*.md) or a nested AGENTS.md/CLAUDE.md in a subdirectory, stating the project non-negotiables.',
+      'Add at least one scoped rule file for your AI tool (e.g. .cursor/rules/*.mdc, .windsurf/rules/*.md, .clinerules/*.md, .claude/rules/*.md) or a nested AGENTS.md/CLAUDE.md in a subdirectory, stating the project non-negotiables.',
     run(ctx) {
       const rules = collectRules(ctx);
       return rules.length > 0
@@ -57,7 +58,7 @@ export const contextChecks: Check[] = [
         : {
             passed: false,
             evidence:
-              'No scoped rule files found (.cursor/rules, .windsurf/rules, .clinerules, .continue/rules, .github/instructions, .agents/rules, nested AGENTS.md/CLAUDE.md, …).',
+              'No scoped rule files found (.cursor/rules, .windsurf/rules, .clinerules, .continue/rules, .github/instructions, .agents/rules, .claude/rules, nested AGENTS.md/CLAUDE.md, …).',
           };
     },
   },

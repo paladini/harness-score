@@ -67,9 +67,9 @@ IDs estables — vinculados a remediación en [Medir y mejorar](./measure-and-im
 
 | ID | Pts | Analiza exactamente | Remediación |
 |---|---|---|---|
-| CTX-01 | 4 | Existe `AGENTS.md`, `CLAUDE.md` o `GEMINI.md` en la raíz | [ctx-01](./measure-and-improve#ctx-01) |
+| CTX-01 | 4 | Root `AGENTS.md`, `CLAUDE.md` o `GEMINI.md`, o `.claude/CLAUDE.md` / `.claude/AGENTS.md` | [ctx-01](./measure-and-improve#ctx-01) |
 | CTX-02 | 3 | El archivo de contexto tiene ≥20 líneas significativas y ≥2 headings | [ctx-02](./measure-and-improve#ctx-02) |
-| CTX-03 | 4 | Al menos un archivo de rule con scope (cualquier herramienta soportada) o archivo de contexto anidado | [ctx-03](./measure-and-improve#ctx-03) |
+| CTX-03 | 4 | Al menos un archivo de rule con scope (cualquier herramienta), `.claude/rules/**/*.md`, o contexto anidado en subdirectorio de código | [ctx-03](./measure-and-improve#ctx-03) |
 | CTX-04 | 3 | Toda rule declara metadatos de activación en frontmatter | [ctx-04](./measure-and-improve#ctx-04) |
 | CTX-05 | 2 | No toda rule es always-on genérica | [ctx-05](./measure-and-improve#ctx-05) |
 | CTX-06 | 2 | Ningún archivo de rule único supera 500 líneas | [ctx-06](./measure-and-improve#ctx-06) |

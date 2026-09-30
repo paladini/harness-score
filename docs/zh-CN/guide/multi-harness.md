@@ -12,11 +12,11 @@ Harness Score 把这一点说清楚了：测量一次，任意工具受益。你
 
 扫描器对工具特定工件使用 **OR 语义**。每项 check 问的是「*任意*已识别工具是否提供此项？」— 而非「Cursor 是否提供？」。例如：
 
-- `.cursor/rules/*.mdc` **或** `.windsurf/rules/*.md` **或** `.clinerules/*.md` **或** 嵌套 `CLAUDE.md` → 计入 **rules**
+- `.cursor/rules/*.mdc` **或** `.windsurf/rules/*.md` **或** `.clinerules/*.md` **或** `.claude/rules/**/*.md` **或** 代码子目录中嵌套的 `AGENTS.md` / `CLAUDE.md` → 计入 **rules**
 - `.cursor/hooks.json` **或** 带 `hooks` 节的 `.claude/settings.json` **或** `.devin/hooks.v1.json` **或** 带 `hooks` 节的 `.devin/config.json` → 计入 **hooks**
 - `.cursor/skills/<name>/SKILL.md` **或** `.claude/skills/<name>/SKILL.md` **或** `.devin/skills/<name>/SKILL.md` → 计入 **skills**
 - `.cursor/agents/*.md` **或** `.claude/agents/*.md` **或** `.opencode/agents/*.md` → 计入 **subagents**
-- 根目录 `AGENTS.md` **或** `CLAUDE.md` **或** `GEMINI.md` → 计入 **context guides**
+- 根目录 `AGENTS.md` **或** `CLAUDE.md` **或** `GEMINI.md` **或** `.claude/CLAUDE.md` **或** `.claude/AGENTS.md` → 计入 **context guides**
 
 无需全部配置 — 有一个即可。自 v0.5.0 起，添加第二个工具永远不会*降低*分数：存在多个 hooks 配置时，注册事件最多者胜出。
 
@@ -27,7 +27,7 @@ Harness Score 识别以下工件（精确模式见扫描器 harness registry —
 | 工具 | Rules | Skills | Commands / workflows | Subagents | Hooks | MCP |
 |---|---|---|---|---|---|---|
 | **Cursor** | `.cursor/rules/*.mdc` | `.cursor/skills/*/SKILL.md` | `.cursor/commands/*.md` | `.cursor/agents/*.md` | `.cursor/hooks.json` | `.cursor/mcp.json` |
-| **Claude Code** | 嵌套 `CLAUDE.md` | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json`（`hooks` 键） | `.mcp.json` |
+| **Claude Code** | `.claude/rules/**/*.md`、代码目录中嵌套 `AGENTS.md` / `CLAUDE.md` | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json`（`hooks` 键） | `.mcp.json` |
 | **Devin** | — | `.devin/skills/*/SKILL.md` | — | — | `.devin/hooks.v1.json`（独立 event 映射）或 `.devin/config.json`（`hooks` 键） | — |
 | **Windsurf** | `.windsurf/rules/*.md` | — | `.windsurf/workflows/*.md` | — | — | — |
 | **Cline** | `.clinerules/*.md` | — | — | — | — | — |

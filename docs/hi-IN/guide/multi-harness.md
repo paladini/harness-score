@@ -12,11 +12,11 @@ Harness Score इसे स्पष्ट करता है: एक बार
 
 Scanner tool-specific artifacts के लिए **OR semantics** उपयोग करता है। हर check पूछता है "क्या *कोई* recognized tool यह provide करता है?" — "क्या Cursor provide करता है?" नहीं। उदाहरण:
 
-- `.cursor/rules/*.mdc` **या** `.windsurf/rules/*.md` **या** `.clinerules/*.md` **या** nested `CLAUDE.md` → **rules** में गिनता है
+- `.cursor/rules/*.mdc` **या** `.windsurf/rules/*.md` **या** `.clinerules/*.md` **या** `.claude/rules/**/*.md` **या** code subdirectory में nested `AGENTS.md` / `CLAUDE.md` → **rules** में गिनता है
 - `.cursor/hooks.json` **या** `hooks` section वाला `.claude/settings.json` **या** `.devin/hooks.v1.json` **या** `hooks` section वाला `.devin/config.json` → **hooks** में गिनता है
 - `.cursor/skills/<name>/SKILL.md` **या** `.claude/skills/<name>/SKILL.md` **या** `.devin/skills/<name>/SKILL.md` → **skills** में गिनता है
 - `.cursor/agents/*.md` **या** `.claude/agents/*.md` **या** `.opencode/agents/*.md` → **subagents** में गिनता है
-- root `AGENTS.md` **या** `CLAUDE.md` **या** `GEMINI.md` → **context guides** में गिनता है
+- root `AGENTS.md` **या** `CLAUDE.md` **या** `GEMINI.md` **या** `.claude/CLAUDE.md` **या** `.claude/AGENTS.md` → **context guides** में गिनता है
 
 सब configure करना ज़रूरी नहीं — एक काफी है। v0.5.0 से दूसरा tool जोड़ने से score कभी *कम* नहीं होता: कई hooks config होने पर सबसे अधिक registered events वाला जीतता है।
 
@@ -27,7 +27,7 @@ Harness Score ये artifacts पहचानता है (exact patterns scan
 | Tool | Rules | Skills | Commands / workflows | Subagents | Hooks | MCP |
 |---|---|---|---|---|---|---|
 | **Cursor** | `.cursor/rules/*.mdc` | `.cursor/skills/*/SKILL.md` | `.cursor/commands/*.md` | `.cursor/agents/*.md` | `.cursor/hooks.json` | `.cursor/mcp.json` |
-| **Claude Code** | nested `CLAUDE.md` files | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json` (`hooks` key) | `.mcp.json` |
+| **Claude Code** | `.claude/rules/**/*.md`, code dirs में nested `AGENTS.md` / `CLAUDE.md` | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json` (`hooks` key) | `.mcp.json` |
 | **Devin** | — | `.devin/skills/*/SKILL.md` | — | — | `.devin/hooks.v1.json` (standalone event map) या `.devin/config.json` (`hooks` key) | — |
 | **Windsurf** | `.windsurf/rules/*.md` | — | `.windsurf/workflows/*.md` | — | — | — |
 | **Cline** | `.clinerules/*.md` | — | — | — | — | — |

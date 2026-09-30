@@ -421,7 +421,8 @@ README hero, blog posts, या social previews के लिए बैनर (`
 ### Context & Guides (20 pts)
 
 #### CTX-01 · Agent context file present — 4 pts {#ctx-01}
-रिपॉज़िटरी रूट पर `AGENTS.md` (या `CLAUDE.md` / `GEMINI.md`) मौजूद है।
+Project guide मौजूद है: root `AGENTS.md`, `CLAUDE.md`, या `GEMINI.md`, या Claude Code
+`.claude/CLAUDE.md` / `.claude/AGENTS.md` पर session-start instructions (scoped rules नहीं)।
 **सुधार:** `AGENTS.md` बनाएँ जो इनका उत्तर दे: यह प्रोजेक्ट क्या है, build और test कैसे करें, कौन-सी conventions लागू हैं, क्या कभी न छुएँ। recipe
 [अध्याय 3](./guides-feedforward#writing-an-agents-md-that-works) में।
 
@@ -433,22 +434,22 @@ README hero, blog posts, या social previews के लिए बैनर (`
 #### CTX-03 · Scoped rules in use — 4 pts {#ctx-03}
 किसी भी supported tool के लिए कम से कम एक scoped rule फ़ाइल (जैसे `.cursor/rules/*.mdc`,
 `.windsurf/rules/*.md`, `.clinerules/*.md`, `.continue/rules/*.md`,
-`.github/instructions/*.instructions.md`, `.agents/rules/*`)। subdirectories में nested context
-फ़ाइलें (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md` root के नीचे कहीं भी) भी गिनती हैं — Claude
+`.github/instructions/*.instructions.md`, `.agents/rules/*`, `.claude/rules/**/*.md`)। code subdirectories में nested context
+फ़ाइलें (root के नीचे, `.claude/CLAUDE.md` या `.claude/AGENTS.md` को छोड़कर `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`) भी गिनती हैं — Claude
 Code और Codex जैसे टूल में ये directory-scoped rules हैं।
 **सुधार:** एक छोटी always-on rule से शुरू करें जिसमें अपरिहार्य नियम हों,
 फिर प्रति area path-scoped rules (या प्रति subtree nested context फ़ाइलें) जोड़ें।
 
 #### CTX-04 · Rules have valid frontmatter — 3 pts {#ctx-04}
 हर rule activation metadata declare करती है (`description`, `globs`/`trigger`/`paths`/`applyTo`, या `alwaysApply`)।
-टूल जो metadata के बिना auto-load करते हैं — `.continue/rules/*` और nested
+टूल जो metadata के बिना auto-load करते हैं — `.continue/rules/*`, `.claude/rules/*` (optional `paths` only), और nested
 context फ़ाइलें — construction से pass होती हैं।
 **सुधार:** frontmatter block जोड़ें; इसके बिना एजेंट decide नहीं कर सकता कि rule
 कब लागू हो।
 
 #### CTX-05 · Rules are scoped — 2 pts {#ctx-05}
 हर rule blanket always-on नहीं है। nested context फ़ाइलें scoped गिनती हैं —
-वे केवल अपने subtree पर लागू होती हैं।
+वे केवल अपने subtree पर लागू होती हैं। Claude Code `.claude/rules/*.md` बिना `paths` frontmatter always-on है; केवल एक rule पर `paths` छोड़ें, या `paths:` से scope करें।
 **सुधार:** rules को paths (`globs:`, `trigger:` glob, `paths:`, `applyTo:`) तक सीमित करें
 ताकि relevant होने पर ही load हों — हर always-on rule हर request के context पर tax लगाती है।
 

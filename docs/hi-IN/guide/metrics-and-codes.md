@@ -67,9 +67,9 @@ Stable IDs — remediation से linked [मापन और सुधार](.
 
 | ID | Pts | Analyzes exactly | Remediation |
 |---|---|---|---|
-| CTX-01 | 4 | Root `AGENTS.md`, `CLAUDE.md`, या `GEMINI.md` exists | [ctx-01](./measure-and-improve#ctx-01) |
+| CTX-01 | 4 | Root `AGENTS.md`, `CLAUDE.md`, या `GEMINI.md`, या `.claude/CLAUDE.md` / `.claude/AGENTS.md` | [ctx-01](./measure-and-improve#ctx-01) |
 | CTX-02 | 3 | Context file में ≥20 meaningful lines और ≥2 headings | [ctx-02](./measure-and-improve#ctx-02) |
-| CTX-03 | 4 | कम से कम एक scoped rule file (कोई supported tool) या nested context file | [ctx-03](./measure-and-improve#ctx-03) |
+| CTX-03 | 4 | कम से कम एक scoped rule (कोई supported tool), `.claude/rules/**/*.md`, या code subdirectory में nested context | [ctx-03](./measure-and-improve#ctx-03) |
 | CTX-04 | 3 | हर rule frontmatter में activation metadata declare करती है | [ctx-04](./measure-and-improve#ctx-04) |
 | CTX-05 | 2 | हर rule blanket always-on नहीं | [ctx-05](./measure-and-improve#ctx-05) |
 | CTX-06 | 2 | कोई single rule file 500 lines से अधिक नहीं | [ctx-06](./measure-and-improve#ctx-06) |

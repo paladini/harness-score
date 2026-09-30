@@ -12,11 +12,11 @@ Harness Score lo hace explícito: mides una vez, cualquier herramienta se benefi
 
 El escáner usa **semántica OR** para artefactos específicos de herramienta. Cada check pregunta "¿alguna herramienta reconocida provee esto?" — no "¿Cursor lo provee?". Por ejemplo:
 
-- `.cursor/rules/*.mdc` **o** `.windsurf/rules/*.md` **o** `.clinerules/*.md` **o** un `CLAUDE.md` anidado → cuenta para **rules**
+- `.cursor/rules/*.mdc` **o** `.windsurf/rules/*.md` **o** `.clinerules/*.md` **o** `.claude/rules/**/*.md` **o** `AGENTS.md` / `CLAUDE.md` anidados en subdirectorio de código → cuenta para **rules**
 - `.cursor/hooks.json` **o** `.claude/settings.json` con sección `hooks` **o** `.devin/hooks.v1.json` **o** `.devin/config.json` con sección `hooks` → cuenta para **hooks**
 - `.cursor/skills/<name>/SKILL.md` **o** `.claude/skills/<name>/SKILL.md` **o** `.devin/skills/<name>/SKILL.md` → cuenta para **skills**
 - `.cursor/agents/*.md` **o** `.claude/agents/*.md` **o** `.opencode/agents/*.md` → cuenta para **subagents**
-- `AGENTS.md` en raíz **o** `CLAUDE.md` **o** `GEMINI.md` → cuenta para **guías de contexto**
+- `AGENTS.md` en raíz **o** `CLAUDE.md` **o** `GEMINI.md` **o** `.claude/CLAUDE.md` **o** `.claude/AGENTS.md` → cuenta para **guías de contexto**
 
 No necesitas configurar todos — uno basta. Desde v0.5.0, agregar segunda herramienta nunca *baja* tu puntuación: cuando existen varias configs de hooks, gana la que tiene más eventos registrados.
 
@@ -28,7 +28,7 @@ Harness Score reconoce estos artefactos (patrones exactos en el registry del esc
 | Herramienta | Rules | Skills | Commands / workflows | Subagents | Hooks | MCP |
 |---|---|---|---|---|---|---|
 | **Cursor** | `.cursor/rules/*.mdc` | `.cursor/skills/*/SKILL.md` | `.cursor/commands/*.md` | `.cursor/agents/*.md` | `.cursor/hooks.json` | `.cursor/mcp.json` |
-| **Claude Code** | `CLAUDE.md` anidados | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json` (`hooks`) | `.mcp.json` |
+| **Claude Code** | `.claude/rules/**/*.md`, `AGENTS.md` / `CLAUDE.md` anidados en dirs de código | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json` (`hooks`) | `.mcp.json` |
 | **Devin** | — | `.devin/skills/*/SKILL.md` | — | — | `.devin/hooks.v1.json` (mapa standalone de eventos) o `.devin/config.json` (clave `hooks`) | — |
 | **Windsurf** | `.windsurf/rules/*.md` | — | `.windsurf/workflows/*.md` | — | — | — |
 | **Cline** | `.clinerules/*.md` | — | — | — | — | — |

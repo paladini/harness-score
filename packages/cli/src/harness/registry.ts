@@ -96,8 +96,17 @@ export function matchPathSpec(ctx: ScanContext, spec: PathSpec): PathSpecMatch[]
   return [...matches.values()].sort((a, b) => compareLexically(a.path, b.path));
 }
 
-/** Root context files checked by CTX-01/02. Order is preference for evidence only. */
-export const CONTEXT_ROOT_FILES = ['AGENTS.md', 'CLAUDE.md', 'GEMINI.md'] as const;
+/** Project guide paths checked by CTX-01/02. Order is preference for evidence only. */
+export const CONTEXT_ROOT_FILES = [
+  'AGENTS.md',
+  'CLAUDE.md',
+  'GEMINI.md',
+  '.claude/CLAUDE.md',
+  '.claude/AGENTS.md',
+] as const;
+
+/** Claude Code session-start instructions — never CTX-03..06 rule artifacts. */
+export const CLAUDE_PROJECT_GUIDE_PATHS = new Set<string>(['.claude/CLAUDE.md', '.claude/AGENTS.md']);
 
 export const PATH_SPECS: PathSpec[] = [
   // Rules
@@ -148,6 +157,12 @@ export const PATH_SPECS: PathSpec[] = [
     kind: 'rules',
     pathRegex: /(^|\/)\.gemini\/rules\/[^/]+$/,
     nativeRoot: '.gemini',
+  },
+  {
+    toolId: 'claude-code',
+    kind: 'rules',
+    pathRegex: /(^|\/)\.claude\/rules\/.+\.md$/,
+    nativeRoot: '.claude',
   },
   // Nested context files (root ones are CTX-01's job) — directory-scoped
   // guidance loaded automatically by Codex/Cursor (AGENTS.md), Claude Code

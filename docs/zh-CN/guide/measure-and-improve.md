@@ -415,7 +415,8 @@ image:{BADGE_URL}[Harness Score L4,link={LINK},height=20]
 ### Context & Guides (20 pts)
 
 #### CTX-01 · Agent context file present — 4 pts {#ctx-01}
-仓库根目录存在 `AGENTS.md`（或 `CLAUDE.md` / `GEMINI.md`）。
+存在项目 guide：根目录 `AGENTS.md`、`CLAUDE.md` 或 `GEMINI.md`，或 Claude Code
+在 `.claude/CLAUDE.md` / `.claude/AGENTS.md` 的 session-start 说明（非 scoped rules）。
 **修复：** 创建 `AGENTS.md`，回答：项目是什么、如何构建与测试、有哪些约定、哪些地方绝对不能动。方案见
 [第 3 章](./guides-feedforward#writing-an-agents-md-that-works)。
 
@@ -427,21 +428,21 @@ image:{BADGE_URL}[Harness Score L4,link={LINK},height=20]
 #### CTX-03 · Scoped rules in use — 4 pts {#ctx-03}
 任意受支持工具至少有一条 scoped rule 文件（如 `.cursor/rules/*.mdc`、
 `.windsurf/rules/*.md`、`.clinerules/*.md`、`.continue/rules/*.md`、
-`.github/instructions/*.instructions.md`、`.agents/rules/*`）。子目录中的嵌套 context
-文件（根目录以下的 `AGENTS.md`、`CLAUDE.md`、`GEMINI.md`）同样计入 — 在 Claude
+`.github/instructions/*.instructions.md`、`.agents/rules/*`、`.claude/rules/**/*.md`）。代码子目录中的嵌套 context
+文件（根目录以下、且非 `.claude/CLAUDE.md` 或 `.claude/AGENTS.md` 的 `AGENTS.md`、`CLAUDE.md`、`GEMINI.md`）同样计入 — 在 Claude
 Code、Codex 等工具中，它们相当于目录级 rules。
 **修复：** 先写一条简短的 always-on rule 承载不可妥协的底线，
 再按区域添加 path-scoped rules（或按子树添加嵌套 context 文件）。
 
 #### CTX-04 · Rules have valid frontmatter — 3 pts {#ctx-04}
 每条 rule 都声明激活元数据（`description`、`globs`/`trigger`/`paths`/`applyTo`，或 `alwaysApply`）。
-工具无需元数据即自动加载的 rules — `.continue/rules/*` 与嵌套
+工具无需元数据即自动加载的 rules — `.continue/rules/*`、`.claude/rules/*`（仅可选 `paths`）与嵌套
 context 文件 — 按设计即通过。
 **修复：** 添加 frontmatter 块；没有它，智能体无法判断 rule 何时生效。
 
 #### CTX-05 · Rules are scoped — 2 pts {#ctx-05}
 并非每条 rule 都是全局 always-on。嵌套 context 文件视为 scoped —
-仅作用于其所在子树。
+仅作用于其所在子树。Claude Code 的 `.claude/rules/*.md` 若无 `paths` frontmatter 则为 always-on；仅保留一条无 `paths` 的 rule，或使用 `paths:` 限定范围。
 **修复：** 将 rules 限定到路径（`globs:`、`trigger:` glob、`paths:`、`applyTo:`），
 仅在相关时加载 — 每条 always-on rule 都会占用每次请求的 context。
 

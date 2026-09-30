@@ -67,9 +67,9 @@ Stable IDs — linked to remediation in [Measure & Improve](./measure-and-improv
 
 | ID | Pts | Analyzes exactly | Remediation |
 |---|---|---|---|
-| CTX-01 | 4 | Root `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md` exists | [ctx-01](./measure-and-improve#ctx-01) |
+| CTX-01 | 4 | Root `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md`, or `.claude/CLAUDE.md` / `.claude/AGENTS.md` | [ctx-01](./measure-and-improve#ctx-01) |
 | CTX-02 | 3 | Context file has ≥20 meaningful lines and ≥2 headings | [ctx-02](./measure-and-improve#ctx-02) |
-| CTX-03 | 4 | At least one scoped rule file (any supported tool) or nested context file | [ctx-03](./measure-and-improve#ctx-03) |
+| CTX-03 | 4 | At least one scoped rule file (any supported tool), `.claude/rules/**/*.md`, or nested context file in a code subdirectory | [ctx-03](./measure-and-improve#ctx-03) |
 | CTX-04 | 3 | Every rule declares activation metadata in frontmatter | [ctx-04](./measure-and-improve#ctx-04) |
 | CTX-05 | 2 | Not every rule is blanket always-on | [ctx-05](./measure-and-improve#ctx-05) |
 | CTX-06 | 2 | No single rule file exceeds 500 lines | [ctx-06](./measure-and-improve#ctx-06) |

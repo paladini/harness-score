@@ -1,6 +1,7 @@
 import type { ScanContext } from '../types.js';
 import { compareLexically } from '../util.js';
 import {
+  CLAUDE_PROJECT_GUIDE_PATHS,
   CONTEXT_ROOT_FILES,
   type HarnessKind,
   matchPathSpec,
@@ -30,7 +31,7 @@ function collectByKind(ctx: ScanContext, kind: HarnessKind): HarnessArtifact[] {
 }
 
 export function collectRules(ctx: ScanContext): HarnessArtifact[] {
-  return collectByKind(ctx, 'rules');
+  return collectByKind(ctx, 'rules').filter((a) => !CLAUDE_PROJECT_GUIDE_PATHS.has(a.path));
 }
 
 export function collectSkills(ctx: ScanContext): HarnessArtifact[] {
@@ -64,7 +65,9 @@ export function contextRootFile(ctx: ScanContext): string | null {
 export function detectHarnesses(ctx: ScanContext): ToolId[] {
   const tools = new Set<ToolId>();
   if (ctx.has('GEMINI.md')) tools.add('antigravity');
-  if (ctx.has('CLAUDE.md')) tools.add('claude-code');
+  if (ctx.has('CLAUDE.md') || ctx.has('.claude/CLAUDE.md') || ctx.has('.claude/AGENTS.md')) {
+    tools.add('claude-code');
+  }
   for (const kind of ['rules', 'skills', 'commands', 'subagents', 'hooks', 'mcp'] as HarnessKind[]) {
     for (const spec of specsForKind(kind)) {
       if (matchPathSpec(ctx, spec).length > 0) tools.add(spec.toolId);
