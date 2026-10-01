@@ -33,7 +33,7 @@ function ciInspectableContent(ctx: ScanContext): string {
 const TEST_CMD_RE =
   /((npm|pnpm|yarn|bun)\s+(run\s+)?test)|vitest|\bjest\b|pytest|go\s+test|cargo\s+test|mvn\s+(test|verify)|gradle\w*\s+(test|check)|rake\s+test|phpunit|\bpest\b|paratest|codeception|behat|dotnet\s+test|\btest\b/i;
 const LINT_CMD_RE =
-  /\blint\b|eslint|biome|ruff|flake8|pylint|clippy|golangci|tsc\b|typecheck|type-check|mypy|pyright|rubocop|phpstan|psalm|\bphpcs\b|\bpint\b|php-cs-fixer|rector|\becs\b|checkstyle/i;
+  /\blint\b|eslint|biome|ruff|flake8|pylint|clippy|golangci|tsc\b|typecheck|type-check|mypy|pyright|(?:uv\s+run\s+|uvx\s+)?\bty(?:@\S+)?\s+check\b|rubocop|phpstan|psalm|\bphpcs\b|\bpint\b|php-cs-fixer|rector|\becs\b|checkstyle/i;
 
 export const ciChecks: Check[] = [
   {

@@ -103,7 +103,7 @@ IDs estables — vinculados a remediación en [Medir y mejorar](./measure-and-im
 |---|---|---|---|
 | SNS-01 | 6 | Test runner configurado (script en `package.json`, pytest, phpunit.xml, pest, go test, …) | [sns-01](./measure-and-improve#sns-01) |
 | SNS-02 | 5 | Linter configurado (eslint, biome, ruff, phpcs, rector, golangci-lint, …) | [sns-02](./measure-and-improve#sns-02) |
-| SNS-03 | 4 | Type checking configurado (tsconfig, mypy, pyright, phpstan, psalm, …) | [sns-03](./measure-and-improve#sns-03) |
+| SNS-03 | 4 | Type checking configurado (tsconfig, mypy, pyright, ty, phpstan, psalm, …) | [sns-03](./measure-and-improve#sns-03) |
 | SNS-04 | 3 | Formatter configurado (prettier, black, pint, php-cs-fixer, gofmt, …) | [sns-04](./measure-and-improve#sns-04) |
 | SNS-05 | 2 | Al menos un archivo de test existe en el árbol | [sns-05](./measure-and-improve#sns-05) |
 

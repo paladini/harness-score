@@ -675,6 +675,18 @@ describe('ci checks', () => {
     expect((await check('CI-03')).run(ctx).passed).toBe(true);
   });
 
+  test('CI-03 recognizes Astral ty check, including uv runners and quotes', async () => {
+    for (const run of ['ty check', 'uv run ty check', 'uvx ty check', 'uvx ty@0.0.18 check', '"ty check"']) {
+      const ctx = fakeContext({ '.github/workflows/ci.yml': `run: ${run}` });
+      expect((await check('CI-03')).run(ctx).passed, run).toBe(true);
+    }
+  });
+
+  test('CI-03 does not pass when CI only mentions ty without running it', async () => {
+    const ctx = fakeContext({ '.github/workflows/ci.yml': 'run: echo "install ty later"' });
+    expect((await check('CI-03')).run(ctx).passed).toBe(false);
+  });
+
   test('CI-03 resolves Portuguese composer script names to phpstan/pint commands', async () => {
     const composer = JSON.stringify({
       scripts: {
@@ -965,6 +977,36 @@ describe('sensor checks', () => {
   test('SNS-01 fails with composer.json alone and no PHP test config', async () => {
     const ctx = fakeContext({ 'composer.json': '{}' });
     expect((await check('SNS-01')).run(ctx).passed).toBe(false);
+  });
+
+  test('SNS-03 recognizes Astral ty.toml and [tool.ty] tables, including nested projects', async () => {
+    const rootToml = fakeContext({ 'ty.toml': '[rules]\n' });
+    expect((await check('SNS-03')).run(rootToml).evidence).toContain('ty configuration');
+
+    const nestedToml = fakeContext({ 'packages/api/ty.toml': '[rules]\n' });
+    expect((await check('SNS-03')).run(nestedToml).passed).toBe(true);
+
+    const rootTable = fakeContext({
+      'pyproject.toml': '[tool.ty.rules]\nindex-out-of-bounds = "ignore"\n',
+    });
+    expect((await check('SNS-03')).run(rootTable).passed).toBe(true);
+
+    const nestedTable = fakeContext({
+      'packages/api/pyproject.toml': '[tool.ty.src]\ninclude = ["src"]\n',
+    });
+    expect((await check('SNS-03')).run(nestedTable).passed).toBe(true);
+
+    const overrides = fakeContext({
+      'pyproject.toml': '[[tool.ty.overrides]]\ninclude = ["tests"]\n',
+    });
+    expect((await check('SNS-03')).run(overrides).passed).toBe(true);
+  });
+
+  test('SNS-03 does not treat [tool.types] as Astral ty', async () => {
+    const ctx = fakeContext({ 'pyproject.toml': '[tool.types]\npython-version = "3.12"\n' });
+    const outcome = (await check('SNS-03')).run(ctx);
+    expect(outcome.passed).toBe(false);
+    expect(outcome.evidence).not.toContain('ty configuration');
   });
 
   test('SNS-03 passes with phpstan.neon.dist and reports level', async () => {

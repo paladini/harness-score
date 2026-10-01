@@ -23,7 +23,7 @@
 严格的类型检查器对智能体工作价值最高，因为它在每次编辑时以零边际成本运行、完全确定性，且错误信息足够精确，智能体可自主据此行动。
 
 - TypeScript：`"strict": true` — 非 strict 的 TS 会静默放弃大部分价值。
-- Python：mypy 或 pyright，放在 CI 中，而非仅在 IDE。
+- Python：mypy、pyright 或 ty，放在 CI 中，而非仅在 IDE。
 - PHP：phpstan 或 psalm（存在时在 `phpstan.neon*` 中读取 `level:`），放在 CI 中，而非仅在本地。
 - Go、Rust、Java、C#：编译器已承担此职责；确保智能体宣布完成前先完成构建。
 

@@ -23,7 +23,7 @@ Sensors यह सत्यापित करते हैं कि एजे�
 Strict type checker एजेंट कार्य के लिए सबसे मूल्यवान sensor है — हर edit पर शून्य अतिरिक्त लागत, पूरी तरह निश्चित (deterministic), और error messages इतनी सटीक कि एजेंट स्वतंत्र रूप से कार्य कर सके।
 
 - TypeScript: `"strict": true` — non-strict TS अधिकांश मूल्य चुपचाप खो देता है।
-- Python: mypy या pyright, CI में, केवल IDE में नहीं।
+- Python: mypy, pyright या ty, CI में, केवल IDE में नहीं।
 - PHP: phpstan या psalm (जब मौजूद हो `phpstan.neon*` में `level:` पढ़ें), CI में,
   केवल locally नहीं।
 - Go, Rust, Java, C#: compiler पहले से यह करता है; एजेंट «पूर्ण» घोषित करने से पहले build करे, यह सुनिश्चित करें।

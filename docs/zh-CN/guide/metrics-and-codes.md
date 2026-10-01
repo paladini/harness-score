@@ -98,7 +98,7 @@
 |---|---|---|---|
 | SNS-01 | 6 | 配置了 test runner（`package.json` script、pytest、phpunit.xml、pest、go test 等） | [sns-01](./measure-and-improve#sns-01) |
 | SNS-02 | 5 | 配置了 linter（eslint、biome、ruff、phpcs、rector、golangci-lint 等） | [sns-02](./measure-and-improve#sns-02) |
-| SNS-03 | 4 | 配置了 type checking（tsconfig、mypy、pyright、phpstan、psalm 等） | [sns-03](./measure-and-improve#sns-03) |
+| SNS-03 | 4 | 配置了 type checking（tsconfig、mypy、pyright、ty、phpstan、psalm 等） | [sns-03](./measure-and-improve#sns-03) |
 | SNS-04 | 3 | 配置了 formatter（prettier、black、pint、php-cs-fixer、gofmt 等） | [sns-04](./measure-and-improve#sns-04) |
 | SNS-05 | 2 | 目录树中至少存在一个测试文件 | [sns-05](./measure-and-improve#sns-05) |
 

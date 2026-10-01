@@ -31,7 +31,7 @@ sus mensajes de error son lo bastante precisos para que el agente actúe solo.
 
 - TypeScript: `"strict": true` — TS no estricto renuncia silenciosamente a la
   mayor parte del valor.
-- Python: mypy o pyright, en CI, no solo en el IDE.
+- Python: mypy, pyright o ty, en CI, no solo en el IDE.
 - PHP: phpstan o psalm (lee `level:` en `phpstan.neon*` cuando exista), en
   CI, no solo localmente.
 - Go, Rust, Java, C#: el compilador ya hace esto; asegura que el agente compile

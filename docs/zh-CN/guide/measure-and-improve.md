@@ -554,7 +554,7 @@ eslint/biome、ruff、golangci-lint、rubocop、phpcs/rector 或等价工具。
 **修复：** 能用 lint rule 表达的约定就不再需要文字说明。
 
 #### SNS-03 · Type checking in place — 4 pts {#sns-03}
-tsconfig（理想情况下 `strict: true`）、mypy/pyright、phpstan/psalm，或静态类型语言。
+tsconfig（理想情况下 `strict: true`）、mypy/pyright/ty、phpstan/psalm，或静态类型语言。
 **修复：** 类型检查器是唯一免费审查每次智能体编辑的传感器 —
 [第 4 章](./sensors-feedback#type-checking-the-free-sensor)。
 

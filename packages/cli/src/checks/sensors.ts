@@ -40,6 +40,14 @@ function pyprojectHas(ctx: ScanContext, needle: string): boolean {
   return content?.includes(needle) ?? false;
 }
 
+/** Astral ty tables: `[tool.ty]`, `[tool.ty.rules]`, `[[tool.ty.overrides]]`. Not `[tool.types]`. */
+const TY_TABLE_RE = /^\[{1,2}tool\.ty(?:\]|\.)/m;
+
+function hasTyConfig(ctx: ScanContext): boolean {
+  if (ctx.matching(/(^|\/)ty\.toml$/).length > 0) return true;
+  return ctx.matching(/(^|\/)pyproject\.toml$/).some((path) => TY_TABLE_RE.test(ctx.read(path) ?? ''));
+}
+
 function phpstanConfigEvidence(ctx: ScanContext): string | null {
   const paths = [
     ...ctx.matching(/(^|\/)phpstan\.neon(\.dist)?$/),
@@ -147,7 +155,7 @@ export const sensorChecks: Check[] = [
     title: 'Type checking in place',
     points: 4,
     remediation:
-      'Enable static type checking (tsconfig.json with strict: true, mypy/pyright for Python) — typed code is dramatically more harnessable: the compiler catches agent mistakes for free.',
+      'Enable static type checking (tsconfig.json with strict: true, mypy/pyright/ty for Python) — typed code is dramatically more harnessable: the compiler catches agent mistakes for free.',
     run(ctx) {
       const ecosystems = detectEcosystems(ctx);
       const staticLangs = ecosystems.filter((e) => ['go', 'rust', 'java', 'dotnet'].includes(e));
@@ -160,6 +168,7 @@ export const sensorChecks: Check[] = [
       if (ctx.has('mypy.ini') || pyprojectHas(ctx, '[tool.mypy')) evidence.push('mypy configuration');
       if (ctx.has('pyrightconfig.json') || pyprojectHas(ctx, '[tool.pyright'))
         evidence.push('pyright configuration');
+      if (hasTyConfig(ctx)) evidence.push('ty configuration');
       const phpstan = phpstanConfigEvidence(ctx);
       if (phpstan) evidence.push(phpstan);
       for (const f of ['psalm.xml', 'psalm.xml.dist']) {

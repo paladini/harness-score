@@ -103,7 +103,7 @@ Stable IDs — linked to remediation in [Measure & Improve](./measure-and-improv
 |---|---|---|---|
 | SNS-01 | 6 | Test runner configured (`package.json` script, pytest, phpunit.xml, pest, go test, …) | [sns-01](./measure-and-improve#sns-01) |
 | SNS-02 | 5 | Linter configured (eslint, biome, ruff, phpcs, rector, golangci-lint, …) | [sns-02](./measure-and-improve#sns-02) |
-| SNS-03 | 4 | Type checking configured (tsconfig, mypy, pyright, phpstan, psalm, …) | [sns-03](./measure-and-improve#sns-03) |
+| SNS-03 | 4 | Type checking configured (tsconfig, mypy, pyright, ty, phpstan, psalm, …) | [sns-03](./measure-and-improve#sns-03) |
 | SNS-04 | 3 | Formatter configured (prettier, black, pint, php-cs-fixer, gofmt, …) | [sns-04](./measure-and-improve#sns-04) |
 | SNS-05 | 2 | At least one test file exists in the tree | [sns-05](./measure-and-improve#sns-05) |
 

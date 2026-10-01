@@ -566,7 +566,7 @@ eslint/biome, ruff, golangci-lint, rubocop, phpcs/rector, या equivalent।
 **सुधार:** हर convention जो lint rule के रूप में express हो सकती है, prose की ज़रूरत नहीं रहती।
 
 #### SNS-03 · Type checking in place — 4 pts {#sns-03}
-tsconfig (आदर्श रूप से `strict: true`), mypy/pyright, phpstan/psalm, या statically typed
+tsconfig (आदर्श रूप से `strict: true`), mypy/pyright/ty, phpstan/psalm, या statically typed
 language।
 **सुधार:** type checker वह एकमात्र sensor है जो हर agent edit की
 मुफ़्त review करता है — [अध्याय 4](./sensors-feedback#type-checking-the-free-sensor)।
