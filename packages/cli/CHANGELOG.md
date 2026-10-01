@@ -8,7 +8,7 @@
 
   **Score impact:** Repositories whose only rule-like file was `.claude/CLAUDE.md` or `.claude/AGENTS.md` lose 11 context points and can drop from L4 to L1; guide credit remains via CTX-01. Repos with `.claude/rules/` or nested context files in code directories keep or gain rule points.
 
-  Thanks to [@paladini](https://github.com/paladini) for reporting this in [#80](https://github.com/paladini/harness-score/issues/80).
+  Thanks to [Renato Spakauskas](https://www.linkedin.com/in/renatospakauskas/) for originally reporting this via LinkedIn ([#80](https://github.com/paladini/harness-score/issues/80)).
 
 ## 1.7.2
 
