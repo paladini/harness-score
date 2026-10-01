@@ -1,5 +1,13 @@
 # harness-score
 
+## 1.7.5
+
+### Patch Changes
+
+- 3be2590: Recognize Astral ty as a Python type checker. SNS-03 accepts `ty.toml` and `[tool.ty]` tables (including nested projects), and CI-03 accepts `ty check` in CI, including `uv run` and `uvx`.
+
+  Thanks to [@hiagot](https://github.com/hiagot) for contributing this change.
+
 ## 1.7.4
 
 ### Patch Changes
