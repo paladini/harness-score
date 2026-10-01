@@ -8,6 +8,48 @@ const ENV_FILE_RE = /(^|\/)\.env(\.[^/]+)?$/;
 const ENV_TEMPLATE_RE = /\.(example|sample|template|dist)$/;
 const CREDENTIAL_WORDS = new Set(['token', 'key', 'secret', 'password', 'passwd', 'auth', 'apikey']);
 const ENV_INTERPOLATION_RE = /\$\{[A-Za-z_][A-Za-z0-9_]*\}/;
+const CLOSED_SOURCE_LICENSES = new Set(['proprietary', 'unlicensed']);
+
+function readJsonObject(ctx: ScanContext, path: string): Record<string, unknown> | null {
+  const content = ctx.read(path);
+  if (content === null) return null;
+  const parsed = safeJsonParse(content);
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
+  return parsed as Record<string, unknown>;
+}
+
+/** npm/Composer closed-source token, quoted as declared. Arrays are not a package.json license. */
+function closedSourceLicenseString(value: unknown): string | null {
+  if (typeof value !== 'string') return null;
+  const trimmed = value.trim();
+  if (!CLOSED_SOURCE_LICENSES.has(trimmed.toLowerCase())) return null;
+  return JSON.stringify(trimmed);
+}
+
+/** Composer `license` is a string or an array; every entry must be closed-source. */
+function closedSourceComposerLicense(value: unknown): string | null {
+  const asString = closedSourceLicenseString(value);
+  if (asString) return asString;
+  if (!Array.isArray(value) || value.length === 0) return null;
+  const labels = value.map((entry) => closedSourceLicenseString(entry));
+  if (labels.some((label) => label === null)) return null;
+  return JSON.stringify(value.map((entry) => (entry as string).trim()));
+}
+
+/** Root manifests only. A nested package must not waive the repository LICENSE check. */
+function closedSourceLicenseEvidence(ctx: ScanContext): string | null {
+  const composer = readJsonObject(ctx, 'composer.json');
+  const composerLicense = composer ? closedSourceComposerLicense(composer.license) : null;
+  if (composerLicense) {
+    return `composer.json declares license ${composerLicense}; HYG-05 does not apply.`;
+  }
+  const pkg = readJsonObject(ctx, 'package.json');
+  const pkgLicense = pkg ? closedSourceLicenseString(pkg.license) : null;
+  if (pkgLicense) {
+    return `package.json declares license ${pkgLicense}; HYG-05 does not apply.`;
+  }
+  return null;
+}
 
 /**
  * A key is credential-shaped only if one of its camelCase/snake_case/kebab-case
@@ -166,9 +208,10 @@ export const hygieneChecks: Check[] = [
     remediation: 'Add a LICENSE file — required for open-source distribution and plugin marketplaces.',
     run(ctx) {
       const license = ['LICENSE', 'LICENSE.md', 'LICENSE.txt', 'COPYING'].find((f) => ctx.has(f));
-      return license
-        ? { passed: true, evidence: `Found ${license}.` }
-        : { passed: false, evidence: 'No LICENSE file at repository root.' };
+      if (license) return { passed: true, evidence: `Found ${license}.` };
+      const declared = closedSourceLicenseEvidence(ctx);
+      if (declared) return { passed: false, applicable: false, evidence: declared };
+      return { passed: false, evidence: 'No LICENSE file at repository root.' };
     },
   },
   {
@@ -237,7 +280,8 @@ export const hygieneChecks: Check[] = [
       if (mcpFiles.length === 0) {
         return {
           passed: false,
-          evidence: 'No MCP config found (.cursor/mcp.json, .mcp.json, or .agents/mcp_config.json).',
+          applicable: false,
+          evidence: 'No MCP config is in use; HYG-08 does not apply.',
         };
       }
       for (const file of mcpFiles) {

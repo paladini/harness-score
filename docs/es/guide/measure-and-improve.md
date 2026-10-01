@@ -664,7 +664,13 @@ No credential signatures in MCP config (`.cursor/mcp.json`, `.mcp.json`,
 secret published to every clone.
 
 #### HYG-05 · License present — 2 pts {#hyg-05}
-**Corrección:** add a LICENSE; required for open-source use and plugin marketplaces.
+Archivo `LICENSE`, `LICENSE.md`, `LICENSE.txt` o `COPYING` en la raíz.
+**No aplica** cuando ese archivo no existe y el `license` del `composer.json`
+o `package.json` de la raíz es `proprietary` o `UNLICENSED` (declaración de
+código cerrado). El check sale del numerador y del denominador.
+`"private": true` y `publish = false` en Cargo no hacen esto. Un archivo
+ausente junto a un SPDX como `MIT` sigue fallando.
+**Corrección:** añade un LICENSE; requerido para uso open-source y marketplaces de plugins.
 
 #### HYG-06 · No secrets in harness files — 2 pts {#hyg-06}
 AGENTS.md, rules, and hooks config are clean of token signatures.
@@ -677,12 +683,15 @@ package-lock.json, uv.lock, Cargo.lock, go.sum, or equivalent.
 tree everywhere.
 
 #### HYG-08 · MCP config uses env interpolation for credentials — 3 pts {#hyg-08}
-An MCP config file is valid, and any credential-shaped field (token, key,
-secret, password…) uses `${ENV_VAR}` interpolation rather than a literal.
-The positive complement to HYG-04 — a repo with no MCP setup earns nothing
-here, same as any other bonus check.
-**Corrección:** reference secrets as `"${VAR_NAME}"` and document required
-variables in `.env.example`.
+Cuando existe config MCP (`.cursor/mcp.json`, `.mcp.json`,
+`.agents/mcp_config.json`), es JSON válido, y cualquier campo con forma de
+credencial (token, key, secret, password…) usa interpolación `${ENV_VAR}`
+en lugar de un literal. El complemento positivo de HYG-04.
+**No aplica** cuando el repositorio no tiene config MCP. No usar MCP no es
+una interpolación faltante, así que el check sale del numerador y del
+denominador. Añadir una config después vuelve a hacer aplicable el check.
+**Corrección:** referencia secretos como `"${VAR_NAME}"` y documenta las
+variables requeridas en `.env.example`.
 
 ## Plan de mejora práctico
 

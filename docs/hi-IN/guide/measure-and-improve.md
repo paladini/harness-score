@@ -625,6 +625,12 @@ MCP config (`.cursor/mcp.json`, `.mcp.json`,
 हर clone को publish किया secret है।
 
 #### HYG-05 · License present — 2 pts {#hyg-05}
+Root पर `LICENSE`, `LICENSE.md`, `LICENSE.txt`, या `COPYING` फ़ाइल।
+**लागू नहीं** जब वह फ़ाइल न हो और root `composer.json` या `package.json` का
+`license` `proprietary` या `UNLICENSED` हो (closed-source declaration)। Check
+score के numerator और denominator दोनों से बाहर हो जाता है। `"private": true`
+और Cargo `publish = false` यह नहीं करते। `MIT` जैसे SPDX id के साथ फ़ाइल का
+न होना अब भी fail है।
 **सुधार:** LICENSE जोड़ें; open-source use और plugin marketplaces के लिए आवश्यक।
 
 #### HYG-06 · No secrets in harness files — 2 pts {#hyg-06}
@@ -638,10 +644,12 @@ package-lock.json, uv.lock, Cargo.lock, go.sum, या equivalent।
 tree test करते हैं।
 
 #### HYG-08 · MCP config uses env interpolation for credentials — 3 pts {#hyg-08}
-MCP config फ़ाइल valid है, और credential-shaped field (token, key,
-secret, password…) literal के बजाय `${ENV_VAR}` interpolation उपयोग करता है।
-HYG-04 का positive complement — MCP setup न होने वाले repo को यहाँ अंक नहीं,
-जैसे कोई अन्य bonus check।
+जब MCP config मौजूद हो (`.cursor/mcp.json`, `.mcp.json`, `.agents/mcp_config.json`),
+वह valid JSON हो, और कोई भी credential-shaped field (token, key, secret, password…)
+literal के बजाय `${ENV_VAR}` interpolation उपयोग करे। यह HYG-04 का positive complement है।
+**लागू नहीं** जब repository में MCP config न हो। MCP न उपयोग करना missing interpolation
+नहीं है, इसलिए check numerator और denominator दोनों से बाहर हो जाता है। बाद में config
+जोड़ने पर check फिर लागू होता है।
 **सुधार:** secrets को `"${VAR_NAME}"` के रूप में reference करें और `.env.example` में required
 variables document करें।
 

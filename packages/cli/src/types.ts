@@ -63,6 +63,11 @@ export interface CheckOutcome {
   passed: boolean;
   /** Human-readable proof: what was found (or not found) and where. */
   evidence: string;
+  /**
+   * When false, the check does not apply to this repository and is excluded
+   * from both the numerator and the denominator. Defaults to true.
+   */
+  applicable?: boolean;
   /** Forward-compatible or secondary findings that do not change points. */
   warnings?: ScanDiagnostic[];
 }
@@ -90,6 +95,12 @@ export interface CheckResult {
   docsUrl: string;
   /** Resolved severity ('off' checks are excluded from scoring but still listed here). */
   severity: Severity;
+  /**
+   * False when the check does not apply to this repository. Excluded from
+   * scoring, distinct from severity 'off' (which is config). Older reports
+   * omit this field; treat a missing value as true.
+   */
+  applicable: boolean;
   /** Non-fatal diagnostics emitted while evaluating this check. */
   warnings?: ScanDiagnostic[];
 }
@@ -101,7 +112,7 @@ export interface DimensionScore {
   max: number;
   /** 0–100, rounded. */
   percent: number;
-  /** False only when every check in this dimension resolved to 'off' (excluded by config). */
+  /** False when no check in this dimension is scored ('off' and/or not applicable). */
   applicable: boolean;
 }
 

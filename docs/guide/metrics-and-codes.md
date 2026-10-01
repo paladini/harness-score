@@ -57,7 +57,7 @@ Full narrative: [The Maturity Model](./maturity-model).
 | `ci` | CI Feedback | 14 | Pipeline, pre-commit |
 | `hygiene` | Hygiene & Safety | 23 | .gitignore, secrets, lockfile, license, MCP hygiene |
 
-**Total:** 108 points.
+**Total:** 108 points when every check applies. A scan's `score.max` is lower when a check is not applicable (`checks[].applicable` is `false`) or set to `"off"`.
 
 ## Check catalog
 
@@ -229,10 +229,11 @@ The Action publishes maturity outputs, badges, and reports only when maturity is
 | `truncated` | Compatibility alias; `true` when the maturity or effective snapshot is incomplete for any reason |
 | `preset` | `{ extends, rules, resolved }` — team customization actually applied; `resolved` lists only checks whose severity differs from the default |
 | `level.capped`, `level.capReason` | `capped` is `true` when a blocking requirement for the next level can never be met under the current config (e.g. its dimension was excluded by a preset); `capReason` explains why |
-| `dimensions[].applicable` | `false` only when every check in that dimension resolved to `"off"` |
+| `dimensions[].applicable` | `false` when no check in that dimension is scored: every check is `"off"` and/or `checks[].applicable` is `false` |
+| `checks[].applicable` | `false` when the check does not apply to this repository (HYG-05 with a closed-source `license`, HYG-08 with no MCP config). Excluded from the numerator and denominator. Defaults to `true`. Omitted on older reports, which means applicable |
 | `checks[].severity` | `"off"` \| `"warn"` \| `"error"` — the resolved severity this scan used for that check |
 | `checks[].warnings` | Optional non-fatal diagnostics `{ code, message, source? }`; terminal and Markdown render them without changing points |
 
 `level`, `score`, dimensions, and checks remain present for diagnosis, but are provisional when their verdict is `incomplete`. Terminal and Markdown identify the unavailable snapshot. The badge always represents maturity and uses `incomplete`, never L0-L4, when maturity is incomplete. Old reports without `verdicts` are treated as complete when `truncated` is `false`, and incomplete when it is `true`.
 
-`--diff` compares **maturity** fields by default (top-level `level` / `score` / `checks`) and rejects an incomplete maturity baseline or current result. An incomplete effective snapshot does not block a maturity diff.
+`--diff` compares **maturity** fields by default (top-level `level` / `score` / `checks`) and rejects an incomplete maturity baseline or current result. An incomplete effective snapshot does not block a maturity diff. A check moving between applicable and not applicable is its own delta (`became-applicable` / `became-not-applicable`), separate from newly passing or newly failing.

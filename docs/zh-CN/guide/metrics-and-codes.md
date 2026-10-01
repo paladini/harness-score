@@ -52,7 +52,7 @@
 | `ci` | CI Feedback | 14 | Pipeline、pre-commit |
 | `hygiene` | Hygiene & Safety | 23 | .gitignore、secrets、lockfile、license、MCP 卫生 |
 
-**总计：** 108 分。
+**总计：** 108 分，前提是每个 check 都适用。当某个 check 不适用（`checks[].applicable` 为 `false`）或被设为 `"off"` 时，该次 scan 的 `score.max` 会更低。
 
 ## Check 目录
 
@@ -219,7 +219,8 @@ Action 仅在 maturity 完整时发布 maturity outputs、badge 和报告，仅�
 | `level`、`score`、`dimensions`、`checks` | **maturity** 快照 |
 | `preset` | `{ extends, rules, resolved }` — 本次 scan 实际应用的团队定制；`resolved` 只列出 severity 不同于默认值的 checks |
 | `level.capped`、`level.capReason` | 当下一 level 的某个 blocking requirement 在当前配置下永远无法满足时（例如其 dimension 被 preset 排除），`capped` 为 `true`；`capReason` 说明原因 |
-| `dimensions[].applicable` | 仅当该 dimension 中所有 check 都解析为 `"off"` 时为 `false` |
+| `dimensions[].applicable` | 当该 dimension 中没有 check 计入分数时为 `false`：每个 check 都是 `"off"` 和/或 `checks[].applicable` 为 `false` |
+| `checks[].applicable` | 当该 check 不适用于此仓库时为 `false`（HYG-05 的闭源 `license`，或 HYG-08 在没有 MCP 配置时）。同时从分子和分母中排除。默认 `true`。旧报告省略该字段，含义为适用 |
 | `checks[].severity` | `"off"` \| `"warn"` \| `"error"` — 本次 scan 对该 check 使用的最终 severity |
 | `checks[].warnings` | 可选的非致命诊断 `{ code, message, source? }`；terminal 与 Markdown 会显示它们，但不改变分数 |
 | `effective` | 相同结构：`{ level, score, dimensions, checks, detectedHarnesses }` |
@@ -230,4 +231,4 @@ Action 仅在 maturity 完整时发布 maturity outputs、badge 和报告，仅�
 
 `level`、`score`、dimensions 与 checks 仍会保留用于诊断，但对应 verdict 为 `incomplete` 时仅是 provisional。Terminal 与 Markdown 会明确指出不可用的 snapshot。Badge 始终表示 maturity；当 maturity 不完整时值为 `incomplete`，绝不显示 L0-L4。旧报告缺少 `verdicts` 时，`truncated: false` 视为完整，`truncated: true` 视为不完整。
 
-`--diff` 默认比较 **maturity** 字段（顶层 `level` / `score` / `checks`），并拒绝 maturity 不完整的 baseline 或当前结果。Effective 不完整不会阻止 maturity diff。
+`--diff` 默认比较 **maturity** 字段（顶层 `level` / `score` / `checks`），并拒绝 maturity 不完整的 baseline 或当前结果。Effective 不完整不会阻止 maturity diff。Check 在适用与不适用之间变化时是单独的 delta（`became-applicable` / `became-not-applicable`），与 newly passing 或 newly failing 分开。

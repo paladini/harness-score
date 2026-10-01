@@ -666,6 +666,12 @@ No credential signatures in MCP config (`.cursor/mcp.json`, `.mcp.json`,
 secret published to every clone.
 
 #### HYG-05 · License present — 2 pts {#hyg-05}
+A root `LICENSE`, `LICENSE.md`, `LICENSE.txt`, or `COPYING` file.
+**Not applicable** when that file is absent and the root `composer.json` or
+`package.json` `license` is `proprietary` or `UNLICENSED` (a closed-source
+declaration). The check drops out of the score numerator and denominator.
+`"private": true` and Cargo `publish = false` do not do this. A missing file
+next to an SPDX id such as `MIT` still fails.
 **Fix:** add a LICENSE; required for open-source use and plugin marketplaces.
 
 #### HYG-06 · No secrets in harness files — 2 pts {#hyg-06}
@@ -679,10 +685,13 @@ package-lock.json, uv.lock, Cargo.lock, go.sum, or equivalent.
 tree everywhere.
 
 #### HYG-08 · MCP config uses env interpolation for credentials — 3 pts {#hyg-08}
-An MCP config file is valid, and any credential-shaped field (token, key,
-secret, password…) uses `${ENV_VAR}` interpolation rather than a literal.
-The positive complement to HYG-04 — a repo with no MCP setup earns nothing
-here, same as any other bonus check.
+When an MCP config exists (`.cursor/mcp.json`, `.mcp.json`,
+`.agents/mcp_config.json`), it is valid JSON, and any credential-shaped
+field (token, key, secret, password…) uses `${ENV_VAR}` interpolation rather
+than a literal. The positive complement to HYG-04.
+**Not applicable** when the repository has no MCP config. Not using MCP is
+not a missing interpolation setup, so the check drops out of the score
+numerator and denominator. Adding a config later makes it applicable again.
 **Fix:** reference secrets as `"${VAR_NAME}"` and document required
 variables in `.env.example`.
 

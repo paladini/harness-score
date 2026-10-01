@@ -1,6 +1,7 @@
 import type { ReportDiff } from '../diff.js';
 import { toolDisplayName } from '../harness/registry.js';
-import type { Report } from '../types.js';
+import { checkIsScored } from '../score.js';
+import type { CheckResult, Report } from '../types.js';
 import { formatIncompleteReason, reportScopeIsComplete, reportVerdict } from '../verdict.js';
 
 function signed(n: number): string {
@@ -44,13 +45,27 @@ function renderDiffSection(diff: ReportDiff): string[] {
   }
   const gained = diff.checksChanged.filter((c) => c.change === 'newly-passing');
   const lost = diff.checksChanged.filter((c) => c.change === 'newly-failing');
+  const becameApplicable = diff.checksChanged.filter((c) => c.change === 'became-applicable');
+  const becameNotApplicable = diff.checksChanged.filter((c) => c.change === 'became-not-applicable');
   if (gained.length > 0) {
     lines.push(`**Newly passing:** ${gained.map((c) => c.id).join(', ')}`);
   }
   if (lost.length > 0) {
     lines.push(`**Newly failing:** ${lost.map((c) => c.id).join(', ')}`);
   }
-  if (gained.length === 0 && lost.length === 0 && changed.length === 0) {
+  if (becameApplicable.length > 0) {
+    lines.push(`**Now applicable:** ${becameApplicable.map((c) => c.id).join(', ')}`);
+  }
+  if (becameNotApplicable.length > 0) {
+    lines.push(`**Now not applicable:** ${becameNotApplicable.map((c) => c.id).join(', ')}`);
+  }
+  if (
+    gained.length === 0 &&
+    lost.length === 0 &&
+    becameApplicable.length === 0 &&
+    becameNotApplicable.length === 0 &&
+    changed.length === 0
+  ) {
     lines.push('No change since baseline.');
   }
   lines.push('');
@@ -144,7 +159,8 @@ export function renderMarkdown(report: Report, diff?: ReportDiff | null): string
   lines.push('| | Check | Points | Evidence |');
   lines.push('|---|---|---|---|');
   for (const check of report.checks) {
-    const status = check.severity === 'off' ? '➖' : check.passed ? '✅' : '❌';
+    const status =
+      check.severity === 'off' ? '➖' : check.applicable === false ? 'N/A' : check.passed ? '✅' : '❌';
     lines.push(
       `| ${status} | [${check.id}](${check.docsUrl}) ${check.title} | ${check.earned}/${check.points} | ${check.evidence.replace(/\|/g, '\\|')} |`,
     );
@@ -169,7 +185,18 @@ export function renderMarkdown(report: Report, diff?: ReportDiff | null): string
       lines.push(`- **${warning.checkId} / ${warning.code}:** ${warning.message}${source}`);
     }
   }
-  const failed = report.checks.filter((c) => !c.passed && c.severity !== 'off');
+  const failed = report.checks.filter((c) => !c.passed && checkIsScored(c));
+  const notApplicable = report.checks.filter(
+    (check: CheckResult) => check.applicable === false && check.severity !== 'off',
+  );
+  if (notApplicable.length > 0) {
+    lines.push('');
+    lines.push('## Not applicable');
+    lines.push('');
+    for (const check of notApplicable) {
+      lines.push(`- **${check.id}** — ${check.evidence}`);
+    }
+  }
   if (failed.length > 0) {
     lines.push('');
     lines.push('## Recommended improvements');

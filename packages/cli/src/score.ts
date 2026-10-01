@@ -23,6 +23,11 @@ export const TOOL_VERSION = '1.7.5';
 
 export const LEVEL_NAMES = ['Unharnessed', 'Documented', 'Guided', 'Sensing', 'Self-correcting'] as const;
 
+/** Severity 'off' and detected not-applicable checks are excluded from both numerator and denominator. */
+export function checkIsScored(check: { severity: string; applicable?: boolean }): boolean {
+  return check.severity !== 'off' && check.applicable !== false;
+}
+
 function runChecks(ctx: ScanContext, severities: Map<string, ResolvedSeverity>): CheckResult[] {
   return ALL_CHECKS.map((check) => {
     let outcome: CheckOutcome;
@@ -31,27 +36,29 @@ function runChecks(ctx: ScanContext, severities: Map<string, ResolvedSeverity>):
     } catch (error) {
       outcome = { passed: false, evidence: `Check failed to execute: ${String(error)}` };
     }
+    const applicable = outcome.applicable !== false;
     return {
       id: check.id,
       dimension: check.dimension,
       title: check.title,
       points: check.points,
-      earned: outcome.passed ? check.points : 0,
+      earned: applicable && outcome.passed ? check.points : 0,
       passed: outcome.passed,
       evidence: outcome.evidence,
       remediation: check.remediation,
       docsUrl: `${DOCS_BASE_URL}#${check.id.toLowerCase()}`,
       severity: severities.get(check.id)?.severity ?? 'error',
+      applicable,
       ...(outcome.warnings ? { warnings: outcome.warnings } : {}),
     };
   });
 }
 
-/** Checks with severity 'off' are excluded from both the numerator and denominator — structurally removed, never scored as failing. */
+/** Checks with severity 'off' or applicable false are excluded from both the numerator and denominator — structurally removed, never scored as failing. */
 function scoreDimensions(checks: CheckResult[]): DimensionScore[] {
   return DIMENSIONS.map((dim) => {
     const own = checks.filter((c) => c.dimension === dim.id);
-    const scored = own.filter((c) => c.severity !== 'off');
+    const scored = own.filter((c) => checkIsScored(c));
     const earned = scored.reduce((sum, c) => sum + c.earned, 0);
     const max = scored.reduce((sum, c) => sum + c.points, 0);
     return {
@@ -60,7 +67,7 @@ function scoreDimensions(checks: CheckResult[]): DimensionScore[] {
       earned,
       max,
       percent: max === 0 ? 0 : Math.round((earned / max) * 100),
-      /** False only when every check originally in this dimension resolved to 'off'. */
+      /** False when every check in this dimension is 'off' and/or not applicable. */
       applicable: scored.length > 0,
     };
   });
@@ -138,7 +145,7 @@ function computeLevel(dimensions: DimensionScore[], totalPercent: number): Level
 function buildSnapshot(ctx: ScanContext, severities: Map<string, ResolvedSeverity>): ScoreSnapshot {
   const checks = runChecks(ctx, severities);
   const dimensions = scoreDimensions(checks);
-  const scored = checks.filter((c) => c.severity !== 'off');
+  const scored = checks.filter((c) => checkIsScored(c));
   const earned = scored.reduce((sum, c) => sum + c.earned, 0);
   const max = scored.reduce((sum, c) => sum + c.points, 0);
   const percent = max === 0 ? 0 : Math.round((earned / max) * 100);
@@ -156,6 +163,7 @@ function snapshotsEqual(a: ScoreSnapshot, b: ScoreSnapshot): boolean {
   if (a.checks.length !== b.checks.length) return false;
   for (let i = 0; i < a.checks.length; i += 1) {
     if (a.checks[i]!.passed !== b.checks[i]!.passed) return false;
+    if (a.checks[i]!.applicable !== b.checks[i]!.applicable) return false;
   }
   return true;
 }

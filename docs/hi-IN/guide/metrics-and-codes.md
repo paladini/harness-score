@@ -57,7 +57,7 @@ Official level names **maturity** पर लागू, जब तक `gate: effe
 | `ci` | CI Feedback | 14 | Pipeline, pre-commit |
 | `hygiene` | Hygiene & Safety | 23 | .gitignore, secrets, lockfile, license, MCP hygiene |
 
-**Total:** 108 points।
+**Total:** 108 points जब हर check लागू हो। किसी check के लागू न होने (`checks[].applicable` `false`) या `"off"` होने पर उस scan का `score.max` कम होता है।
 
 ## check कैटलॉग
 
@@ -230,10 +230,11 @@ Action maturity complete होने पर ही maturity outputs, badge, औ
 | `truncated` | Compatibility alias; maturity या effective snapshot के किसी कारण से incomplete होने पर `true` |
 | `preset` | `{ extends, rules, resolved }` — इस scan में actually apply हुई team customization; `resolved` सिर्फ वे checks list करता है जिनकी severity default से अलग है |
 | `level.capped`, `level.capReason` | जब अगले level की कोई blocking requirement वर्तमान config में कभी पूरी नहीं हो सकती (जैसे उसकी dimension preset से excluded), तो `capped` `true` होता है; `capReason` वजह बताता है |
-| `dimensions[].applicable` | `false` सिर्फ तब जब उस dimension का हर check `"off"` resolve हुआ हो |
+| `dimensions[].applicable` | `false` जब उस dimension का कोई check score में न आए: हर check `"off"` हो और/या `checks[].applicable` `false` हो |
+| `checks[].applicable` | `false` जब check इस repository पर लागू न हो (closed-source `license` वाला HYG-05, MCP config के बिना HYG-08)। Numerator और denominator दोनों से बाहर। Default `true`। पुराने reports में field न होना लागू होने का अर्थ है |
 | `checks[].severity` | `"off"` \| `"warn"` \| `"error"` — इस scan ने उस check के लिए जो resolved severity use की |
 | `checks[].warnings` | Optional non-fatal diagnostics `{ code, message, source? }`; terminal और Markdown इन्हें points बदले बिना दिखाते हैं |
 
 `level`, `score`, dimensions, और checks diagnosis के लिए मौजूद रहते हैं, लेकिन संबंधित verdict `incomplete` होने पर provisional हैं। Terminal और Markdown unavailable snapshot को पहचानते हैं। Badge हमेशा maturity को दिखाता है और maturity incomplete होने पर `incomplete` value इस्तेमाल करता है, कभी L0-L4 नहीं। `verdicts` के बिना पुराने reports में `truncated: false` complete और `truncated: true` incomplete माना जाता है।
 
-`--diff` default में **maturity** fields compare करता है (top-level `level` / `score` / `checks`) और incomplete maturity baseline या current result को reject करता है। Incomplete effective snapshot maturity diff को block नहीं करता।
+`--diff` default में **maturity** fields compare करता है (top-level `level` / `score` / `checks`) और incomplete maturity baseline या current result को reject करता है। Incomplete effective snapshot maturity diff को block नहीं करता। Check का applicable और not applicable के बीच बदलना अपना delta है (`became-applicable` / `became-not-applicable`), newly passing या newly failing से अलग।

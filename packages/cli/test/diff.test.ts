@@ -35,10 +35,48 @@ describe('computeDiff', () => {
     expect(computeDiff(baseline, current).maturityModelChanged).toBe(true);
   });
 
-  test('flags maturityModelChanged when the maturity model total point value changed', () => {
+  test('flags maturityModelChanged when a check point value changed', () => {
     const current = score(path.join(FIXTURES, 'level-4'));
-    const baseline = { ...current, score: { ...current.score, max: current.score.max - 8 } };
+    const baseline = {
+      ...current,
+      checks: current.checks.map((check) =>
+        check.id === 'HYG-08' ? { ...check, points: check.points + 8 } : check,
+      ),
+    };
     expect(computeDiff(baseline, current).maturityModelChanged).toBe(true);
+  });
+
+  test('an applicability change is not a pass/fail delta or a maturity-model change', () => {
+    const current = score(path.join(FIXTURES, 'level-4'));
+    const baseline = {
+      ...current,
+      score: { ...current.score, max: current.score.max - 3, earned: current.score.earned - 3 },
+      checks: current.checks.map((check) =>
+        check.id === 'HYG-08' ? { ...check, applicable: false, passed: false, earned: 0 } : check,
+      ),
+    };
+    const diff = computeDiff(baseline, current);
+    expect(diff.maturityModelChanged).toBe(false);
+    expect(diff.checksChanged).toEqual([
+      expect.objectContaining({ id: 'HYG-08', change: 'became-applicable' }),
+    ]);
+    expect(diff.checksChanged.some((check) => check.change === 'newly-passing')).toBe(false);
+  });
+
+  test('dropping applicability is not reported as newly failing', () => {
+    const current = score(path.join(FIXTURES, 'level-4'));
+    const baseline = current;
+    const next = {
+      ...current,
+      checks: current.checks.map((check) =>
+        check.id === 'HYG-08' ? { ...check, applicable: false, passed: false, earned: 0 } : check,
+      ),
+    };
+    const diff = computeDiff(baseline, next);
+    expect(diff.checksChanged).toEqual([
+      expect.objectContaining({ id: 'HYG-08', change: 'became-not-applicable' }),
+    ]);
+    expect(diff.checksChanged.some((check) => check.change === 'newly-failing')).toBe(false);
   });
 
   test('flags presetChanged when the applied extends/rules differ', () => {

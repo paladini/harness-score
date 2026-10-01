@@ -13,7 +13,7 @@ export interface CheckDelta {
   id: string;
   title: string;
   points: number;
-  change: 'newly-passing' | 'newly-failing';
+  change: 'newly-passing' | 'newly-failing' | 'became-applicable' | 'became-not-applicable';
 }
 
 export interface ReportDiff {
@@ -28,9 +28,10 @@ export interface ReportDiff {
   dimensions: DimensionDelta[];
   checksChanged: CheckDelta[];
   /**
-   * True when baseline and current come from different tool versions (or
-   * the maturity model's point total changed) — dimension/score deltas may then
-   * reflect a maturity model change rather than an actual change in the repository.
+   * True when baseline and current come from different tool versions or the
+   * check catalog (ids or point values) differs. A scan `score.max` that moved
+   * only because a check became applicable or not applicable is a repository
+   * change, not a maturity-model change.
    */
   maturityModelChanged: boolean;
   /**
@@ -43,6 +44,18 @@ export interface ReportDiff {
 
 /** Baselines saved by pre-v1.5 tool versions have no `preset` field at all. */
 const EMPTY_PRESET: Report['preset'] = { extends: [], rules: {}, resolved: [] };
+
+/** Missing `applicable` on pre-v1.8 reports means the check was scored. */
+function isApplicable(check: { applicable?: boolean }): boolean {
+  return check.applicable !== false;
+}
+
+function catalogShape(checks: Array<{ id: string; points: number }>): string {
+  return [...checks]
+    .sort((a, b) => a.id.localeCompare(b.id))
+    .map((check) => `${check.id}:${check.points}`)
+    .join('|');
+}
 
 /**
  * Compares two reports from the same maturity model version. Checks present in
@@ -58,7 +71,19 @@ export function computeDiff(baseline: Report, current: Report): ReportDiff {
   const checksChanged: CheckDelta[] = [];
   for (const check of current.checks) {
     const before = baselineChecks.get(check.id);
-    if (!before || before.passed === check.passed) continue;
+    if (!before) continue;
+    const beforeApplicable = isApplicable(before);
+    const afterApplicable = isApplicable(check);
+    if (beforeApplicable !== afterApplicable) {
+      checksChanged.push({
+        id: check.id,
+        title: check.title,
+        points: check.points,
+        change: afterApplicable ? 'became-applicable' : 'became-not-applicable',
+      });
+      continue;
+    }
+    if (!afterApplicable || before.passed === check.passed) continue;
     checksChanged.push({
       id: check.id,
       title: check.title,
@@ -96,7 +121,8 @@ export function computeDiff(baseline: Report, current: Report): ReportDiff {
     dimensions,
     checksChanged,
     maturityModelChanged:
-      baseline.tool.version !== current.tool.version || baseline.score.max !== current.score.max,
+      baseline.tool.version !== current.tool.version ||
+      catalogShape(baseline.checks) !== catalogShape(current.checks),
     presetChanged:
       JSON.stringify(baseline.preset ?? EMPTY_PRESET) !== JSON.stringify(current.preset ?? EMPTY_PRESET),
   };

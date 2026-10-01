@@ -604,6 +604,11 @@ MCP 配置（`.cursor/mcp.json`、`.mcp.json`、
 **修复：** 使用 `${ENV_VAR}` 插值 — MCP 配置中的内联 key 等于向每个 clone 公开的 secret。
 
 #### HYG-05 · License present — 2 pts {#hyg-05}
+仓库根目录存在 `LICENSE`、`LICENSE.md`、`LICENSE.txt` 或 `COPYING`。
+**不适用：** 该文件不存在，且根目录 `composer.json` 或 `package.json` 的
+`license` 为 `proprietary` 或 `UNLICENSED`（闭源声明）。该 check 同时退出
+分数的分子和分母。`"private": true` 与 Cargo 的 `publish = false` 不会触发
+这一点。缺少文件且 license 为 `MIT` 等 SPDX id 时仍然失败。
 **修复：** 添加 LICENSE；开源使用与插件 marketplace 所需。
 
 #### HYG-06 · No secrets in harness files — 2 pts {#hyg-06}
@@ -615,10 +620,11 @@ package-lock.json、uv.lock、Cargo.lock、go.sum 或等价 lockfile。
 **修复：** 可复现安装意味着传感器在各处测试同一依赖树。
 
 #### HYG-08 · MCP config uses env interpolation for credentials — 3 pts {#hyg-08}
-MCP 配置文件有效，且任何 credential 形字段（token、key、
-secret、password 等）使用 `${ENV_VAR}` 插值而非字面量。
-HYG-04 的正面补充 — 无 MCP 设置的仓库此处不得分，
-与其他加分检查相同。
+当存在 MCP 配置（`.cursor/mcp.json`、`.mcp.json`、`.agents/mcp_config.json`）时，
+它必须是合法 JSON，且任何 credential 形字段（token、key、secret、password 等）
+使用 `${ENV_VAR}` 插值而非字面量。这是 HYG-04 的正面补充。
+**不适用：** 仓库没有 MCP 配置。不使用 MCP 并不是缺少插值配置，因此该 check
+同时退出分数的分子和分母。之后添加配置会使该 check 重新适用。
 **修复：** 将 secrets 引用为 `"${VAR_NAME}"`，并在 `.env.example` 中记录所需变量。
 
 ## 实践改进计划

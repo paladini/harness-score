@@ -664,7 +664,13 @@ No credential signatures in MCP config (`.cursor/mcp.json`, `.mcp.json`,
 secret published to every clone.
 
 #### HYG-05 · License present — 2 pts {#hyg-05}
-**Correção:** add a LICENSE; required for open-source use and plugin marketplaces.
+Arquivo `LICENSE`, `LICENSE.md`, `LICENSE.txt` ou `COPYING` na raiz.
+**Não se aplica** quando esse arquivo está ausente e o `license` do
+`composer.json` ou `package.json` da raiz é `proprietary` ou `UNLICENSED`
+(declaração de código fechado). O check sai do numerador e do denominador.
+`"private": true` e `publish = false` no Cargo não fazem isso. Arquivo
+ausente ao lado de um SPDX como `MIT` continua falhando.
+**Correção:** adicione um LICENSE; exigido para uso open-source e marketplaces de plugins.
 
 #### HYG-06 · No secrets in harness files — 2 pts {#hyg-06}
 AGENTS.md, rules, and hooks config are clean of token signatures.
@@ -677,12 +683,15 @@ package-lock.json, uv.lock, Cargo.lock, go.sum, or equivalent.
 tree everywhere.
 
 #### HYG-08 · MCP config uses env interpolation for credentials — 3 pts {#hyg-08}
-An MCP config file is valid, and any credential-shaped field (token, key,
-secret, password…) uses `${ENV_VAR}` interpolation rather than a literal.
-The positive complement to HYG-04 — a repo with no MCP setup earns nothing
-here, same as any other bonus check.
-**Correção:** reference secrets as `"${VAR_NAME}"` and document required
-variables in `.env.example`.
+Quando existe config MCP (`.cursor/mcp.json`, `.mcp.json`,
+`.agents/mcp_config.json`), ela é JSON válido, e qualquer campo no formato
+de credencial (token, key, secret, password…) usa interpolação `${ENV_VAR}`
+em vez de literal. O complemento positivo de HYG-04.
+**Não se aplica** quando o repositório não tem config MCP. Não usar MCP não
+é uma interpolação faltando, então o check sai do numerador e do denominador.
+Adicionar uma config depois torna o check aplicável de novo.
+**Correção:** referencie segredos como `"${VAR_NAME}"` e documente as
+variáveis exigidas em `.env.example`.
 
 ## Plano de melhoria prático
 

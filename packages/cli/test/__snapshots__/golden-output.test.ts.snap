@@ -4,6 +4,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
 {
   "checks": [
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-01",
       "earned": 0,
@@ -16,6 +17,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Agent context file present (AGENTS.md)",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-02",
       "earned": 0,
@@ -28,6 +30,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Agent context file is substantive",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-03",
       "earned": 0,
@@ -40,6 +43,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Scoped rules in use",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-04",
       "earned": 0,
@@ -52,6 +56,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Rules have valid frontmatter",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-05",
       "earned": 0,
@@ -64,6 +69,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Rules are scoped, not all always-on",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-06",
       "earned": 0,
@@ -76,6 +82,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No bloated rules (≤500 lines each)",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-07",
       "earned": 0,
@@ -88,6 +95,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "README present",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-08",
       "earned": 1,
@@ -100,6 +108,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No legacy .cursorrules file",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-01",
       "earned": 0,
@@ -112,6 +121,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "At least one agent skill defined",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-02",
       "earned": 0,
@@ -124,6 +134,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Skills declare name and description",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-03",
       "earned": 0,
@@ -136,6 +147,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Explicit workflows/commands defined",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-04",
       "earned": 0,
@@ -148,6 +160,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Skill descriptions are trigger-worthy",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-01",
       "earned": 0,
@@ -160,6 +173,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Custom subagent defined",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-02",
       "earned": 0,
@@ -172,6 +186,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Subagents declare name and description",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-01",
       "earned": 0,
@@ -184,6 +199,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Hooks configuration present and valid JSON",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-02",
       "earned": 0,
@@ -196,6 +212,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Hook events and handlers are structurally valid",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-03",
       "earned": 0,
@@ -208,6 +225,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Gate hook guards risky operations",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-04",
       "earned": 0,
@@ -220,6 +238,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Feedback hook observes agent output",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-05",
       "earned": 0,
@@ -232,6 +251,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Hook scripts exist in the repository",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-01",
       "earned": 0,
@@ -244,6 +264,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Test runner configured",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-02",
       "earned": 0,
@@ -256,6 +277,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Linter configured",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-03",
       "earned": 0,
@@ -268,6 +290,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Type checking in place",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-04",
       "earned": 0,
@@ -280,6 +303,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Formatter configured",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-05",
       "earned": 0,
@@ -292,6 +316,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Test files actually exist",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-01",
       "earned": 0,
@@ -304,6 +329,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "CI pipeline configured",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-02",
       "earned": 0,
@@ -316,6 +342,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "CI runs the test suite",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-03",
       "earned": 0,
@@ -328,6 +355,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "CI runs lint / type checks",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-04",
       "earned": 0,
@@ -340,6 +368,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Pre-commit checks installed",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-01",
       "earned": 0,
@@ -352,6 +381,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": ".gitignore present",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-02",
       "earned": 0,
@@ -364,6 +394,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": ".gitignore covers environment files",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-03",
       "earned": 4,
@@ -376,6 +407,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No unprotected .env files in the tree",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-04",
       "earned": 4,
@@ -388,6 +420,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "MCP configuration free of credentials",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-05",
       "earned": 0,
@@ -400,6 +433,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "License present",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-06",
       "earned": 2,
@@ -412,6 +446,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No credential signatures in harness files",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-07",
       "earned": 3,
@@ -424,10 +459,11 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Dependency lockfile committed",
     },
     {
+      "applicable": false,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-08",
       "earned": 0,
-      "evidence": "No MCP config found (.cursor/mcp.json, .mcp.json, or .agents/mcp_config.json).",
+      "evidence": "No MCP config is in use; HYG-08 does not apply.",
       "id": "HYG-08",
       "passed": false,
       "points": 3,
@@ -482,14 +518,15 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "applicable": true,
       "earned": 13,
       "id": "hygiene",
-      "max": 23,
-      "percent": 57,
+      "max": 20,
+      "percent": 65,
       "title": "Hygiene & Safety",
     },
   ],
   "effective": {
     "checks": [
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-01",
         "earned": 0,
@@ -502,6 +539,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Agent context file present (AGENTS.md)",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-02",
         "earned": 0,
@@ -514,6 +552,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Agent context file is substantive",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-03",
         "earned": 0,
@@ -526,6 +565,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Scoped rules in use",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-04",
         "earned": 0,
@@ -538,6 +578,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Rules have valid frontmatter",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-05",
         "earned": 0,
@@ -550,6 +591,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Rules are scoped, not all always-on",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-06",
         "earned": 0,
@@ -562,6 +604,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No bloated rules (≤500 lines each)",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-07",
         "earned": 0,
@@ -574,6 +617,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "README present",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-08",
         "earned": 1,
@@ -586,6 +630,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No legacy .cursorrules file",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-01",
         "earned": 0,
@@ -598,6 +643,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "At least one agent skill defined",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-02",
         "earned": 0,
@@ -610,6 +656,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Skills declare name and description",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-03",
         "earned": 0,
@@ -622,6 +669,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Explicit workflows/commands defined",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-04",
         "earned": 0,
@@ -634,6 +682,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Skill descriptions are trigger-worthy",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-01",
         "earned": 0,
@@ -646,6 +695,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Custom subagent defined",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-02",
         "earned": 0,
@@ -658,6 +708,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Subagents declare name and description",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-01",
         "earned": 0,
@@ -670,6 +721,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Hooks configuration present and valid JSON",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-02",
         "earned": 0,
@@ -682,6 +734,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Hook events and handlers are structurally valid",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-03",
         "earned": 0,
@@ -694,6 +747,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Gate hook guards risky operations",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-04",
         "earned": 0,
@@ -706,6 +760,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Feedback hook observes agent output",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-05",
         "earned": 0,
@@ -718,6 +773,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Hook scripts exist in the repository",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-01",
         "earned": 0,
@@ -730,6 +786,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Test runner configured",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-02",
         "earned": 0,
@@ -742,6 +799,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Linter configured",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-03",
         "earned": 0,
@@ -754,6 +812,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Type checking in place",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-04",
         "earned": 0,
@@ -766,6 +825,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Formatter configured",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-05",
         "earned": 0,
@@ -778,6 +838,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Test files actually exist",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-01",
         "earned": 0,
@@ -790,6 +851,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "CI pipeline configured",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-02",
         "earned": 0,
@@ -802,6 +864,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "CI runs the test suite",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-03",
         "earned": 0,
@@ -814,6 +877,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "CI runs lint / type checks",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-04",
         "earned": 0,
@@ -826,6 +890,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Pre-commit checks installed",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-01",
         "earned": 0,
@@ -838,6 +903,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": ".gitignore present",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-02",
         "earned": 0,
@@ -850,6 +916,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": ".gitignore covers environment files",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-03",
         "earned": 4,
@@ -862,6 +929,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No unprotected .env files in the tree",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-04",
         "earned": 4,
@@ -874,6 +942,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "MCP configuration free of credentials",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-05",
         "earned": 0,
@@ -886,6 +955,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "License present",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-06",
         "earned": 2,
@@ -898,6 +968,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No credential signatures in harness files",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-07",
         "earned": 3,
@@ -910,10 +981,11 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Dependency lockfile committed",
       },
       {
+        "applicable": false,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-08",
         "earned": 0,
-        "evidence": "No MCP config found (.cursor/mcp.json, .mcp.json, or .agents/mcp_config.json).",
+        "evidence": "No MCP config is in use; HYG-08 does not apply.",
         "id": "HYG-08",
         "passed": false,
         "points": 3,
@@ -968,8 +1040,8 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "applicable": true,
         "earned": 13,
         "id": "hygiene",
-        "max": 23,
-        "percent": 57,
+        "max": 20,
+        "percent": 65,
         "title": "Hygiene & Safety",
       },
     ],
@@ -984,7 +1056,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
     },
     "score": {
       "earned": 14,
-      "max": 108,
+      "max": 105,
       "percent": 13,
     },
   },
@@ -1014,7 +1086,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
   },
   "score": {
     "earned": 14,
-    "max": 108,
+    "max": 105,
     "percent": 13,
   },
   "truncated": false,
@@ -1035,6 +1107,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
 {
   "checks": [
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-01",
       "earned": 4,
@@ -1047,6 +1120,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Agent context file present (AGENTS.md)",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-02",
       "earned": 3,
@@ -1059,6 +1133,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Agent context file is substantive",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-03",
       "earned": 0,
@@ -1071,6 +1146,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Scoped rules in use",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-04",
       "earned": 0,
@@ -1083,6 +1159,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Rules have valid frontmatter",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-05",
       "earned": 0,
@@ -1095,6 +1172,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Rules are scoped, not all always-on",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-06",
       "earned": 0,
@@ -1107,6 +1185,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No bloated rules (≤500 lines each)",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-07",
       "earned": 1,
@@ -1119,6 +1198,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "README present",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-08",
       "earned": 1,
@@ -1131,6 +1211,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No legacy .cursorrules file",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-01",
       "earned": 0,
@@ -1143,6 +1224,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "At least one agent skill defined",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-02",
       "earned": 0,
@@ -1155,6 +1237,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Skills declare name and description",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-03",
       "earned": 0,
@@ -1167,6 +1250,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Explicit workflows/commands defined",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-04",
       "earned": 0,
@@ -1179,6 +1263,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Skill descriptions are trigger-worthy",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-01",
       "earned": 0,
@@ -1191,6 +1276,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Custom subagent defined",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-02",
       "earned": 0,
@@ -1203,6 +1289,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Subagents declare name and description",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-01",
       "earned": 0,
@@ -1215,6 +1302,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Hooks configuration present and valid JSON",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-02",
       "earned": 0,
@@ -1227,6 +1315,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Hook events and handlers are structurally valid",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-03",
       "earned": 0,
@@ -1239,6 +1328,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Gate hook guards risky operations",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-04",
       "earned": 0,
@@ -1251,6 +1341,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Feedback hook observes agent output",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-05",
       "earned": 0,
@@ -1263,6 +1354,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Hook scripts exist in the repository",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-01",
       "earned": 0,
@@ -1275,6 +1367,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Test runner configured",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-02",
       "earned": 0,
@@ -1287,6 +1380,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Linter configured",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-03",
       "earned": 0,
@@ -1299,6 +1393,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Type checking in place",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-04",
       "earned": 0,
@@ -1311,6 +1406,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Formatter configured",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-05",
       "earned": 0,
@@ -1323,6 +1419,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Test files actually exist",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-01",
       "earned": 0,
@@ -1335,6 +1432,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "CI pipeline configured",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-02",
       "earned": 0,
@@ -1347,6 +1445,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "CI runs the test suite",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-03",
       "earned": 0,
@@ -1359,6 +1458,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "CI runs lint / type checks",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-04",
       "earned": 0,
@@ -1371,6 +1471,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Pre-commit checks installed",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-01",
       "earned": 0,
@@ -1383,6 +1484,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": ".gitignore present",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-02",
       "earned": 0,
@@ -1395,6 +1497,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": ".gitignore covers environment files",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-03",
       "earned": 4,
@@ -1407,6 +1510,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No unprotected .env files in the tree",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-04",
       "earned": 4,
@@ -1419,6 +1523,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "MCP configuration free of credentials",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-05",
       "earned": 0,
@@ -1431,6 +1536,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "License present",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-06",
       "earned": 2,
@@ -1443,6 +1549,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No credential signatures in harness files",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-07",
       "earned": 3,
@@ -1455,10 +1562,11 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Dependency lockfile committed",
     },
     {
+      "applicable": false,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-08",
       "earned": 0,
-      "evidence": "No MCP config found (.cursor/mcp.json, .mcp.json, or .agents/mcp_config.json).",
+      "evidence": "No MCP config is in use; HYG-08 does not apply.",
       "id": "HYG-08",
       "passed": false,
       "points": 3,
@@ -1513,14 +1621,15 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "applicable": true,
       "earned": 13,
       "id": "hygiene",
-      "max": 23,
-      "percent": 57,
+      "max": 20,
+      "percent": 65,
       "title": "Hygiene & Safety",
     },
   ],
   "effective": {
     "checks": [
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-01",
         "earned": 4,
@@ -1533,6 +1642,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Agent context file present (AGENTS.md)",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-02",
         "earned": 3,
@@ -1545,6 +1655,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Agent context file is substantive",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-03",
         "earned": 0,
@@ -1557,6 +1668,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Scoped rules in use",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-04",
         "earned": 0,
@@ -1569,6 +1681,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Rules have valid frontmatter",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-05",
         "earned": 0,
@@ -1581,6 +1694,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Rules are scoped, not all always-on",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-06",
         "earned": 0,
@@ -1593,6 +1707,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No bloated rules (≤500 lines each)",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-07",
         "earned": 1,
@@ -1605,6 +1720,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "README present",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-08",
         "earned": 1,
@@ -1617,6 +1733,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No legacy .cursorrules file",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-01",
         "earned": 0,
@@ -1629,6 +1746,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "At least one agent skill defined",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-02",
         "earned": 0,
@@ -1641,6 +1759,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Skills declare name and description",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-03",
         "earned": 0,
@@ -1653,6 +1772,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Explicit workflows/commands defined",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-04",
         "earned": 0,
@@ -1665,6 +1785,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Skill descriptions are trigger-worthy",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-01",
         "earned": 0,
@@ -1677,6 +1798,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Custom subagent defined",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-02",
         "earned": 0,
@@ -1689,6 +1811,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Subagents declare name and description",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-01",
         "earned": 0,
@@ -1701,6 +1824,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Hooks configuration present and valid JSON",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-02",
         "earned": 0,
@@ -1713,6 +1837,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Hook events and handlers are structurally valid",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-03",
         "earned": 0,
@@ -1725,6 +1850,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Gate hook guards risky operations",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-04",
         "earned": 0,
@@ -1737,6 +1863,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Feedback hook observes agent output",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-05",
         "earned": 0,
@@ -1749,6 +1876,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Hook scripts exist in the repository",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-01",
         "earned": 0,
@@ -1761,6 +1889,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Test runner configured",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-02",
         "earned": 0,
@@ -1773,6 +1902,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Linter configured",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-03",
         "earned": 0,
@@ -1785,6 +1915,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Type checking in place",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-04",
         "earned": 0,
@@ -1797,6 +1928,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Formatter configured",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-05",
         "earned": 0,
@@ -1809,6 +1941,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Test files actually exist",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-01",
         "earned": 0,
@@ -1821,6 +1954,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "CI pipeline configured",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-02",
         "earned": 0,
@@ -1833,6 +1967,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "CI runs the test suite",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-03",
         "earned": 0,
@@ -1845,6 +1980,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "CI runs lint / type checks",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-04",
         "earned": 0,
@@ -1857,6 +1993,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Pre-commit checks installed",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-01",
         "earned": 0,
@@ -1869,6 +2006,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": ".gitignore present",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-02",
         "earned": 0,
@@ -1881,6 +2019,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": ".gitignore covers environment files",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-03",
         "earned": 4,
@@ -1893,6 +2032,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No unprotected .env files in the tree",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-04",
         "earned": 4,
@@ -1905,6 +2045,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "MCP configuration free of credentials",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-05",
         "earned": 0,
@@ -1917,6 +2058,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "License present",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-06",
         "earned": 2,
@@ -1929,6 +2071,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No credential signatures in harness files",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-07",
         "earned": 3,
@@ -1941,10 +2084,11 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Dependency lockfile committed",
       },
       {
+        "applicable": false,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-08",
         "earned": 0,
-        "evidence": "No MCP config found (.cursor/mcp.json, .mcp.json, or .agents/mcp_config.json).",
+        "evidence": "No MCP config is in use; HYG-08 does not apply.",
         "id": "HYG-08",
         "passed": false,
         "points": 3,
@@ -1999,8 +2143,8 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "applicable": true,
         "earned": 13,
         "id": "hygiene",
-        "max": 23,
-        "percent": 57,
+        "max": 20,
+        "percent": 65,
         "title": "Hygiene & Safety",
       },
     ],
@@ -2016,8 +2160,8 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
     },
     "score": {
       "earned": 22,
-      "max": 108,
-      "percent": 20,
+      "max": 105,
+      "percent": 21,
     },
   },
   "gate": "maturity",
@@ -2047,8 +2191,8 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
   },
   "score": {
     "earned": 22,
-    "max": 108,
-    "percent": 20,
+    "max": 105,
+    "percent": 21,
   },
   "truncated": false,
   "verdicts": {
@@ -2068,6 +2212,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
 {
   "checks": [
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-01",
       "earned": 4,
@@ -2080,6 +2225,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Agent context file present (AGENTS.md)",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-02",
       "earned": 3,
@@ -2092,6 +2238,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Agent context file is substantive",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-03",
       "earned": 4,
@@ -2104,6 +2251,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Scoped rules in use",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-04",
       "earned": 3,
@@ -2116,6 +2264,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Rules have valid frontmatter",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-05",
       "earned": 2,
@@ -2128,6 +2277,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Rules are scoped, not all always-on",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-06",
       "earned": 2,
@@ -2140,6 +2290,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No bloated rules (≤500 lines each)",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-07",
       "earned": 1,
@@ -2152,6 +2303,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "README present",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-08",
       "earned": 1,
@@ -2164,6 +2316,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No legacy .cursorrules file",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-01",
       "earned": 4,
@@ -2176,6 +2329,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "At least one agent skill defined",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-02",
       "earned": 3,
@@ -2188,6 +2342,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Skills declare name and description",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-03",
       "earned": 3,
@@ -2200,6 +2355,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Explicit workflows/commands defined",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-04",
       "earned": 2,
@@ -2212,6 +2368,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Skill descriptions are trigger-worthy",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-01",
       "earned": 0,
@@ -2224,6 +2381,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Custom subagent defined",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-02",
       "earned": 0,
@@ -2236,6 +2394,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Subagents declare name and description",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-01",
       "earned": 0,
@@ -2248,6 +2407,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Hooks configuration present and valid JSON",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-02",
       "earned": 0,
@@ -2260,6 +2420,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Hook events and handlers are structurally valid",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-03",
       "earned": 0,
@@ -2272,6 +2433,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Gate hook guards risky operations",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-04",
       "earned": 0,
@@ -2284,6 +2446,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Feedback hook observes agent output",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-05",
       "earned": 0,
@@ -2296,6 +2459,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Hook scripts exist in the repository",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-01",
       "earned": 0,
@@ -2308,6 +2472,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Test runner configured",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-02",
       "earned": 0,
@@ -2320,6 +2485,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Linter configured",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-03",
       "earned": 0,
@@ -2332,6 +2498,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Type checking in place",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-04",
       "earned": 0,
@@ -2344,6 +2511,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Formatter configured",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-05",
       "earned": 0,
@@ -2356,6 +2524,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Test files actually exist",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-01",
       "earned": 0,
@@ -2368,6 +2537,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "CI pipeline configured",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-02",
       "earned": 0,
@@ -2380,6 +2550,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "CI runs the test suite",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-03",
       "earned": 0,
@@ -2392,6 +2563,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "CI runs lint / type checks",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-04",
       "earned": 0,
@@ -2404,6 +2576,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Pre-commit checks installed",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-01",
       "earned": 2,
@@ -2416,6 +2589,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": ".gitignore present",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-02",
       "earned": 3,
@@ -2428,6 +2602,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": ".gitignore covers environment files",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-03",
       "earned": 4,
@@ -2440,6 +2615,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No unprotected .env files in the tree",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-04",
       "earned": 4,
@@ -2452,6 +2628,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "MCP configuration free of credentials",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-05",
       "earned": 2,
@@ -2464,6 +2641,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "License present",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-06",
       "earned": 2,
@@ -2476,6 +2654,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No credential signatures in harness files",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-07",
       "earned": 3,
@@ -2488,10 +2667,11 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Dependency lockfile committed",
     },
     {
+      "applicable": false,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-08",
       "earned": 0,
-      "evidence": "No MCP config found (.cursor/mcp.json, .mcp.json, or .agents/mcp_config.json).",
+      "evidence": "No MCP config is in use; HYG-08 does not apply.",
       "id": "HYG-08",
       "passed": false,
       "points": 3,
@@ -2548,14 +2728,15 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "applicable": true,
       "earned": 20,
       "id": "hygiene",
-      "max": 23,
-      "percent": 87,
+      "max": 20,
+      "percent": 100,
       "title": "Hygiene & Safety",
     },
   ],
   "effective": {
     "checks": [
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-01",
         "earned": 4,
@@ -2568,6 +2749,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Agent context file present (AGENTS.md)",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-02",
         "earned": 3,
@@ -2580,6 +2762,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Agent context file is substantive",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-03",
         "earned": 4,
@@ -2592,6 +2775,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Scoped rules in use",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-04",
         "earned": 3,
@@ -2604,6 +2788,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Rules have valid frontmatter",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-05",
         "earned": 2,
@@ -2616,6 +2801,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Rules are scoped, not all always-on",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-06",
         "earned": 2,
@@ -2628,6 +2814,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No bloated rules (≤500 lines each)",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-07",
         "earned": 1,
@@ -2640,6 +2827,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "README present",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-08",
         "earned": 1,
@@ -2652,6 +2840,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No legacy .cursorrules file",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-01",
         "earned": 4,
@@ -2664,6 +2853,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "At least one agent skill defined",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-02",
         "earned": 3,
@@ -2676,6 +2866,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Skills declare name and description",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-03",
         "earned": 3,
@@ -2688,6 +2879,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Explicit workflows/commands defined",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-04",
         "earned": 2,
@@ -2700,6 +2892,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Skill descriptions are trigger-worthy",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-01",
         "earned": 0,
@@ -2712,6 +2905,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Custom subagent defined",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-02",
         "earned": 0,
@@ -2724,6 +2918,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Subagents declare name and description",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-01",
         "earned": 0,
@@ -2736,6 +2931,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Hooks configuration present and valid JSON",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-02",
         "earned": 0,
@@ -2748,6 +2944,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Hook events and handlers are structurally valid",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-03",
         "earned": 0,
@@ -2760,6 +2957,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Gate hook guards risky operations",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-04",
         "earned": 0,
@@ -2772,6 +2970,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Feedback hook observes agent output",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-05",
         "earned": 0,
@@ -2784,6 +2983,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Hook scripts exist in the repository",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-01",
         "earned": 0,
@@ -2796,6 +2996,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Test runner configured",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-02",
         "earned": 0,
@@ -2808,6 +3009,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Linter configured",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-03",
         "earned": 0,
@@ -2820,6 +3022,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Type checking in place",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-04",
         "earned": 0,
@@ -2832,6 +3035,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Formatter configured",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-05",
         "earned": 0,
@@ -2844,6 +3048,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Test files actually exist",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-01",
         "earned": 0,
@@ -2856,6 +3061,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "CI pipeline configured",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-02",
         "earned": 0,
@@ -2868,6 +3074,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "CI runs the test suite",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-03",
         "earned": 0,
@@ -2880,6 +3087,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "CI runs lint / type checks",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-04",
         "earned": 0,
@@ -2892,6 +3100,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Pre-commit checks installed",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-01",
         "earned": 2,
@@ -2904,6 +3113,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": ".gitignore present",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-02",
         "earned": 3,
@@ -2916,6 +3126,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": ".gitignore covers environment files",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-03",
         "earned": 4,
@@ -2928,6 +3139,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No unprotected .env files in the tree",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-04",
         "earned": 4,
@@ -2940,6 +3152,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "MCP configuration free of credentials",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-05",
         "earned": 2,
@@ -2952,6 +3165,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "License present",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-06",
         "earned": 2,
@@ -2964,6 +3178,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No credential signatures in harness files",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-07",
         "earned": 3,
@@ -2976,10 +3191,11 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Dependency lockfile committed",
       },
       {
+        "applicable": false,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-08",
         "earned": 0,
-        "evidence": "No MCP config found (.cursor/mcp.json, .mcp.json, or .agents/mcp_config.json).",
+        "evidence": "No MCP config is in use; HYG-08 does not apply.",
         "id": "HYG-08",
         "passed": false,
         "points": 3,
@@ -3036,8 +3252,8 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "applicable": true,
         "earned": 20,
         "id": "hygiene",
-        "max": 23,
-        "percent": 87,
+        "max": 20,
+        "percent": 100,
         "title": "Hygiene & Safety",
       },
     ],
@@ -3053,8 +3269,8 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
     },
     "score": {
       "earned": 52,
-      "max": 108,
-      "percent": 48,
+      "max": 105,
+      "percent": 50,
     },
   },
   "gate": "maturity",
@@ -3084,8 +3300,8 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
   },
   "score": {
     "earned": 52,
-    "max": 108,
-    "percent": 48,
+    "max": 105,
+    "percent": 50,
   },
   "truncated": false,
   "verdicts": {
@@ -3105,6 +3321,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
 {
   "checks": [
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-01",
       "earned": 4,
@@ -3117,6 +3334,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Agent context file present (AGENTS.md)",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-02",
       "earned": 3,
@@ -3129,6 +3347,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Agent context file is substantive",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-03",
       "earned": 4,
@@ -3141,6 +3360,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Scoped rules in use",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-04",
       "earned": 3,
@@ -3153,6 +3373,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Rules have valid frontmatter",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-05",
       "earned": 2,
@@ -3165,6 +3386,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Rules are scoped, not all always-on",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-06",
       "earned": 2,
@@ -3177,6 +3399,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No bloated rules (≤500 lines each)",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-07",
       "earned": 1,
@@ -3189,6 +3412,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "README present",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-08",
       "earned": 1,
@@ -3201,6 +3425,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No legacy .cursorrules file",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-01",
       "earned": 4,
@@ -3213,6 +3438,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "At least one agent skill defined",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-02",
       "earned": 3,
@@ -3225,6 +3451,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Skills declare name and description",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-03",
       "earned": 3,
@@ -3237,6 +3464,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Explicit workflows/commands defined",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-04",
       "earned": 2,
@@ -3249,6 +3477,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Skill descriptions are trigger-worthy",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-01",
       "earned": 3,
@@ -3261,6 +3490,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Custom subagent defined",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-02",
       "earned": 2,
@@ -3273,6 +3503,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Subagents declare name and description",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-01",
       "earned": 0,
@@ -3285,6 +3516,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Hooks configuration present and valid JSON",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-02",
       "earned": 0,
@@ -3297,6 +3529,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Hook events and handlers are structurally valid",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-03",
       "earned": 0,
@@ -3309,6 +3542,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Gate hook guards risky operations",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-04",
       "earned": 0,
@@ -3321,6 +3555,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Feedback hook observes agent output",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-05",
       "earned": 0,
@@ -3333,6 +3568,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Hook scripts exist in the repository",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-01",
       "earned": 6,
@@ -3345,6 +3581,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Test runner configured",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-02",
       "earned": 5,
@@ -3357,6 +3594,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Linter configured",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-03",
       "earned": 4,
@@ -3369,6 +3607,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Type checking in place",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-04",
       "earned": 3,
@@ -3381,6 +3620,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Formatter configured",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-05",
       "earned": 2,
@@ -3393,6 +3633,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Test files actually exist",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-01",
       "earned": 4,
@@ -3405,6 +3646,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "CI pipeline configured",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-02",
       "earned": 4,
@@ -3417,6 +3659,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "CI runs the test suite",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-03",
       "earned": 3,
@@ -3429,6 +3672,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "CI runs lint / type checks",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-04",
       "earned": 0,
@@ -3441,6 +3685,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Pre-commit checks installed",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-01",
       "earned": 2,
@@ -3453,6 +3698,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": ".gitignore present",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-02",
       "earned": 3,
@@ -3465,6 +3711,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": ".gitignore covers environment files",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-03",
       "earned": 4,
@@ -3477,6 +3724,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No unprotected .env files in the tree",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-04",
       "earned": 4,
@@ -3489,6 +3737,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "MCP configuration free of credentials",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-05",
       "earned": 2,
@@ -3501,6 +3750,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "License present",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-06",
       "earned": 2,
@@ -3513,6 +3763,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No credential signatures in harness files",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-07",
       "earned": 3,
@@ -3525,10 +3776,11 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Dependency lockfile committed",
     },
     {
+      "applicable": false,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-08",
       "earned": 0,
-      "evidence": "No MCP config found (.cursor/mcp.json, .mcp.json, or .agents/mcp_config.json).",
+      "evidence": "No MCP config is in use; HYG-08 does not apply.",
       "id": "HYG-08",
       "passed": false,
       "points": 3,
@@ -3585,14 +3837,15 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "applicable": true,
       "earned": 20,
       "id": "hygiene",
-      "max": 23,
-      "percent": 87,
+      "max": 20,
+      "percent": 100,
       "title": "Hygiene & Safety",
     },
   ],
   "effective": {
     "checks": [
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-01",
         "earned": 4,
@@ -3605,6 +3858,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Agent context file present (AGENTS.md)",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-02",
         "earned": 3,
@@ -3617,6 +3871,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Agent context file is substantive",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-03",
         "earned": 4,
@@ -3629,6 +3884,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Scoped rules in use",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-04",
         "earned": 3,
@@ -3641,6 +3897,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Rules have valid frontmatter",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-05",
         "earned": 2,
@@ -3653,6 +3910,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Rules are scoped, not all always-on",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-06",
         "earned": 2,
@@ -3665,6 +3923,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No bloated rules (≤500 lines each)",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-07",
         "earned": 1,
@@ -3677,6 +3936,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "README present",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-08",
         "earned": 1,
@@ -3689,6 +3949,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No legacy .cursorrules file",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-01",
         "earned": 4,
@@ -3701,6 +3962,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "At least one agent skill defined",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-02",
         "earned": 3,
@@ -3713,6 +3975,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Skills declare name and description",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-03",
         "earned": 3,
@@ -3725,6 +3988,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Explicit workflows/commands defined",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-04",
         "earned": 2,
@@ -3737,6 +4001,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Skill descriptions are trigger-worthy",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-01",
         "earned": 3,
@@ -3749,6 +4014,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Custom subagent defined",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-02",
         "earned": 2,
@@ -3761,6 +4027,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Subagents declare name and description",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-01",
         "earned": 0,
@@ -3773,6 +4040,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Hooks configuration present and valid JSON",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-02",
         "earned": 0,
@@ -3785,6 +4053,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Hook events and handlers are structurally valid",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-03",
         "earned": 0,
@@ -3797,6 +4066,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Gate hook guards risky operations",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-04",
         "earned": 0,
@@ -3809,6 +4079,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Feedback hook observes agent output",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-05",
         "earned": 0,
@@ -3821,6 +4092,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Hook scripts exist in the repository",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-01",
         "earned": 6,
@@ -3833,6 +4105,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Test runner configured",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-02",
         "earned": 5,
@@ -3845,6 +4118,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Linter configured",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-03",
         "earned": 4,
@@ -3857,6 +4131,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Type checking in place",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-04",
         "earned": 3,
@@ -3869,6 +4144,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Formatter configured",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-05",
         "earned": 2,
@@ -3881,6 +4157,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Test files actually exist",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-01",
         "earned": 4,
@@ -3893,6 +4170,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "CI pipeline configured",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-02",
         "earned": 4,
@@ -3905,6 +4183,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "CI runs the test suite",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-03",
         "earned": 3,
@@ -3917,6 +4196,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "CI runs lint / type checks",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-04",
         "earned": 0,
@@ -3929,6 +4209,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Pre-commit checks installed",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-01",
         "earned": 2,
@@ -3941,6 +4222,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": ".gitignore present",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-02",
         "earned": 3,
@@ -3953,6 +4235,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": ".gitignore covers environment files",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-03",
         "earned": 4,
@@ -3965,6 +4248,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No unprotected .env files in the tree",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-04",
         "earned": 4,
@@ -3977,6 +4261,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "MCP configuration free of credentials",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-05",
         "earned": 2,
@@ -3989,6 +4274,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "License present",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-06",
         "earned": 2,
@@ -4001,6 +4287,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No credential signatures in harness files",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-07",
         "earned": 3,
@@ -4013,10 +4300,11 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Dependency lockfile committed",
       },
       {
+        "applicable": false,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-08",
         "earned": 0,
-        "evidence": "No MCP config found (.cursor/mcp.json, .mcp.json, or .agents/mcp_config.json).",
+        "evidence": "No MCP config is in use; HYG-08 does not apply.",
         "id": "HYG-08",
         "passed": false,
         "points": 3,
@@ -4073,8 +4361,8 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "applicable": true,
         "earned": 20,
         "id": "hygiene",
-        "max": 23,
-        "percent": 87,
+        "max": 20,
+        "percent": 100,
         "title": "Hygiene & Safety",
       },
     ],
@@ -4089,8 +4377,8 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
     },
     "score": {
       "earned": 88,
-      "max": 108,
-      "percent": 81,
+      "max": 105,
+      "percent": 84,
     },
   },
   "gate": "maturity",
@@ -4119,8 +4407,8 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
   },
   "score": {
     "earned": 88,
-    "max": 108,
-    "percent": 81,
+    "max": 105,
+    "percent": 84,
   },
   "truncated": false,
   "verdicts": {
@@ -4140,6 +4428,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
 {
   "checks": [
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-01",
       "earned": 4,
@@ -4152,6 +4441,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Agent context file present (AGENTS.md)",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-02",
       "earned": 3,
@@ -4164,6 +4454,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Agent context file is substantive",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-03",
       "earned": 4,
@@ -4176,6 +4467,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Scoped rules in use",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-04",
       "earned": 3,
@@ -4188,6 +4480,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Rules have valid frontmatter",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-05",
       "earned": 2,
@@ -4200,6 +4493,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Rules are scoped, not all always-on",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-06",
       "earned": 2,
@@ -4212,6 +4506,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No bloated rules (≤500 lines each)",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-07",
       "earned": 1,
@@ -4224,6 +4519,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "README present",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-08",
       "earned": 1,
@@ -4236,6 +4532,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No legacy .cursorrules file",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-01",
       "earned": 4,
@@ -4248,6 +4545,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "At least one agent skill defined",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-02",
       "earned": 3,
@@ -4260,6 +4558,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Skills declare name and description",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-03",
       "earned": 3,
@@ -4272,6 +4571,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Explicit workflows/commands defined",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-04",
       "earned": 2,
@@ -4284,6 +4584,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Skill descriptions are trigger-worthy",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-01",
       "earned": 3,
@@ -4296,6 +4597,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Custom subagent defined",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-02",
       "earned": 2,
@@ -4308,6 +4610,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Subagents declare name and description",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-01",
       "earned": 4,
@@ -4321,6 +4624,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "warnings": [],
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-02",
       "earned": 2,
@@ -4334,6 +4638,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "warnings": [],
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-03",
       "earned": 4,
@@ -4346,6 +4651,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Gate hook guards risky operations",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-04",
       "earned": 2,
@@ -4358,6 +4664,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Feedback hook observes agent output",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-05",
       "earned": 2,
@@ -4370,6 +4677,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Hook scripts exist in the repository",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-01",
       "earned": 6,
@@ -4382,6 +4690,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Test runner configured",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-02",
       "earned": 5,
@@ -4394,6 +4703,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Linter configured",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-03",
       "earned": 4,
@@ -4406,6 +4716,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Type checking in place",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-04",
       "earned": 3,
@@ -4418,6 +4729,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Formatter configured",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-05",
       "earned": 2,
@@ -4430,6 +4742,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Test files actually exist",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-01",
       "earned": 4,
@@ -4442,6 +4755,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "CI pipeline configured",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-02",
       "earned": 4,
@@ -4454,6 +4768,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "CI runs the test suite",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-03",
       "earned": 3,
@@ -4466,6 +4781,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "CI runs lint / type checks",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-04",
       "earned": 3,
@@ -4478,6 +4794,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Pre-commit checks installed",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-01",
       "earned": 2,
@@ -4490,6 +4807,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": ".gitignore present",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-02",
       "earned": 3,
@@ -4502,6 +4820,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": ".gitignore covers environment files",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-03",
       "earned": 4,
@@ -4514,6 +4833,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No unprotected .env files in the tree",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-04",
       "earned": 4,
@@ -4526,6 +4846,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "MCP configuration free of credentials",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-05",
       "earned": 2,
@@ -4538,6 +4859,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "License present",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-06",
       "earned": 2,
@@ -4550,6 +4872,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No credential signatures in harness files",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-07",
       "earned": 3,
@@ -4562,6 +4885,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Dependency lockfile committed",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-08",
       "earned": 3,
@@ -4630,6 +4954,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
   "effective": {
     "checks": [
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-01",
         "earned": 4,
@@ -4642,6 +4967,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Agent context file present (AGENTS.md)",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-02",
         "earned": 3,
@@ -4654,6 +4980,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Agent context file is substantive",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-03",
         "earned": 4,
@@ -4666,6 +4993,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Scoped rules in use",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-04",
         "earned": 3,
@@ -4678,6 +5006,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Rules have valid frontmatter",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-05",
         "earned": 2,
@@ -4690,6 +5019,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Rules are scoped, not all always-on",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-06",
         "earned": 2,
@@ -4702,6 +5032,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No bloated rules (≤500 lines each)",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-07",
         "earned": 1,
@@ -4714,6 +5045,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "README present",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-08",
         "earned": 1,
@@ -4726,6 +5058,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No legacy .cursorrules file",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-01",
         "earned": 4,
@@ -4738,6 +5071,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "At least one agent skill defined",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-02",
         "earned": 3,
@@ -4750,6 +5084,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Skills declare name and description",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-03",
         "earned": 3,
@@ -4762,6 +5097,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Explicit workflows/commands defined",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-04",
         "earned": 2,
@@ -4774,6 +5110,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Skill descriptions are trigger-worthy",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-01",
         "earned": 3,
@@ -4786,6 +5123,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Custom subagent defined",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-02",
         "earned": 2,
@@ -4798,6 +5136,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Subagents declare name and description",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-01",
         "earned": 4,
@@ -4811,6 +5150,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "warnings": [],
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-02",
         "earned": 2,
@@ -4824,6 +5164,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "warnings": [],
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-03",
         "earned": 4,
@@ -4836,6 +5177,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Gate hook guards risky operations",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-04",
         "earned": 2,
@@ -4848,6 +5190,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Feedback hook observes agent output",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-05",
         "earned": 2,
@@ -4860,6 +5203,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Hook scripts exist in the repository",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-01",
         "earned": 6,
@@ -4872,6 +5216,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Test runner configured",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-02",
         "earned": 5,
@@ -4884,6 +5229,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Linter configured",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-03",
         "earned": 4,
@@ -4896,6 +5242,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Type checking in place",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-04",
         "earned": 3,
@@ -4908,6 +5255,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Formatter configured",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-05",
         "earned": 2,
@@ -4920,6 +5268,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Test files actually exist",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-01",
         "earned": 4,
@@ -4932,6 +5281,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "CI pipeline configured",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-02",
         "earned": 4,
@@ -4944,6 +5294,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "CI runs the test suite",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-03",
         "earned": 3,
@@ -4956,6 +5307,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "CI runs lint / type checks",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-04",
         "earned": 3,
@@ -4968,6 +5320,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Pre-commit checks installed",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-01",
         "earned": 2,
@@ -4980,6 +5333,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": ".gitignore present",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-02",
         "earned": 3,
@@ -4992,6 +5346,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": ".gitignore covers environment files",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-03",
         "earned": 4,
@@ -5004,6 +5359,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No unprotected .env files in the tree",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-04",
         "earned": 4,
@@ -5016,6 +5372,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "MCP configuration free of credentials",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-05",
         "earned": 2,
@@ -5028,6 +5385,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "License present",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-06",
         "earned": 2,
@@ -5040,6 +5398,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No credential signatures in harness files",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-07",
         "earned": 3,
@@ -5052,6 +5411,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Dependency lockfile committed",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-08",
         "earned": 3,
@@ -5175,6 +5535,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
 {
   "checks": [
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-01",
       "earned": 4,
@@ -5187,6 +5548,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Agent context file present (AGENTS.md)",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-02",
       "earned": 3,
@@ -5199,6 +5561,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Agent context file is substantive",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-03",
       "earned": 4,
@@ -5211,6 +5574,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Scoped rules in use",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-04",
       "earned": 3,
@@ -5223,6 +5587,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Rules have valid frontmatter",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-05",
       "earned": 2,
@@ -5235,6 +5600,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Rules are scoped, not all always-on",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-06",
       "earned": 2,
@@ -5247,6 +5613,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No bloated rules (≤500 lines each)",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-07",
       "earned": 1,
@@ -5259,6 +5626,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "README present",
     },
     {
+      "applicable": true,
       "dimension": "context",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-08",
       "earned": 1,
@@ -5271,10 +5639,11 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No legacy .cursorrules file",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-01",
       "earned": 4,
-      "evidence": "Found 8 skill(s) (codex, cursor, devin, claude-code): .agents/skills/pr-release-audit/SKILL.md, .cursor/skills/release/SKILL.md, fixtures/devin-cli/.devin/skills/verify/SKILL.md, …",
+      "evidence": "Found 9 skill(s) (codex, cursor, devin, claude-code): .agents/skills/oss-github-issue-to-release/SKILL.md, .agents/skills/pr-release-audit/SKILL.md, .cursor/skills/release/SKILL.md, …",
       "id": "SKL-01",
       "passed": true,
       "points": 4,
@@ -5283,10 +5652,11 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "At least one agent skill defined",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-02",
       "earned": 3,
-      "evidence": "All 8 skill(s) declare name and description.",
+      "evidence": "All 9 skill(s) declare name and description.",
       "id": "SKL-02",
       "passed": true,
       "points": 3,
@@ -5295,6 +5665,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Skills declare name and description",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-03",
       "earned": 3,
@@ -5307,10 +5678,11 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Explicit workflows/commands defined",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-04",
       "earned": 2,
-      "evidence": "All 8 skill description(s) are ≥40 characters.",
+      "evidence": "All 9 skill description(s) are ≥40 characters.",
       "id": "SKL-04",
       "passed": true,
       "points": 2,
@@ -5319,6 +5691,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Skill descriptions are trigger-worthy",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-01",
       "earned": 3,
@@ -5331,6 +5704,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Custom subagent defined",
     },
     {
+      "applicable": true,
       "dimension": "skills",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-02",
       "earned": 2,
@@ -5343,6 +5717,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Subagents declare name and description",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-01",
       "earned": 4,
@@ -5377,6 +5752,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       ],
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-02",
       "earned": 2,
@@ -5390,6 +5766,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "warnings": [],
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-03",
       "earned": 4,
@@ -5402,6 +5779,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Gate hook guards risky operations",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-04",
       "earned": 2,
@@ -5414,6 +5792,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Feedback hook observes agent output",
     },
     {
+      "applicable": true,
       "dimension": "hooks",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-05",
       "earned": 2,
@@ -5426,6 +5805,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Hook scripts exist in the repository",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-01",
       "earned": 6,
@@ -5438,6 +5818,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Test runner configured",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-02",
       "earned": 5,
@@ -5450,6 +5831,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Linter configured",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-03",
       "earned": 4,
@@ -5462,6 +5844,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Type checking in place",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-04",
       "earned": 3,
@@ -5474,6 +5857,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Formatter configured",
     },
     {
+      "applicable": true,
       "dimension": "sensors",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-05",
       "earned": 2,
@@ -5486,6 +5870,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Test files actually exist",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-01",
       "earned": 4,
@@ -5498,6 +5883,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "CI pipeline configured",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-02",
       "earned": 4,
@@ -5510,6 +5896,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "CI runs the test suite",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-03",
       "earned": 3,
@@ -5522,6 +5909,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "CI runs lint / type checks",
     },
     {
+      "applicable": true,
       "dimension": "ci",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-04",
       "earned": 3,
@@ -5534,6 +5922,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Pre-commit checks installed",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-01",
       "earned": 2,
@@ -5546,6 +5935,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": ".gitignore present",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-02",
       "earned": 3,
@@ -5558,6 +5948,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": ".gitignore covers environment files",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-03",
       "earned": 4,
@@ -5570,6 +5961,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No unprotected .env files in the tree",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-04",
       "earned": 4,
@@ -5582,6 +5974,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "MCP configuration free of credentials",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-05",
       "earned": 2,
@@ -5594,10 +5987,11 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "License present",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-06",
       "earned": 2,
-      "evidence": "Scanned 44 harness file(s); no credential signatures.",
+      "evidence": "Scanned 45 harness file(s); no credential signatures.",
       "id": "HYG-06",
       "passed": true,
       "points": 2,
@@ -5606,6 +6000,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "No credential signatures in harness files",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-07",
       "earned": 3,
@@ -5618,6 +6013,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
       "title": "Dependency lockfile committed",
     },
     {
+      "applicable": true,
       "dimension": "hygiene",
       "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-08",
       "earned": 3,
@@ -5692,6 +6088,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
   "effective": {
     "checks": [
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-01",
         "earned": 4,
@@ -5704,6 +6101,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Agent context file present (AGENTS.md)",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-02",
         "earned": 3,
@@ -5716,6 +6114,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Agent context file is substantive",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-03",
         "earned": 4,
@@ -5728,6 +6127,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Scoped rules in use",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-04",
         "earned": 3,
@@ -5740,6 +6140,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Rules have valid frontmatter",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-05",
         "earned": 2,
@@ -5752,6 +6153,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Rules are scoped, not all always-on",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-06",
         "earned": 2,
@@ -5764,6 +6166,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No bloated rules (≤500 lines each)",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-07",
         "earned": 1,
@@ -5776,6 +6179,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "README present",
       },
       {
+        "applicable": true,
         "dimension": "context",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-08",
         "earned": 1,
@@ -5788,10 +6192,11 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No legacy .cursorrules file",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-01",
         "earned": 4,
-        "evidence": "Found 8 skill(s) (codex, cursor, devin, claude-code): .agents/skills/pr-release-audit/SKILL.md, .cursor/skills/release/SKILL.md, fixtures/devin-cli/.devin/skills/verify/SKILL.md, …",
+        "evidence": "Found 9 skill(s) (codex, cursor, devin, claude-code): .agents/skills/oss-github-issue-to-release/SKILL.md, .agents/skills/pr-release-audit/SKILL.md, .cursor/skills/release/SKILL.md, …",
         "id": "SKL-01",
         "passed": true,
         "points": 4,
@@ -5800,10 +6205,11 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "At least one agent skill defined",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-02",
         "earned": 3,
-        "evidence": "All 8 skill(s) declare name and description.",
+        "evidence": "All 9 skill(s) declare name and description.",
         "id": "SKL-02",
         "passed": true,
         "points": 3,
@@ -5812,6 +6218,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Skills declare name and description",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-03",
         "earned": 3,
@@ -5824,10 +6231,11 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Explicit workflows/commands defined",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#skl-04",
         "earned": 2,
-        "evidence": "All 8 skill description(s) are ≥40 characters.",
+        "evidence": "All 9 skill description(s) are ≥40 characters.",
         "id": "SKL-04",
         "passed": true,
         "points": 2,
@@ -5836,6 +6244,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Skill descriptions are trigger-worthy",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-01",
         "earned": 3,
@@ -5848,6 +6257,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Custom subagent defined",
       },
       {
+        "applicable": true,
         "dimension": "skills",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#agt-02",
         "earned": 2,
@@ -5860,6 +6270,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Subagents declare name and description",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-01",
         "earned": 4,
@@ -5894,6 +6305,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         ],
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-02",
         "earned": 2,
@@ -5907,6 +6319,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "warnings": [],
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-03",
         "earned": 4,
@@ -5919,6 +6332,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Gate hook guards risky operations",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-04",
         "earned": 2,
@@ -5931,6 +6345,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Feedback hook observes agent output",
       },
       {
+        "applicable": true,
         "dimension": "hooks",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hks-05",
         "earned": 2,
@@ -5943,6 +6358,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Hook scripts exist in the repository",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-01",
         "earned": 6,
@@ -5955,6 +6371,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Test runner configured",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-02",
         "earned": 5,
@@ -5967,6 +6384,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Linter configured",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-03",
         "earned": 4,
@@ -5979,6 +6397,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Type checking in place",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-04",
         "earned": 3,
@@ -5991,6 +6410,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Formatter configured",
       },
       {
+        "applicable": true,
         "dimension": "sensors",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#sns-05",
         "earned": 2,
@@ -6003,6 +6423,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Test files actually exist",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-01",
         "earned": 4,
@@ -6015,6 +6436,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "CI pipeline configured",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-02",
         "earned": 4,
@@ -6027,6 +6449,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "CI runs the test suite",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-03",
         "earned": 3,
@@ -6039,6 +6462,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "CI runs lint / type checks",
       },
       {
+        "applicable": true,
         "dimension": "ci",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#ci-04",
         "earned": 3,
@@ -6051,6 +6475,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Pre-commit checks installed",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-01",
         "earned": 2,
@@ -6063,6 +6488,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": ".gitignore present",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-02",
         "earned": 3,
@@ -6075,6 +6501,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": ".gitignore covers environment files",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-03",
         "earned": 4,
@@ -6087,6 +6514,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No unprotected .env files in the tree",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-04",
         "earned": 4,
@@ -6099,6 +6527,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "MCP configuration free of credentials",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-05",
         "earned": 2,
@@ -6111,10 +6540,11 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "License present",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-06",
         "earned": 2,
-        "evidence": "Scanned 44 harness file(s); no credential signatures.",
+        "evidence": "Scanned 45 harness file(s); no credential signatures.",
         "id": "HYG-06",
         "passed": true,
         "points": 2,
@@ -6123,6 +6553,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "No credential signatures in harness files",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-07",
         "earned": 3,
@@ -6135,6 +6566,7 @@ exports[`golden output — regression baseline for build/packaging/scan changes 
         "title": "Dependency lockfile committed",
       },
       {
+        "applicable": true,
         "dimension": "hygiene",
         "docsUrl": "https://paladini.github.io/harness-score/guide/measure-and-improve#hyg-08",
         "earned": 3,

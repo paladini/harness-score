@@ -57,7 +57,7 @@ Narrativa completa: [El modelo de madurez](./maturity-model).
 | `ci` | CI Feedback | 14 | Pipeline, pre-commit |
 | `hygiene` | Hygiene & Safety | 23 | .gitignore, secretos, lockfile, licencia, higiene MCP |
 
-**Total:** 108 puntos.
+**Total:** 108 puntos cuando todos los checks aplican. El `score.max` de un scan es menor cuando un check no aplica (`checks[].applicable` es `false`) o está en `"off"`.
 
 ## Catálogo de checks
 
@@ -231,10 +231,11 @@ La Action publica outputs, badge y reporte de maturity solo cuando maturity est�
 | `truncated` | Alias de compatibilidad; `true` cuando el snapshot de maturity o effective está incompleto por cualquier motivo |
 | `preset` | `{ extends, rules, resolved }` — personalización de equipo efectivamente aplicada; `resolved` solo lista checks cuya severidad difiere del default |
 | `level.capped`, `level.capReason` | `capped` es `true` cuando un requisito bloqueante del siguiente nivel nunca puede cumplirse bajo la config actual (ej.: dimensión excluida por preset); `capReason` explica el motivo |
-| `dimensions[].applicable` | `false` solo cuando todo check de esa dimensión resolvió a `"off"` |
+| `dimensions[].applicable` | `false` cuando ningún check de esa dimensión entra en la puntuación: todo check está en `"off"` y/o `checks[].applicable` es `false` |
+| `checks[].applicable` | `false` cuando el check no aplica a este repositorio (HYG-05 con `license` de código cerrado, HYG-08 sin config MCP). Excluido del numerador y del denominador. El default es `true`. Omitido en reportes antiguos, lo que significa aplicable |
 | `checks[].severity` | `"off"` \| `"warn"` \| `"error"` — la severidad resuelta que este scan usó para ese check |
 | `checks[].warnings` | Diagnósticos opcionales y no fatales `{ code, message, source? }`; terminal y Markdown los muestran sin cambiar puntos |
 
 `level`, `score`, dimensiones y checks siguen presentes para diagnóstico, pero son provisionales cuando su veredicto es `incomplete`. Terminal y Markdown identifican el snapshot no disponible. El badge siempre representa maturity y usa `incomplete`, nunca L0-L4, cuando maturity está incompleto. Los reportes antiguos sin `verdicts` se consideran completos cuando `truncated` es `false` e incompletos cuando es `true`.
 
-`--diff` compara campos de **maturity** por defecto (top-level `level` / `score` / `checks`) y rechaza un baseline o resultado actual con maturity incompleto. Effective incompleto no bloquea un diff de maturity.
+`--diff` compara campos de **maturity** por defecto (top-level `level` / `score` / `checks`) y rechaza un baseline o resultado actual con maturity incompleto. Effective incompleto no bloquea un diff de maturity. Un check que pasa de aplicable a no aplicable (o al revés) es un delta propio (`became-applicable` / `became-not-applicable`), separado de newly passing o newly failing.

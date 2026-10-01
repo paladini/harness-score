@@ -30,6 +30,7 @@ function makeCheck(overrides: Partial<CheckResult> = {}): CheckResult {
     remediation: 'Create an AGENTS.md.',
     docsUrl: 'https://paladini.github.io/harness-score/guide/measure-and-improve#ctx-01',
     severity: 'error',
+    applicable: true,
     ...overrides,
   };
 }
@@ -266,6 +267,27 @@ describe('renderTerminal', () => {
     const out = renderTerminal(makeReport(), diff);
     expect(out).toContain('Newly failing:');
     expect(out).not.toContain('Newly passing:');
+  });
+
+  test('not-applicable checks are listed apart from improvements', () => {
+    const out = renderTerminal(
+      makeReport({
+        checks: [
+          makeCheck({ id: 'HYG-01', passed: false }),
+          makeCheck({
+            id: 'HYG-08',
+            points: 3,
+            applicable: false,
+            evidence: 'No MCP config is in use; HYG-08 does not apply.',
+          }),
+        ],
+      }),
+    );
+    expect(out).toContain('Improvements (1)');
+    expect(out).toContain('HYG-01');
+    expect(out).toContain('Not applicable (1)');
+    expect(out).toContain('HYG-08 does not apply');
+    expect(out).not.toContain('(+3 pts)');
   });
 
   test('diff section shows "No change." when nothing changed at all', () => {

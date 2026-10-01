@@ -785,9 +785,12 @@ describe('hygiene checks', () => {
     expect((await check('HYG-04')).run(ctx).passed).toBe(true);
   });
 
-  test('HYG-08 fails when there is no mcp.json', async () => {
+  test('HYG-08 is not applicable when there is no mcp.json', async () => {
     const ctx = fakeContext({});
-    expect((await check('HYG-08')).run(ctx).passed).toBe(false);
+    const outcome = (await check('HYG-08')).run(ctx);
+    expect(outcome.passed).toBe(false);
+    expect(outcome.applicable).toBe(false);
+    expect(outcome.evidence).toContain('does not apply');
   });
 
   test('HYG-08 fails on a literal credential-shaped value', async () => {
@@ -862,12 +865,71 @@ describe('hygiene checks', () => {
 
   test('HYG-05 fails with no LICENSE file', async () => {
     const ctx = fakeContext({});
-    expect((await check('HYG-05')).run(ctx).passed).toBe(false);
+    const outcome = (await check('HYG-05')).run(ctx);
+    expect(outcome.passed).toBe(false);
+    expect(outcome.applicable).not.toBe(false);
   });
 
   test('HYG-05 passes with a LICENSE file', async () => {
     const ctx = fakeContext({ LICENSE: 'MIT' });
     expect((await check('HYG-05')).run(ctx).passed).toBe(true);
+  });
+
+  test.each([
+    ['composer.json', { license: 'proprietary' }, 'composer.json declares license "proprietary"'],
+    ['composer.json', { license: 'UNLICENSED' }, 'composer.json declares license "UNLICENSED"'],
+    [
+      'composer.json',
+      { license: ['proprietary', 'UNLICENSED'] },
+      'composer.json declares license ["proprietary","UNLICENSED"]',
+    ],
+    ['package.json', { license: 'UNLICENSED' }, 'package.json declares license "UNLICENSED"'],
+    ['package.json', { license: 'Proprietary' }, 'package.json declares license "Proprietary"'],
+  ])('HYG-05 is not applicable when root %s declares a closed-source license', async (file, manifest, evidence) => {
+    const ctx = fakeContext({ [file]: JSON.stringify(manifest) });
+    const outcome = (await check('HYG-05')).run(ctx);
+    expect(outcome.passed).toBe(false);
+    expect(outcome.applicable).toBe(false);
+    expect(outcome.evidence).toBe(`${evidence}; HYG-05 does not apply.`);
+  });
+
+  test('HYG-05 still fails when package.json is private without a closed-source license', async () => {
+    const ctx = fakeContext({ 'package.json': JSON.stringify({ private: true }) });
+    const outcome = (await check('HYG-05')).run(ctx);
+    expect(outcome.passed).toBe(false);
+    expect(outcome.applicable).not.toBe(false);
+    expect(outcome.evidence).toBe('No LICENSE file at repository root.');
+  });
+
+  test('HYG-05 still fails when the license is an SPDX id and no LICENSE file exists', async () => {
+    const ctx = fakeContext({ 'package.json': JSON.stringify({ license: 'MIT' }) });
+    const outcome = (await check('HYG-05')).run(ctx);
+    expect(outcome.passed).toBe(false);
+    expect(outcome.applicable).not.toBe(false);
+  });
+
+  test('HYG-05 still fails when a composer license array mixes proprietary with an SPDX id', async () => {
+    const ctx = fakeContext({ 'composer.json': JSON.stringify({ license: ['MIT', 'proprietary'] }) });
+    const outcome = (await check('HYG-05')).run(ctx);
+    expect(outcome.passed).toBe(false);
+    expect(outcome.applicable).not.toBe(false);
+  });
+
+  test('HYG-05 still fails when only a nested composer.json is proprietary', async () => {
+    const ctx = fakeContext({ 'packages/app/composer.json': JSON.stringify({ license: 'proprietary' }) });
+    const outcome = (await check('HYG-05')).run(ctx);
+    expect(outcome.passed).toBe(false);
+    expect(outcome.applicable).not.toBe(false);
+  });
+
+  test('HYG-05 passes when a LICENSE file exists beside a proprietary declaration', async () => {
+    const ctx = fakeContext({
+      LICENSE: 'Proprietary',
+      'composer.json': JSON.stringify({ license: 'proprietary' }),
+    });
+    const outcome = (await check('HYG-05')).run(ctx);
+    expect(outcome.passed).toBe(true);
+    expect(outcome.applicable).not.toBe(false);
   });
 
   test('HYG-06 fails when a harness file contains a credential signature', async () => {

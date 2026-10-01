@@ -9,6 +9,39 @@ import { fakeContext } from './helpers.js';
 
 const FIXTURES = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..', 'fixtures');
 
+describe('not-applicable hygiene checks leave the denominator', () => {
+  test('a proprietary repo with no MCP config drops HYG-05 and HYG-08 from the score', () => {
+    const ctx = fakeContext({
+      'composer.json': JSON.stringify({ license: 'proprietary' }),
+      '.gitignore': '.env\n',
+    });
+    const report = buildReportFromScanContext(ctx);
+    const hyg05 = report.checks.find((check) => check.id === 'HYG-05')!;
+    const hyg08 = report.checks.find((check) => check.id === 'HYG-08')!;
+    expect(hyg05.applicable).toBe(false);
+    expect(hyg05.passed).toBe(false);
+    expect(hyg05.earned).toBe(0);
+    expect(hyg08.applicable).toBe(false);
+    expect(hyg08.earned).toBe(0);
+
+    const hygiene = report.dimensions.find((dimension) => dimension.id === 'hygiene')!;
+    const scored = report.checks.filter(
+      (check) => check.dimension === 'hygiene' && check.applicable && check.severity !== 'off',
+    );
+    expect(hygiene.max).toBe(scored.reduce((sum, check) => sum + check.points, 0));
+    expect(hygiene.max).toBe(23 - hyg05.points - hyg08.points);
+    const scoredPoints = report.checks
+      .filter((check) => check.applicable && check.severity !== 'off')
+      .reduce((sum, check) => sum + check.points, 0);
+    expect(report.score.max).toBe(scoredPoints);
+    const failingIds = report.checks
+      .filter((check) => !check.passed && check.applicable)
+      .map((check) => check.id);
+    expect(failingIds).not.toContain('HYG-05');
+    expect(failingIds).not.toContain('HYG-08');
+  });
+});
+
 describe('dimension roll-up (score.ts aggregating checks/*.ts output)', () => {
   test('a partial pass within the skills dimension rolls up to the exact expected fraction', () => {
     // Only SKL-01 can pass here: a SKILL.md with no frontmatter and no
