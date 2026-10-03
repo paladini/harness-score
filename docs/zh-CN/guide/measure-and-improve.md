@@ -544,7 +544,7 @@ Claude Code：`PostToolUse`；Devin：`PostToolUse` 或 `Stop`）。
 
 #### SNS-01 · Test runner configured — 6 pts {#sns-01}
 存在真实的测试脚本/配置（vitest、jest、pytest、go test、cargo test、
-phpunit.xml、pest.php 等），或在 Composer 中声明的测试包
+文件加载 `node:test` 时的 `node --test`、phpunit.xml、pest.php 等），或在 Composer 中声明的测试包
 （`phpunit/phpunit`、`pestphp/pest` 等）。
 **修复：** 配置 runner 并提供一个明确的入口，在 AGENTS.md 中记录 —
 测试是智能体验证自身工作的方式。

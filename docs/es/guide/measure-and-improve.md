@@ -593,7 +593,7 @@ comandos pasan sin scripts locales aplicables.
 
 #### SNS-01 · Test runner configured — 6 pts {#sns-01}
 A real test script/config (vitest, jest, pytest, go test, cargo test,
-phpunit.xml, pest.php, …) or a declared Composer test package
+`node --test` when a file loads `node:test`, phpunit.xml, pest.php, …) or a declared Composer test package
 (`phpunit/phpunit`, `pestphp/pest`, …).
 **Corrección:** wire up the runner with one obvious entry point and document it in
 AGENTS.md — tests are how the agent verifies its own work.
