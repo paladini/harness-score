@@ -556,7 +556,7 @@ script नहीं होता, इसलिए वे pass होते ह�
 
 #### SNS-01 · Test runner configured — 6 pts {#sns-01}
 वास्तविक test script/config (vitest, jest, pytest, go test, cargo test,
-phpunit.xml, pest.php, …) या Composer में declared test package
+`node:test` load होने पर `node --test`, phpunit.xml, pest.php, …) या Composer में declared test package
 (`phpunit/phpunit`, `pestphp/pest`, …)।
 **सुधार:** runner wire करें एक obvious entry point के साथ और AGENTS.md में document करें —
 tests वह तरीका हैं जिससे एजेंट अपना काम verify करता है।

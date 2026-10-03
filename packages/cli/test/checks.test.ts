@@ -981,6 +981,11 @@ describe('agent checks', () => {
   });
 });
 
+/** Keeps the specifier out of this file so a self-scan does not treat the test source as a runner. */
+function nodeTestSource(source: string): string {
+  return source.replaceAll('__NODE_TEST__', ['node', 'test'].join(':'));
+}
+
 describe('sensor checks', () => {
   test('SNS-01 ignores npm default placeholder test script', async () => {
     const ctx = fakeContext({
@@ -1039,6 +1044,64 @@ describe('sensor checks', () => {
   test('SNS-01 fails with composer.json alone and no PHP test config', async () => {
     const ctx = fakeContext({ 'composer.json': '{}' });
     expect((await check('SNS-01')).run(ctx).passed).toBe(false);
+  });
+
+  test('SNS-01 passes when a test file loads node:test and there is no package.json', async () => {
+    const ctx = fakeContext({
+      'scripts/test/a.test.js': nodeTestSource(
+        "const { test } = require('__NODE_TEST__');\ntest('ok', () => {});\n",
+      ),
+    });
+    const outcome = (await check('SNS-01')).run(ctx);
+    expect(outcome.passed).toBe(true);
+    expect(outcome.evidence).toContain('node --test');
+    expect(outcome.evidence).toContain('scripts/test/a.test.js');
+  });
+
+  test('SNS-01 passes on an ESM node:test import', async () => {
+    const ctx = fakeContext({
+      'a.test.mjs': nodeTestSource("import { test } from '__NODE_TEST__';\ntest('ok', () => {});\n"),
+    });
+    expect((await check('SNS-01')).run(ctx).passed).toBe(true);
+  });
+
+  test('SNS-01 passes on a dynamic node:test import', async () => {
+    const ctx = fakeContext({
+      'a.test.js': nodeTestSource("const { test } = await import('__NODE_TEST__');\n"),
+    });
+    expect((await check('SNS-01')).run(ctx).passed).toBe(true);
+  });
+
+  test('SNS-01 passes when a file under test/ loads a node:test subpath', async () => {
+    const ctx = fakeContext({
+      'test/helper.js': nodeTestSource("const reporters = require('__NODE_TEST__/reporters');\n"),
+    });
+    expect((await check('SNS-01')).run(ctx).passed).toBe(true);
+  });
+
+  test('SNS-01 does not treat a bare test file or a CI node --test line as a runner', async () => {
+    const ctx = fakeContext({
+      'a.test.js': "test('ok', () => {});\n",
+      '.github/workflows/ci.yml': 'run: node --test a.test.js\n',
+      'README.md': nodeTestSource('Run node --test or require("__NODE_TEST__").\n'),
+    });
+    expect((await check('SNS-01')).run(ctx).passed).toBe(false);
+  });
+
+  test('SNS-01 does not treat node:assert as the built-in test runner', async () => {
+    const ctx = fakeContext({
+      'a.test.js': "const assert = require('node:assert');\n",
+    });
+    expect((await check('SNS-01')).run(ctx).passed).toBe(false);
+  });
+
+  test('SNS-01 still passes a package.json script that runs node --test', async () => {
+    const ctx = fakeContext({
+      'package.json': JSON.stringify({ scripts: { test: 'node --test' } }),
+    });
+    const outcome = (await check('SNS-01')).run(ctx);
+    expect(outcome.passed).toBe(true);
+    expect(outcome.evidence).toContain('package.json test script');
   });
 
   test('SNS-03 recognizes Astral ty.toml and [tool.ty] tables, including nested projects', async () => {

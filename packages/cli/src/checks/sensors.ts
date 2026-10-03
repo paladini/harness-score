@@ -63,6 +63,27 @@ function phpstanConfigEvidence(ctx: ScanContext): string | null {
 const TEST_FILE_RE =
   /(\.(test|spec)\.[jt]sx?$)|(_test\.go$)|((^|\/)test_[^/]+\.py$)|([^/]+_test\.py$)|(Test\.java$)|(_spec\.rb$)|((^|\/)tests?\/[^/]+)/;
 
+const JS_SOURCE_EXT = '(?:js|mjs|cjs|ts|mts|cts|jsx|tsx)';
+
+/** Test-like JS/TS paths, including Node's default `node --test` discovery names. */
+const NODE_TEST_CANDIDATE_RE = new RegExp(
+  String.raw`(?:\.(?:test|spec)\.${JS_SOURCE_EXT}$|_test\.${JS_SOURCE_EXT}$|(?:^|\/)test(?:-[^/]+)?\.${JS_SOURCE_EXT}$|(?:^|\/)tests?\/.*\.${JS_SOURCE_EXT}$)`,
+);
+
+/** `require('node:test')`, `from 'node:test'`, or `import('node:test')`, including subpaths. */
+const NODE_TEST_LOAD_RE =
+  /(?:\brequire\(\s*['"]node:test(?:\/[^'"]*)?['"]\s*\)|\bfrom\s+['"]node:test(?:\/[^'"]*)?['"]|\bimport\s*\(\s*['"]node:test(?:\/[^'"]*)?['"]\s*\))/;
+
+function nodeBuiltinTestEvidence(ctx: ScanContext): string | null {
+  for (const path of ctx.matching(NODE_TEST_CANDIDATE_RE)) {
+    const content = ctx.read(path);
+    if (content && NODE_TEST_LOAD_RE.test(content)) {
+      return `node:test built-in (node --test), e.g. ${path}`;
+    }
+  }
+  return null;
+}
+
 export const sensorChecks: Check[] = [
   {
     id: 'SNS-01',
@@ -70,7 +91,7 @@ export const sensorChecks: Check[] = [
     title: 'Test runner configured',
     points: 6,
     remediation:
-      'Wire up a test runner (vitest/jest, pytest, go test, cargo test…) with a standard entry point — tests are the strongest feedback sensor an agent can run on its own work.',
+      'Wire up a test runner (vitest/jest, pytest, go test, cargo test, node --test…) with a standard entry point — tests are the strongest feedback sensor an agent can run on its own work.',
     run(ctx) {
       const evidence: string[] = [];
       const pkg = rootPackageJson(ctx);
@@ -104,6 +125,8 @@ export const sensorChecks: Check[] = [
         if (ctx.has(f)) evidence.push(f);
       }
       if (ctx.has('tests/Pest.php')) evidence.push('tests/Pest.php');
+      const nodeBuiltin = nodeBuiltinTestEvidence(ctx);
+      if (nodeBuiltin) evidence.push(nodeBuiltin);
       for (const runner of ['phpunit/phpunit', 'pestphp/pest', 'codeception/codeception', 'behat/behat']) {
         if (hasComposerPackage(ctx, runner)) evidence.push(`${runner} in composer.json`);
       }

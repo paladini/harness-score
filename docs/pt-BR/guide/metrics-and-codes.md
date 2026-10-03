@@ -101,7 +101,7 @@ IDs estáveis — vinculados à remediação em [Medir e melhorar](./measure-and
 
 | ID | Pts | Analisa exatamente | Remediação |
 |---|---|---|---|
-| SNS-01 | 6 | Test runner configurado (script em `package.json`, pytest, phpunit.xml, pest, go test, …) | [sns-01](./measure-and-improve#sns-01) |
+| SNS-01 | 6 | Test runner configurado (script em `package.json`, pytest, phpunit.xml, pest, go test, node --test, …) | [sns-01](./measure-and-improve#sns-01) |
 | SNS-02 | 5 | Linter configurado (eslint, biome, ruff, phpcs, rector, golangci-lint, …) | [sns-02](./measure-and-improve#sns-02) |
 | SNS-03 | 4 | Type checking configurado (tsconfig, mypy, pyright, ty, phpstan, psalm, …) | [sns-03](./measure-and-improve#sns-03) |
 | SNS-04 | 3 | Formatter configurado (prettier, black, pint, php-cs-fixer, gofmt, …) | [sns-04](./measure-and-improve#sns-04) |
