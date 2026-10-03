@@ -1043,7 +1043,9 @@ describe('sensor checks', () => {
 
   test('SNS-01 fails with composer.json alone and no PHP test config', async () => {
     const ctx = fakeContext({ 'composer.json': '{}' });
-    expect((await check('SNS-01')).run(ctx).passed).toBe(false);
+    const outcome = (await check('SNS-01')).run(ctx);
+    expect(outcome.passed).toBe(false);
+    expect(outcome.evidence).toBe('No test runner configuration or test script detected.');
   });
 
   test('SNS-01 passes when a test file loads node:test and there is no package.json', async () => {
@@ -1085,14 +1087,21 @@ describe('sensor checks', () => {
       '.github/workflows/ci.yml': 'run: node --test a.test.js\n',
       'README.md': nodeTestSource('Run node --test or require("__NODE_TEST__").\n'),
     });
-    expect((await check('SNS-01')).run(ctx).passed).toBe(false);
+    const outcome = (await check('SNS-01')).run(ctx);
+    expect(outcome.passed).toBe(false);
+    expect(outcome.evidence).toBe(
+      'Found 1 test file(s), e.g. a.test.js, but no test runner or standard entry point detected.',
+    );
   });
 
   test('SNS-01 does not treat node:assert as the built-in test runner', async () => {
     const ctx = fakeContext({
       'a.test.js': "const assert = require('node:assert');\n",
     });
-    expect((await check('SNS-01')).run(ctx).passed).toBe(false);
+    const outcome = (await check('SNS-01')).run(ctx);
+    expect(outcome.passed).toBe(false);
+    expect(outcome.evidence).toContain('a.test.js');
+    expect(outcome.evidence).toContain('no test runner or standard entry point');
   });
 
   test('SNS-01 still passes a package.json script that runs node --test', async () => {

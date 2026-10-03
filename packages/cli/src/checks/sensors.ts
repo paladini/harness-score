@@ -130,9 +130,17 @@ export const sensorChecks: Check[] = [
       for (const runner of ['phpunit/phpunit', 'pestphp/pest', 'codeception/codeception', 'behat/behat']) {
         if (hasComposerPackage(ctx, runner)) evidence.push(`${runner} in composer.json`);
       }
-      return evidence.length > 0
-        ? { passed: true, evidence: `${evidence.slice(0, 3).join('; ')}.` }
-        : { passed: false, evidence: 'No test runner configuration or test script detected.' };
+      if (evidence.length > 0) {
+        return { passed: true, evidence: `${evidence.slice(0, 3).join('; ')}.` };
+      }
+      const testFiles = ctx.matching(TEST_FILE_RE);
+      return {
+        passed: false,
+        evidence:
+          testFiles.length > 0
+            ? `Found ${testFiles.length} test file(s), e.g. ${testFiles[0]}, but no test runner or standard entry point detected.`
+            : 'No test runner configuration or test script detected.',
+      };
     },
   },
   {
