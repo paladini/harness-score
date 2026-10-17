@@ -239,9 +239,12 @@ export const sensorChecks: Check[] = [
       }
       const pkg = rootPackageJson(ctx);
       if (pkg?.prettier !== undefined) evidence.push('prettier key in package.json');
-      if (hasDep(pkg, 'prettier') || hasDep(pkg, '@biomejs/biome'))
+      if (hasDep(pkg, 'prettier') || hasDep(pkg, '@biomejs/biome') || hasDep(pkg, 'oxfmt'))
         evidence.push('formatter in devDependencies');
       if (ctx.matching(/(^|\/)biome\.jsonc?$/).length > 0) evidence.push('biome (formats + lints)');
+      if (ctx.matching(/(^|\/)(\.oxfmtrc\.jsonc?|oxfmt\.config\.ts)$/).length > 0) {
+        evidence.push('oxfmt configuration');
+      }
       if (pyprojectHas(ctx, '[tool.black') || pyprojectHas(ctx, '[tool.ruff')) {
         evidence.push('python formatter via pyproject.toml');
       }

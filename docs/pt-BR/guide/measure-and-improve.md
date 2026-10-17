@@ -610,7 +610,7 @@ statically typed language.
 for free — [capítulo 4](./sensors-feedback#type-checking-the-free-sensor).
 
 #### SNS-04 · Formatter configured — 3 pts {#sns-04}
-prettier/biome, black/ruff-format, gofmt/rustfmt, pint, or php-cs-fixer
+prettier/biome/oxfmt, black/ruff-format, gofmt/rustfmt, pint, or php-cs-fixer
 (including `laravel/pint` in `composer.json` when no config file exists).
 **Correção:** formatting noise in diffs hides real mistakes from review.
 

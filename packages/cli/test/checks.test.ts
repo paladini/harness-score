@@ -1197,6 +1197,18 @@ describe('sensor checks', () => {
     expect((await check('SNS-04')).run(ctx).passed).toBe(true);
   });
 
+  test('SNS-04 passes with an oxfmt config file or oxfmt in devDependencies', async () => {
+    for (const file of ['.oxfmtrc.json', '.oxfmtrc.jsonc', 'oxfmt.config.ts']) {
+      const result = (await check('SNS-04')).run(fakeContext({ [file]: '{}' }));
+      expect(result.passed).toBe(true);
+      expect(result.evidence).toContain('oxfmt configuration');
+    }
+    const withDep = fakeContext({
+      'package.json': JSON.stringify({ devDependencies: { oxfmt: '0.73.0' } }),
+    });
+    expect((await check('SNS-04')).run(withDep).passed).toBe(true);
+  });
+
   test('SNS-05 fails with no test files', async () => {
     const ctx = fakeContext({});
     expect((await check('SNS-05')).run(ctx).passed).toBe(false);
