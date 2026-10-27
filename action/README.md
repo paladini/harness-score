@@ -35,11 +35,18 @@ the effective snapshot is complete.
 
 Pin a full commit SHA instead of `v1` for maximum supply-chain stability. The legacy
 `paladini/harness-score/action@<ref>` entrypoint remains compatible, but the
-root entrypoint is the canonical path. The root path does not change GitHub
-Dependency Review's license metadata: GitHub may report a SHA-pinned Action as
-having an unknown license even when its repository has a valid license file.
-This also affects other Actions, including `actions/checkout` ([upstream
-report](https://github.com/actions/dependency-review-action/issues/1169)).
+root entrypoint is the canonical path. GitHub's [Action metadata
+format](https://docs.github.com/en/actions/reference/workflows-and-actions/metadata-syntax)
+does not define a `license` field. Dependency Review relies on GitHub's
+Dependency Graph license data, which may be missing even when the Action's
+repository has a valid license file. A recent upstream report says full commit
+SHAs appeared to help with `actions/checkout`, but another report still shows
+unknown Action licenses ([#1169](https://github.com/actions/dependency-review-action/issues/1169),
+[#1099](https://github.com/actions/dependency-review-action/issues/1099)).
+Use the canonical root path with a full SHA first; a hosted Dependency Review
+run has not confirmed whether that combination resolves Harness Score's
+metadata. The reported legacy subdirectory path remains unknown in the exact
+consumer comparison.
 
 If your Dependency Review license policy blocks an unknown Harness Score
 Action, add an exact package URL exception to the consumer repository's
