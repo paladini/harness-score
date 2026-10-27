@@ -35,8 +35,31 @@ the effective snapshot is complete.
 
 Pin a full commit SHA instead of `v1` for maximum supply-chain stability. The legacy
 `paladini/harness-score/action@<ref>` entrypoint remains compatible, but the
-root entrypoint is recommended because GitHub dependency-review can associate
-it with this repository's MIT license.
+root entrypoint is the canonical path. The root path does not change GitHub
+Dependency Review's license metadata: GitHub may report a SHA-pinned Action as
+having an unknown license even when its repository has a valid license file.
+This also affects other Actions, including `actions/checkout` ([upstream
+report](https://github.com/actions/dependency-review-action/issues/1169)).
+
+If your Dependency Review license policy blocks an unknown Harness Score
+Action, add an exact package URL exception to the consumer repository's
+Dependency Review configuration. Replace `<HARNESS_SCORE_SHA>` with the same
+full commit SHA used by the `uses:` line:
+
+```yaml
+- uses: actions/dependency-review-action@<DEPENDENCY_REVIEW_SHA>
+  with:
+    allow-dependencies-licenses: >-
+      pkg:githubactions/paladini/harness-score@<HARNESS_SCORE_SHA>
+```
+
+For the legacy subdirectory entrypoint, use
+`pkg:githubactions/paladini/harness-score/action@<HARNESS_SCORE_SHA>` instead.
+This exception permits that pinned Action despite missing license metadata; it
+does not make Dependency Review report MIT. Update the package URL whenever the
+Action SHA changes. See the [Dependency Review configuration
+reference](https://github.com/actions/dependency-review-action#configuration-options)
+for details.
 
 ```markdown
 <img alt="Harness Score" src="https://raw.githubusercontent.com/<you>/<repo>/badges/harness-badge.svg" height="20">
