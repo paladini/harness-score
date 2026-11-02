@@ -35,8 +35,37 @@ the effective snapshot is complete.
 
 Pin a full commit SHA instead of `v1` for maximum supply-chain stability. The legacy
 `paladini/harness-score/action@<ref>` entrypoint remains compatible, but the
-root entrypoint is recommended because GitHub dependency-review can associate
-it with this repository's MIT license.
+root entrypoint is the canonical path. GitHub's [Action metadata
+format](https://docs.github.com/en/actions/reference/workflows-and-actions/metadata-syntax)
+does not define a `license` field. Dependency Review relies on GitHub's
+Dependency Graph license data, which may be missing even when the Action's
+repository has a valid license file. A hosted comparison using Harness Score
+v1.8.3 confirmed that the canonical root path pinned to a full SHA is recognized
+without an unknown-license warning, while the legacy `/action` subdirectory
+path remains unknown. This result was reproduced with Dependency Review v4.9.0
+and v5.0.0 ([v4.9.0 run](https://github.com/paladini/specgov/actions/runs/40555970849),
+[v5.0.0 run](https://github.com/paladini/specgov/actions/runs/40555970835)).
+Use `paladini/harness-score@<HARNESS_SCORE_SHA>` for the root entrypoint.
+
+If your Dependency Review license policy blocks an unknown Harness Score
+Action, add an exact package URL exception to the consumer repository's
+Dependency Review configuration. Replace `<HARNESS_SCORE_SHA>` with the same
+full commit SHA used by the `uses:` line:
+
+```yaml
+- uses: actions/dependency-review-action@<DEPENDENCY_REVIEW_SHA>
+  with:
+    allow-dependencies-licenses: >-
+      pkg:githubactions/paladini/harness-score@<HARNESS_SCORE_SHA>
+```
+
+For the legacy subdirectory entrypoint, use
+`pkg:githubactions/paladini/harness-score/action@<HARNESS_SCORE_SHA>` instead.
+This exception permits that pinned Action despite missing license metadata; it
+does not make Dependency Review report MIT. Update the package URL whenever the
+Action SHA changes. See the [Dependency Review configuration
+reference](https://github.com/actions/dependency-review-action#configuration-options)
+for details.
 
 ```markdown
 <img alt="Harness Score" src="https://raw.githubusercontent.com/<you>/<repo>/badges/harness-badge.svg" height="20">
