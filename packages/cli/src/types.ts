@@ -28,14 +28,14 @@ export interface ScanContext {
   incompleteReasons?: ScanIncompleteReason[];
   /** True when the relative path exists as a file. */
   has(relPath: string): boolean;
-  /** True when at least one scanned file lives under the relative directory path. Empty directories are not detected. */
-  hasDirectory(relPath: string): boolean;
+  /** True when at least one scanned file lives under the relative directory path. Empty directories are not detected. Optional for custom contexts; derived from `files` when absent. */
+  hasDirectory?(relPath: string): boolean;
   /** File content as UTF-8, or null when missing/unreadable/over the read limit. Cached. */
   read(relPath: string): string | null;
   /** All files whose relative path matches the regex. */
   matching(re: RegExp): string[];
-  /** Files matching a glob pattern, or null when the pattern uses unsupported syntax. */
-  matchingGlob(pattern: string): string[] | null;
+  /** Files matching a glob pattern, or null when the pattern uses unsupported syntax. Optional for custom contexts; derived from `files` when absent. */
+  matchingGlob?(pattern: string): string[] | null;
 }
 
 /** Non-fatal diagnostic attached to a check result. */

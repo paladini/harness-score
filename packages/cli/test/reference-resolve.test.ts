@@ -321,4 +321,14 @@ describe('every reference ends in one of the five states', () => {
   test('resolving twice gives the same records', () => {
     expect(resolveAll(doc)).toEqual(resolveAll(doc));
   });
+
+  test('a context without directory and glob lookups gives the same records', () => {
+    const { hasDirectory: _d, matchingGlob: _g, ...minimal } = fakeContext(BASE_FILES);
+    const { references } = extractReferences({
+      path: 'AGENTS.md',
+      kind: 'context-instruction',
+      content: doc,
+    });
+    expect(references.map(createResolver(minimal))).toEqual(resolveAll(doc));
+  });
 });

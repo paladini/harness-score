@@ -35,16 +35,19 @@ interface FileIndex {
 }
 
 /**
- * Exact lookups when every scanned path is already NFC; otherwise an NFC view
- * of the index, so a repository stored in decomposed form (common on macOS)
- * gives the same result everywhere.
+ * Exact lookups when the context offers directory and glob lookups and every
+ * scanned path is already NFC; otherwise a view built from `files`, so a
+ * repository stored in decomposed form (common on macOS) or a context without
+ * those lookups gives the same result everywhere.
  */
 function createIndex(ctx: ResolveContext): FileIndex {
-  if (ctx.files.every((file) => file === file.normalize('NFC'))) {
+  const { hasDirectory, matchingGlob } = ctx;
+  const composed = ctx.files.every((file) => file === file.normalize('NFC'));
+  if (hasDirectory && matchingGlob && composed) {
     return {
       fileExists: (path) => ctx.has(path),
-      dirExists: (path) => path === '' || ctx.hasDirectory(path),
-      glob: (pattern) => ctx.matchingGlob(pattern),
+      dirExists: (path) => path === '' || hasDirectory.call(ctx, path),
+      glob: (pattern) => matchingGlob.call(ctx, pattern),
       has: (path) => ctx.has(path),
       read: (path) => ctx.read(path),
       normalized: false,
@@ -65,7 +68,7 @@ function createIndex(ctx: ResolveContext): FileIndex {
     glob: (pattern) => filterGlob(pattern, files),
     has: (path) => real.has(path),
     read: (path) => ctx.read(real.get(path) ?? path),
-    normalized: true,
+    normalized: !composed,
   };
 }
 
