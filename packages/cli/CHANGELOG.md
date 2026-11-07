@@ -1,5 +1,11 @@
 # harness-score
 
+## 1.8.4
+
+### Patch Changes
+
+- 165e6b9: Document the GitHub Dependency Review workaround for SHA-pinned Actions with unknown license metadata. Thanks to [@pavel-kalmykov](https://github.com/pavel-kalmykov) for reporting the issue.
+
 ## 1.8.3
 
 ### Patch Changes
