@@ -7,6 +7,7 @@ import { hygieneChecks } from './hygiene.js';
 import { sensorChecks } from './sensors.js';
 import { skillChecks } from './skills.js';
 
+/** Ordered catalog of all built-in maturity checks. */
 export const ALL_CHECKS: Check[] = [
   ...contextChecks,
   ...skillChecks,

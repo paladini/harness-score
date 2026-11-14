@@ -124,6 +124,7 @@ function formatScopes(scopes: string[]): string {
   return scopes.join(', ');
 }
 
+/** Render a report and optional comparison for a terminal. */
 export function renderTerminal(report: Report, diff?: ReportDiff | null): string {
   const lines: string[] = [];
   const levelPaint = LEVEL_COLOR[report.level.index] ?? red;

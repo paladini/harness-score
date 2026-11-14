@@ -43,8 +43,16 @@ npm install --save-dev harness-score
 ```
 
 Also published on [GitHub Packages](https://github.com/paladini/harness-score/pkgs/npm/harness-score)
-as `@paladini/harness-score` and on [JSR](https://jsr.io/@paladini/harness-score)
-for Deno/Bun users.
+as `@paladini/harness-score` and on [JSR](https://jsr.io/@paladini/harness-score).
+To run the JSR CLI with Deno, allow it to read the repository and environment:
+
+```bash
+deno run --allow-read --allow-env jsr:@paladini/harness-score/cli .
+```
+
+Pin a package version in automated workflows for reproducible results. The
+scanner requires local filesystem access and is not a browser or edge-worker
+package.
 
 ## Usage
 
@@ -77,6 +85,15 @@ import { score } from 'harness-score';
 
 const report = score('/path/to/repo');
 console.log(report.level.index, report.level.name, report.score.percent);
+```
+
+For Deno, the same API is available from JSR:
+
+```ts
+import { score } from 'jsr:@paladini/harness-score@1';
+
+const report = score('.');
+console.log(report.level.name);
 ```
 
 `Report`, `Check`, `DimensionScore`, and every other shape are exported as

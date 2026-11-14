@@ -44,6 +44,7 @@ const MAX_FILES = 1_000_000;
 /** Never read file bodies larger than this (binary/artifact protection). */
 const MAX_READ_BYTES = 512 * 1024;
 
+/** Additional files made visible to the effective scan. */
 export interface ScanOverlay {
   label: string;
   /** Repo-relative path → absolute path for reading (repo wins on conflict). */
@@ -52,6 +53,7 @@ export interface ScanOverlay {
   incompleteReasons?: ScanIncompleteReason[];
 }
 
+/** Filesystem discovery and overlay options for a scan context. */
 export interface CreateScanOptions {
   overlays?: ScanOverlay[];
   /** Exact repo-relative paths to scan inside directories otherwise skipped. */
@@ -307,6 +309,7 @@ function buildContext(
   };
 }
 
+/** Build a synchronous, cached filesystem view for checks to inspect. */
 export function createScanContext(rootInput: string, options: CreateScanOptions = {}): ScanContext {
   const root = path.resolve(rootInput);
   const {

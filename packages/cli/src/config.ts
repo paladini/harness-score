@@ -2,7 +2,9 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { ALL_CHECKS } from './checks/index.js';
 
+/** Snapshot used to decide whether a maturity gate passes. */
 export type GateMode = 'maturity' | 'effective';
+/** Additional machine-level scope to include in the effective snapshot. */
 export type ScopeFlag = 'user' | 'system';
 
 /**
@@ -13,16 +15,19 @@ export type ScopeFlag = 'user' | 'system';
  */
 export type Severity = 'off' | 'warn' | 'error';
 
+/** Named additional filesystem root to include in the effective snapshot. */
 export interface ExtraRootEntry {
   id: string;
   path: string;
 }
 
+/** Options controlling filesystem discovery. */
 export interface ScanConfig {
   /** Exact repo-relative paths made visible inside otherwise skipped directories. */
   includePaths: string[];
 }
 
+/** Parsed team configuration for a scan. */
 export interface HarnessScoreConfig {
   scan?: ScanConfig;
   scopes: {
@@ -37,6 +42,7 @@ export interface HarnessScoreConfig {
   rules: Record<string, Severity>;
 }
 
+/** Configuration after defaults and command-line overrides have been applied. */
 export interface ResolvedScanConfig {
   scan?: ScanConfig;
   scopes: {
@@ -51,6 +57,7 @@ export interface ResolvedScanConfig {
   rules: Record<string, Severity>;
 }
 
+/** Default configuration when the repository supplies no overrides. */
 export const DEFAULT_CONFIG: HarnessScoreConfig = {
   scan: { includePaths: [] },
   scopes: { user: false, system: false },
@@ -60,6 +67,7 @@ export const DEFAULT_CONFIG: HarnessScoreConfig = {
   rules: {},
 };
 
+/** Name of the repository configuration file. */
 export const CONFIG_FILENAME = '.harness-score.json';
 
 /**
@@ -88,8 +96,9 @@ const CHECK_IDS = new Set(ALL_CHECKS.map((c) => c.id));
  * serious" can't bend on: nothing in this config format may silence an actual
  * secret-leak detector, only disclosure-and-review protects everything else.
  */
-export const PROTECTED_CHECKS = new Set(['HYG-03', 'HYG-04', 'HYG-06']);
+export const PROTECTED_CHECKS: Set<string> = new Set(['HYG-03', 'HYG-04', 'HYG-06']);
 
+/** Optional command-line overrides applied when resolving configuration. */
 export interface CliConfigOverrides {
   configPath?: string | null;
   /** When set, replaces config-file scope toggles. */
@@ -265,6 +274,7 @@ export function parseConfigObject(raw: unknown, source: string): HarnessScoreCon
   };
 }
 
+/** Effective check severity and its source. */
 export interface ResolvedSeverity {
   severity: Severity;
   source: 'default' | string;
@@ -297,6 +307,7 @@ export function resolveSeverities(cfg: {
   return resolved;
 }
 
+/** Read and validate a JSON configuration file; throws on invalid input. */
 export function loadConfigFile(configPath: string): HarnessScoreConfig {
   let raw: unknown;
   try {
@@ -307,12 +318,14 @@ export function loadConfigFile(configPath: string): HarnessScoreConfig {
   return parseConfigObject(raw, configPath);
 }
 
+/** Load the repository's configuration file, or return null if it does not exist. */
 export function discoverConfig(repoRoot: string): HarnessScoreConfig | null {
   const configPath = path.join(repoRoot, CONFIG_FILENAME);
   if (!fs.existsSync(configPath)) return null;
   return loadConfigFile(configPath);
 }
 
+/** Parse a comma-separated list of user and system scopes, rejecting unknown values. */
 export function parseScopeFlagList(value: string): ScopeFlag[] {
   const parts = value
     .split(',')
