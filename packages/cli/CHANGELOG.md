@@ -1,5 +1,13 @@
 # harness-score
 
+## 1.8.5
+
+### Patch Changes
+
+- c3c6d1e: Recognize oxfmt as a formatter. SNS-04 accepts `.oxfmtrc.json`, `.oxfmtrc.jsonc`, `oxfmt.config.ts`, `oxfmt.config.mts`, and `oxfmt` in the root `package.json` dependencies.
+  
+  Thanks to [@jirayusueb](https://github.com/jirayusueb) for contributing this change.
+
 ## 1.8.4
 
 ### Patch Changes
