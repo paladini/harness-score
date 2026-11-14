@@ -1,5 +1,11 @@
 # harness-score
 
+## 1.9.0
+
+### Minor Changes
+
+- 4599f57: Improve the JSR package's generated API documentation and TypeScript declarations, document Deno usage, and test the published source entrypoints with Deno and Bun. Expand npm search keywords for supported coding-agent ecosystems.
+
 ## 1.8.5
 
 ### Patch Changes

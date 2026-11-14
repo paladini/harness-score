@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import * as path from 'node:path';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
@@ -72,20 +73,39 @@ test('validates the repository release surfaces and contributor notes', () => {
 
 test('rejects release notes that omit required contributor credit', () => {
   const packageJson = JSON.parse(readFileSync(path.join(ROOT, 'packages', 'cli', 'package.json'), 'utf8'));
-  const section = extractReleaseSection(
-    readFileSync(path.join(ROOT, 'packages', 'cli', 'CHANGELOG.md'), 'utf8'),
-    packageJson.version,
-  );
-  const required = extractContributors(section);
-  assert.ok(required.length > 0, 'current release changelog must credit at least one contributor');
-  const result = validateRepositoryRelease({
-    expectedVersion: packageJson.version,
-    releaseBody: `Harness Score v${packageJson.version}`,
-    root: ROOT,
-  });
-
-  for (const { handle } of required) {
-    assert.ok(result.errors.some((error) => error.includes(`@${handle}`)));
+  const fixture = mkdtempSync(path.join(tmpdir(), 'harness-score-release-'));
+  try {
+    for (const entry of ['packages', 'action', 'action.yml', 'package-lock.json']) {
+      cpSync(path.join(ROOT, entry), path.join(fixture, entry), {
+        recursive: true,
+        filter: (source) => !source.split(path.sep).includes('node_modules'),
+      });
+    }
+    const section =
+      '### Patch Changes\n\n- Fix a bug. Thanks to [@contributor](https://github.com/contributor).';
+    writeFileSync(
+      path.join(fixture, 'packages', 'cli', 'CHANGELOG.md'),
+      `# harness-score\n\n## ${packageJson.version}\n\n${section}\n`,
+    );
+    const body = generateReleaseNotes({
+      version: packageJson.version,
+      section,
+      summary: 'A tested release.',
+    });
+    const withCredit = validateRepositoryRelease({
+      expectedVersion: packageJson.version,
+      releaseBody: body,
+      root: fixture,
+    });
+    assert.deepEqual(withCredit.errors, []);
+    const withoutCredit = validateRepositoryRelease({
+      expectedVersion: packageJson.version,
+      releaseBody: body.replaceAll('@contributor', '@someone-else'),
+      root: fixture,
+    });
+    assert.ok(withoutCredit.errors.some((error) => error.includes('@contributor')));
+  } finally {
+    rmSync(fixture, { recursive: true, force: true });
   }
 });
 
