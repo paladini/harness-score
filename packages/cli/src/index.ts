@@ -37,6 +37,7 @@ import { type CliConfigOverrides, resolveScanConfig } from './config.js';
 import { buildReport } from './score.js';
 import type { Report } from './types.js';
 
+/** Options for resolving configuration before scanning a repository. */
 export interface ScoreOptions extends CliConfigOverrides {}
 
 /** One-call API: scan a directory and get the full report. */

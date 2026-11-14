@@ -1,5 +1,6 @@
 import type { Report, ScanIncompleteReason, ScanVerdict } from './types.js';
 
+/** Report snapshot whose completeness is being checked. */
 export type VerdictScope = 'maturity' | 'effective';
 
 const LEGACY_FILE_LIMIT: ScanIncompleteReason = { code: 'file-count-limit' };
@@ -13,10 +14,12 @@ export function reportVerdict(report: Report, scope: VerdictScope): ScanVerdict 
     : { status: 'complete', reasons: [] };
 }
 
+/** Return whether the selected snapshot is authoritative. */
 export function reportScopeIsComplete(report: Report, scope: VerdictScope): boolean {
   return reportVerdict(report, scope).status === 'complete';
 }
 
+/** Format an incomplete-scan reason for display. */
 export function formatIncompleteReason(reason: ScanIncompleteReason): string {
   const location = reason.path ? ` at ${reason.path}` : '';
   const limit = reason.limit === undefined ? '' : ` (limit ${reason.limit})`;

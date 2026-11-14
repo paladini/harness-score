@@ -43,6 +43,40 @@ jobs:
           node packages/cli/dist/cli.js fixtures/level-4 --json > "$RUNNER_TEMP/harness-score-node18.json"
           node -e "const r = require(process.argv[1]); if (r.verdicts.maturity.status !== 'complete') process.exit(1)" "$RUNNER_TEMP/harness-score-node18.json"
 
+  runtime-jsr-source:
+    name: JSR source smoke test (${{ matrix.runtime }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        runtime: [deno, bun]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - uses: denoland/setup-deno@v2
+        if: matrix.runtime == 'deno'
+        with:
+          deno-version: v2.x
+      - uses: oven-sh/setup-bun@v2
+        if: matrix.runtime == 'bun'
+        with:
+          bun-version: latest
+      - name: Exercise CLI and API against the L4 fixture
+        shell: bash
+        env:
+          RUNTIME: ${{ matrix.runtime }}
+        run: |
+          if [ "$RUNTIME" = deno ]; then
+            deno run --unstable-sloppy-imports --allow-read --allow-env packages/cli/src/cli.ts fixtures/level-4 --json > "$RUNNER_TEMP/cli.json"
+            deno eval --unstable-sloppy-imports 'import { score } from "./packages/cli/src/index.ts"; console.log(JSON.stringify(score("fixtures/level-4")))' > "$RUNNER_TEMP/api.json"
+          else
+            bun packages/cli/src/cli.ts fixtures/level-4 --json > "$RUNNER_TEMP/cli.json"
+            bun -e 'import { score } from "./packages/cli/src/index.ts"; console.log(JSON.stringify(score("fixtures/level-4")))' > "$RUNNER_TEMP/api.json"
+          fi
+          node -e 'for (const file of process.argv.slice(1)) { const r = require(file); if (r.level.index !== 4 || r.verdicts.maturity.status !== "complete") process.exit(1); }' "$RUNNER_TEMP/cli.json" "$RUNNER_TEMP/api.json"
+
   checks:
     name: Full checks (ubuntu-latest, Node 22)
     runs-on: ubuntu-latest
@@ -53,6 +87,9 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Validate JSR package and public types
+        working-directory: packages/cli
+        run: npx -y jsr@0.14.3 publish --dry-run --allow-dirty
       - name: Lint (biome)
         run: npm run lint
       - name: Build, test & coverage gate

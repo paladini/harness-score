@@ -1,6 +1,7 @@
 import type { DimensionId, Report } from './types.js';
 import { reportScopeIsComplete } from './verdict.js';
 
+/** Change in a dimension's percentage between two reports. */
 export interface DimensionDelta {
   id: DimensionId;
   title: string;
@@ -9,6 +10,7 @@ export interface DimensionDelta {
   delta: number;
 }
 
+/** Change in a check's outcome or applicability between reports. */
 export interface CheckDelta {
   id: string;
   title: string;
@@ -16,6 +18,7 @@ export interface CheckDelta {
   change: 'newly-passing' | 'newly-failing' | 'became-applicable' | 'became-not-applicable';
 }
 
+/** Comparison of two complete maturity reports. */
 export interface ReportDiff {
   level: { before: number; beforeName: string; after: number; afterName: string; delta: number };
   score: {

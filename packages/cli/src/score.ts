@@ -18,9 +18,12 @@ import type {
 } from './types.js';
 import { DIMENSIONS } from './types.js';
 
+/** Base URL for check documentation links in reports. */
 export const DOCS_BASE_URL = 'https://paladini.github.io/harness-score/guide/measure-and-improve';
+/** Version embedded in generated reports. */
 export const TOOL_VERSION = '1.8.5';
 
+/** Maturity level names indexed from L0 through L4. */
 export const LEVEL_NAMES = ['Unharnessed', 'Documented', 'Guided', 'Sensing', 'Self-correcting'] as const;
 
 /** Severity 'off' and detected not-applicable checks are excluded from both numerator and denominator. */
@@ -178,6 +181,7 @@ function contextVerdict(ctx: ScanContext): ScanVerdict {
   return { status: reasons.length > 0 ? 'incomplete' : 'complete', reasons };
 }
 
+/** Build a report from prepared repository and effective scan contexts. */
 export function buildReportFromContext(
   maturityCtx: ScanContext,
   effectiveCtx: ScanContext,
@@ -245,7 +249,10 @@ export function buildReport(rootInput: string, config?: ResolvedScanConfig): Rep
   return buildReportFromContext(maturityCtx, effectiveCtx, resolved, resolvedRoots);
 }
 
-/** @deprecated Prefer buildReport(root, config). Kept for internal use with a pre-built context. */
+/**
+ * Build a report from a single pre-built scan context with default configuration.
+ * @deprecated Prefer `buildReport(root, config)`.
+ */
 export function buildReportFromScanContext(ctx: ScanContext): Report {
   const defaultConfig: ResolvedScanConfig = {
     scopes: { user: false, system: false },
