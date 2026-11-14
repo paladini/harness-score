@@ -559,7 +559,7 @@ tsconfig（理想情况下 `strict: true`）、mypy/pyright/ty、phpstan/psalm�
 [第 4 章](./sensors-feedback#type-checking-the-free-sensor)。
 
 #### SNS-04 · Formatter configured — 3 pts {#sns-04}
-prettier/biome、black/ruff-format、gofmt/rustfmt、pint 或 php-cs-fixer
+prettier/biome/oxfmt、black/ruff-format、gofmt/rustfmt、pint 或 php-cs-fixer
 （无配置文件时，`composer.json` 中的 `laravel/pint` 也算）。
 **修复：** diff 中的格式噪音会掩盖审查中的真实错误。
 
