@@ -447,7 +447,7 @@ estáveis; a CLI liga cada falha à entrada aqui.
 ### Context & Guides (20 pt)
 
 #### CTX-01 · Agent context file present — 4 pts {#ctx-01}
-A project guide exists: root `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md`, or Claude
+A project guide exists: root `AGENTS.md`, `AGENT.md`, `AGENTS.local.md`, `CLAUDE.md`, or `GEMINI.md`, or Claude
 Code instructions at `.claude/CLAUDE.md` or `.claude/AGENTS.md` (session-start
 memory — not scoped rules).
 **Correção:** create `AGENTS.md` answering: what is this project, how do I build

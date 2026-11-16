@@ -447,7 +447,7 @@ estables; la CLI enlaza cada fallo a su entrada aquí.
 ### Context & Guides (20 pt)
 
 #### CTX-01 · Agent context file present — 4 pts {#ctx-01}
-A project guide exists: root `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md`, or Claude
+A project guide exists: root `AGENTS.md`, `AGENT.md`, `AGENTS.local.md`, `CLAUDE.md`, or `GEMINI.md`, or Claude
 Code instructions at `.claude/CLAUDE.md` or `.claude/AGENTS.md` (session-start
 memory — not scoped rules).
 **Corrección:** create `AGENTS.md` answering: what is this project, how do I build
@@ -544,7 +544,7 @@ herramienta. Los manifiestos plugin anidados en otras rutas no activan este alia
 La evidencia siempre usa la ruta física que se leyó.
 
 #### HKS-01 · Hooks configuration present and valid JSON — 4 pts {#hks-01}
-`.cursor/hooks.json`, `.claude/settings.json` (clave `hooks`), plugin `hooks/hooks.json` en la raíz del
+`.cursor/hooks.json`, `.claude/settings.json` (clave `hooks`), `.github/hooks/*.json`, `.codex/hooks.json` o `[[hooks.*]]` inline en `.codex/config.toml`, plugin `hooks/hooks.json` en la raíz del
 scan, `.devin/hooks.v1.json` (mapa
 standalone de eventos) o `.devin/config.json` (clave `hooks`) existe y se parsea como JSON. Cuando existen varias configuraciones,
 gana una válida y no vacía; la profundidad de la raíz nativa, la cantidad de eventos y la ruta léxica son los desempates
@@ -570,13 +570,13 @@ y emite el warning `unknown-hook-event`. Los eventos vacíos o mal formados sigu
 
 #### HKS-03 · Gate hook guards risky operations — 4 pts {#hks-03}
 A gate hook registered (Cursor: `beforeShellExecution`, `beforeMCPExecution`,
-`preToolUse`, or `beforeReadFile`; Claude Code o Devin: `PreToolUse` o `PermissionRequest`).
+`preToolUse`, or `beforeReadFile`; Claude Code, Codex o Devin: `PreToolUse` o `PermissionRequest`; Copilot: `preToolUse` o `permissionRequest`).
 **Corrección:** gate de deny de comandos destructivos del capítulo 5 — rules en prosa son
 pedidos; gates son hechos.
 
 #### HKS-04 · Feedback hook observes output — 2 pts {#hks-04}
 A feedback hook registered (Cursor: `afterFileEdit`, `postToolUse`, …;
-Claude Code: `PostToolUse`; Devin: `PostToolUse` o `Stop`).
+Claude Code/Codex: `PostToolUse`; Devin: `PostToolUse` o `Stop`; Copilot: `postToolUse`, `postToolUseFailure` o `agentStop`).
 **Corrección:** format-and-lint on edit gives the agent instant feedback inside the
 session.
 
@@ -658,8 +658,7 @@ No real env files in the tree unless gitignored (templates are fine).
 variables.
 
 #### HYG-04 · MCP config free of credentials — 4 pts {#hyg-04}
-No credential signatures in MCP config (`.cursor/mcp.json`, `.mcp.json`,
-`.agents/mcp_config.json`).
+No credential signatures in MCP config (`.cursor/mcp.json`, `.mcp.json`, `.agents/mcp_config.json`, `.continue/mcpServers/`, `.vscode/mcp.json`, `opencode.json[c]`, `.codex/config.toml` o config MCP de Devin).
 **Corrección:** use `${ENV_VAR}` interpolation — an inlined key in MCP config is a
 secret published to every clone.
 
@@ -683,8 +682,7 @@ package-lock.json, uv.lock, Cargo.lock, go.sum, or equivalent.
 tree everywhere.
 
 #### HYG-08 · MCP config uses env interpolation for credentials — 3 pts {#hyg-08}
-Cuando existe config MCP (`.cursor/mcp.json`, `.mcp.json`,
-`.agents/mcp_config.json`), es JSON válido, y cualquier campo con forma de
+Cuando existe config MCP (`.cursor/mcp.json`, `.mcp.json`, `.agents/mcp_config.json`, Continue YAML, OpenCode JSONC o Codex TOML), es válida, y cualquier campo con forma de
 credencial (token, key, secret, password…) usa interpolación `${ENV_VAR}`
 en lugar de un literal. El complemento positivo de HYG-04.
 **No aplica** cuando el repositorio no tiene config MCP. No usar MCP no es
