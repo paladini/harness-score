@@ -21,7 +21,7 @@ import { DIMENSIONS } from './types.js';
 /** Base URL for check documentation links in reports. */
 export const DOCS_BASE_URL = 'https://paladini.github.io/harness-score/guide/measure-and-improve';
 /** Version embedded in generated reports. */
-export const TOOL_VERSION = '1.9.0';
+export const TOOL_VERSION = '1.10.0';
 
 /** Maturity level names indexed from L0 through L4. */
 export const LEVEL_NAMES = ['Unharnessed', 'Documented', 'Guided', 'Sensing', 'Self-correcting'] as const;
