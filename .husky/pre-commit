@@ -1,1 +1,2 @@
+npm run docs:i18n:check
 npm run lint

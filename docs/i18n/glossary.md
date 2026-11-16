@@ -56,6 +56,15 @@ Contract for translators and reviewers. English is the source of truth for check
 
 Use relative paths within the locale (`./maturity-model`, `./measure-and-improve#ctx-01`), not absolute `/guide/...` paths (those escape to English).
 
+## Keeping localized pages in sync
+
+When changing `docs/index.md` or a page under `docs/guide/`, stage the matching
+path in every maintained locale (`en`, `pt-BR`, `es`, `zh-CN`, and `hi-IN`) in
+the same commit. The Husky pre-commit check enforces file-level coverage only;
+it does not translate or compare content. Files without localized counterparts,
+including this glossary, are not checked. See the repository's
+`CONTRIBUTING.md` for setup and the local-hook bypass limitation.
+
 ## Adding a locale
 
 1. Register in `docs/.vitepress/theme/i18n/localePath.ts` (`LocaleId`, `LOCALES`, path helpers).
