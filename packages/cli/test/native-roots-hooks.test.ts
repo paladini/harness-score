@@ -518,6 +518,74 @@ describe('modern hook contract', () => {
     expect(collectHookConfigs(codexWithoutHooks)).toEqual([]);
   });
 
+  test('validates Copilot command, HTTP, prompt, and malformed hook handlers', () => {
+    const ctx = fakeContext({
+      '.github/hooks/handlers.json': JSON.stringify({
+        version: 1,
+        hooks: {
+          preToolUse: [
+            { exec: 'run-exec' },
+            { powershell: 'run-powershell' },
+            { type: 'http', url: 'https://example.test/hook' },
+            { type: 'prompt', prompt: 'Review the change' },
+            { type: 'http' },
+            { type: 'prompt' },
+            { type: 'command', args: 'invalid' },
+            { type: 'unsupported' },
+            null,
+          ],
+          postToolUse: [],
+        },
+      }),
+    });
+    expect(readNormalizedHooks(ctx)).toMatchObject({
+      toolId: 'copilot',
+      handlerCount: 4,
+      commands: [
+        { command: 'run-exec', args: [] },
+        { command: 'run-powershell', args: [] },
+      ],
+      structuralErrors: [
+        'preToolUse contains an HTTP handler without a URL.',
+        'preToolUse contains a prompt handler without a prompt.',
+        'preToolUse contains an invalid command handler.',
+        'preToolUse contains an unsupported hook type.',
+        'preToolUse contains a non-object handler.',
+        'postToolUse handlers must be a non-empty array.',
+      ],
+    });
+  });
+
+  test('handles Codex TOML values, comments, repeated groups, and invalid lines', () => {
+    const ctx = fakeContext({
+      '.codex/config.toml': [
+        '# before the hook tables',
+        'invalid line',
+        '[[hooks.Notification.hooks]]',
+        'type = "command" # trailing comment outside string',
+        'command = "echo \\"quoted\\" # literal"',
+        'args = ["one", "two"]',
+        'matcher = ["*.ts", "*.tsx"]',
+        'enabled = true',
+        'disabled = false',
+        'timeout = 2.5',
+        'unknown = bareword',
+        '[[hooks.Notification]]',
+        "matcher = 'Bash'",
+        '[[hooks.Notification.hooks]]',
+        'type = "prompt"',
+        'prompt = "Explain the change"',
+      ].join('\n'),
+    });
+    expect(readNormalizedHooks(ctx)).toMatchObject({
+      toolId: 'codex',
+      events: ['Notification'],
+      handlerCount: 2,
+      commands: [{ command: 'echo "quoted" # literal', args: ['one', 'two'] }],
+      structuralErrors: [],
+    });
+  });
+
   test('accepts all 31 documented Claude Code events', async () => {
     expect(claudeEvents).toHaveLength(31);
     const hooks = Object.fromEntries(
