@@ -28,8 +28,9 @@ wildly different results, because one has a harness that catches mistakes
 before they ship and the other has none.
 
 **Harness Score measures that harness — across any tool.** Point it at any
-repository using Cursor, Claude Code, Devin, Windsurf, Cline, Continue, or any other
-AI coding tool, and get a maturity level (L0–L4), a 108-point breakdown across
+repository using Cursor, Claude Code, Devin Local, Windsurf/Cascade, Cline,
+Continue, GitHub Copilot, Codex, OpenCode, Antigravity, Zed, or another AI
+coding tool, and get a maturity level (L0–L4), a 108-point breakdown across
 six dimensions, and the precise, ranked list of what to fix next — with zero
 LLM calls, zero network access, and the same result every time you run it.
 
@@ -165,7 +166,7 @@ with a concrete definition of what counts as public API:
 | Piece | What | Where |
 |---|---|---|
 | 📖 **The Guide** | Harness engineering for AI coding agents: guides (feedforward), sensors (feedback), guardrails, and the 5-level maturity model. Consolidates Birgitta Böckeler's harness engineering articles (on martinfowler.com), LangChain's harness lessons, and Cursor's own docs. | [paladini.github.io/harness-score](https://paladini.github.io/harness-score/) |
-| 🔍 **The CLI** | `npx harness-score` — 36 checks across 6 dimensions, maturity level L0–L4, JSON/markdown/badge output, `--diff` mode, `--min-level` CI gate. Scores harnesses for Cursor, Claude Code, Windsurf, Cline, Continue, Codex, and other tools via OR semantics. Zero runtime dependencies, fully-typed programmatic API. | [packages/cli](packages/cli) |
+| 🔍 **The CLI** | `npx harness-score` — 36 checks across 6 dimensions, maturity level L0–L4, JSON/markdown/badge output, `--diff` mode, `--min-level` CI gate. Recognizes configuration from Cursor, Claude Code, Devin Local, Windsurf/Cascade, Cline, Continue, GitHub Copilot, Codex, OpenCode, Antigravity, Zed, and shared harness files via OR semantics. Zero runtime dependencies, fully-typed programmatic API. | [packages/cli](packages/cli) |
 | 🧩 **Editor/agent plugins** | `/harness-audit` command + `harness-engineering` skill: audit the open workspace and let the agent fix the gaps following the guide's recipes. Cursor is the flagship; Claude Code and Windsurf support in progress (see [PLUGINS-ROADMAP.md](PLUGINS-ROADMAP.md) for the rest). | [plugins](plugins) |
 | ⚙️ **The GitHub Action** | Run the scan on every push, gate on a minimum level, emit the badge. Multi-harness aware. | [action](action) |
 

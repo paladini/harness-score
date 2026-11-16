@@ -6,6 +6,8 @@ import {
   type HarnessKind,
   matchPathSpec,
   specsForKind,
+  TOOL_DETECTION_PATHS,
+  TOOL_GLOBAL_DETECTION_PATHS,
   type ToolId,
 } from './registry.js';
 
@@ -47,7 +49,10 @@ export function collectSubagents(ctx: ScanContext): HarnessArtifact[] {
 }
 
 export function collectHookConfigs(ctx: ScanContext): HarnessArtifact[] {
-  return collectByKind(ctx, 'hooks');
+  return collectByKind(ctx, 'hooks').filter((artifact) => {
+    if (artifact.toolId !== 'codex' || !artifact.canonicalPath.endsWith('/config.toml')) return true;
+    return /^\s*\[\[hooks\.[A-Za-z][\w]*\]\]/m.test(ctx.read(artifact.path) ?? '');
+  });
 }
 
 export function collectMcpConfigs(ctx: ScanContext): HarnessArtifact[] {
@@ -71,6 +76,27 @@ export function detectHarnesses(ctx: ScanContext): ToolId[] {
   for (const kind of ['rules', 'skills', 'commands', 'subagents', 'hooks', 'mcp'] as HarnessKind[]) {
     for (const spec of specsForKind(kind)) {
       if (matchPathSpec(ctx, spec).length > 0) tools.add(spec.toolId);
+    }
+  }
+  for (const [toolId, patterns] of Object.entries(TOOL_DETECTION_PATHS) as Array<[ToolId, RegExp[]]>) {
+    const rootName = ctx.root.split(/[\\/]/).pop() ?? '';
+    if (
+      patterns.some((pattern) =>
+        ctx.files.some(
+          (file) =>
+            !ctx.overlayFiles?.has(file) &&
+            (pattern.test(file) || (rootName && pattern.test(`${rootName}/${file}`))),
+        ),
+      )
+    ) {
+      tools.add(toolId);
+    }
+  }
+  for (const [toolId, patterns] of Object.entries(TOOL_GLOBAL_DETECTION_PATHS) as Array<[ToolId, RegExp[]]>) {
+    if (
+      patterns.some((pattern) => ctx.files.some((file) => ctx.overlayFiles?.has(file) && pattern.test(file)))
+    ) {
+      tools.add(toolId);
     }
   }
   return [...tools].sort();

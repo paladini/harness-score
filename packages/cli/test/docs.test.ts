@@ -2,6 +2,8 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
+// @ts-expect-error The root Node script is tested through its exported pure helper.
+import { findMissingLocalePaths } from '../../../scripts/docs-locale-parity.mjs';
 import { ALL_CHECKS, PRESET_REGISTRY } from '../src/index.js';
 
 const REPO = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
@@ -146,4 +148,82 @@ describe('translated guides mirror English chapter set', () => {
       expect(listGuideFiles(localeDir)).toEqual(enFiles);
     });
   }
+});
+
+describe('localized documentation staged-file coverage', () => {
+  const localizedVersions = [
+    'docs/guide/example.md',
+    'docs/pt-BR/guide/example.md',
+    'docs/es/guide/example.md',
+    'docs/zh-CN/guide/example.md',
+    'docs/hi-IN/guide/example.md',
+  ];
+
+  test('passes when all maintained versions of a guide page are staged', () => {
+    expect(findMissingLocalePaths(localizedVersions)).toEqual([]);
+  });
+
+  test('requires all translated counterparts when the English version changes', () => {
+    expect(findMissingLocalePaths(['docs/guide/example.md'])).toEqual([
+      'docs/es/guide/example.md',
+      'docs/hi-IN/guide/example.md',
+      'docs/pt-BR/guide/example.md',
+      'docs/zh-CN/guide/example.md',
+    ]);
+  });
+
+  test('requires English and every other translation when one locale changes', () => {
+    expect(findMissingLocalePaths(['docs/zh-CN/guide/example.md'])).toEqual([
+      'docs/es/guide/example.md',
+      'docs/guide/example.md',
+      'docs/hi-IN/guide/example.md',
+      'docs/pt-BR/guide/example.md',
+    ]);
+  });
+
+  test('checks localized home pages against the matching index files', () => {
+    expect(findMissingLocalePaths(['docs/pt-BR/index.md'])).toEqual([
+      'docs/es/index.md',
+      'docs/hi-IN/index.md',
+      'docs/index.md',
+      'docs/zh-CN/index.md',
+    ]);
+  });
+
+  test('aggregates missing counterparts across multiple changed pages', () => {
+    expect(findMissingLocalePaths(['docs/index.md', 'docs/es/guide/example.md'])).toEqual([
+      'docs/es/index.md',
+      'docs/guide/example.md',
+      'docs/hi-IN/guide/example.md',
+      'docs/hi-IN/index.md',
+      'docs/pt-BR/guide/example.md',
+      'docs/pt-BR/index.md',
+      'docs/zh-CN/guide/example.md',
+      'docs/zh-CN/index.md',
+    ]);
+  });
+
+  test('ignores documentation without maintained localized counterparts', () => {
+    expect(
+      findMissingLocalePaths([
+        'docs/i18n/glossary.md',
+        'docs/public/logo.svg',
+        'docs/.vitepress/config.mts',
+        'CONTRIBUTING.md',
+      ]),
+    ).toEqual([]);
+  });
+
+  test('treats staged deletions and rename endpoints as changed paths', () => {
+    expect(findMissingLocalePaths(['docs/guide/old.md', 'docs/guide/new.md'])).toEqual([
+      'docs/es/guide/new.md',
+      'docs/es/guide/old.md',
+      'docs/hi-IN/guide/new.md',
+      'docs/hi-IN/guide/old.md',
+      'docs/pt-BR/guide/new.md',
+      'docs/pt-BR/guide/old.md',
+      'docs/zh-CN/guide/new.md',
+      'docs/zh-CN/guide/old.md',
+    ]);
+  });
 });

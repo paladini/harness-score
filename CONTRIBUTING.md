@@ -23,6 +23,20 @@ agree on the approach first — check changes touch multiple files that must
 stay in sync (see below) and are easiest to get right with agreement up
 front. Small fixes (typos, docs, obvious bugs) can go straight to a PR.
 
+### Localized documentation parity
+
+The pre-commit hook checks staged documentation under `docs/index.md` and
+`docs/guide/`. If one localized version changes, stage the corresponding file
+for every maintained locale (`en`, `pt-BR`, `es`, `zh-CN`, and `hi-IN`) in the
+same commit. The check matches file paths only; it does not translate or compare
+the content. Documentation without localized counterparts, such as files under
+`docs/i18n/`, is outside this check.
+
+Install dependencies with `npm install` to enable Husky. The hook blocks normal
+commits when a counterpart is missing and lists the paths to stage. Local Git
+hooks can be bypassed with `--no-verify` or by disabling Husky, so this is a
+developer-side safeguard, not a server-side merge restriction.
+
 ## Language on GitHub
 
 You may open issues and PR descriptions in any language. **Maintainer and

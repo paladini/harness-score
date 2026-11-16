@@ -12,11 +12,11 @@ Harness Score makes this explicit: you measure once, any tool benefits. You don'
 
 The scanner uses **OR semantics** for tool-specific artifacts. Each check asks "does *any* recognized tool provide this?" — not "does Cursor provide this?". For example:
 
-- `.cursor/rules/*.mdc` **or** `.windsurf/rules/*.md` **or** `.clinerules/*.md` **or** `.claude/rules/**/*.md` **or** a nested `AGENTS.md` / `CLAUDE.md` in a code subdirectory → counts toward **rules**
-- `.cursor/hooks.json` **or** a `.claude/settings.json` with a `hooks` section **or** `.devin/hooks.v1.json` **or** a `.devin/config.json` with a `hooks` section → counts toward **hooks**
-- `.cursor/skills/<name>/SKILL.md` **or** `.claude/skills/<name>/SKILL.md` **or** `.devin/skills/<name>/SKILL.md` → counts toward **skills**
-- `.cursor/agents/*.md` **or** `.claude/agents/*.md` **or** `.opencode/agents/*.md` → counts toward **subagents**
-- A root `AGENTS.md` **or** `CLAUDE.md` **or** `GEMINI.md` **or** `.claude/CLAUDE.md` **or** `.claude/AGENTS.md` → counts toward **context guides**
+- `.cursor/rules/*.mdc`, `.cline/rules/*.md`, `.devin/rules/*.md`, `.github/instructions/*.instructions.md`, or a nested `AGENTS.md` / `CLAUDE.md` → counts toward **rules**
+- `.cursor/hooks.json`, `.github/hooks/*.json`, `.codex/hooks.json`, `.claude/settings.json`, or Devin hook files → counts toward **hooks**
+- `.cursor/skills/<name>/SKILL.md`, `.cline/skills/<name>/SKILL.md`, `.github/skills/<name>/SKILL.md`, or shared `.agents/skills/<name>/SKILL.md` → counts toward **skills**
+- `.cursor/agents/*.md`, `.claude/agents/*.md`, `.opencode/agents/*.md`, or `.devin/agents/*.md` → counts toward **subagents**
+- A root `AGENTS.md`, `AGENT.md`, `AGENTS.local.md`, `CLAUDE.md`, or `GEMINI.md`, or `.claude/CLAUDE.md` / `.claude/AGENTS.md` → counts toward **context guides**
 
 You don't need to configure all of them — one is enough. And since v0.5.0, adding a second tool can never *lower* your score: when several hooks configs exist, the one with the most registered events wins.
 
@@ -29,15 +29,42 @@ harness registry — [`registry.ts`](https://github.com/paladini/harness-score/b
 |---|---|---|---|---|---|---|
 | **Cursor** | `.cursor/rules/*.mdc` | `.cursor/skills/*/SKILL.md` | `.cursor/commands/*.md` | `.cursor/agents/*.md` | `.cursor/hooks.json` | `.cursor/mcp.json` |
 | **Claude Code** | `.claude/rules/**/*.md`, nested `AGENTS.md` / `CLAUDE.md` in code dirs | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json` (`hooks` key) | `.mcp.json` |
-| **Devin** | — | `.devin/skills/*/SKILL.md` | — | — | `.devin/hooks.v1.json` (standalone event map) or `.devin/config.json` (`hooks` key) | — |
-| **Windsurf** | `.windsurf/rules/*.md` | — | `.windsurf/workflows/*.md` | — | — | — |
-| **Cline** | `.clinerules/*.md` | — | — | — | — | — |
-| **Continue** | `.continue/rules/*.md` | — | `.continue/prompts/*` | — | — | — |
-| **GitHub Copilot** | `.github/instructions/*.instructions.md` | — | — | — | — | — |
-| **Codex** | nested `AGENTS.md` files | `.agents/skills/*/SKILL.md` | — | — | — | — |
+| **Devin Local** | `.devin/rules/*.md`, `.devin/global_rules.md`, nested `AGENT*.md` | `.devin/skills/*/SKILL.md` | `.devin/workflows/*.md` | `.devin/agents/*.md` or `<name>/AGENT.md` | `.devin/hooks.v1.json`, legacy `.devin/config.json` | `.devin/mcp_config.json` |
+| **Windsurf / Cascade (legacy)** | `.windsurf/rules/*.md`, `.windsurf/global_rules.md`, `.windsurfrules` | — | `.windsurf/workflows/*.md` (Cascade) | — | — | — |
+| **Cline** | `.clinerules/*.md`, `.cline/rules/*.md`, legacy `.clinerules` | `.cline/skills/*/SKILL.md` | — | — | — | — |
+| **Continue** | `.continue/rules/*.md` | — | `.continue/prompts/*` | — | — | `.continue/mcpServers/*.{json,yaml,yml}` |
+| **GitHub Copilot** | `.github/copilot-instructions.md`, `.github/instructions/*.instructions.md` | `.github/skills/*/SKILL.md` | `.github/prompts/*.prompt.md` | Custom agents in `.github/agents/*.md` are detected but not counted as delegable subagents | `.github/hooks/*.json` | `.vscode/mcp.json` |
+| **Codex** | nested `AGENTS.md` files | `.agents/skills/*/SKILL.md` | — | — | `.codex/hooks.json`, inline `[[hooks.*]]` in `.codex/config.toml` | `[mcp_servers.*]` in `.codex/config.toml` |
 | **Gemini / Antigravity** | `.agents/rules/`, `.agent/rules/`, `.gemini/rules/`, nested `GEMINI.md` | `.agents/skills/*/SKILL.md` | `.agents/workflows/`, `.agent/workflows/` | — | — | `.agents/mcp_config.json`, `.agent/mcp_config.json` |
-| **OpenCode** | — | — | — | `.opencode/agents/*.md` | — | — |
-| **Zed** | — | — | `.zed/commands/*.md` | — | — | — |
+| **OpenCode** | shared `AGENTS.md` instructions | `.opencode/skills/*/SKILL.md` and root `*.md` | `.opencode/commands/**/*.md` | `.opencode/agents/*.md` | — | `opencode.json[c]` |
+| **Zed** | `.rules` (legacy); shared `AGENTS.md` | `.agents/skills/*/SKILL.md` | `.zed/commands/*.md` (existing format) | — | — | — |
+
+The supported paths reflect current vendor documentation as of November 2026.
+See the official references for [Copilot customizations and hooks](https://docs.github.com/en/copilot/reference/customization-cheat-sheet),
+[OpenCode commands and skills](https://opencode.ai/docs/commands),
+[Cline rules and skills](https://docs.cline.bot/customization/cline-rules),
+[Zed instructions and skills](https://zed.dev/docs/ai/instructions), and
+[Devin Local customizations](https://docs.devin.ai/desktop/devin-local/customizations).
+Codex hook files and inline TOML are described in the official
+[hooks guide](https://learn.chatgpt.com/docs/hooks) and
+[configuration reference](https://learn.chatgpt.com/docs/config-file/config-advanced).
+Shared Agent Skills locations are attributed to each documented consumer for
+detection, while the artifact is collected and scored once. Copilot's custom
+agent definitions identify Copilot but do not count as subagents because their
+delegation semantics differ.
+
+When a newly recognized file matches one of the scored categories above, the
+existing check collects it as evidence and can award its existing points. For
+example, a recognized Copilot instruction file can satisfy the rules check, and
+a recognized OpenCode skill can contribute to the skills checks. This can raise
+a repository's score; the check IDs, point values, dimensions, and level
+thresholds remain the same. User-level files contribute only to the effective
+score when that scope is enabled.
+
+Windsurf's Cascade-specific rules/workflows remain recognized for existing
+repositories. Devin Local is the current Devin Desktop agent and has a distinct
+configuration layout; legacy Cascade workflows are not treated as Devin Local
+workflows.
 
 ### Devbox environment compatibility
 
@@ -58,11 +85,11 @@ Keep project configuration in `devbox.json`, `devbox.lock`, and `devbox.d/` at t
 project root. Those paths remain scan-visible. Files placed under `.devbox/` are
 intentionally not scored as harness artifacts.
 
-Root context files (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`) count for every tool.
+Root context files (`AGENTS.md`, `AGENT.md`, `AGENTS.local.md`, `CLAUDE.md`, `GEMINI.md`) count as shared context guides.
 And the most important artifacts are **tool-agnostic** anyway: tests, CI pipelines, linters, type checkers, `.gitignore`, lockfiles, and `SECURITY.md` score the same no matter which tool you use.
 
 ::: tip A tool's column being sparse is not a penalty
-Windsurf has no hooks system for the scanner to recognize — but hooks are only one dimension of six. A Windsurf-only repository with strong rules, sensors, and CI still climbs to L3. L4 requires gate hooks, which today means `.cursor/hooks.json`, Claude Code `settings.json`, or Devin `.devin/hooks.v1.json` / `.devin/config.json` alongside your primary tool.
+Windsurf has no supported agent lifecycle hook system for the scanner to recognize — but hooks are only one dimension of six. A Windsurf-only repository with strong rules, sensors, and CI still climbs to L3. L4 requires gate hooks, which can come from Cursor, Claude Code, Copilot, Codex, or Devin configurations.
 :::
 
 ## Building your harness once
@@ -102,16 +129,14 @@ full list.
 |---|---|---|
 | **Cursor** | `~/.cursor/{skills,commands,agents,rules}`, `~/.cursor/mcp.json` | IDE-only User Rules still invisible |
 | **Claude Code** | `~/.claude/{skills,commands,agents}`, `~/.claude/settings.json`, `~/.mcp.json`, user-scoped plugins from `~/.claude/plugins/installed_plugins.json` | User plugins count toward effective score only |
-| **Windsurf** | `~/.codeium/windsurf/memories/global_rules.md` → `.windsurf/rules/…`, `~/.windsurf/{rules,workflows}/`, MCP alias | Global rules live under Codeium, not `.windsurf/` |
-| **Cline** | `~/Documents/Cline/Rules/*.md` → `.clinerules/…` | Fallback: `~/Cline/Rules` |
-| **Continue** | `~/.continue/{rules,prompts}/` | Inline rules in `config.yaml` not parsed (v1) |
-| **Codex / Antigravity** | `~/.agents/{skills,rules,workflows}/`, `~/.agent/…`, `~/.gemini/rules/`, `~/.codex/skills`, `~/.agents/AGENTS.md` | |
-| **OpenCode** | `$XDG_CONFIG_HOME/opencode/agents/` | |
-| **Zed** | `~/.zed/commands/` | |
-| **GitHub Copilot** | — | Repo-only: `.github/instructions/` |
-
-**GitHub Copilot** has no documented on-disk global instructions path — keep
-team instructions in the repository for maturity and effective parity.
+| **Windsurf / Cascade** | `~/.codeium/windsurf/memories/global_rules.md` → `.windsurf/rules/…`, `~/.windsurf/{rules,workflows}/`, `~/.codeium/windsurf/global_workflows/` | Cascade legacy locations; no unsupported MCP/hooks aliases |
+| **Cline** | `~/Documents/Cline/Rules/*.md`, `~/.cline/rules/`, `~/.cline/skills/` | Fallback rules: `~/Cline/Rules` |
+| **Continue** | `~/.continue/{rules,prompts,mcpServers}/` | Inline rules in `config.yaml` not parsed (v1) |
+| **Codex / Antigravity** | `~/.agents/{skills,rules,workflows}/`, `~/.agent/…`, `~/.gemini/rules/`, `~/.codex/{skills,hooks.json,config.toml}`, `~/.agents/AGENTS.md` | |
+| **OpenCode** | `$XDG_CONFIG_HOME/opencode/{agents,commands,skills}/`, `opencode.json[c]` | |
+| **Zed** | `~/.agents/skills/`, `~/.config/zed/AGENTS.md` or `%APPDATA%\Zed\AGENTS.md`, `~/.zed/commands/` | Personal instructions are mapped to the shared context guide |
+| **GitHub Copilot** | `~/.copilot/{skills,agents,hooks}/` | Personal hooks are recognized; global instructions remain UI/config-managed |
+| **Devin Local** | `$XDG_CONFIG_HOME/devin/{rules,skills,agents,workflows,AGENTS.md,hooks.v1.json,mcp_config.json}` | User files map to equivalent project paths for effective score |
 
 See the full scope table in [Metrics & Codes](./metrics-and-codes#scopes).
 
@@ -223,11 +248,11 @@ If you switch primary tools (e.g., Cursor → Claude Code), the harness transfer
 
 ## Limitations and roadmap
 
-**Current (v1.0.0):**
+**Current:**
 
 - Plugin support is staggered: **Cursor** (flagship, full audit-and-fix), **Claude Code** (Phase 0, read-only audit), others TBD (see [PLUGINS-ROADMAP.md](https://github.com/paladini/harness-score/blob/main/PLUGINS-ROADMAP.md)).
 - The CLI is tool-aware and fully multi-harness: the terminal and markdown reports show a `Detected:` line naming every recognized tool, and `--json` output includes the same list as a `detectedHarnesses` array. Plugins catch up over time.
-- Hooks are recognized for Cursor, Claude Code, and Devin — other tools' hook systems (as they emerge) need registry entries. Devin is **detection-only** in the CLI (no plugin yet); the scanner reads repository `.devin/` paths only — not gitignored `.devin/config.local.json` or user-home Devin settings.
+- Hooks are normalized for Cursor, Claude Code, Copilot, Codex, and Devin. Devin is **detection-only** in the CLI (no plugin yet); the scanner reads supported repository `.devin/` paths and allowlisted Devin Local user paths, not gitignored `.devin/config.local.json`.
 
 **Planned (post-1.0):**
 

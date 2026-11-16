@@ -20,6 +20,7 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
+    "docs:i18n:check": "node scripts/docs-locale-parity.mjs",
     "bench": "npm run bench -w harness-score",
     "lint": "biome check .",
     "format": "biome check --write .",

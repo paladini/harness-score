@@ -8,14 +8,14 @@ export const hookChecks: Check[] = [
     title: 'Hooks configuration present and valid JSON',
     points: 4,
     remediation:
-      'Create a hooks configuration (.cursor/hooks.json, .claude/settings.json hooks key, .devin/hooks.v1.json event map, or .devin/config.json hooks key) — hooks are the harness layer that can observe and control the agent loop deterministically.',
+      'Create a hooks configuration (.cursor/hooks.json, .claude/settings.json hooks key, .github/hooks/*.json, .codex/hooks.json, or Devin .devin/hooks.v1.json) — hooks are the harness layer that can observe and control the agent loop deterministically.',
     run(ctx) {
       const hooks = readNormalizedHooks(ctx);
       if (!hooks) {
         return {
           passed: false,
           evidence:
-            'No .cursor/hooks.json, .claude/settings.json hooks key, plugin hooks/hooks.json, .devin/hooks.v1.json, or .devin/config.json hooks key found.',
+            'No .cursor/hooks.json, .claude/settings.json hooks key, .github/hooks/*.json, .codex/hooks.json, plugin hooks/hooks.json, or Devin hooks config found.',
         };
       }
       if (!hooks.hasEventMap) {
@@ -68,7 +68,7 @@ export const hookChecks: Check[] = [
     title: 'Gate hook guards risky operations',
     points: 4,
     remediation:
-      'Register a gate hook (Cursor: beforeShellExecution / beforeMCPExecution / preToolUse / beforeReadFile; Claude Code or Devin: PreToolUse / PermissionRequest) that guards destructive operations.',
+      'Register a gate hook (Cursor: beforeShellExecution / beforeMCPExecution / preToolUse / beforeReadFile; Claude Code, Codex, Devin, or Copilot: PreToolUse / PermissionRequest / preToolUse) that guards destructive operations.',
     run(ctx) {
       const hooks = readNormalizedHooks(ctx);
       if (!hooks) {
@@ -88,7 +88,7 @@ export const hookChecks: Check[] = [
     title: 'Feedback hook observes agent output',
     points: 2,
     remediation:
-      'Register a feedback hook (Cursor: afterFileEdit / postToolUse / stop; Claude Code: PostToolUse; Devin: PostToolUse / Stop) — e.g. auto-format edited files or run a quick lint.',
+      'Register a feedback hook (Cursor: afterFileEdit / postToolUse / stop; Claude Code/Codex: PostToolUse; Devin: PostToolUse / Stop; Copilot: postToolUse / agentStop) — e.g. auto-format edited files or run a quick lint.',
     run(ctx) {
       const hooks = readNormalizedHooks(ctx);
       if (!hooks) {

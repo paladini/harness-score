@@ -263,6 +263,7 @@ function buildContext(
   return {
     root,
     files,
+    overlayFiles: new Set([...overlayAbsByRel.keys()].filter((rel) => !repoSet.has(rel))),
     get truncated(): boolean {
       return incompleteReasons.length > 0;
     },

@@ -101,6 +101,49 @@ const DEVIN_KNOWN_EVENTS = new Set([
 const DEVIN_GATE_EVENTS = new Set(['PreToolUse', 'PermissionRequest']);
 const DEVIN_FEEDBACK_EVENTS = new Set(['PostToolUse', 'Stop']);
 const DEVIN_HANDLER_TYPES = new Set(['command', 'prompt']);
+const COPILOT_KNOWN_EVENTS = new Set([
+  'sessionStart',
+  'sessionEnd',
+  'userPromptSubmitted',
+  'userPromptTransformed',
+  'preToolUse',
+  'postToolUse',
+  'postToolUseFailure',
+  'permissionRequest',
+  'preCompact',
+  'agentStop',
+  'subagentStart',
+  'subagentStop',
+  'errorOccurred',
+  'notification',
+]);
+const COPILOT_GATE_EVENTS = new Set(['preToolUse', 'permissionRequest']);
+const COPILOT_FEEDBACK_EVENTS = new Set(['postToolUse', 'postToolUseFailure', 'agentStop', 'subagentStop']);
+const CODEX_KNOWN_EVENTS = new Set([
+  'SessionStart',
+  'UserPromptSubmit',
+  'PreToolUse',
+  'PermissionRequest',
+  'PostToolUse',
+  'PostToolUseFailure',
+  'SubagentStart',
+  'SubagentStop',
+  'Stop',
+  'PreCompact',
+  'PostCompact',
+  'SessionEnd',
+  'TurnComplete',
+  'Notification',
+  'AfterAgent',
+]);
+const CODEX_GATE_EVENTS = new Set(['PreToolUse', 'PermissionRequest']);
+const CODEX_FEEDBACK_EVENTS = new Set([
+  'PostToolUse',
+  'PostToolUseFailure',
+  'Stop',
+  'TurnComplete',
+  'AfterAgent',
+]);
 
 type HookToolId = HarnessArtifact['toolId'];
 type VersionRequirement = 'present' | 'not-required' | 'missing';
@@ -277,7 +320,11 @@ function validateMatcherGroups(
   }
 }
 
-function normalizeClaude(artifact: HarnessArtifact, content: string): NormalizedHooks | null {
+function normalizeClaude(
+  artifact: HarnessArtifact,
+  content: string,
+  toolId: 'claude-code' | 'codex' = 'claude-code',
+): NormalizedHooks | null {
   const parsed = safeJsonParse(content);
   if (parsed === null || typeof parsed !== 'object') return null;
   const settings = parsed as Record<string, unknown>;
@@ -285,13 +332,21 @@ function normalizeClaude(artifact: HarnessArtifact, content: string): Normalized
   const hasEventMap = hooks !== null && typeof hooks === 'object' && !Array.isArray(hooks);
   const events = hasEventMap ? Object.keys(hooks as Record<string, unknown>) : [];
   const normalized: NormalizedHooks = {
-    ...baseNormalized(artifact, 'claude-code'),
+    ...baseNormalized(artifact, toolId),
     hasEventMap,
     versionRequirement: 'not-required',
     events,
-    gateEvents: events.filter((event) => CLAUDE_GATE_EVENTS.has(event)),
-    feedbackEvents: events.filter((event) => CLAUDE_FEEDBACK_EVENTS.has(event)),
-    eventWarnings: unknownEventWarnings(artifact.path, events, CLAUDE_KNOWN_EVENTS),
+    gateEvents: events.filter((event) =>
+      (toolId === 'codex' ? CODEX_GATE_EVENTS : CLAUDE_GATE_EVENTS).has(event),
+    ),
+    feedbackEvents: events.filter((event) =>
+      (toolId === 'codex' ? CODEX_FEEDBACK_EVENTS : CLAUDE_FEEDBACK_EVENTS).has(event),
+    ),
+    eventWarnings: unknownEventWarnings(
+      artifact.path,
+      events,
+      toolId === 'codex' ? CODEX_KNOWN_EVENTS : CLAUDE_KNOWN_EVENTS,
+    ),
   };
 
   if (!hasEventMap) {
@@ -304,6 +359,141 @@ function normalizeClaude(artifact: HarnessArtifact, content: string): Normalized
     validateMatcherGroups(event, groups, normalized, validateClaudeHandler);
   }
   return normalized;
+}
+
+function normalizeCopilot(artifact: HarnessArtifact, content: string): NormalizedHooks | null {
+  const parsed = safeJsonParse(content);
+  if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
+  const config = parsed as Record<string, unknown>;
+  const hooks = config.hooks;
+  const hasEventMap = hooks !== null && typeof hooks === 'object' && !Array.isArray(hooks);
+  const events = hasEventMap ? Object.keys(hooks as Record<string, unknown>) : [];
+  const normalized: NormalizedHooks = {
+    ...baseNormalized(artifact, 'copilot'),
+    hasEventMap,
+    versionRequirement: config.version === 1 ? 'present' : 'missing',
+    events,
+    gateEvents: events.filter((event) => COPILOT_GATE_EVENTS.has(event)),
+    feedbackEvents: events.filter((event) => COPILOT_FEEDBACK_EVENTS.has(event)),
+    eventWarnings: unknownEventWarnings(artifact.path, events, COPILOT_KNOWN_EVENTS),
+  };
+  if (!hasEventMap) {
+    normalized.structuralErrors.push('hooks must be an object.');
+    return normalized;
+  }
+  for (const [event, handlers] of Object.entries(hooks as Record<string, unknown>)) {
+    if (!Array.isArray(handlers) || handlers.length === 0) {
+      normalized.structuralErrors.push(`${event} handlers must be a non-empty array.`);
+      continue;
+    }
+    for (const handler of handlers) {
+      if (!handler || typeof handler !== 'object' || Array.isArray(handler)) {
+        normalized.structuralErrors.push(`${event} contains a non-object handler.`);
+        continue;
+      }
+      const value = handler as Record<string, unknown>;
+      const type = value.type ?? 'command';
+      if (type === 'command') {
+        const command = [value.exec, value.command, value.bash, value.powershell].find(
+          (candidate) => typeof candidate === 'string' && candidate.trim().length > 0,
+        );
+        const args = stringArray(value.args);
+        if (typeof command !== 'string' || args === null) {
+          normalized.structuralErrors.push(`${event} contains an invalid command handler.`);
+          continue;
+        }
+        normalized.commands.push({ command, args });
+      } else if (type === 'http') {
+        if (typeof value.url !== 'string' || value.url.trim().length === 0) {
+          normalized.structuralErrors.push(`${event} contains an HTTP handler without a URL.`);
+          continue;
+        }
+      } else if (type === 'prompt') {
+        if (typeof value.prompt !== 'string' || value.prompt.trim().length === 0) {
+          normalized.structuralErrors.push(`${event} contains a prompt handler without a prompt.`);
+          continue;
+        }
+      } else {
+        normalized.structuralErrors.push(`${event} contains an unsupported hook type.`);
+        continue;
+      }
+      normalized.handlerCount += 1;
+    }
+  }
+  return normalized;
+}
+
+function stripTomlComment(line: string): string {
+  let quote: '"' | "'" | null = null;
+  let escaped = false;
+  for (let index = 0; index < line.length; index += 1) {
+    const character = line[index]!;
+    if (quote === '"' && character === '\\' && !escaped) {
+      escaped = true;
+      continue;
+    }
+    if (quote && character === quote && !escaped) quote = null;
+    else if (!quote && (character === '"' || character === "'")) quote = character;
+    else if (!quote && character === '#') return line.slice(0, index);
+    escaped = false;
+  }
+  return line;
+}
+
+function tomlValue(source: string): unknown {
+  const value = source.trim();
+  if (value.startsWith('"') && value.endsWith('"')) return safeJsonParse(value);
+  if (value.startsWith("'") && value.endsWith("'")) return value.slice(1, -1);
+  if (value.startsWith('[') && value.endsWith(']')) return safeJsonParse(value);
+  if (value === 'true') return true;
+  if (value === 'false') return false;
+  if (/^-?\d+(?:\.\d+)?$/.test(value)) return Number(value);
+  return undefined;
+}
+
+/** Parse the documented Codex [[hooks.Event]] TOML subset without a runtime dependency. */
+function normalizeCodexToml(artifact: HarnessArtifact, content: string): NormalizedHooks | null {
+  const hooks: Record<string, Array<Record<string, unknown>>> = {};
+  let currentGroup: Record<string, unknown> | null = null;
+  let currentHandler: Record<string, unknown> | null = null;
+  let target: Record<string, unknown> | null = null;
+  let foundHooksTable = false;
+
+  for (const rawLine of content.split(/\r?\n/)) {
+    const line = stripTomlComment(rawLine).trim();
+    if (!line) continue;
+    const section = line.match(/^\[\[hooks\.([A-Za-z][\w]*)(?:\.(hooks))?\]\]$/);
+    if (section) {
+      foundHooksTable = true;
+      const event = section[1]!;
+      const eventGroups = hooks[event] ?? [];
+      hooks[event] = eventGroups;
+      if (section[2]) {
+        if (!currentGroup || !eventGroups.includes(currentGroup)) {
+          currentGroup = {};
+          eventGroups.push(currentGroup);
+        }
+        currentHandler = {};
+        const groupHandlers = (currentGroup.hooks ?? []) as Record<string, unknown>[];
+        currentGroup.hooks = groupHandlers;
+        groupHandlers.push(currentHandler);
+        target = currentHandler;
+      } else {
+        currentGroup = {};
+        eventGroups.push(currentGroup);
+        currentHandler = null;
+        target = currentGroup;
+      }
+      continue;
+    }
+    const assignment = line.match(/^([A-Za-z_][\w-]*)\s*=\s*(.+)$/);
+    if (!assignment || !target) continue;
+    const value = tomlValue(assignment[2]!);
+    if (value !== undefined) target[assignment[1]!] = value;
+  }
+
+  if (!foundHooksTable) return null;
+  return normalizeClaude(artifact, JSON.stringify({ hooks }), 'codex');
 }
 
 function validateDevinHandler(
@@ -393,6 +583,12 @@ function isDevinConfigJson(artifact: HarnessArtifact): boolean {
 function normalizeArtifact(artifact: HarnessArtifact, content: string): NormalizedHooks | null {
   if (artifact.toolId === 'cursor') return normalizeCursor(artifact, content);
   if (artifact.toolId === 'claude-code') return normalizeClaude(artifact, content);
+  if (artifact.toolId === 'codex') {
+    return artifact.canonicalPath.endsWith('/config.toml')
+      ? normalizeCodexToml(artifact, content)
+      : normalizeClaude(artifact, content, 'codex');
+  }
+  if (artifact.toolId === 'copilot') return normalizeCopilot(artifact, content);
   if (artifact.toolId === 'devin') {
     return isDevinConfigJson(artifact)
       ? normalizeDevinConfig(artifact, content)

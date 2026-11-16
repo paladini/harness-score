@@ -12,7 +12,7 @@ import {
   readClaudeEnabledPlugins,
   shouldIncludeInstalledPlugin,
 } from './plugins.js';
-import { PATH_SPECS } from './registry.js';
+import { PATH_SPECS, TOOL_DETECTION_PATHS } from './registry.js';
 
 const OVERLAY_MAX_DEPTH = 8;
 const OVERLAY_MAX_FILES = 5000;
@@ -32,7 +32,12 @@ function mergeReasons(target: ScanIncompleteReason[], source: ScanIncompleteReas
 /** Repo-relative paths that may appear under user/system/extra harness trees. */
 function isHarnessRelPath(relPath: string): boolean {
   if (PATH_SPECS.some((spec) => spec.pathRegex.test(relPath))) return true;
-  if (relPath === 'AGENTS.md' || relPath === 'CLAUDE.md' || relPath === 'GEMINI.md') return true;
+  if (
+    Object.values(TOOL_DETECTION_PATHS).some((patterns) => patterns?.some((pattern) => pattern.test(relPath)))
+  ) {
+    return true;
+  }
+  if (['AGENTS.md', 'AGENT.md', 'AGENTS.local.md', 'CLAUDE.md', 'GEMINI.md'].includes(relPath)) return true;
   if (relPath === '.cursorrules' || relPath === '.mcp.json') return true;
   return false;
 }
@@ -173,6 +178,17 @@ function userHarnessDirs(home: string, xdg: string): Array<[string, string]> {
     [path.join(home, '.cursor', 'commands'), '.cursor/commands'],
     [path.join(home, '.cursor', 'agents'), '.cursor/agents'],
     [path.join(home, '.cursor', 'rules'), '.cursor/rules'],
+    // Copilot
+    [path.join(home, '.copilot', 'skills'), '.github/skills'],
+    [path.join(home, '.copilot', 'agents'), '.github/agents'],
+    [path.join(home, '.copilot', 'hooks'), '.github/hooks'],
+    // Cline / Devin Local
+    [path.join(home, '.cline', 'skills'), '.cline/skills'],
+    [path.join(home, '.cline', 'rules'), '.cline/rules'],
+    [path.join(xdg, 'devin', 'rules'), '.devin/rules'],
+    [path.join(xdg, 'devin', 'skills'), '.devin/skills'],
+    [path.join(xdg, 'devin', 'agents'), '.devin/agents'],
+    [path.join(xdg, 'devin', 'workflows'), '.devin/workflows'],
     // Claude Code
     [path.join(home, '.claude', 'skills'), '.claude/skills'],
     [path.join(home, '.claude', 'commands'), '.claude/commands'],
@@ -188,13 +204,17 @@ function userHarnessDirs(home: string, xdg: string): Array<[string, string]> {
     // Windsurf (repo-layout under home when present)
     [path.join(home, '.windsurf', 'rules'), '.windsurf/rules'],
     [path.join(home, '.windsurf', 'workflows'), '.windsurf/workflows'],
+    [path.join(home, '.codeium', 'windsurf', 'global_workflows'), '.windsurf/workflows'],
     // Continue
     [path.join(home, '.continue', 'rules'), '.continue/rules'],
     [path.join(home, '.continue', 'prompts'), '.continue/prompts'],
+    [path.join(home, '.continue', 'mcpServers'), '.continue/mcpServers'],
     // Zed
     [path.join(home, '.zed', 'commands'), '.zed/commands'],
     // OpenCode
     [path.join(xdg, 'opencode', 'agents'), '.opencode/agents'],
+    [path.join(xdg, 'opencode', 'commands'), '.opencode/commands'],
+    [path.join(xdg, 'opencode', 'skills'), '.opencode/skills'],
   ];
 }
 
@@ -202,7 +222,7 @@ function userHarnessDirs(home: string, xdg: string): Array<[string, string]> {
  * Single files whose on-disk location differs from the repo-relative path
  * the scanner checks (alias mapping for effective score parity).
  */
-function userHarnessFileAliases(home: string): Array<[string, string]> {
+function userHarnessFileAliases(home: string, xdg: string): Array<[string, string]> {
   return [
     [path.join(home, '.cursor', 'mcp.json'), '.cursor/mcp.json'],
     [path.join(home, '.claude', 'settings.json'), '.claude/settings.json'],
@@ -210,12 +230,23 @@ function userHarnessFileAliases(home: string): Array<[string, string]> {
     [path.join(home, '.junie', 'AGENTS.md'), 'AGENTS.md'],
     [path.join(home, '.agents', 'AGENTS.md'), 'AGENTS.md'],
     [path.join(home, '.codex', 'AGENTS.md'), 'AGENTS.md'],
+    [path.join(home, '.codex', 'hooks.json'), '.codex/hooks.json'],
+    [path.join(home, '.codex', 'config.toml'), '.codex/config.toml'],
+    [path.join(xdg, 'devin', 'AGENTS.md'), 'AGENTS.md'],
+    [path.join(xdg, 'devin', 'hooks.v1.json'), '.devin/hooks.v1.json'],
+    [path.join(xdg, 'devin', 'mcp_config.json'), '.devin/mcp_config.json'],
+    [path.join(xdg, 'opencode', 'opencode.json'), 'opencode.json'],
+    [path.join(xdg, 'opencode', 'opencode.jsonc'), 'opencode.jsonc'],
+    [path.join(xdg, 'zed', 'AGENTS.md'), 'AGENTS.md'],
+    [
+      path.join(process.env.APPDATA ?? path.join(home, 'AppData', 'Roaming'), 'Zed', 'AGENTS.md'),
+      'AGENTS.md',
+    ],
     // Windsurf global rules live under Codeium, not .windsurf/rules/
     [
       path.join(home, '.codeium', 'windsurf', 'memories', 'global_rules.md'),
       '.windsurf/rules/global_rules.md',
     ],
-    [path.join(home, '.codeium', 'windsurf', 'mcp_config.json'), '.agents/mcp_config.json'],
   ];
 }
 
@@ -302,7 +333,7 @@ export function buildUserOverlay(): ScanOverlay | null {
     mergeReasons(incompleteReasons, result.incompleteReasons);
   }
 
-  for (const [abs, rel] of userHarnessFileAliases(home)) {
+  for (const [abs, rel] of userHarnessFileAliases(home, xdg)) {
     collectFile(abs, rel, files);
   }
 
