@@ -1,6 +1,6 @@
 # Multi-Harness Support
 
-**v0.4.0** से Harness Score आपके AI coding harness की परिपक्वता **किसी भी tool** पर मापता है — केवल Cursor पर नहीं। चाहे Cursor, Claude Code, Devin, Windsurf, Cline, Continue, Codex, या कोई और AI-first IDE या editor उपयोग करें, वही 108-point scoring model लागू होता है।
+**v0.4.0** से Harness Score आपके AI coding harness की परिपक्वता **किसी भी tool** पर मापता है — केवल Cursor पर नहीं। Cursor, Claude Code, Devin Local, Windsurf/Cascade, Cline, Continue, GitHub Copilot, Codex, OpenCode, Antigravity, Zed या कोई अन्य AI coding IDE/agent उपयोग करें, वही 108-point scoring model लागू होता है।
 
 ## Multi-harness support क्यों मायने रखता है
 
@@ -28,15 +28,15 @@ Harness Score ये artifacts पहचानता है (exact patterns scan
 |---|---|---|---|---|---|---|
 | **Cursor** | `.cursor/rules/*.mdc` | `.cursor/skills/*/SKILL.md` | `.cursor/commands/*.md` | `.cursor/agents/*.md` | `.cursor/hooks.json` | `.cursor/mcp.json` |
 | **Claude Code** | `.claude/rules/**/*.md`, code dirs में nested `AGENTS.md` / `CLAUDE.md` | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json` (`hooks` key) | `.mcp.json` |
-| **Devin** | — | `.devin/skills/*/SKILL.md` | — | — | `.devin/hooks.v1.json` (standalone event map) या `.devin/config.json` (`hooks` key) | — |
-| **Windsurf** | `.windsurf/rules/*.md` | — | `.windsurf/workflows/*.md` | — | — | — |
-| **Cline** | `.clinerules/*.md` | — | — | — | — | — |
-| **Continue** | `.continue/rules/*.md` | — | `.continue/prompts/*` | — | — | — |
-| **GitHub Copilot** | `.github/instructions/*.instructions.md` | — | — | — | — | — |
-| **Codex** | nested `AGENTS.md` files | `.agents/skills/*/SKILL.md` | — | — | — | — |
+| **Devin Local** | `.devin/rules/*.md`, `.devin/global_rules.md`, nested `AGENT*.md` | `.devin/skills/*/SKILL.md` | `.devin/workflows/*.md` | `.devin/agents/*.md` या `<name>/AGENT.md` | `.devin/hooks.v1.json`, legacy `.devin/config.json` | `.devin/mcp_config.json` |
+| **Windsurf / Cascade (legacy)** | `.windsurf/rules/*.md`, `.windsurf/global_rules.md`, `.windsurfrules` | — | `.windsurf/workflows/*.md` (Cascade) | — | — | — |
+| **Cline** | `.clinerules/*.md`, `.cline/rules/*.md`, legacy `.clinerules` | `.cline/skills/*/SKILL.md` | — | — | — | — |
+| **Continue** | `.continue/rules/*.md` | — | `.continue/prompts/*` | — | — | `.continue/mcpServers/*.{json,yaml,yml}` |
+| **GitHub Copilot** | `.github/copilot-instructions.md`, `.github/instructions/*.instructions.md` | `.github/skills/*/SKILL.md` | `.github/prompts/*.prompt.md` | `.github/agents/*.md` custom agents detect होते हैं, लेकिन delegable subagents नहीं गिने जाते | `.github/hooks/*.json` | `.vscode/mcp.json` |
+| **Codex** | nested `AGENTS.md` files | `.agents/skills/*/SKILL.md` | — | — | `.codex/hooks.json`, `.codex/config.toml` में `[[hooks.*]]` | `.codex/config.toml` में `[mcp_servers.*]` |
 | **Gemini / Antigravity** | `.agents/rules/`, `.agent/rules/`, `.gemini/rules/`, nested `GEMINI.md` | `.agents/skills/*/SKILL.md` | `.agents/workflows/`, `.agent/workflows/` | — | — | `.agents/mcp_config.json`, `.agent/mcp_config.json` |
-| **OpenCode** | — | — | — | `.opencode/agents/*.md` | — | — |
-| **Zed** | — | — | `.zed/commands/*.md` | — | — | — |
+| **OpenCode** | shared `AGENTS.md` instructions | `.opencode/skills/*/SKILL.md` और root `*.md` | `.opencode/commands/**/*.md` | `.opencode/agents/*.md` | — | `opencode.json[c]` |
+| **Zed** | `.rules` (legacy); shared `AGENTS.md` | `.agents/skills/*/SKILL.md` | `.zed/commands/*.md` (existing format) | — | — | — |
 
 ### Devbox environment compatibility
 
@@ -58,7 +58,7 @@ Root context files (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`) हर tool के �
 और सबसे महत्वपूर्ण artifacts **tool-agnostic** हैं: tests, CI pipelines, linters, type checkers, `.gitignore`, lockfiles, और `SECURITY.md` — कौन सा tool उपयोग करें, score समान।
 
 ::: tip किसी tool का column sparse होना penalty नहीं है
-Windsurf के लिए scanner hooks system recognize नहीं करता — पर hooks छह dimensions में से एक हैं। rules, sensors और CI मजबूत Windsurf-only repository भी L3 तक पहुँच सकती है। L4 के लिए gate hooks चाहिए, जिसका मतलब आज `.cursor/hooks.json`, Claude Code `settings.json`, या Devin `.devin/hooks.v1.json` / `.devin/config.json` primary tool के साथ।
+Scanner अब Cursor, Claude Code, Copilot, Codex और Devin के documented lifecycle hooks पहचानता है। Windsurf-only repository भी rules, sensors और CI से L3 तक पहुँच सकती है; L4 के लिए gate hook किसी supported tool की config में हो सकता है।
 :::
 
 ## अपना harness एक बार बनाएँ
@@ -94,13 +94,14 @@ Cursor User Rules जो केवल IDE settings UI में हैं, द�
 |---|---|---|
 | **Cursor** | `~/.cursor/{skills,commands,agents,rules}`, `~/.cursor/mcp.json` | UI-only User Rules invisible |
 | **Claude Code** | `~/.claude/{skills,commands,agents}`, `~/.claude/settings.json`, `~/.mcp.json`, user-scoped plugins from `~/.claude/plugins/installed_plugins.json` | User plugins count toward effective score only |
-| **Windsurf** | `~/.codeium/windsurf/memories/global_rules.md` → `.windsurf/rules/…`, `~/.windsurf/{rules,workflows}/`, MCP alias | Global rules Codeium के अंतर्गत |
-| **Cline** | `~/Documents/Cline/Rules/*.md` → `.clinerules/…` | Fallback: `~/Cline/Rules` |
-| **Continue** | `~/.continue/{rules,prompts}/` | `config.yaml` inline rules parse नहीं (v1) |
-| **Codex / Antigravity** | `~/.agents/{skills,rules,workflows}/`, `~/.agent/…`, `~/.gemini/rules/`, `~/.codex/skills`, `~/.agents/AGENTS.md` | |
-| **OpenCode** | `$XDG_CONFIG_HOME/opencode/agents/` | |
-| **Zed** | `~/.zed/commands/` | |
-| **GitHub Copilot** | — | Repo-only: `.github/instructions/` |
+| **Windsurf / Cascade** | `~/.codeium/windsurf/memories/global_rules.md` → `.windsurf/rules/…`, `~/.windsurf/{rules,workflows}/`, `~/.codeium/windsurf/global_workflows/` | Cascade के legacy paths; undocumented MCP/hooks aliases नहीं |
+| **Cline** | `~/Documents/Cline/Rules/*.md`, `~/.cline/rules/`, `~/.cline/skills/` | Rules fallback: `~/Cline/Rules` |
+| **Continue** | `~/.continue/{rules,prompts,mcpServers}/` | `config.yaml` inline rules parse नहीं (v1) |
+| **Codex / Antigravity** | `~/.agents/{skills,rules,workflows}/`, `~/.agent/…`, `~/.gemini/rules/`, `~/.codex/{skills,hooks.json,config.toml}`, `~/.agents/AGENTS.md` | |
+| **OpenCode** | `$XDG_CONFIG_HOME/opencode/{agents,commands,skills}/`, `opencode.json[c]` | |
+| **Zed** | `~/.agents/skills/`, `~/.config/zed/AGENTS.md` या `%APPDATA%\Zed\AGENTS.md`, `~/.zed/commands/` | User instructions shared context guide से map होते हैं |
+| **GitHub Copilot** | `~/.copilot/{skills,agents,hooks}/` | User hooks recognized; global instructions UI/config में managed |
+| **Devin Local** | `$XDG_CONFIG_HOME/devin/{rules,skills,agents,workflows,AGENTS.md,hooks.v1.json,mcp_config.json}` | Effective score के project-equivalent config में map |
 
 **GitHub Copilot** का documented disk global path नहीं — team instructions repo
 में रखें maturity/effective parity के लिए।

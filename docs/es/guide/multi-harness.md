@@ -29,15 +29,36 @@ Harness Score reconoce estos artefactos (patrones exactos en el registry del esc
 |---|---|---|---|---|---|---|
 | **Cursor** | `.cursor/rules/*.mdc` | `.cursor/skills/*/SKILL.md` | `.cursor/commands/*.md` | `.cursor/agents/*.md` | `.cursor/hooks.json` | `.cursor/mcp.json` |
 | **Claude Code** | `.claude/rules/**/*.md`, `AGENTS.md` / `CLAUDE.md` anidados en dirs de código | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json` (`hooks`) | `.mcp.json` |
-| **Devin** | — | `.devin/skills/*/SKILL.md` | — | — | `.devin/hooks.v1.json` (mapa standalone de eventos) o `.devin/config.json` (clave `hooks`) | — |
-| **Windsurf** | `.windsurf/rules/*.md` | — | `.windsurf/workflows/*.md` | — | — | — |
-| **Cline** | `.clinerules/*.md` | — | — | — | — | — |
-| **Continue** | `.continue/rules/*.md` | — | `.continue/prompts/*` | — | — | — |
-| **GitHub Copilot** | `.github/instructions/*.instructions.md` | — | — | — | — | — |
-| **Codex** | `AGENTS.md` anidados | `.agents/skills/*/SKILL.md` | — | — | — | — |
+| **Devin Local** | `.devin/rules/*.md`, `.devin/global_rules.md`, `AGENT*.md` anidados | `.devin/skills/*/SKILL.md` | `.devin/workflows/*.md` | `.devin/agents/*.md` o `<name>/AGENT.md` | `.devin/hooks.v1.json`, legacy `.devin/config.json` | `.devin/mcp_config.json` |
+| **Windsurf / Cascade (legacy)** | `.windsurf/rules/*.md`, `.windsurf/global_rules.md`, `.windsurfrules` | — | `.windsurf/workflows/*.md` (Cascade) | — | — | — |
+| **Cline** | `.clinerules/*.md`, `.cline/rules/*.md`, `.clinerules` legacy | `.cline/skills/*/SKILL.md` | — | — | — | — |
+| **Continue** | `.continue/rules/*.md` | — | `.continue/prompts/*` | — | — | `.continue/mcpServers/*.{json,yaml,yml}` |
+| **GitHub Copilot** | `.github/copilot-instructions.md`, `.github/instructions/*.instructions.md` | `.github/skills/*/SKILL.md` | `.github/prompts/*.prompt.md` | Custom agents in `.github/agents/*.md` are detected, but not counted as delegable subagents | `.github/hooks/*.json` | `.vscode/mcp.json` |
+| **Codex** | nested `AGENTS.md` | `.agents/skills/*/SKILL.md` | — | — | `.codex/hooks.json`, `[[hooks.*]]` in `.codex/config.toml` | `[mcp_servers.*]` in `.codex/config.toml` |
 | **Gemini / Antigravity** | `.agents/rules/`, `.agent/rules/`, `.gemini/rules/`, `GEMINI.md` anidados | `.agents/skills/*/SKILL.md` | `.agents/workflows/`, `.agent/workflows/` | — | — | `.agents/mcp_config.json`, `.agent/mcp_config.json` |
-| **OpenCode** | — | — | — | `.opencode/agents/*.md` | — | — |
-| **Zed** | — | — | `.zed/commands/*.md` | — | — | — |
+| **OpenCode** | shared `AGENTS.md` instructions | `.opencode/skills/*/SKILL.md` and root `*.md` | `.opencode/commands/**/*.md` | `.opencode/agents/*.md` | — | `opencode.json[c]` |
+| **Zed** | `.rules` (legacy); shared `AGENTS.md` | `.agents/skills/*/SKILL.md` | `.zed/commands/*.md` (existing format) | — | — | — |
+
+Las rutas reflejan la documentación oficial actual. Consulta las referencias de
+[personalización y hooks de Copilot](https://docs.github.com/en/copilot/reference/customization-cheat-sheet),
+[comandos y skills de OpenCode](https://opencode.ai/docs/commands),
+[reglas y skills de Cline](https://docs.cline.bot/customization/cline-rules),
+[instrucciones y skills de Zed](https://zed.dev/docs/ai/instructions) y
+[personalizaciones de Devin Local](https://docs.devin.ai/desktop/devin-local/customizations).
+Los hooks TOML de Codex están en la [guía de hooks](https://learn.chatgpt.com/docs/hooks)
+y la [referencia de configuración](https://learn.chatgpt.com/docs/config-file/config-advanced).
+Las skills compartidas se detectan para cada consumidor documentado, pero se recopilan
+y puntúan una sola vez. Los agentes personalizados de Copilot identifican la herramienta,
+pero no cuentan como subagents delegables.
+
+Cuando un archivo reconocido corresponde a una categoría puntuada, el check existente
+lo usa como evidencia y puede conceder sus puntos. Esto puede elevar la nota; los IDs,
+valores, dimensiones y umbrales no cambian. Los archivos globales solo contribuyen al
+score effective cuando ese alcance está habilitado.
+
+Se mantienen las rutas legacy de reglas y workflows de Windsurf/Cascade. Devin Local
+es el agente actual de Devin Desktop y tiene su propio formato; los workflows legacy
+de Cascade no se interpretan como workflows de Devin Local.
 
 ### Compatibilidad con el entorno Devbox
 
@@ -101,13 +122,14 @@ del registry para que los checks se comporten como archivos del repo.
 |---|---|---|
 | **Cursor** | `~/.cursor/{skills,commands,agents,rules}`, `~/.cursor/mcp.json` | User Rules solo en UI siguen invisibles |
 | **Claude Code** | `~/.claude/{skills,commands,agents}`, `~/.claude/settings.json`, `~/.mcp.json`, user-scoped plugins from `~/.claude/plugins/installed_plugins.json` | User plugins count toward effective score only |
-| **Windsurf** | `~/.codeium/windsurf/memories/global_rules.md` → `.windsurf/rules/…`, `~/.windsurf/{rules,workflows}/`, alias MCP | Reglas globales bajo Codeium |
-| **Cline** | `~/Documents/Cline/Rules/*.md` → `.clinerules/…` | Fallback: `~/Cline/Rules` |
-| **Continue** | `~/.continue/{rules,prompts}/` | Reglas inline en `config.yaml` no parseadas (v1) |
-| **Codex / Antigravity** | `~/.agents/{skills,rules,workflows}/`, `~/.agent/…`, `~/.gemini/rules/`, `~/.codex/skills`, `~/.agents/AGENTS.md` | |
-| **OpenCode** | `$XDG_CONFIG_HOME/opencode/agents/` | |
-| **Zed** | `~/.zed/commands/` | |
-| **GitHub Copilot** | — | Solo repo: `.github/instructions/` |
+| **Windsurf / Cascade** | `~/.codeium/windsurf/memories/global_rules.md` → `.windsurf/rules/…`, `~/.windsurf/{rules,workflows}/`, `~/.codeium/windsurf/global_workflows/` | Rutas legacy de Cascade; sin aliases MCP/hooks no documentados |
+| **Cline** | `~/Documents/Cline/Rules/*.md`, `~/.cline/rules/`, `~/.cline/skills/` | Fallback de reglas: `~/Cline/Rules` |
+| **Continue** | `~/.continue/{rules,prompts,mcpServers}/` | Las reglas inline de `config.yaml` no se analizan (v1) |
+| **Codex / Antigravity** | `~/.agents/{skills,rules,workflows}/`, `~/.agent/…`, `~/.gemini/rules/`, `~/.codex/{skills,hooks.json,config.toml}`, `~/.agents/AGENTS.md` | |
+| **OpenCode** | `$XDG_CONFIG_HOME/opencode/{agents,commands,skills}/`, `opencode.json[c]` | |
+| **Zed** | `~/.agents/skills/`, `~/.config/zed/AGENTS.md` o `%APPDATA%\Zed\AGENTS.md`, `~/.zed/commands/` | Instrucciones personales se mapean a la guía compartida |
+| **GitHub Copilot** | `~/.copilot/{skills,agents,hooks}/` | Se reconocen hooks personales; las instrucciones globales siguen gestionadas por UI/config |
+| **Devin Local** | `$XDG_CONFIG_HOME/devin/{rules,skills,agents,workflows,AGENTS.md,hooks.v1.json,mcp_config.json}` | Archivos mapeados a equivalentes del proyecto para effective |
 
 **GitHub Copilot** no tiene ruta global documentada en disco — mantén
 instrucciones de equipo en el repositorio para paridad maturity/effective.

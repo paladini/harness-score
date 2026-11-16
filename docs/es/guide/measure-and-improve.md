@@ -461,8 +461,8 @@ Commands over descriptions; point to rules instead of pasting them.
 
 #### CTX-03 · Scoped rules in use — 4 pts {#ctx-03}
 At least one scoped rule file for any supported tool (e.g. `.cursor/rules/*.mdc`,
-`.windsurf/rules/*.md`, `.clinerules/*.md`, `.continue/rules/*.md`,
-`.github/instructions/*.instructions.md`, `.agents/rules/*`, `.claude/rules/**/*.md`).
+`.windsurf/rules/*.md`, `.clinerules/*.md`, `.cline/rules/*.md`, `.devin/rules/*.md`, `.continue/rules/*.md`,
+`.github/copilot-instructions.md`, `.github/instructions/*.instructions.md`, `.rules`, `.agents/rules/*`, `.claude/rules/**/*.md`).
 Nested context files in code subdirectories (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`
 below the root, but not `.claude/CLAUDE.md` or `.claude/AGENTS.md`) also count —
 they are directory-scoped rules in tools like Claude Code and Codex.
@@ -471,7 +471,7 @@ then add path-scoped rules per area (or nested context files per subtree).
 
 #### CTX-04 · Rules have valid frontmatter — 3 pts {#ctx-04}
 Every rule declares activation metadata (`description`, `globs`/`trigger`/`paths`/`applyTo`, or `alwaysApply`).
-Rules a tool auto-loads without metadata — `.continue/rules/*`, `.claude/rules/*`
+Rules a tool auto-loads without metadata — `.continue/rules/*`, `.cline/rules/*`, `.clinerules/*`, `.rules`, `.github/copilot-instructions.md`, `.claude/rules/*`
 (optional `paths` only), and nested context files — pass by construction.
 **Corrección:** add the frontmatter block; without it the agent can't decide when the
 rule applies.
@@ -499,7 +499,7 @@ The deprecated single-file format is absent (or modern scoped rules also exist).
 ### Skills & Commands (17 pts)
 
 #### SKL-01 · At least one skill — 4 pts {#skl-01}
-A `SKILL.md` under `.cursor/skills/<name>/`, `.claude/skills/<name>/`, `.agents/skills/<name>/`, or — when the scan root is a Claude Code or Cursor plugin repository — under default plugin `skills/<name>/` (manifest at `.claude-plugin/plugin.json` or `.cursor-plugin/plugin.json` at the scan root).
+A `SKILL.md` under `.cursor/skills/<name>/`, `.claude/skills/<name>/`, `.agents/skills/<name>/`, `.cline/skills/<name>/`, `.clinerules/skills/<name>/`, `.github/skills/<name>/`, `.opencode/skills/<name>/`, or — when the scan root is a Claude Code or Cursor plugin repository — under default plugin `skills/<name>/` (manifest at `.claude-plugin/plugin.json` or `.cursor-plugin/plugin.json` at the scan root).
 **Corrección:** package your most repeated procedure (deploy, release, migration)
 as a skill — [capítulo 3](./guides-feedforward#skills-the-procedural-layer).
 
@@ -510,7 +510,7 @@ alone; without them the skill is invisible.
 
 #### SKL-03 · Explicit workflows/commands defined — 3 pts {#skl-03}
 Command or workflow files (`.cursor/commands/`, `.windsurf/workflows/`,
-`.claude/commands/`, `.continue/prompts/`, `.zed/commands/`, `.agents/workflows/`, or plugin `commands/` at the scan root).
+`.claude/commands/`, `.continue/prompts/`, `.zed/commands/`, `.agents/workflows/`, `.github/prompts/`, `.opencode/commands/`, `.devin/workflows/`, or plugin `commands/` at the scan root).
 **Corrección:** encode workflows you trigger deliberately (`/review`, `/release`)
 as command/workflow files.
 
@@ -520,7 +520,7 @@ Descriptions ≥40 characters.
 to deploy or release; covers tagging, pipeline, rollback, smoke tests."
 
 #### AGT-01 · Custom subagent defined — 3 pts {#agt-01}
-A subagent file under `.cursor/agents/`, `.claude/agents/`, `.opencode/agents/`, or plugin `agents/` at the scan root.
+A delegable subagent file under `.cursor/agents/`, `.claude/agents/`, `.opencode/agents/`, `.devin/agents/`, or plugin `agents/` at the scan root. Copilot custom agents identify the tool but are not counted as subagents.
 **Corrección:** package a purpose-built subagent for a job the primary agent should
 delegate (planning, review, release) — see
 [Subagents](./cursor-harness-surface#subagents-purpose-built-delegates)
