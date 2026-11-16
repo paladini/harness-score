@@ -12,10 +12,22 @@ function isClaudeRulesPath(path: string): boolean {
  * `.claude/rules/*.md`, and nested context files (AGENTS.md/CLAUDE.md/GEMINI.md
  * in subdirectories) are loaded by directory scope with no metadata at all.
  */
-function autoLoadsWithoutFrontmatter(path: string, toolId: ToolId): boolean {
+function autoLoadsWithoutFrontmatter(path: string, toolId: ToolId, content: string | null): boolean {
   if (toolId === 'continue' && /(^|\/)\.continue\/rules\//.test(path)) return true;
   if (toolId === 'claude-code' && isClaudeRulesPath(path)) return true;
-  return /\/(AGENTS|CLAUDE|GEMINI)\.md$/.test(path);
+  if (toolId === 'zed' && /(^|\/)\.rules$/.test(path)) return true;
+  if (toolId === 'devin' && /(^|\/)(?:\.devin\/global_rules\.md|AGENT(?:S(?:\.local)?)?\.md)$/.test(path))
+    return true;
+  if (toolId === 'windsurf' && /(^|\/)(?:\.windsurfrules|\.windsurf\/global_rules\.md)$/.test(path))
+    return true;
+  if (
+    toolId === 'cline' &&
+    !parseFrontmatter(content ?? '') &&
+    /(^|\/)(?:\.clinerules(?:\/[^/]+\.md)?|\.cline\/rules\/[^/]+\.md)$/.test(path)
+  )
+    return true;
+  if (toolId === 'copilot' && path === '.github/copilot-instructions.md') return true;
+  return /\/(AGENT|AGENTS|AGENTS\.local|CLAUDE|GEMINI)\.md$/.test(path);
 }
 
 /** True when Claude rule frontmatter declares path-scoped `paths` (string or YAML list). */
@@ -50,7 +62,7 @@ function claudeRuleIsAlwaysOn(path: string, content: string | null): boolean {
 
 /** CTX-04: rule has usable activation metadata for its tool. */
 export function ruleHasValidFrontmatter(path: string, toolId: ToolId, content: string | null): boolean {
-  if (autoLoadsWithoutFrontmatter(path, toolId)) return true;
+  if (autoLoadsWithoutFrontmatter(path, toolId, content)) return true;
   const fm = content ? parseFrontmatter(content) : null;
   if (!fm) return false;
 
@@ -63,6 +75,8 @@ export function ruleHasValidFrontmatter(path: string, toolId: ToolId, content: s
       return fm.paths !== undefined && fm.paths.trim().length > 0;
     case 'copilot':
       return fm.applyTo !== undefined && fm.applyTo.trim().length > 0;
+    case 'devin':
+      return fm.trigger !== undefined || fm.globs !== undefined || fm.description !== undefined;
     case 'continue':
       return true;
     case 'antigravity':
@@ -92,6 +106,7 @@ export function ruleIsScoped(
   if (/\/(AGENTS|CLAUDE|GEMINI)\.md$/.test(path) && !/(^|\/)\.claude\/(CLAUDE|AGENTS)\.md$/.test(path)) {
     return true;
   }
+  if (/\/(AGENT|AGENTS|AGENTS\.local)\.md$/.test(path)) return true;
   const fm = content ? parseFrontmatter(content) : null;
 
   switch (toolId) {
@@ -111,6 +126,10 @@ export function ruleIsScoped(
     }
     case 'antigravity':
       return Boolean(fm?.globs || (fm?.trigger && isGlobLike(fm.trigger)));
+    case 'devin':
+      return Boolean(fm?.trigger === 'glob' || (fm?.globs && isGlobLike(fm.globs)));
+    case 'zed':
+      return false;
     default:
       return false;
   }

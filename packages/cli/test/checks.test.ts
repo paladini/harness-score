@@ -1016,6 +1016,28 @@ describe('hygiene checks', () => {
     expect(outcome.evidence).toContain('not valid JSON');
   });
 
+  test('HYG-08 handles Continue YAML and Codex TOML MCP configuration', async () => {
+    const continueCtx = fakeContext({
+      '.continue/mcpServers/tool.yaml':
+        'name: Tool\nversion: 1.0.0\nschema: v1\nmcpServers:\n  - name: Service\n    env:\n      API_TOKEN: ${API_TOKEN}\n',
+    });
+    expect((await check('HYG-08')).run(continueCtx).passed).toBe(true);
+
+    const codexCtx = fakeContext({
+      '.codex/config.toml': '[mcp_servers.docs]\ncommand = "node"\napi_key = "${DOCS_TOKEN}"\n',
+    });
+    expect((await check('HYG-08')).run(codexCtx).passed).toBe(true);
+
+    const codexWithoutMcp = fakeContext({ '.codex/config.toml': 'model = "gpt-5-codex"\n' });
+    expect((await check('HYG-08')).run(codexWithoutMcp).applicable).toBe(false);
+
+    const opencode = fakeContext({
+      'opencode.jsonc':
+        '{\n  // MCP servers\n  "mcp": {\n    "docs": {\n      "env": { "API_TOKEN": "${DOCS_TOKEN}" },\n    },\n  },\n}\n',
+    });
+    expect((await check('HYG-08')).run(opencode).passed).toBe(true);
+  });
+
   test('HYG-05 fails with no LICENSE file', async () => {
     const ctx = fakeContext({});
     const outcome = (await check('HYG-05')).run(ctx);

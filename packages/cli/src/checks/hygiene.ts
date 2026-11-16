@@ -106,6 +106,29 @@ function credentialShapedValues(node: unknown, keyIsCredential = false): string[
   return values;
 }
 
+/** Credential-valued YAML/TOML entries used by Continue and Codex MCP configs. */
+function credentialValuesFromKeyValueConfig(content: string): string[] {
+  const values: string[] = [];
+  for (const line of content.split(/\r?\n/)) {
+    const match = line.match(/^\s*["']?([A-Za-z_][\w-]*)["']?\s*[:=]\s*(.*?)\s*(?:#.*)?$/);
+    if (!match || !isCredentialShapedKey(match[1]!)) continue;
+    const raw = match[2]!.trim().replace(/,\s*$/, '');
+    if (!raw || raw === '|' || raw === '>') continue;
+    const unwrapped = raw.replace(/^(?:['"])(.*)(?:['"])$/, '$1');
+    if (unwrapped.startsWith('[') && unwrapped.endsWith(']')) {
+      values.push(
+        ...unwrapped
+          .slice(1, -1)
+          .split(',')
+          .map((value) => value.trim().replace(/^['"]|['"]$/g, '')),
+      );
+    } else {
+      values.push(unwrapped);
+    }
+  }
+  return values;
+}
+
 function gitignoreCoversEnv(ctx: ScanContext): boolean {
   const content = ctx.read('.gitignore');
   if (content === null) return false;
@@ -184,7 +207,7 @@ export const hygieneChecks: Check[] = [
     title: 'MCP configuration free of credentials',
     points: 4,
     remediation:
-      'Never inline API keys in MCP config (.cursor/mcp.json, .mcp.json, .agents/mcp_config.json) — use ${VAR} interpolation and document required variables in .env.example.',
+      'Never inline API keys in MCP config (.cursor/mcp.json, .mcp.json, .agents/mcp_config.json, .continue/mcpServers/, .vscode/mcp.json, opencode.json, or Devin MCP config) — use environment interpolation and document required variables in .env.example.',
     run(ctx) {
       const mcpFiles = mcpConfigPaths(ctx);
       if (mcpFiles.length === 0) {
@@ -290,10 +313,16 @@ export const hygieneChecks: Check[] = [
           return { passed: false, evidence: `${file} contains a literal credential signature (see HYG-04).` };
         }
         const parsed = safeJsonParse(content);
-        if (parsed === undefined) {
+        let credentialValues: string[];
+        if (parsed !== undefined) {
+          credentialValues = credentialShapedValues(parsed);
+        } else if (/\.(?:ya?ml|toml)$/i.test(file)) {
+          credentialValues = credentialValuesFromKeyValueConfig(content);
+        } else if (/\.jsonc$/i.test(file)) {
+          credentialValues = credentialValuesFromKeyValueConfig(content);
+        } else {
           return { passed: false, evidence: `${file} is not valid JSON.` };
         }
-        const credentialValues = credentialShapedValues(parsed);
         const uninterpolated = credentialValues.filter((v) => !ENV_INTERPOLATION_RE.test(v));
         if (uninterpolated.length > 0) {
           return {

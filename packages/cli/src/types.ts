@@ -23,6 +23,8 @@ export interface ScanContext {
   root: string;
   /** All file paths relative to root, POSIX separators, sorted. */
   files: string[];
+  /** Paths supplied by user/system/extra-root overlays rather than the repository tree. */
+  overlayFiles?: ReadonlySet<string>;
   /** Compatibility alias: true whenever the scan is incomplete for any reason. */
   truncated: boolean;
   /** Deterministic reasons the filesystem walk or a requested file read could not complete. */

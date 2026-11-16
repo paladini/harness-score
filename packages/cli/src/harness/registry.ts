@@ -99,6 +99,8 @@ export function matchPathSpec(ctx: ScanContext, spec: PathSpec): PathSpecMatch[]
 /** Project guide paths checked by CTX-01/02. Order is preference for evidence only. */
 export const CONTEXT_ROOT_FILES = [
   'AGENTS.md',
+  'AGENT.md',
+  'AGENTS.local.md',
   'CLAUDE.md',
   'GEMINI.md',
   '.claude/CLAUDE.md',
@@ -129,6 +131,17 @@ export const PATH_SPECS: PathSpec[] = [
     nativeRoot: '.clinerules',
   },
   {
+    toolId: 'cline',
+    kind: 'rules',
+    pathRegex: /(^|\/)\.clinerules$/,
+  },
+  {
+    toolId: 'cline',
+    kind: 'rules',
+    pathRegex: /(^|\/)\.cline\/rules\/[^/]+\.md$/,
+    nativeRoot: '.cline',
+  },
+  {
     toolId: 'continue',
     kind: 'rules',
     pathRegex: /(^|\/)\.continue\/rules\/[^/]+\.md$/,
@@ -139,6 +152,28 @@ export const PATH_SPECS: PathSpec[] = [
     kind: 'rules',
     pathRegex: /(^|\/)\.github\/instructions\/[^/]+\.instructions\.md$/,
     nativeRoot: '.github',
+  },
+  {
+    toolId: 'copilot',
+    kind: 'rules',
+    pathRegex: /(^|\/)\.github\/copilot-instructions\.md$/,
+    nativeRoot: '.github',
+  },
+  {
+    toolId: 'zed',
+    kind: 'rules',
+    pathRegex: /(^|\/)\.rules$/,
+  },
+  {
+    toolId: 'windsurf',
+    kind: 'rules',
+    pathRegex: /(^|\/)(?:\.windsurfrules|\.windsurf\/global_rules\.md)$/,
+  },
+  {
+    toolId: 'devin',
+    kind: 'rules',
+    pathRegex: /(^|\/)\.devin\/(?:rules\/[^/]+\.md|global_rules\.md)$/,
+    nativeRoot: '.devin',
   },
   {
     toolId: 'antigravity',
@@ -168,6 +203,7 @@ export const PATH_SPECS: PathSpec[] = [
   // guidance loaded automatically by Codex/Cursor (AGENTS.md), Claude Code
   // (CLAUDE.md), and Gemini/Antigravity (GEMINI.md).
   { toolId: 'codex', kind: 'rules', pathRegex: /.\/AGENTS\.md$/ },
+  { toolId: 'devin', kind: 'rules', pathRegex: /.\/(?:AGENT|AGENTS|AGENTS\.local)\.md$/ },
   { toolId: 'claude-code', kind: 'rules', pathRegex: /.\/CLAUDE\.md$/ },
   { toolId: 'antigravity', kind: 'rules', pathRegex: /.\/GEMINI\.md$/ },
 
@@ -187,7 +223,7 @@ export const PATH_SPECS: PathSpec[] = [
   {
     toolId: 'devin',
     kind: 'skills',
-    pathRegex: /(^|\/)\.devin\/skills\/[^/]+\/SKILL\.md$/,
+    pathRegex: /(^|\/)\.devin\/skills\/.+\/SKILL\.md$/,
     nativeRoot: '.devin',
   },
   {
@@ -201,6 +237,36 @@ export const PATH_SPECS: PathSpec[] = [
     kind: 'skills',
     pathRegex: /(^|\/)\.agents\/skills\/[^/]+\/SKILL\.md$/,
     nativeRoot: '.agents',
+  },
+  {
+    toolId: 'copilot',
+    kind: 'skills',
+    pathRegex: /(^|\/)\.github\/skills\/.+\/SKILL\.md$/,
+    nativeRoot: '.github',
+  },
+  {
+    toolId: 'copilot',
+    kind: 'skills',
+    pathRegex: /(^|\/)\.agents\/skills\/.+\/SKILL\.md$/,
+    nativeRoot: '.agents',
+  },
+  {
+    toolId: 'cline',
+    kind: 'skills',
+    pathRegex: /(^|\/)\.cline\/skills\/.+\/SKILL\.md$/,
+    nativeRoot: '.cline',
+  },
+  {
+    toolId: 'cline',
+    kind: 'skills',
+    pathRegex: /(^|\/)\.clinerules\/skills\/.+\/SKILL\.md$/,
+    nativeRoot: '.clinerules',
+  },
+  {
+    toolId: 'opencode',
+    kind: 'skills',
+    pathRegex: /(^|\/)\.opencode\/skills\/(?:[^/]+\.md|.+\/SKILL\.md)$/,
+    nativeRoot: '.opencode',
   },
 
   // Commands / workflows
@@ -227,6 +293,24 @@ export const PATH_SPECS: PathSpec[] = [
     kind: 'commands',
     pathRegex: /(^|\/)\.continue\/prompts\/[^/]+$/,
     nativeRoot: '.continue',
+  },
+  {
+    toolId: 'copilot',
+    kind: 'commands',
+    pathRegex: /(^|\/)\.github\/prompts\/[^/]+\.prompt\.md$/,
+    nativeRoot: '.github',
+  },
+  {
+    toolId: 'opencode',
+    kind: 'commands',
+    pathRegex: /(^|\/)\.opencode\/commands\/.+\.md$/,
+    nativeRoot: '.opencode',
+  },
+  {
+    toolId: 'devin',
+    kind: 'commands',
+    pathRegex: /(^|\/)\.devin\/workflows\/[^/]+\.md$/,
+    nativeRoot: '.devin',
   },
   {
     toolId: 'zed',
@@ -266,6 +350,12 @@ export const PATH_SPECS: PathSpec[] = [
     pathRegex: /(^|\/)\.opencode\/agents\/[^/]+\.md$/,
     nativeRoot: '.opencode',
   },
+  {
+    toolId: 'devin',
+    kind: 'subagents',
+    pathRegex: /(^|\/)\.devin\/agents\/(?:[^/]+\.md|[^/]+\/AGENT\.md)$/,
+    nativeRoot: '.devin',
+  },
 
   // Hooks (config file paths — payload parsed separately)
   {
@@ -285,6 +375,24 @@ export const PATH_SPECS: PathSpec[] = [
     kind: 'hooks',
     pathRegex: /(^|\/)\.devin\/hooks\.v1\.json$/,
     nativeRoot: '.devin',
+  },
+  {
+    toolId: 'copilot',
+    kind: 'hooks',
+    pathRegex: /(^|\/)\.github\/hooks\/[^/]+\.json$/,
+    nativeRoot: '.github',
+  },
+  {
+    toolId: 'codex',
+    kind: 'hooks',
+    pathRegex: /(^|\/)\.codex\/hooks\.json$/,
+    nativeRoot: '.codex',
+  },
+  {
+    toolId: 'codex',
+    kind: 'hooks',
+    pathRegex: /(^|\/)\.codex\/config\.toml$/,
+    nativeRoot: '.codex',
   },
   {
     toolId: 'devin',
@@ -313,7 +421,56 @@ export const PATH_SPECS: PathSpec[] = [
     pathRegex: /(^|\/)\.agent\/mcp_config\.json$/,
     nativeRoot: '.agent',
   },
+  {
+    toolId: 'continue',
+    kind: 'mcp',
+    pathRegex: /(^|\/)\.continue\/mcpServers\/.+\.(?:json|ya?ml)$/,
+    nativeRoot: '.continue',
+  },
+  {
+    toolId: 'copilot',
+    kind: 'mcp',
+    pathRegex: /(^|\/)\.vscode\/mcp\.json$/,
+  },
+  {
+    toolId: 'devin',
+    kind: 'mcp',
+    pathRegex: /(^|\/)\.devin\/mcp_config\.json$/,
+    nativeRoot: '.devin',
+  },
+  {
+    toolId: 'opencode',
+    kind: 'mcp',
+    pathRegex: /(^|\/)opencode\.jsonc?$/,
+  },
+  {
+    toolId: 'codex',
+    kind: 'mcp',
+    pathRegex: /(^|\/)\.codex\/config\.toml$/,
+    nativeRoot: '.codex',
+  },
 ];
+
+/** Official tool-specific files that identify a harness but do not map to a scored artifact kind. */
+export const TOOL_DETECTION_PATHS: Partial<Record<ToolId, RegExp[]>> = {
+  copilot: [
+    /\.github\/agents\/[^/]+\.md$/,
+    /\.claude\/skills\/.+\/SKILL\.md$/,
+    /\.agents\/skills\/.+\/SKILL\.md$/,
+  ],
+  cline: [/\.claude\/skills\/.+\/SKILL\.md$/],
+  devin: [/\.agents\/skills\/.+\/SKILL\.md$/, /^AGENT\.md$/],
+  opencode: [/\.claude\/skills\/.+\/SKILL\.md$/, /\.agents\/skills\/.+\/SKILL\.md$/],
+  zed: [/\.agents\/skills\/.+\/SKILL\.md$/],
+};
+
+/** Detection-only shared paths allowed in user/global overlays by vendor documentation. */
+export const TOOL_GLOBAL_DETECTION_PATHS: Partial<Record<ToolId, RegExp[]>> = {
+  copilot: [/\.github\/agents\/[^/]+\.md$/, /\.agents\/skills\/.+\/SKILL\.md$/],
+  devin: [/\.agents\/skills\/.+\/SKILL\.md$/, /^AGENT\.md$/],
+  opencode: [/\.claude\/skills\/.+\/SKILL\.md$/, /\.agents\/skills\/.+\/SKILL\.md$/],
+  zed: [/\.agents\/skills\/.+\/SKILL\.md$/],
+};
 
 /** Plugin-facing path hints — kept in sync with PATH_SPECS via plugins:sync-check. */
 export const PLUGIN_TOOL_PATHS: Record<
