@@ -53,6 +53,14 @@ detection, while the artifact is collected and scored once. Copilot's custom
 agent definitions identify Copilot but do not count as subagents because their
 delegation semantics differ.
 
+When a newly recognized file matches one of the scored categories above, the
+existing check collects it as evidence and can award its existing points. For
+example, a recognized Copilot instruction file can satisfy the rules check, and
+a recognized OpenCode skill can contribute to the skills checks. This can raise
+a repository's score; the check IDs, point values, dimensions, and level
+thresholds remain the same. User-level files contribute only to the effective
+score when that scope is enabled.
+
 Windsurf's Cascade-specific rules/workflows remain recognized for existing
 repositories. Devin Local is the current Devin Desktop agent and has a distinct
 configuration layout; legacy Cascade workflows are not treated as Devin Local
