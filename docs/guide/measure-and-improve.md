@@ -692,7 +692,9 @@ tree everywhere.
 #### HYG-08 · MCP config uses env interpolation for credentials — 3 pts {#hyg-08}
 When an MCP config exists, any credential-shaped field (token, key, secret,
 password…) identified in JSON, Continue YAML, OpenCode JSONC, or Codex TOML
-uses `${ENV_VAR}` interpolation rather than a literal. The positive complement
+references an environment variable or secret rather than holding a literal.
+Each client's documented syntax counts: `${VAR}`, `${VAR:-default}`, `${env:VAR}`, `${input:id}`, `{env:VAR}`, <code v-pre>${{ secrets.NAME }}</code>,
+and Codex `*_env_var` keys, which name a variable. The positive complement
 to HYG-04.
 **Not applicable** when the repository has no MCP config. Not using MCP is
 not a missing interpolation setup, so the check drops out of the score
