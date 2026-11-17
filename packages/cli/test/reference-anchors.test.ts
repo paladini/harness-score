@@ -212,3 +212,59 @@ describe('anchor verification', () => {
     expect(verdictOf('[a](docs/api.md#login)')).toEqual(verdictOf('[a](docs/api.md#login)'));
   });
 });
+
+describe('a fragment missing from the headings', () => {
+  const html = [
+    '# Doc',
+    '',
+    '<a name="by-name"></a>',
+    '<a id="by-id"></a>',
+    '<span id="by-span">x</span>',
+    '<div id="by-div"></div>',
+    '<a data-id="by-data"></a>',
+  ].join('\n');
+  const files = { 'AGENTS.md': `${html}\n`, 'docs/html.md': `${html}\n` };
+  const verify = createAnchorVerifier(fakeContext(files));
+
+  function verdictOf(link: string) {
+    const [reference] = extractReferences({
+      path: 'AGENTS.md',
+      kind: 'context-instruction',
+      content: link,
+    }).references;
+    return verify(reference!);
+  }
+
+  const notSupported = { state: 'not-supported', reasonCode: 'html-anchor', rule: 'anchor.html' };
+  const missing = { state: 'inconsistent', reasonCode: 'anchor-missing', rule: 'anchor.missing' };
+
+  test.each([
+    ['[a](docs/html.md#by-name)', 'declared by <a name> in another document'],
+    ['[a](docs/html.md#by-id)', 'declared by <a id> in another document'],
+    ['[a](#by-name)', 'declared by <a name> in the same document'],
+    ['[a](#by-id)', 'declared by <a id> in the same document'],
+  ])('%s is not supported (%s)', (link) => {
+    expect(verdictOf(link)).toMatchObject(notSupported);
+  });
+
+  test.each([
+    ['[a](docs/html.md#by-span)', 'declared only by <span id> in another document'],
+    ['[a](#by-span)', 'declared only by <span id> in the same document'],
+    ['[a](docs/html.md#by-div)', 'declared only by <div id>'],
+    ['[a](docs/html.md#by-data)', 'an <a> attribute that only ends in id'],
+    ['[a](docs/html.md#nowhere)', 'declared nowhere, in a file with HTML anchors'],
+    ['[a](#nowhere)', 'declared nowhere, in the same document with HTML anchors'],
+  ])('%s is inconsistent (%s)', (link) => {
+    expect(verdictOf(link)).toMatchObject(missing);
+  });
+
+  test('a heading still wins over an HTML anchor of the same name', () => {
+    const both = createAnchorVerifier(fakeContext({ 'docs/a.md': '# Doc\n\n<a name="doc"></a>\n' }));
+    const [reference] = extractReferences({
+      path: 'AGENTS.md',
+      kind: 'context-instruction',
+      content: '[a](docs/a.md#doc)',
+    }).references;
+    expect(both(reference!)).toMatchObject({ state: 'consistent', rule: 'anchor.found' });
+  });
+});

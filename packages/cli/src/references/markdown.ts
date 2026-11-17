@@ -222,7 +222,8 @@ function indentedContentStart(line: string): number {
 const DEFINITION_RE = /^ {0,3}\[([^\]]+)\]:[ \t]*(<[^>]*>|\S+)/;
 const AUTOLINK_RE = /<([A-Za-z][A-Za-z0-9+.-]{1,31}:[^\s<>]*)>/y;
 const ANCHOR_TAG_RE = /<a\b[^>]*>/iy;
-const ANCHOR_ATTRIBUTE_RE = /\b(name|id)\s*=\s*(?:"([^"]*)"|'([^']*)')/dgi;
+// An attribute follows whitespace, so `data-id` or `aria-name` is neither `id` nor `name`.
+const ANCHOR_ATTRIBUTE_RE = /(?<=\s)(name|id)\s*=\s*(?:"([^"]*)"|'([^']*)')/dgi;
 
 function isClosingFence(line: string, fence: { char: string; length: number }): boolean {
   const match = /^[ \t]*(`{3,}|~{3,})[ \t]*$/.exec(line);

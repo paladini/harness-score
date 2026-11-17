@@ -99,6 +99,14 @@ function scanMayHide(ctx: ResolveContext, probe: string): boolean {
   return false;
 }
 
+/** A path in inline code or a code block, where the text does not show it is meant as a target. */
+function inCode(ref: ExtractedReference): boolean {
+  return ref.syntax === 'inline-code' || ref.syntax === 'code-block';
+}
+
+/** Why a path in code that was not found stays ambiguous instead of inconsistent. */
+const CODE_CAVEAT = 'a path written in code may not be meant as a target';
+
 function settle(
   ref: ExtractedReference,
   state: ReferenceState,
@@ -129,8 +137,8 @@ export function createResolver(ctx: ResolveContext): (reference: ExtractedRefere
     const kind = wantsDirectory ? 'directory' : 'file';
     const other = wantsDirectory ? 'file' : 'directory';
     const primary = ref.normalizedTarget ?? '';
-    // Only paths written in text can be relative to the document; scope fields are root-relative.
-    const useAlternate = ref.syntax === 'inline-code' || ref.syntax === 'code-block';
+    // Only paths written in code can be relative to the document; links and scope fields are not.
+    const useAlternate = inCode(ref);
     const targets = [primary];
     if (useAlternate && ref.alternateTarget !== null) targets.push(ref.alternateTarget);
 
@@ -147,13 +155,17 @@ export function createResolver(ctx: ResolveContext): (reference: ExtractedRefere
     }
     const wrongType = targets.find(isOther);
     if (wrongType !== undefined) {
-      return settle(
-        ref,
-        'inconsistent',
-        RULES.pathTypeMismatch,
-        `${wrongType} exists but is a ${other}, not a ${kind}${note}`,
-        'type-mismatch',
-      );
+      const mismatch = `${wrongType} exists but is a ${other}, not a ${kind}${note}`;
+      if (useAlternate) {
+        return settle(
+          ref,
+          'ambiguous',
+          RULES.pathCodeTypeMismatch,
+          `${mismatch}; ${CODE_CAVEAT}`,
+          'operational-purpose-unknown',
+        );
+      }
+      return settle(ref, 'inconsistent', RULES.pathTypeMismatch, mismatch, 'type-mismatch');
     }
     if (targets.some((target) => scanMayHide(ctx, target))) return incomplete(ref, primary);
     if (!ref.explicitPath && !wantsDirectory) {
@@ -163,6 +175,15 @@ export function createResolver(ctx: ResolveContext): (reference: ExtractedRefere
         RULES.pathBareNameMissing,
         `"${ref.rawText}" was not found; a bare name may be a mention rather than a path`,
         'bare-name-not-found',
+      );
+    }
+    if (useAlternate) {
+      return settle(
+        ref,
+        'ambiguous',
+        RULES.pathCodeMissing,
+        `no ${kind} at ${targets.join(' or ')}; ${CODE_CAVEAT}`,
+        'operational-purpose-unknown',
       );
     }
     return settle(
@@ -208,6 +229,15 @@ export function createResolver(ctx: ResolveContext): (reference: ExtractedRefere
     const verdict = verifyAnchor(ref);
     if (verdict.reasonCode === 'document-missing' && scanMayHide(ctx, ref.normalizedTarget ?? '')) {
       return incomplete(ref, ref.normalizedTarget ?? '');
+    }
+    if (verdict.reasonCode === 'document-missing' && inCode(ref)) {
+      return settle(
+        ref,
+        'ambiguous',
+        RULES.anchorCodeDocumentMissing,
+        `${verdict.evidence}; ${CODE_CAVEAT}`,
+        'operational-purpose-unknown',
+      );
     }
     return settle(ref, verdict.state, verdict.rule, verdict.evidence, verdict.reasonCode);
   }

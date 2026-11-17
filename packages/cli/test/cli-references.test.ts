@@ -104,12 +104,12 @@ describe('--references: JSON', () => {
       occurrences: 5,
       byState: {
         consistent: 2,
-        inconsistent: 2,
+        inconsistent: 1,
         'not-evaluable': 1,
         'not-supported': 0,
-        ambiguous: 0,
+        ambiguous: 1,
       },
-      byReason: { 'document-missing': 1, 'external-resource': 1, 'target-missing': 1 },
+      byReason: { 'document-missing': 1, 'external-resource': 1, 'operational-purpose-unknown': 1 },
       scanComplete: true,
     });
   });
@@ -123,9 +123,9 @@ describe('--references: JSON', () => {
       syntax: 'inline-code',
       form: 'file-path',
       normalizedTarget: 'src/gone.ts',
-      state: 'inconsistent',
-      reasonCode: 'target-missing',
-      rule: 'path.file-missing',
+      state: 'ambiguous',
+      reasonCode: 'operational-purpose-unknown',
+      rule: 'path.code-missing',
     });
     expect(typeof missing.evidence).toBe('string');
   });
@@ -163,11 +163,12 @@ describe('--references: terminal and Markdown', () => {
     expect(stdout).toContain('References (informational, not part of the score)');
     expect(stdout).toContain('1 operational documents · 5 references · 0 documents skipped');
     expect(stdout).toContain(
-      'consistent 2 · inconsistent 2 · not evaluable 1 · not supported 0 · ambiguous 0',
+      'consistent 2 · inconsistent 1 · not evaluable 1 · not supported 0 · ambiguous 1',
     );
-    expect(stdout).toContain('AGENTS.md:3:26 src/gone.ts');
-    expect(stdout).toContain('no file at src/gone.ts');
+    expect(stdout).toContain('AGENTS.md:2:39 docs/missing.md#x');
+    expect(stdout).toContain('document docs/missing.md does not exist');
     expect(stdout).toContain('not evaluable / external-resource: 1');
+    expect(stdout).toContain('ambiguous / operational-purpose-unknown: 1');
   });
 
   test('the section comes after the usual report', () => {
@@ -183,7 +184,7 @@ describe('--references: terminal and Markdown', () => {
     const { stdout } = run([root, '--references', '--md', '-', '--quiet']);
     expect(stdout).toContain('## References');
     expect(stdout).toContain('### Inconsistent');
-    expect(stdout).toContain('`AGENTS.md:3:26` `src/gone.ts`');
+    expect(stdout).toContain('`AGENTS.md:2:39` `docs/missing.md#x`');
   });
 
   test('a repository without operational documents reports zeros', () => {
