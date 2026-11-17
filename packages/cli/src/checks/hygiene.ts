@@ -7,7 +7,13 @@ import { detectEcosystems } from './sensors.js';
 const ENV_FILE_RE = /(^|\/)\.env(\.[^/]+)?$/;
 const ENV_TEMPLATE_RE = /\.(example|sample|template|dist)$/;
 const CREDENTIAL_WORDS = new Set(['token', 'key', 'secret', 'password', 'passwd', 'auth', 'apikey']);
-const ENV_INTERPOLATION_RE = /\$\{[A-Za-z_][A-Za-z0-9_]*\}/;
+/**
+ * Secret references in each MCP client's documented syntax: `${VAR}` and
+ * `${VAR:-default}` (Claude Code), `${env:VAR}` (Cursor, VS Code),
+ * `${input:id}` (VS Code), `{env:VAR}` (OpenCode), `${{ secrets.NAME }}` (Continue).
+ */
+const SECRET_REFERENCE_RE =
+  /\$\{[A-Za-z_][A-Za-z0-9_]*(?::-[^}]*)?\}|\$?\{env:[A-Za-z_][A-Za-z0-9_]*\}|\$\{input:[\w.-]+\}|\$\{\{\s*secrets\.[\w-]+\s*\}\}/;
 const CLOSED_SOURCE_LICENSES = new Set(['proprietary', 'unlicensed']);
 
 function readJsonObject(ctx: ScanContext, path: string): Record<string, unknown> | null {
@@ -64,6 +70,8 @@ function isCredentialShapedKey(key: string): boolean {
     .split(/[_\-\s]+/)
     .map((s) => s.toLowerCase())
     .filter(Boolean);
+  // Codex `bearer_token_env_var = "NAME"` holds the variable's name, not the secret.
+  if (segments.at(-2) === 'env' && segments.at(-1) === 'var') return false;
   return segments.some(
     (s) => CREDENTIAL_WORDS.has(s) || (s.endsWith('s') && CREDENTIAL_WORDS.has(s.slice(0, -1))),
   );
@@ -104,6 +112,23 @@ function credentialShapedValues(node: unknown, keyIsCredential = false): string[
     }
   }
   return values;
+}
+
+/**
+ * VS Code's top-level `inputs` only declare prompts (`"password": true` hides
+ * what the user types), so they never hold a secret value.
+ */
+function withoutVsCodeInputs(file: string, parsed: unknown): unknown {
+  if (
+    !/(^|\/)\.vscode\/mcp\.json$/.test(file) ||
+    !parsed ||
+    typeof parsed !== 'object' ||
+    Array.isArray(parsed)
+  ) {
+    return parsed;
+  }
+  const { inputs: _inputs, ...rest } = parsed as Record<string, unknown>;
+  return rest;
 }
 
 /** Credential-valued YAML/TOML entries used by Continue and Codex MCP configs. */
@@ -315,7 +340,7 @@ export const hygieneChecks: Check[] = [
         const parsed = safeJsonParse(content);
         let credentialValues: string[];
         if (parsed !== undefined) {
-          credentialValues = credentialShapedValues(parsed);
+          credentialValues = credentialShapedValues(withoutVsCodeInputs(file, parsed));
         } else if (/\.(?:ya?ml|toml)$/i.test(file)) {
           credentialValues = credentialValuesFromKeyValueConfig(content);
         } else if (/\.jsonc$/i.test(file)) {
@@ -323,7 +348,7 @@ export const hygieneChecks: Check[] = [
         } else {
           return { passed: false, evidence: `${file} is not valid JSON.` };
         }
-        const uninterpolated = credentialValues.filter((v) => !ENV_INTERPOLATION_RE.test(v));
+        const uninterpolated = credentialValues.filter((v) => !SECRET_REFERENCE_RE.test(v));
         if (uninterpolated.length > 0) {
           return {
             passed: false,

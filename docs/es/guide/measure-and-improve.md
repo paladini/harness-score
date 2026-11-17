@@ -683,8 +683,10 @@ tree everywhere.
 
 #### HYG-08 · MCP config uses env interpolation for credentials — 3 pts {#hyg-08}
 Cuando existe config MCP (`.cursor/mcp.json`, `.mcp.json`, `.agents/mcp_config.json`, Continue YAML, OpenCode JSONC o Codex TOML), es válida, y cualquier campo con forma de
-credencial (token, key, secret, password…) usa interpolación `${ENV_VAR}`
-en lugar de un literal. El complemento positivo de HYG-04.
+credencial (token, key, secret, password…) referencia una variable de entorno
+o un secreto en lugar de un literal. Vale la sintaxis documentada de cada
+cliente: `${VAR}`, `${VAR:-default}`, `${env:VAR}`, `${input:id}`, `{env:VAR}`, <code v-pre>${{ secrets.NAME }}</code>, y las claves
+`*_env_var` de Codex, que nombran una variable. El complemento positivo de HYG-04.
 **No aplica** cuando el repositorio no tiene config MCP. No usar MCP no es
 una interpolación faltante, así que el check sale del numerador y del
 denominador. Añadir una config después vuelve a hacer aplicable el check.

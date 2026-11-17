@@ -1045,6 +1045,58 @@ describe('hygiene checks', () => {
     expect((await check('HYG-08')).run(opencode).passed).toBe(true);
   });
 
+  test.each([
+    ['Cursor ${env:NAME}', '.cursor/mcp.json', '${env:GITHUB_TOKEN}'],
+    ['Claude Code ${VAR:-default}', '.mcp.json', '${API_TOKEN:-}'],
+    ['VS Code ${input:id}', '.vscode/mcp.json', '${input:api-token}'],
+    ['VS Code ${env:NAME}', '.vscode/mcp.json', '${env:API_TOKEN}'],
+    ['OpenCode {env:VAR}', 'opencode.json', '{env:API_TOKEN}'],
+    ['a reference inside a header value', '.mcp.json', 'Bearer ${env:API_TOKEN}'],
+  ])('HYG-08 passes with %s', async (_name, file, value) => {
+    const config = file.startsWith('opencode')
+      ? { mcp: { svc: { type: 'local', command: ['npx'], environment: { API_TOKEN: value } } } }
+      : { mcpServers: { svc: { command: 'npx', env: { API_TOKEN: value } } } };
+    const ctx = fakeContext({ [file]: JSON.stringify(config) });
+    expect((await check('HYG-08')).run(ctx).passed).toBe(true);
+  });
+
+  test('HYG-08 ignores VS Code input declarations such as "password": true', async () => {
+    const ctx = fakeContext({
+      '.vscode/mcp.json': JSON.stringify({
+        inputs: [{ type: 'promptString', id: 'api-key', description: 'API Key', password: true }],
+        servers: { svc: { command: 'npx', env: { API_KEY: '${input:api-key}' } } },
+      }),
+    });
+    expect((await check('HYG-08')).run(ctx).passed).toBe(true);
+  });
+
+  test('HYG-08 passes with a Continue ${{ secrets.NAME }} reference', async () => {
+    const ctx = fakeContext({
+      '.continue/mcpServers/tool.yaml':
+        'name: Tool\nversion: 1.0.0\nschema: v1\nmcpServers:\n  - name: Service\n    command: npx\n    env:\n      API_TOKEN: ${{ secrets.API_TOKEN }}\n',
+    });
+    expect((await check('HYG-08')).run(ctx).passed).toBe(true);
+  });
+
+  test('HYG-08 treats Codex *_env_var keys as variable names, not credentials', async () => {
+    const ctx = fakeContext({
+      '.codex/config.toml':
+        '[mcp_servers.docs]\nurl = "https://example.com/mcp"\nbearer_token_env_var = "DOCS_TOKEN"\n',
+    });
+    expect((await check('HYG-08')).run(ctx).passed).toBe(true);
+  });
+
+  test.each([
+    ['an unknown ${prefix:NAME} form', '${foo:API_TOKEN}'],
+    ['an unterminated reference', '${env:API_TOKEN'],
+    ['a literal that only mentions env:', 'env:API_TOKEN'],
+  ])('HYG-08 still fails on %s', async (_name, value) => {
+    const ctx = fakeContext({
+      '.cursor/mcp.json': JSON.stringify({ mcpServers: { svc: { env: { API_TOKEN: value } } } }),
+    });
+    expect((await check('HYG-08')).run(ctx).passed).toBe(false);
+  });
+
   test('HYG-05 fails with no LICENSE file', async () => {
     const ctx = fakeContext({});
     const outcome = (await check('HYG-05')).run(ctx);
