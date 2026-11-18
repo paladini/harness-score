@@ -1,5 +1,25 @@
 # harness-score
 
+## 1.10.0
+
+### Minor Changes
+
+- e48b57c: Count newly recognized project and user-level configuration files from Copilot, Cline, Devin Local, Codex, OpenCode, and Zed toward their matching existing checks, so equivalent harness setups can earn the same points. Preserve documented legacy paths; the checks, point values, dimensions, and maturity thresholds stay unchanged.
+
+## 1.9.0
+
+### Minor Changes
+
+- 4599f57: Improve the JSR package's generated API documentation and TypeScript declarations, document Deno usage, and test the published source entrypoints with Deno and Bun. Expand npm search keywords for supported coding-agent ecosystems.
+
+## 1.8.5
+
+### Patch Changes
+
+- c3c6d1e: Recognize oxfmt as a formatter. SNS-04 accepts `.oxfmtrc.json`, `.oxfmtrc.jsonc`, `oxfmt.config.ts`, `oxfmt.config.mts`, and `oxfmt` in the root `package.json` dependencies.
+  
+  Thanks to [@jirayusueb](https://github.com/jirayusueb) for contributing this change.
+
 ## 1.8.4
 
 ### Patch Changes

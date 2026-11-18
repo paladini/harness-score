@@ -17,6 +17,11 @@ describe('rule activation metadata', () => {
     ['.cursor/rules/review.mdc', 'cursor', ruleFrontmatter('globs: src/**'), true],
     ['.windsurf/rules/review.md', 'windsurf', ruleFrontmatter('trigger: glob'), true],
     ['.clinerules/review.md', 'cline', ruleFrontmatter('paths: src/**'), true],
+    ['.cline/rules/review.md', 'cline', null, true],
+    ['.github/copilot-instructions.md', 'copilot', null, true],
+    ['.rules', 'zed', null, true],
+    ['.devin/global_rules.md', 'devin', null, true],
+    ['.devin/rules/review.md', 'devin', ruleFrontmatter('globs: src/**'), true],
     ['.github/instructions/review.md', 'copilot', ruleFrontmatter('applyTo: src/**'), true],
     ['.continue/rules/custom.md', 'continue', ruleFrontmatter('description: applies'), true],
     ['.agent/rules/review.md', 'antigravity', ruleFrontmatter('globs: src/**'), true],
@@ -35,6 +40,8 @@ describe('rule activation metadata', () => {
     ['.windsurf/rules/review.md', 'windsurf', ruleFrontmatter('trigger: always-on'), [], false],
     ['.clinerules/review.md', 'cline', ruleFrontmatter('paths: src/**'), [], true],
     ['.clinerules/review.md', 'cline', ruleFrontmatter('paths: x'), [], false],
+    ['.devin/rules/review.md', 'devin', ruleFrontmatter('trigger: glob'), [], true],
+    ['.devin/rules/review.md', 'devin', ruleFrontmatter('trigger: always-on'), [], false],
     ['.github/instructions/review.md', 'copilot', ruleFrontmatter('applyTo: src/**'), [], true],
     ['.claude/rules/review.md', 'claude-code', ruleFrontmatter('paths:\n  - src/**'), [], true],
     ['.claude/rules/review.md', 'claude-code', ruleFrontmatter('description: always'), [], false],
@@ -1016,6 +1023,28 @@ describe('hygiene checks', () => {
     expect(outcome.evidence).toContain('not valid JSON');
   });
 
+  test('HYG-08 handles Continue YAML and Codex TOML MCP configuration', async () => {
+    const continueCtx = fakeContext({
+      '.continue/mcpServers/tool.yaml':
+        'name: Tool\nversion: 1.0.0\nschema: v1\nmcpServers:\n  - name: Service\n    env:\n      API_TOKEN: ${API_TOKEN}\n',
+    });
+    expect((await check('HYG-08')).run(continueCtx).passed).toBe(true);
+
+    const codexCtx = fakeContext({
+      '.codex/config.toml': '[mcp_servers.docs]\ncommand = "node"\napi_key = "${DOCS_TOKEN}"\n',
+    });
+    expect((await check('HYG-08')).run(codexCtx).passed).toBe(true);
+
+    const codexWithoutMcp = fakeContext({ '.codex/config.toml': 'model = "gpt-5-codex"\n' });
+    expect((await check('HYG-08')).run(codexWithoutMcp).applicable).toBe(false);
+
+    const opencode = fakeContext({
+      'opencode.jsonc':
+        '{\n  // MCP servers\n  "mcp": {\n    "docs": {\n      "env": { "API_TOKEN": "${DOCS_TOKEN}" },\n    },\n  },\n}\n',
+    });
+    expect((await check('HYG-08')).run(opencode).passed).toBe(true);
+  });
+
   test('HYG-05 fails with no LICENSE file', async () => {
     const ctx = fakeContext({});
     const outcome = (await check('HYG-05')).run(ctx);
@@ -1209,6 +1238,18 @@ describe('sensor checks', () => {
   test('SNS-04 passes with a .prettierrc', async () => {
     const ctx = fakeContext({ '.prettierrc': '{}' });
     expect((await check('SNS-04')).run(ctx).passed).toBe(true);
+  });
+
+  test('SNS-04 passes with an oxfmt config file or oxfmt in devDependencies', async () => {
+    for (const file of ['.oxfmtrc.json', '.oxfmtrc.jsonc', 'oxfmt.config.ts', 'oxfmt.config.mts']) {
+      const result = (await check('SNS-04')).run(fakeContext({ [file]: '{}' }));
+      expect(result.passed).toBe(true);
+      expect(result.evidence).toContain('oxfmt configuration');
+    }
+    const withDep = fakeContext({
+      'package.json': JSON.stringify({ devDependencies: { oxfmt: '0.73.0' } }),
+    });
+    expect((await check('SNS-04')).run(withDep).passed).toBe(true);
   });
 
   test('SNS-05 fails with no test files', async () => {

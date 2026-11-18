@@ -142,7 +142,7 @@ jobs:
           node-version: 22
       - name: Publish to JSR
         working-directory: packages/cli
-        run: npx -y jsr publish --allow-slow-types
+        run: npx -y jsr@0.14.3 publish
 
   action:
     name: Move stable Action tag

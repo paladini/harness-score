@@ -1,6 +1,6 @@
 # 多 harness 支持
 
-自 **v0.4.0** 起，Harness Score 可测量**任意工具**上 AI 编码 harness 的成熟度 — 不限于 Cursor。无论你使用 Cursor、Claude Code、Devin、Windsurf、Cline、Continue、Codex，还是其他 AI 优先 IDE 或编辑器，同一套 108 分评分模型均适用。
+自 **v0.4.0** 起，Harness Score 可测量**任意工具**上 AI 编码 harness 的成熟度 — 不限于 Cursor。无论使用 Cursor、Claude Code、Devin Local、Windsurf/Cascade、Cline、Continue、GitHub Copilot、Codex、OpenCode、Antigravity、Zed，还是其他 AI 编码 IDE/agent，同一套 108 分评分模型均适用。
 
 ## 为何多 harness 支持重要
 
@@ -28,15 +28,15 @@ Harness Score 识别以下工件（精确模式见扫描器 harness registry —
 |---|---|---|---|---|---|---|
 | **Cursor** | `.cursor/rules/*.mdc` | `.cursor/skills/*/SKILL.md` | `.cursor/commands/*.md` | `.cursor/agents/*.md` | `.cursor/hooks.json` | `.cursor/mcp.json` |
 | **Claude Code** | `.claude/rules/**/*.md`、代码目录中嵌套 `AGENTS.md` / `CLAUDE.md` | `.claude/skills/*/SKILL.md` | `.claude/commands/*.md` | `.claude/agents/*.md` | `.claude/settings.json`（`hooks` 键） | `.mcp.json` |
-| **Devin** | — | `.devin/skills/*/SKILL.md` | — | — | `.devin/hooks.v1.json`（独立 event 映射）或 `.devin/config.json`（`hooks` 键） | — |
-| **Windsurf** | `.windsurf/rules/*.md` | — | `.windsurf/workflows/*.md` | — | — | — |
-| **Cline** | `.clinerules/*.md` | — | — | — | — | — |
-| **Continue** | `.continue/rules/*.md` | — | `.continue/prompts/*` | — | — | — |
-| **GitHub Copilot** | `.github/instructions/*.instructions.md` | — | — | — | — | — |
-| **Codex** | 嵌套 `AGENTS.md` | `.agents/skills/*/SKILL.md` | — | — | — | — |
+| **Devin Local** | `.devin/rules/*.md`、`.devin/global_rules.md`、嵌套 `AGENT*.md` | `.devin/skills/*/SKILL.md` | `.devin/workflows/*.md` | `.devin/agents/*.md` 或 `<name>/AGENT.md` | `.devin/hooks.v1.json`、旧版 `.devin/config.json` | `.devin/mcp_config.json` |
+| **Windsurf / Cascade（旧版）** | `.windsurf/rules/*.md`、`.windsurf/global_rules.md`、`.windsurfrules` | — | `.windsurf/workflows/*.md`（Cascade） | — | — | — |
+| **Cline** | `.clinerules/*.md`、`.cline/rules/*.md`、旧版 `.clinerules` | `.cline/skills/*/SKILL.md` | — | — | — | — |
+| **Continue** | `.continue/rules/*.md` | — | `.continue/prompts/*` | — | — | `.continue/mcpServers/*.{json,yaml,yml}` |
+| **GitHub Copilot** | `.github/copilot-instructions.md`、`.github/instructions/*.instructions.md` | `.github/skills/*/SKILL.md` | `.github/prompts/*.prompt.md` | `.github/agents/*.md` 自定义 agents 会被检测，但不计为可委派 subagents | `.github/hooks/*.json` | `.vscode/mcp.json` |
+| **Codex** | 嵌套 `AGENTS.md` | `.agents/skills/*/SKILL.md` | — | — | `.codex/hooks.json`、`.codex/config.toml` 中的 `[[hooks.*]]` | `.codex/config.toml` 中的 `[mcp_servers.*]` |
 | **Gemini / Antigravity** | `.agents/rules/`、`.agent/rules/`、`.gemini/rules/`、嵌套 `GEMINI.md` | `.agents/skills/*/SKILL.md` | `.agents/workflows/`、`.agent/workflows/` | — | — | `.agents/mcp_config.json`、`.agent/mcp_config.json` |
-| **OpenCode** | — | — | — | `.opencode/agents/*.md` | — | — |
-| **Zed** | — | — | `.zed/commands/*.md` | — | — | — |
+| **OpenCode** | 共享 `AGENTS.md` 指令 | `.opencode/skills/*/SKILL.md` 和根目录 `*.md` | `.opencode/commands/**/*.md` | `.opencode/agents/*.md` | — | `opencode.json[c]` |
+| **Zed** | `.rules`（旧版）；共享 `AGENTS.md` | `.agents/skills/*/SKILL.md` | `.zed/commands/*.md`（现有格式） | — | — | — |
 
 ### Devbox 环境兼容性
 
@@ -57,7 +57,7 @@ Harness Score 会跳过整个 `.devbox/` 目录（包括符号链接），因此
 而最重要的工件**本就与工具无关**：测试、CI 流水线、linter、类型检查器、`.gitignore`、锁文件与 `SECURITY.md`，无论使用哪种工具，得分方式相同。
 
 ::: tip 某工具列较稀疏并非扣分
-Windsurf 没有扫描器可识别的 hooks 系统 — 但 hooks 只是六个维度之一。仅有 Windsurf、rules/传感器/CI 配置扎实的仓库，仍可升至 L3。L4 需要门禁 hooks，目前意味着 `.cursor/hooks.json`、Claude Code 的 `settings.json`，或 Devin 的 `.devin/hooks.v1.json` / `.devin/config.json` 需与主工具并存。
+扫描器现在识别 Cursor、Claude Code、Copilot、Codex 和 Devin 文档化的生命周期 hooks。仅使用 Windsurf 的仓库仍可凭 rules、传感器和 CI 达到 L3；L4 所需的 gate hook 可以来自任一受支持工具的配置。
 :::
 
 ## 一次构建 harness
@@ -93,13 +93,14 @@ Windsurf 没有扫描器可识别的 hooks 系统 — 但 hooks 只是六个维�
 |---|---|---|
 | **Cursor** | `~/.cursor/{skills,commands,agents,rules}`、`~/.cursor/mcp.json` | 仅 UI 中的 User Rules 仍不可见 |
 | **Claude Code** | `~/.claude/{skills,commands,agents}`、`~/.claude/settings.json`、`~/.mcp.json`、来自 `~/.claude/plugins/installed_plugins.json` 的 user-scoped plugins | User plugins count toward effective score only |
-| **Windsurf** | `~/.codeium/windsurf/memories/global_rules.md` → `.windsurf/rules/…`、`~/.windsurf/{rules,workflows}/`、MCP 别名 | 全局 rules 在 Codeium 下 |
-| **Cline** | `~/Documents/Cline/Rules/*.md` → `.clinerules/…` | 回退：`~/Cline/Rules` |
-| **Continue** | `~/.continue/{rules,prompts}/` | `config.yaml` 内联 rules 未解析（v1） |
-| **Codex / Antigravity** | `~/.agents/{skills,rules,workflows}/`、`~/.agent/…`、`~/.gemini/rules/`、`~/.codex/skills`、`~/.agents/AGENTS.md` | |
-| **OpenCode** | `$XDG_CONFIG_HOME/opencode/agents/` | |
-| **Zed** | `~/.zed/commands/` | |
-| **GitHub Copilot** | — | 仅 repo：`.github/instructions/` |
+| **Windsurf / Cascade** | `~/.codeium/windsurf/memories/global_rules.md` → `.windsurf/rules/…`、`~/.windsurf/{rules,workflows}/`、`~/.codeium/windsurf/global_workflows/` | Cascade 旧版路径；不识别未文档化的 MCP/hooks 别名 |
+| **Cline** | `~/Documents/Cline/Rules/*.md`、`~/.cline/rules/`、`~/.cline/skills/` | 规则回退：`~/Cline/Rules` |
+| **Continue** | `~/.continue/{rules,prompts,mcpServers}/` | `config.yaml` 内联 rules 未解析（v1） |
+| **Codex / Antigravity** | `~/.agents/{skills,rules,workflows}/`、`~/.agent/…`、`~/.gemini/rules/`、`~/.codex/{skills,hooks.json,config.toml}`、`~/.agents/AGENTS.md` | |
+| **OpenCode** | `$XDG_CONFIG_HOME/opencode/{agents,commands,skills}/`、`opencode.json[c]` | |
+| **Zed** | `~/.agents/skills/`、`~/.config/zed/AGENTS.md` 或 `%APPDATA%\Zed\AGENTS.md`、`~/.zed/commands/` | 用户指令映射到共享上下文指南 |
+| **GitHub Copilot** | `~/.copilot/{skills,agents,hooks}/` | 识别用户 hooks；全局指令仍由 UI/config 管理 |
+| **Devin Local** | `$XDG_CONFIG_HOME/devin/{rules,skills,agents,workflows,AGENTS.md,hooks.v1.json,mcp_config.json}` | 映射到 effective score 的项目等效配置 |
 
 **GitHub Copilot** 无已文档化的磁盘全局 instructions 路径 — 团队 instructions
 应放在仓库中以保持 maturity/effective 一致。

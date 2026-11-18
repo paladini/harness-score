@@ -41,6 +41,9 @@ const canonicalExamples = [
   '.clinerules/example.md',
   '.continue/rules/example.md',
   '.github/instructions/example.instructions.md',
+  '.github/copilot-instructions.md',
+  '.cline/rules/example.md',
+  '.devin/rules/example.md',
   '.agents/rules/example',
   '.agent/rules/example',
   '.gemini/rules/example',
@@ -48,24 +51,40 @@ const canonicalExamples = [
   '.cursor/skills/example/SKILL.md',
   '.claude/skills/example/SKILL.md',
   '.devin/skills/example/SKILL.md',
+  '.github/skills/example/SKILL.md',
+  '.cline/skills/example/SKILL.md',
+  '.clinerules/skills/example/SKILL.md',
+  '.opencode/skills/example/SKILL.md',
+  '.opencode/skills/example.md',
   '.agents/skills/example/SKILL.md',
   '.cursor/commands/example.md',
   '.claude/commands/example.md',
   '.windsurf/workflows/example.md',
   '.continue/prompts/example',
+  '.github/prompts/example.prompt.md',
+  '.opencode/commands/example.md',
+  '.devin/workflows/example.md',
   '.zed/commands/example.md',
   '.agents/workflows/example',
   '.agent/workflows/example',
   '.cursor/agents/example.md',
   '.claude/agents/example.md',
   '.opencode/agents/example.md',
+  '.devin/agents/example.md',
   '.cursor/hooks.json',
   '.claude/settings.json',
   '.devin/hooks.v1.json',
   '.devin/config.json',
+  '.github/hooks/example.json',
+  '.codex/hooks.json',
   '.cursor/mcp.json',
   '.agents/mcp_config.json',
   '.agent/mcp_config.json',
+  '.continue/mcpServers/example.json',
+  '.vscode/mcp.json',
+  '.devin/mcp_config.json',
+  '.codex/config.toml',
+  'opencode.json',
 ];
 
 function checkOutcomes(ctx: ScanContext, ids: string[]): Promise<boolean[]> {
@@ -73,6 +92,86 @@ function checkOutcomes(ctx: ScanContext, ids: string[]): Promise<boolean[]> {
 }
 
 describe('tool-native scan roots', () => {
+  test('limits shared-skill detection in user overlays to documented global scopes', () => {
+    const repository = fakeContext({ '.claude/skills/review/SKILL.md': '# Review' });
+    expect(detectHarnesses(repository)).toEqual(['claude-code', 'cline', 'copilot', 'opencode']);
+
+    const userOverlay = {
+      ...repository,
+      overlayFiles: new Set(repository.files),
+    };
+    expect(detectHarnesses(userOverlay)).toEqual(['claude-code', 'opencode']);
+
+    const sharedGlobalSkills = fakeContext({ '.agents/skills/review/SKILL.md': '# Review' });
+    const sharedOverlay = {
+      ...sharedGlobalSkills,
+      overlayFiles: new Set(sharedGlobalSkills.files),
+    };
+    expect(detectHarnesses(sharedOverlay)).toEqual([
+      'antigravity',
+      'codex',
+      'copilot',
+      'devin',
+      'opencode',
+      'zed',
+    ]);
+  });
+
+  test('recognizes current vendor paths and keeps lookalike MCP files out', () => {
+    const ctx = fakeContext({
+      '.github/copilot-instructions.md': '# Instructions',
+      '.github/agents/reviewer.agent.md': '# Reviewer',
+      '.github/skills/release/SKILL.md': '---\nname: release\ndescription: Release\n---',
+      '.github/prompts/review.prompt.md': 'Review changes',
+      '.github/hooks/policy.json': JSON.stringify({ version: 1, hooks: { preToolUse: [] } }),
+      '.opencode/skills/release/SKILL.md': '---\nname: release\ndescription: Release\n---',
+      '.opencode/commands/review.md': 'Review changes',
+      '.cline/rules/testing.md': '# Testing',
+      '.cline/skills/testing/SKILL.md': '---\nname: testing\ndescription: Test\n---',
+      '.devin/rules/testing.md': '# Testing',
+      '.devin/workflows/review.md': '# Review',
+      '.devin/agents/reviewer.md': '# Reviewer',
+      '.zed/README.md': 'not a recognized configuration',
+      '.github/mcp.json': '{}',
+      '.cline/mcp.json': '{}',
+    });
+
+    expect(collectRules(ctx).map((artifact) => artifact.path)).toEqual([
+      '.cline/rules/testing.md',
+      '.devin/rules/testing.md',
+      '.github/copilot-instructions.md',
+    ]);
+    expect(collectSkills(ctx).map((artifact) => artifact.path)).toEqual([
+      '.cline/skills/testing/SKILL.md',
+      '.github/skills/release/SKILL.md',
+      '.opencode/skills/release/SKILL.md',
+    ]);
+    expect(collectCommands(ctx).map((artifact) => artifact.path)).toEqual([
+      '.devin/workflows/review.md',
+      '.github/prompts/review.prompt.md',
+      '.opencode/commands/review.md',
+    ]);
+    expect(collectSubagents(ctx).map((artifact) => artifact.path)).toEqual(['.devin/agents/reviewer.md']);
+    expect(collectHookConfigs(ctx).map((artifact) => artifact.path)).toEqual(['.github/hooks/policy.json']);
+    expect(collectMcpConfigs(ctx)).toEqual([]);
+    expect(detectHarnesses(ctx)).toEqual(['cline', 'copilot', 'devin', 'opencode']);
+  });
+
+  test('preserves documented Windsurf and Cline legacy rule paths without matching lookalikes', () => {
+    const ctx = fakeContext({
+      '.windsurfrules': '# Legacy Cascade rules',
+      '.windsurf/global_rules.md': '# Imported global Cascade rules',
+      '.clinerules/legacy.md': '# Legacy Cline rule',
+      '.windsurfrule': '# Similar name, not documented',
+      '.windsurf/global-rule.md': '# Similar name, not documented',
+    });
+    expect(collectRules(ctx).map((artifact) => artifact.path)).toEqual([
+      '.clinerules/legacy.md',
+      '.windsurf/global_rules.md',
+      '.windsurfrules',
+    ]);
+  });
+
   test('collects repository Devin hooks from the canonical path', () => {
     const ctx = fakeContext({ '.devin/hooks.v1.json': '{}' });
     expect(collectHookConfigs(ctx)).toEqual([
@@ -354,6 +453,139 @@ const claudeEvents = [
 ] as const;
 
 describe('modern hook contract', () => {
+  test('normalizes Copilot and Codex hook schemas with gate and feedback events', async () => {
+    const copilot = fakeContext({
+      '.github/hooks/policy.json': JSON.stringify({
+        version: 1,
+        hooks: {
+          preToolUse: [{ type: 'command', bash: 'echo gate' }],
+          postToolUse: [{ type: 'command', command: 'echo feedback' }],
+        },
+      }),
+    });
+    const copilotHooks = readNormalizedHooks(copilot);
+    expect(copilotHooks).toMatchObject({
+      toolId: 'copilot',
+      gateEvents: ['preToolUse'],
+      feedbackEvents: ['postToolUse'],
+      handlerCount: 2,
+      structuralErrors: [],
+    });
+    expect((await check('HKS-03')).run(copilot).passed).toBe(true);
+    expect((await check('HKS-04')).run(copilot).passed).toBe(true);
+
+    const codex = fakeContext({
+      '.codex/hooks.json': JSON.stringify({
+        hooks: {
+          PreToolUse: [{ matcher: 'Bash', hooks: [{ type: 'command', command: 'echo gate' }] }],
+          PostToolUse: [{ hooks: [{ type: 'command', command: 'echo feedback' }] }],
+        },
+      }),
+    });
+    expect(readNormalizedHooks(codex)).toMatchObject({
+      toolId: 'codex',
+      gateEvents: ['PreToolUse'],
+      feedbackEvents: ['PostToolUse'],
+      structuralErrors: [],
+    });
+
+    const codexToml = fakeContext({
+      '.codex/config.toml': [
+        'model = "gpt-5-codex"',
+        '[[hooks.PreToolUse]]',
+        'matcher = "^Bash$"',
+        '[[hooks.PreToolUse.hooks]]',
+        'type = "command"',
+        "command = '/usr/bin/policy-check'",
+        '[[hooks.PostToolUse]]',
+        '[[hooks.PostToolUse.hooks]]',
+        'type = "command"',
+        'command = "echo feedback"',
+      ].join('\n'),
+    });
+    expect(readNormalizedHooks(codexToml)).toMatchObject({
+      toolId: 'codex',
+      gateEvents: ['PreToolUse'],
+      feedbackEvents: ['PostToolUse'],
+      commands: [
+        { command: '/usr/bin/policy-check', args: [] },
+        { command: 'echo feedback', args: [] },
+      ],
+      structuralErrors: [],
+    });
+
+    const codexWithoutHooks = fakeContext({ '.codex/config.toml': 'model = "gpt-5-codex"\n' });
+    expect(collectHookConfigs(codexWithoutHooks)).toEqual([]);
+  });
+
+  test('validates Copilot command, HTTP, prompt, and malformed hook handlers', () => {
+    const ctx = fakeContext({
+      '.github/hooks/handlers.json': JSON.stringify({
+        version: 1,
+        hooks: {
+          preToolUse: [
+            { exec: 'run-exec' },
+            { powershell: 'run-powershell' },
+            { type: 'http', url: 'https://example.test/hook' },
+            { type: 'prompt', prompt: 'Review the change' },
+            { type: 'http' },
+            { type: 'prompt' },
+            { type: 'command', args: 'invalid' },
+            { type: 'unsupported' },
+            null,
+          ],
+          postToolUse: [],
+        },
+      }),
+    });
+    expect(readNormalizedHooks(ctx)).toMatchObject({
+      toolId: 'copilot',
+      handlerCount: 4,
+      commands: [
+        { command: 'run-exec', args: [] },
+        { command: 'run-powershell', args: [] },
+      ],
+      structuralErrors: [
+        'preToolUse contains an HTTP handler without a URL.',
+        'preToolUse contains a prompt handler without a prompt.',
+        'preToolUse contains an invalid command handler.',
+        'preToolUse contains an unsupported hook type.',
+        'preToolUse contains a non-object handler.',
+        'postToolUse handlers must be a non-empty array.',
+      ],
+    });
+  });
+
+  test('handles Codex TOML values, comments, repeated groups, and invalid lines', () => {
+    const ctx = fakeContext({
+      '.codex/config.toml': [
+        '# before the hook tables',
+        'invalid line',
+        '[[hooks.Notification.hooks]]',
+        'type = "command" # trailing comment outside string',
+        'command = "echo \\"quoted\\" # literal"',
+        'args = ["one", "two"]',
+        'matcher = ["*.ts", "*.tsx"]',
+        'enabled = true',
+        'disabled = false',
+        'timeout = 2.5',
+        'unknown = bareword',
+        '[[hooks.Notification]]',
+        "matcher = 'Bash'",
+        '[[hooks.Notification.hooks]]',
+        'type = "prompt"',
+        'prompt = "Explain the change"',
+      ].join('\n'),
+    });
+    expect(readNormalizedHooks(ctx)).toMatchObject({
+      toolId: 'codex',
+      events: ['Notification'],
+      handlerCount: 2,
+      commands: [{ command: 'echo "quoted" # literal', args: ['one', 'two'] }],
+      structuralErrors: [],
+    });
+  });
+
   test('accepts all 31 documented Claude Code events', async () => {
     expect(claudeEvents).toHaveLength(31);
     const hooks = Object.fromEntries(

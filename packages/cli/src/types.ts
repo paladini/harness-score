@@ -1,12 +1,15 @@
 import type { ReferenceState, ResolvedReference, SourceArtifactKind } from './references/types.js';
 
+/** Stable identifiers for the six dimensions of the maturity model. */
 export type DimensionId = 'context' | 'skills' | 'hooks' | 'sensors' | 'ci' | 'hygiene';
 
+/** Display metadata for a maturity dimension. */
 export interface DimensionInfo {
   id: DimensionId;
   title: string;
 }
 
+/** Display metadata for the maturity dimensions in report order. */
 export const DIMENSIONS: DimensionInfo[] = [
   { id: 'context', title: 'Context & Guides' },
   { id: 'skills', title: 'Skills & Commands' },
@@ -22,6 +25,8 @@ export interface ScanContext {
   root: string;
   /** All file paths relative to root, POSIX separators, sorted. */
   files: string[];
+  /** Paths supplied by user/system/extra-root overlays rather than the repository tree. */
+  overlayFiles?: ReadonlySet<string>;
   /** Compatibility alias: true whenever the scan is incomplete for any reason. */
   truncated: boolean;
   /** Deterministic reasons the filesystem walk or a requested file read could not complete. */
@@ -45,6 +50,7 @@ export interface ScanDiagnostic {
   source?: string;
 }
 
+/** Machine-readable reason why a scan could not be completed. */
 export type ScanIncompleteReasonCode =
   | 'file-count-limit'
   | 'depth-limit'
@@ -52,19 +58,23 @@ export type ScanIncompleteReasonCode =
   | 'unreadable-path'
   | 'outside-root-symlink';
 
+/** Details of an incomplete filesystem scan. */
 export interface ScanIncompleteReason {
   code: ScanIncompleteReasonCode;
   path?: string;
   limit?: number;
 }
 
+/** Whether a snapshot can be treated as authoritative. */
 export type ScanVerdictStatus = 'complete' | 'incomplete';
 
+/** Completeness of a snapshot and the reasons for any incomplete scan. */
 export interface ScanVerdict {
   status: ScanVerdictStatus;
   reasons: ScanIncompleteReason[];
 }
 
+/** Result returned by a check before scoring and configuration are applied. */
 export interface CheckOutcome {
   passed: boolean;
   /** Human-readable proof: what was found (or not found) and where. */
@@ -78,6 +88,7 @@ export interface CheckOutcome {
   warnings?: ScanDiagnostic[];
 }
 
+/** Definition of a synchronous, deterministic maturity check. */
 export interface Check {
   /** Stable id like "CTX-01"; doubles as the docs anchor (lowercased). */
   id: string;
@@ -89,6 +100,7 @@ export interface Check {
   run(ctx: ScanContext): CheckOutcome;
 }
 
+/** Scored result and evidence for one check. */
 export interface CheckResult {
   id: string;
   dimension: DimensionId;
@@ -111,6 +123,7 @@ export interface CheckResult {
   warnings?: ScanDiagnostic[];
 }
 
+/** Points and applicability for a single maturity dimension. */
 export interface DimensionScore {
   id: DimensionId;
   title: string;
@@ -122,6 +135,7 @@ export interface DimensionScore {
   applicable: boolean;
 }
 
+/** Attained maturity level and any gaps to the next level. */
 export interface LevelInfo {
   /** 0–4 */
   index: number;
@@ -155,6 +169,7 @@ export interface PresetInfo {
   resolved: Array<{ id: string; severity: Severity; source: string }>;
 }
 
+/** Complete scan report, including repository and effective snapshots. */
 export interface Report {
   tool: { name: string; version: string };
   root: string;

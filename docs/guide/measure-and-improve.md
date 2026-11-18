@@ -451,7 +451,7 @@ stable; the CLI links each failure to its entry here.
 ### Context & Guides (20 pts)
 
 #### CTX-01 · Agent context file present — 4 pts {#ctx-01}
-A project guide exists: root `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md`, or Claude
+A project guide exists: root `AGENTS.md`, `AGENT.md`, `AGENTS.local.md`, `CLAUDE.md`, or `GEMINI.md`, or Claude
 Code instructions at `.claude/CLAUDE.md` or `.claude/AGENTS.md` (session-start
 memory — not scoped rules).
 **Fix:** create `AGENTS.md` answering: what is this project, how do I build
@@ -464,9 +464,10 @@ and test it, what conventions hold, what must I never touch. Recipe in
 Commands over descriptions; point to rules instead of pasting them.
 
 #### CTX-03 · Scoped rules in use — 4 pts {#ctx-03}
-At least one scoped rule file for any supported tool (e.g. `.cursor/rules/*.mdc`,
-`.windsurf/rules/*.md`, `.clinerules/*.md`, `.continue/rules/*.md`,
-`.github/instructions/*.instructions.md`, `.agents/rules/*`, `.claude/rules/**/*.md`).
+At least one rule file for any supported tool (e.g. `.cursor/rules/*.mdc`,
+`.windsurf/rules/*.md`, `.clinerules/*.md`, `.cline/rules/*.md`,
+`.devin/rules/*.md`, `.continue/rules/*.md`, `.github/copilot-instructions.md`,
+`.github/instructions/*.instructions.md`, `.rules`, `.agents/rules/*`, `.claude/rules/**/*.md`).
 Nested context files in code subdirectories (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`
 below the root, but not `.claude/CLAUDE.md` or `.claude/AGENTS.md`) also count —
 they are directory-scoped rules in tools like Claude Code and Codex.
@@ -475,7 +476,8 @@ then add path-scoped rules per area (or nested context files per subtree).
 
 #### CTX-04 · Rules have valid frontmatter — 3 pts {#ctx-04}
 Every rule declares activation metadata (`description`, `globs`/`trigger`/`paths`/`applyTo`, or `alwaysApply`).
-Rules a tool auto-loads without metadata — `.continue/rules/*`, `.claude/rules/*`
+Rules a tool auto-loads without metadata — `.continue/rules/*`, `.cline/rules/*`,
+`.clinerules/*`, `.rules`, `.github/copilot-instructions.md`, `.claude/rules/*`
 (optional `paths` only), and nested context files — pass by construction.
 **Fix:** add the frontmatter block; without it the agent can't decide when the
 rule applies.
@@ -524,7 +526,7 @@ Descriptions ≥40 characters.
 to deploy or release; covers tagging, pipeline, rollback, smoke tests."
 
 #### AGT-01 · Custom subagent defined — 3 pts {#agt-01}
-A subagent file under `.cursor/agents/`, `.claude/agents/`, `.opencode/agents/`, or plugin `agents/` at the scan root.
+A delegable subagent file under `.cursor/agents/`, `.claude/agents/`, `.opencode/agents/`, `.devin/agents/`, or plugin `agents/` at the scan root. Copilot custom agents identify the tool but are not counted as subagents.
 **Fix:** package a purpose-built subagent for a job the primary agent should
 delegate (planning, review, release) — see
 [Subagents](/guide/cursor-harness-surface#subagents-purpose-built-delegates)
@@ -548,8 +550,8 @@ tree do not enable this aliasing. Generic roots named something else do not rece
 Evidence always uses the physical path that was read.
 
 #### HKS-01 · Hooks configuration present and valid JSON — 4 pts {#hks-01}
-`.cursor/hooks.json`, `.claude/settings.json` (`hooks` key), plugin `hooks/hooks.json` at the scan
-root, `.devin/hooks.v1.json` (standalone
+`.cursor/hooks.json`, `.claude/settings.json` (`hooks` key), `.github/hooks/*.json`,
+`.codex/hooks.json` or inline `[[hooks.*]]` in `.codex/config.toml`, plugin `hooks/hooks.json` at the scan root, `.devin/hooks.v1.json` (standalone
 event map), or `.devin/config.json` (`hooks` key) exists and parses as JSON. When several configs
 exist, a valid non-empty config wins; native-root depth, event count, and lexical path provide
 deterministic tie-breakers. Gitignored `.devin/config.local.json` is not scanned.
@@ -573,13 +575,15 @@ standalone map documents `PreToolUse`, `PostToolUse`, `PermissionRequest`, `User
 
 #### HKS-03 · Gate hook guards risky operations — 4 pts {#hks-03}
 A gate hook registered (Cursor: `beforeShellExecution`, `beforeMCPExecution`,
-`preToolUse`, or `beforeReadFile`; Claude Code or Devin: `PreToolUse` or `PermissionRequest`).
+`preToolUse`, or `beforeReadFile`; Claude Code, Codex, or Devin: `PreToolUse` or
+`PermissionRequest`; Copilot: `preToolUse` or `permissionRequest`).
 **Fix:** add the destructive-command deny gate from chapter 5 — prose rules
 are requests; gates are facts.
 
 #### HKS-04 · Feedback hook observes output — 2 pts {#hks-04}
 A feedback hook registered (Cursor: `afterFileEdit`, `postToolUse`, …;
-Claude Code: `PostToolUse`; Devin: `PostToolUse` or `Stop`).
+Claude Code/Codex: `PostToolUse`; Devin: `PostToolUse` or `Stop`; Copilot:
+`postToolUse`, `postToolUseFailure`, or `agentStop`).
 **Fix:** format-and-lint on edit gives the agent instant feedback inside the
 session.
 
@@ -612,7 +616,7 @@ statically typed language.
 for free — [chapter 4](/guide/sensors-feedback#type-checking-the-free-sensor).
 
 #### SNS-04 · Formatter configured — 3 pts {#sns-04}
-prettier/biome, black/ruff-format, gofmt/rustfmt, pint, or php-cs-fixer
+prettier/biome/oxfmt, black/ruff-format, gofmt/rustfmt, pint, or php-cs-fixer
 (including `laravel/pint` in `composer.json` when no config file exists).
 **Fix:** formatting noise in diffs hides real mistakes from review.
 
@@ -661,7 +665,8 @@ variables.
 
 #### HYG-04 · MCP config free of credentials — 4 pts {#hyg-04}
 No credential signatures in MCP config (`.cursor/mcp.json`, `.mcp.json`,
-`.agents/mcp_config.json`).
+`.agents/mcp_config.json`, `.continue/mcpServers/`, `.vscode/mcp.json`,
+`opencode.json[c]`, `.codex/config.toml`, or Devin MCP config).
 **Fix:** use `${ENV_VAR}` interpolation — an inlined key in MCP config is a
 secret published to every clone.
 
@@ -685,10 +690,10 @@ package-lock.json, uv.lock, Cargo.lock, go.sum, or equivalent.
 tree everywhere.
 
 #### HYG-08 · MCP config uses env interpolation for credentials — 3 pts {#hyg-08}
-When an MCP config exists (`.cursor/mcp.json`, `.mcp.json`,
-`.agents/mcp_config.json`), it is valid JSON, and any credential-shaped
-field (token, key, secret, password…) uses `${ENV_VAR}` interpolation rather
-than a literal. The positive complement to HYG-04.
+When an MCP config exists, any credential-shaped field (token, key, secret,
+password…) identified in JSON, Continue YAML, OpenCode JSONC, or Codex TOML
+uses `${ENV_VAR}` interpolation rather than a literal. The positive complement
+to HYG-04.
 **Not applicable** when the repository has no MCP config. Not using MCP is
 not a missing interpolation setup, so the check drops out of the score
 numerator and denominator. Adding a config later makes it applicable again.

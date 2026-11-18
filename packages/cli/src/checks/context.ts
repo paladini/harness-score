@@ -10,7 +10,7 @@ export const contextChecks: Check[] = [
     title: 'Agent context file present (AGENTS.md)',
     points: 4,
     remediation:
-      'Create an AGENTS.md at the repository root describing what the project is, how to build/test it, and the conventions agents must follow.',
+      'Create an AGENTS.md or AGENT.md at the repository root describing what the project is, how to build/test it, and the conventions agents must follow.',
     run(ctx) {
       const file = contextRootFile(ctx);
       return file
@@ -18,7 +18,7 @@ export const contextChecks: Check[] = [
         : {
             passed: false,
             evidence:
-              'No AGENTS.md, CLAUDE.md, or GEMINI.md at repository root, and no .claude/CLAUDE.md or .claude/AGENTS.md project instructions.',
+              'No AGENTS.md, AGENT.md, AGENTS.local.md, CLAUDE.md, or GEMINI.md at repository root, and no .claude/CLAUDE.md or .claude/AGENTS.md project instructions.',
           };
     },
   },
@@ -50,7 +50,7 @@ export const contextChecks: Check[] = [
     title: 'Scoped rules in use',
     points: 4,
     remediation:
-      'Add at least one scoped rule file for your AI tool (e.g. .cursor/rules/*.mdc, .windsurf/rules/*.md, .clinerules/*.md, .claude/rules/*.md) or a nested AGENTS.md/CLAUDE.md in a subdirectory, stating the project non-negotiables.',
+      'Add at least one rule file for your AI tool (e.g. .cursor/rules/*.mdc, .windsurf/rules/*.md, .cline/rules/*.md, .devin/rules/*.md, .github/instructions/*.instructions.md, or .rules) or a nested AGENTS.md/CLAUDE.md in a subdirectory, stating the project non-negotiables.',
     run(ctx) {
       const rules = collectRules(ctx);
       return rules.length > 0
@@ -58,7 +58,7 @@ export const contextChecks: Check[] = [
         : {
             passed: false,
             evidence:
-              'No scoped rule files found (.cursor/rules, .windsurf/rules, .clinerules, .continue/rules, .github/instructions, .agents/rules, .claude/rules, nested AGENTS.md/CLAUDE.md, …).',
+              'No scoped rule files found (.cursor/rules, .windsurf/rules, .clinerules, .cline/rules, .continue/rules, .github/instructions, .agents/rules, .devin/rules, .claude/rules, nested AGENTS.md/CLAUDE.md, …).',
           };
     },
   },

@@ -103,6 +103,7 @@ function renderReferencesSection(references: ReferenceReport): string[] {
   return lines;
 }
 
+/** Render a report and optional comparison as Markdown. */
 export function renderMarkdown(report: Report, diff?: ReportDiff | null): string {
   const lines: string[] = [];
   const maturityComplete = reportScopeIsComplete(report, 'maturity');

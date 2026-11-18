@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+/**
+ * Command-line entrypoint for scanning a repository and rendering its report.
+ *
+ * Run with `harness-score --help` to see available options. Import the main
+ * package entrypoint instead when integrating the scanner into an application.
+ * @module
+ */
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import {

@@ -421,7 +421,7 @@ README hero, blog posts, या social previews के लिए बैनर (`
 ### Context & Guides (20 pts)
 
 #### CTX-01 · Agent context file present — 4 pts {#ctx-01}
-Project guide मौजूद है: root `AGENTS.md`, `CLAUDE.md`, या `GEMINI.md`, या Claude Code
+Project guide मौजूद है: root `AGENTS.md`, `AGENT.md`, `AGENTS.local.md`, `CLAUDE.md`, या `GEMINI.md`, या Claude Code
 `.claude/CLAUDE.md` / `.claude/AGENTS.md` पर session-start instructions (scoped rules नहीं)।
 **सुधार:** `AGENTS.md` बनाएँ जो इनका उत्तर दे: यह प्रोजेक्ट क्या है, build और test कैसे करें, कौन-सी conventions लागू हैं, क्या कभी न छुएँ। recipe
 [अध्याय 3](./guides-feedforward#writing-an-agents-md-that-works) में।
@@ -433,8 +433,8 @@ Project guide मौजूद है: root `AGENTS.md`, `CLAUDE.md`, या `GEM
 
 #### CTX-03 · Scoped rules in use — 4 pts {#ctx-03}
 किसी भी supported tool के लिए कम से कम एक scoped rule फ़ाइल (जैसे `.cursor/rules/*.mdc`,
-`.windsurf/rules/*.md`, `.clinerules/*.md`, `.continue/rules/*.md`,
-`.github/instructions/*.instructions.md`, `.agents/rules/*`, `.claude/rules/**/*.md`)। code subdirectories में nested context
+`.windsurf/rules/*.md`, `.clinerules/*.md`, `.cline/rules/*.md`, `.devin/rules/*.md`, `.continue/rules/*.md`,
+`.github/copilot-instructions.md`, `.github/instructions/*.instructions.md`, `.rules`, `.agents/rules/*`, `.claude/rules/**/*.md`)। code subdirectories में nested context
 फ़ाइलें (root के नीचे, `.claude/CLAUDE.md` या `.claude/AGENTS.md` को छोड़कर `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`) भी गिनती हैं — Claude
 Code और Codex जैसे टूल में ये directory-scoped rules हैं।
 **सुधार:** एक छोटी always-on rule से शुरू करें जिसमें अपरिहार्य नियम हों,
@@ -442,7 +442,7 @@ Code और Codex जैसे टूल में ये directory-scoped rules
 
 #### CTX-04 · Rules have valid frontmatter — 3 pts {#ctx-04}
 हर rule activation metadata declare करती है (`description`, `globs`/`trigger`/`paths`/`applyTo`, या `alwaysApply`)।
-टूल जो metadata के बिना auto-load करते हैं — `.continue/rules/*`, `.claude/rules/*` (optional `paths` only), और nested
+टूल जो metadata के बिना auto-load करते हैं — `.continue/rules/*`, `.cline/rules/*`, `.clinerules/*`, `.rules`, `.github/copilot-instructions.md`, `.claude/rules/*` (optional `paths` only), और nested
 context फ़ाइलें — construction से pass होती हैं।
 **सुधार:** frontmatter block जोड़ें; इसके बिना एजेंट decide नहीं कर सकता कि rule
 कब लागू हो।
@@ -468,7 +468,7 @@ deprecated single-file फ़ॉर्मेट absent है (या modern sco
 ### Skills & Commands (17 pts)
 
 #### SKL-01 · At least one skill — 4 pts {#skl-01}
-`.cursor/skills/<name>/`, `.claude/skills/<name>/`, `.agents/skills/<name>/` के अंतर्गत `SKILL.md`; या जब scan root Claude Code / Cursor plugin repository हो — default plugin `skills/<name>/` के अंतर्गत (scan root पर `.claude-plugin/plugin.json` या `.cursor-plugin/plugin.json`)।
+`.cursor/skills/<name>/`, `.claude/skills/<name>/`, `.agents/skills/<name>/`, `.cline/skills/<name>/`, `.clinerules/skills/<name>/`, `.github/skills/<name>/` या `.opencode/skills/<name>/` के अंतर्गत `SKILL.md`; या जब scan root Claude Code / Cursor plugin repository हो — default plugin `skills/<name>/` के अंतर्गत (scan root पर `.claude-plugin/plugin.json` या `.cursor-plugin/plugin.json`)।
 **सुधार:** अपनी सबसे बार-बार दोहराई procedure (deploy, release, migration)
 को skill के रूप में package करें — [अध्याय 3](./guides-feedforward#skills-the-procedural-layer)।
 
@@ -479,7 +479,7 @@ deprecated single-file फ़ॉर्मेट absent है (या modern sco
 
 #### SKL-03 · Explicit workflows/commands defined — 3 pts {#skl-03}
 Command या workflow फ़ाइलें (`.cursor/commands/`, `.windsurf/workflows/`,
-`.claude/commands/`, `.continue/prompts/`, `.zed/commands/`, `.agents/workflows/`, या scan root पर plugin `commands/`)।
+`.claude/commands/`, `.continue/prompts/`, `.zed/commands/`, `.agents/workflows/`, `.github/prompts/`, `.opencode/commands/`, `.devin/workflows/`, या scan root पर plugin `commands/`)।
 **सुधार:** workflows जिन्हें आप जानबूझकर trigger करते हैं (`/review`, `/release`)
 को command/workflow फ़ाइलों के रूप में encode करें।
 
@@ -489,7 +489,7 @@ Descriptions ≥40 characters।
 to deploy or release; covers tagging, pipeline, rollback, smoke tests.»
 
 #### AGT-01 · Custom subagent defined — 3 pts {#agt-01}
-`.cursor/agents/`, `.claude/agents/`, `.opencode/agents/`, या scan root पर plugin `agents/` के अंतर्गत subagent फ़ाइल।
+`.cursor/agents/`, `.claude/agents/`, `.opencode/agents/`, `.devin/agents/`, या scan root पर plugin `agents/` के अंतर्गत delegable subagent फ़ाइल। Copilot custom agents tool पहचानते हैं, लेकिन subagents नहीं गिने जाते।
 **सुधार:** primary agent को delegate करने वाले काम (planning, review, release) के लिए purpose-built subagent package करें — देखें
 [Subagents](./cursor-harness-surface#subagents-purpose-built-delegates)
 अध्याय 2 में।
@@ -511,7 +511,7 @@ equivalents के रूप में पहचाना जाता है; t
 physical path का उपयोग करता है।
 
 #### HKS-01 · Hooks configuration present and valid JSON — 4 pts {#hks-01}
-`.cursor/hooks.json`, `.claude/settings.json` (`hooks` key), scan root पर plugin `hooks/hooks.json`, `.devin/hooks.v1.json` (standalone
+`.cursor/hooks.json`, `.claude/settings.json` (`hooks` key), `.github/hooks/*.json`, `.codex/hooks.json` या `.codex/config.toml` में inline `[[hooks.*]]`, scan root पर plugin `hooks/hooks.json`, `.devin/hooks.v1.json` (standalone
 event map), या `.devin/config.json` (`hooks` key) मौजूद है और JSON के रूप में parse होता है। कई configs होने पर valid non-empty config जीतता है; native-root depth,
 event count, और lexical path deterministic tie-breakers हैं। Gitignored `.devin/config.local.json` scan नहीं होता।
 **सुधार:** hooks config बनाएँ और
@@ -534,13 +534,13 @@ standalone map `PreToolUse`, `PostToolUse`, `PermissionRequest`, `UserPromptSubm
 
 #### HKS-03 · Gate hook guards risky operations — 4 pts {#hks-03}
 gate hook registered (Cursor: `beforeShellExecution`, `beforeMCPExecution`,
-`preToolUse`, या `beforeReadFile`; Claude Code या Devin: `PreToolUse` या `PermissionRequest`)।
+`preToolUse`, या `beforeReadFile`; Claude Code, Codex या Devin: `PreToolUse` या `PermissionRequest`; Copilot: `preToolUse` या `permissionRequest`)।
 **सुधार:** अध्याय 5 का destructive-command deny gate जोड़ें — prose rules
 अनुरोध हैं; gates तथ्य हैं।
 
 #### HKS-04 · Feedback hook observes output — 2 pts {#hks-04}
 feedback hook registered (Cursor: `afterFileEdit`, `postToolUse`, …;
-Claude Code: `PostToolUse`; Devin: `PostToolUse` या `Stop`)।
+Claude Code/Codex: `PostToolUse`; Devin: `PostToolUse` या `Stop`; Copilot: `postToolUse`, `postToolUseFailure`, या `agentStop`)।
 **सुधार:** edit पर format-and-lint एजेंट को session के अंदर instant feedback देता है।
 
 #### HKS-05 · Hook scripts committed — 2 pts {#hks-05}
@@ -572,7 +572,7 @@ language।
 मुफ़्त review करता है — [अध्याय 4](./sensors-feedback#type-checking-the-free-sensor)।
 
 #### SNS-04 · Formatter configured — 3 pts {#sns-04}
-prettier/biome, black/ruff-format, gofmt/rustfmt, pint, या php-cs-fixer
+prettier/biome/oxfmt, black/ruff-format, gofmt/rustfmt, pint, या php-cs-fixer
 (जब config file न हो तो `composer.json` में `laravel/pint` भी गिनता है)।
 **सुधार:** diffs में formatting noise review में real mistakes छिपा देता है।
 
@@ -619,8 +619,7 @@ tree में real env फ़ाइलें नहीं जब तक gitigno
 variables document करने के लिए।
 
 #### HYG-04 · MCP config free of credentials — 4 pts {#hyg-04}
-MCP config (`.cursor/mcp.json`, `.mcp.json`,
-`.agents/mcp_config.json`) में credential signatures नहीं।
+MCP config (`.cursor/mcp.json`, `.mcp.json`, `.agents/mcp_config.json`, `.continue/mcpServers/`, `.vscode/mcp.json`, `opencode.json[c]`, `.codex/config.toml`, या Devin MCP config) में credential signatures नहीं।
 **सुधार:** `${ENV_VAR}` interpolation उपयोग करें — MCP config में inlined key
 हर clone को publish किया secret है।
 
@@ -644,8 +643,8 @@ package-lock.json, uv.lock, Cargo.lock, go.sum, या equivalent।
 tree test करते हैं।
 
 #### HYG-08 · MCP config uses env interpolation for credentials — 3 pts {#hyg-08}
-जब MCP config मौजूद हो (`.cursor/mcp.json`, `.mcp.json`, `.agents/mcp_config.json`),
-वह valid JSON हो, और कोई भी credential-shaped field (token, key, secret, password…)
+जब MCP config मौजूद हो (`.cursor/mcp.json`, `.mcp.json`, `.agents/mcp_config.json`, Continue YAML, OpenCode JSONC, या Codex TOML),
+वह valid हो, और कोई भी credential-shaped field (token, key, secret, password…)
 literal के बजाय `${ENV_VAR}` interpolation उपयोग करे। यह HYG-04 का positive complement है।
 **लागू नहीं** जब repository में MCP config न हो। MCP न उपयोग करना missing interpolation
 नहीं है, इसलिए check numerator और denominator दोनों से बाहर हो जाता है। बाद में config

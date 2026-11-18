@@ -415,7 +415,7 @@ image:{BADGE_URL}[Harness Score L4,link={LINK},height=20]
 ### Context & Guides (20 pts)
 
 #### CTX-01 · Agent context file present — 4 pts {#ctx-01}
-存在项目 guide：根目录 `AGENTS.md`、`CLAUDE.md` 或 `GEMINI.md`，或 Claude Code
+存在项目 guide：根目录 `AGENTS.md`、`AGENT.md`、`AGENTS.local.md`、`CLAUDE.md` 或 `GEMINI.md`，或 Claude Code
 在 `.claude/CLAUDE.md` / `.claude/AGENTS.md` 的 session-start 说明（非 scoped rules）。
 **修复：** 创建 `AGENTS.md`，回答：项目是什么、如何构建与测试、有哪些约定、哪些地方绝对不能动。方案见
 [第 3 章](./guides-feedforward#writing-an-agents-md-that-works)。
@@ -427,8 +427,8 @@ image:{BADGE_URL}[Harness Score L4,link={LINK},height=20]
 
 #### CTX-03 · Scoped rules in use — 4 pts {#ctx-03}
 任意受支持工具至少有一条 scoped rule 文件（如 `.cursor/rules/*.mdc`、
-`.windsurf/rules/*.md`、`.clinerules/*.md`、`.continue/rules/*.md`、
-`.github/instructions/*.instructions.md`、`.agents/rules/*`、`.claude/rules/**/*.md`）。代码子目录中的嵌套 context
+`.windsurf/rules/*.md`、`.clinerules/*.md`、`.cline/rules/*.md`、`.devin/rules/*.md`、`.continue/rules/*.md`、
+`.github/copilot-instructions.md`、`.github/instructions/*.instructions.md`、`.rules`、`.agents/rules/*`、`.claude/rules/**/*.md`）。代码子目录中的嵌套 context
 文件（根目录以下、且非 `.claude/CLAUDE.md` 或 `.claude/AGENTS.md` 的 `AGENTS.md`、`CLAUDE.md`、`GEMINI.md`）同样计入 — 在 Claude
 Code、Codex 等工具中，它们相当于目录级 rules。
 **修复：** 先写一条简短的 always-on rule 承载不可妥协的底线，
@@ -436,7 +436,7 @@ Code、Codex 等工具中，它们相当于目录级 rules。
 
 #### CTX-04 · Rules have valid frontmatter — 3 pts {#ctx-04}
 每条 rule 都声明激活元数据（`description`、`globs`/`trigger`/`paths`/`applyTo`，或 `alwaysApply`）。
-工具无需元数据即自动加载的 rules — `.continue/rules/*`、`.claude/rules/*`（仅可选 `paths`）与嵌套
+工具无需元数据即自动加载的 rules — `.continue/rules/*`、`.cline/rules/*`、`.clinerules/*`、`.rules`、`.github/copilot-instructions.md`、`.claude/rules/*`（仅可选 `paths`）与嵌套
 context 文件 — 按设计即通过。
 **修复：** 添加 frontmatter 块；没有它，智能体无法判断 rule 何时生效。
 
@@ -460,7 +460,7 @@ context 文件 — 按设计即通过。
 ### Skills & Commands (17 pts)
 
 #### SKL-01 · At least one skill — 4 pts {#skl-01}
-`.cursor/skills/<name>/`、`.claude/skills/<name>/`、`.agents/skills/<name>/` 下存在 `SKILL.md`；或当扫描根为 Claude Code / Cursor plugin 仓库时，在默认 plugin `skills/<name>/` 下（扫描根存在 `.claude-plugin/plugin.json` 或 `.cursor-plugin/plugin.json`）。
+`.cursor/skills/<name>/`、`.claude/skills/<name>/`、`.agents/skills/<name>/`、`.cline/skills/<name>/`、`.clinerules/skills/<name>/`、`.github/skills/<name>/` 或 `.opencode/skills/<name>/` 下存在 `SKILL.md`；或当扫描根为 Claude Code / Cursor plugin 仓库时，在默认 plugin `skills/<name>/` 下（扫描根存在 `.claude-plugin/plugin.json` 或 `.cursor-plugin/plugin.json`）。
 **修复：** 将最常重复的流程（部署、发布、迁移）
 封装为 skill — [第 3 章](./guides-feedforward#skills-the-procedural-layer)。
 
@@ -471,7 +471,7 @@ context 文件 — 按设计即通过。
 
 #### SKL-03 · Explicit workflows/commands defined — 3 pts {#skl-03}
 存在 command 或 workflow 文件（`.cursor/commands/`、`.windsurf/workflows/`、
-`.claude/commands/`、`.continue/prompts/`、`.zed/commands/`、`.agents/workflows/`，或扫描根下的 plugin `commands/`）。
+`.claude/commands/`、`.continue/prompts/`、`.zed/commands/`、`.agents/workflows/`、`.github/prompts/`、`.opencode/commands/`、`.devin/workflows/`，或扫描根下的 plugin `commands/`）。
 **修复：** 将你有意触发的 workflow（`/review`、`/release`）
 编码为 command/workflow 文件。
 
@@ -480,7 +480,7 @@ description ≥40 字符。
 **修复：** 将 description 写成触发条件 — 「当用户要求部署或发布时使用；涵盖打 tag、流水线、回滚、冒烟测试。」
 
 #### AGT-01 · Custom subagent defined — 3 pts {#agt-01}
-`.cursor/agents/`、`.claude/agents/`、`.opencode/agents/` 或扫描根下的 plugin `agents/` 下存在 subagent 文件。
+`.cursor/agents/`、`.claude/agents/`、`.opencode/agents/`、`.devin/agents/` 或扫描根下的 plugin `agents/` 下存在可委派 subagent 文件。Copilot custom agents 可用于识别工具，但不计为 subagents。
 **修复：** 为主智能体应委派的任务（规划、审查、发布）封装专用 subagent — 见
 [Subagents](./cursor-harness-surface#subagents-purpose-built-delegates)
 （第 2 章）。
@@ -501,7 +501,7 @@ Harness 工件既可从仓库根目录按规范路径识别，也可在工具目
 实际读取的物理路径。
 
 #### HKS-01 · Hooks configuration present and valid JSON — 4 pts {#hks-01}
-`.cursor/hooks.json`、`.claude/settings.json`（`hooks` 键）、扫描根下的 plugin `hooks/hooks.json`、`.devin/hooks.v1.json`（独立
+`.cursor/hooks.json`、`.claude/settings.json`（`hooks` 键）、`.github/hooks/*.json`、`.codex/hooks.json` 或 `.codex/config.toml` 中的 `[[hooks.*]]`、扫描根下的 plugin `hooks/hooks.json`、`.devin/hooks.v1.json`（独立
 event 映射）或 `.devin/config.json`（`hooks` 键）存在且可解析为 JSON。当存在多个配置时，优先选择有效且非空的配置；再依次按原生根目录深度、事件数量
 和路径字典序进行确定性选择。gitignore 的 `.devin/config.local.json` 不会被扫描。
 **修复：** 创建 hooks 配置，并按
@@ -524,12 +524,12 @@ event 映射）或 `.devin/config.json`（`hooks` 键）存在且可解析为 JS
 
 #### HKS-03 · Gate hook guards risky operations — 4 pts {#hks-03}
 已注册 gate hook（Cursor：`beforeShellExecution`、`beforeMCPExecution`、
-`preToolUse` 或 `beforeReadFile`；Claude Code 或 Devin：`PreToolUse` 或 `PermissionRequest`）。
+`preToolUse` 或 `beforeReadFile`；Claude Code、Codex 或 Devin：`PreToolUse` 或 `PermissionRequest`；Copilot：`preToolUse` 或 `permissionRequest`）。
 **修复：** 添加第 5 章的 destructive-command deny gate — 文字 rules 是请求；gate 是事实。
 
 #### HKS-04 · Feedback hook observes output — 2 pts {#hks-04}
 已注册 feedback hook（Cursor：`afterFileEdit`、`postToolUse` 等；
-Claude Code：`PostToolUse`；Devin：`PostToolUse` 或 `Stop`）。
+Claude Code/Codex：`PostToolUse`；Devin：`PostToolUse` 或 `Stop`；Copilot：`postToolUse`、`postToolUseFailure` 或 `agentStop`）。
 **修复：** 编辑时 format-and-lint，让智能体在会话内获得即时反馈。
 
 #### HKS-05 · Hook scripts committed — 2 pts {#hks-05}
@@ -559,7 +559,7 @@ tsconfig（理想情况下 `strict: true`）、mypy/pyright/ty、phpstan/psalm�
 [第 4 章](./sensors-feedback#type-checking-the-free-sensor)。
 
 #### SNS-04 · Formatter configured — 3 pts {#sns-04}
-prettier/biome、black/ruff-format、gofmt/rustfmt、pint 或 php-cs-fixer
+prettier/biome/oxfmt、black/ruff-format、gofmt/rustfmt、pint 或 php-cs-fixer
 （无配置文件时，`composer.json` 中的 `laravel/pint` 也算）。
 **修复：** diff 中的格式噪音会掩盖审查中的真实错误。
 
@@ -599,8 +599,7 @@ husky/lint-staged、`pre-commit`、`.githooks/pre-commit` 或 lefthook。扫描�
 **修复：** 移走 secrets；保留 `.env.example` 记录所需变量。
 
 #### HYG-04 · MCP config free of credentials — 4 pts {#hyg-04}
-MCP 配置（`.cursor/mcp.json`、`.mcp.json`、
-`.agents/mcp_config.json`）中无 credential 特征。
+MCP 配置（`.cursor/mcp.json`、`.mcp.json`、`.agents/mcp_config.json`、`.continue/mcpServers/`、`.vscode/mcp.json`、`opencode.json[c]`、`.codex/config.toml` 或 Devin MCP config）中无 credential 特征。
 **修复：** 使用 `${ENV_VAR}` 插值 — MCP 配置中的内联 key 等于向每个 clone 公开的 secret。
 
 #### HYG-05 · License present — 2 pts {#hyg-05}
@@ -620,8 +619,8 @@ package-lock.json、uv.lock、Cargo.lock、go.sum 或等价 lockfile。
 **修复：** 可复现安装意味着传感器在各处测试同一依赖树。
 
 #### HYG-08 · MCP config uses env interpolation for credentials — 3 pts {#hyg-08}
-当存在 MCP 配置（`.cursor/mcp.json`、`.mcp.json`、`.agents/mcp_config.json`）时，
-它必须是合法 JSON，且任何 credential 形字段（token、key、secret、password 等）
+当存在 MCP 配置（`.cursor/mcp.json`、`.mcp.json`、`.agents/mcp_config.json`、Continue YAML、OpenCode JSONC 或 Codex TOML）时，
+它必须有效，且任何 credential 形字段（token、key、secret、password 等）
 使用 `${ENV_VAR}` 插值而非字面量。这是 HYG-04 的正面补充。
 **不适用：** 仓库没有 MCP 配置。不使用 MCP 并不是缺少插值配置，因此该 check
 同时退出分数的分子和分母。之后添加配置会使该 check 重新适用。
