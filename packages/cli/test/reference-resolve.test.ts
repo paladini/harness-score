@@ -439,3 +439,43 @@ describe('every reference ends in one of the five states', () => {
     expect(references.map(createResolver(minimal))).toEqual(resolveAll(doc));
   });
 });
+
+describe('branches that extraction usually settles first', () => {
+  const first = (content: string, path = 'AGENTS.md', kind: SourceArtifactKind = 'context-instruction') =>
+    extractReferences({ path, kind, content }).references[0]!;
+
+  test('an untyped path that exists as a file says so', () => {
+    expect(one('Run `scripts/build`.', { 'scripts/build': '' })).toMatchObject({
+      state: 'ambiguous',
+      rule: 'path.untyped',
+      evidence: expect.stringContaining('the path exists as a file'),
+    });
+  });
+
+  test('an anchor in a document that cannot be read is not evaluable', () => {
+    const resolve = createResolver({ ...fakeContext({ 'docs/api.md': '# API\n' }), read: () => null });
+    expect(resolve(first('[a](docs/api.md#api)'))).toMatchObject({
+      state: 'not-evaluable',
+      rule: 'anchor.unreadable',
+      reasonCode: 'inaccessible-local-target',
+    });
+  });
+
+  test('a glob the index cannot match is not supported', () => {
+    const resolve = createResolver(fakeContext(BASE_FILES));
+    const ref = first('---\nglobs: src/**/*.ts\n---', '.cursor/rules/a.mdc', 'scoped-rule');
+    expect(resolve({ ...ref, normalizedTarget: 'src/[ab].ts' })).toMatchObject({
+      state: 'not-supported',
+      rule: 'glob.unsupported',
+      reasonCode: 'unsupported-glob',
+    });
+  });
+
+  test('a reference of no known form is not supported', () => {
+    const resolve = createResolver(fakeContext(BASE_FILES));
+    expect(resolve({ ...first('[a](docs/guide.md)'), form: null })).toMatchObject({
+      state: 'not-supported',
+      rule: 'reference.unsupported-type',
+    });
+  });
+});

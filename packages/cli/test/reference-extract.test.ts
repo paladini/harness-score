@@ -350,3 +350,33 @@ describe('positions and determinism', () => {
     expect(extract('')).toEqual({ references: [], htmlAnchors: [] });
   });
 });
+
+describe('edge cases of extraction', () => {
+  test('quoted items in a scope field are unquoted', () => {
+    const found = refs(
+      '---\nglobs: src/*.ts, "lib/*.ts", \'docs/*.md\'\n---',
+      '.cursor/rules/a.mdc',
+      'scoped-rule',
+    );
+    expect(found.map((r) => [r.rawText, r.position.line, r.position.column])).toEqual([
+      ['src/*.ts', 2, 8],
+      ['lib/*.ts', 2, 19],
+      ['docs/*.md', 2, 31],
+    ]);
+  });
+
+  test('a malformed percent escape in a link is kept as written', () => {
+    expect(only('[a](docs/100%zz.md)')).toMatchObject({
+      form: 'file-path',
+      normalizedTarget: 'docs/100%zz.md',
+    });
+  });
+
+  test('a link with only a query has an empty destination', () => {
+    expect(only('[a](?tab=1)')).toMatchObject({
+      state: 'ambiguous',
+      rule: 'target.empty',
+      reasonCode: 'empty-destination',
+    });
+  });
+});
