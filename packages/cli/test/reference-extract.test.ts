@@ -143,6 +143,8 @@ describe('targets that cannot be checked locally', () => {
     ['`$HOME/config.md`', 'variable-dependent', 'target.dynamic'],
     ['`https://example.com/a`', 'external-resource', 'target.external'],
     ['`${DIR}/run.sh`', 'variable-dependent', 'target.dynamic'],
+    ['`@ai-sdk/<provider>`', 'variable-dependent', 'target.dynamic'],
+    ['`packages/<provider>/src/index.ts`', 'variable-dependent', 'target.dynamic'],
   ])('%s', (source, reason, rule) => {
     expect(only(source)).toMatchObject({ state: 'not-evaluable', reasonCode: reason, rule });
   });

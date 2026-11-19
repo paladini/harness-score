@@ -135,7 +135,7 @@ Rules marked *internal* are intermediate steps and never appear in a report.
 |---|---|---|---|
 | `target.empty` | ambiguous | `empty-destination` | The destination (or the anchor name) is empty. |
 | `target.external` | not evaluable | `external-resource` | A URI scheme or a `//` network path. |
-| `target.dynamic` | not evaluable | `variable-dependent` or `execution-dependent` | Depends on an environment variable, `~`, or command substitution. |
+| `target.dynamic` | not evaluable | `variable-dependent` or `execution-dependent` | Depends on an environment variable, `~`, a `<name>` placeholder, or command substitution. |
 | `target.absolute` | not evaluable | `inaccessible-local-target` | An absolute path, drive letter or UNC path. |
 | `target.outside-root` | not evaluable | `root-escape-attempt` | `..` climbs above the repository root. |
 | `path.untyped` | ambiguous | `no-type-indicator` | No trailing `/` and no known extension; the evidence adds whether the path exists. |

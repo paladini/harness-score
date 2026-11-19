@@ -126,7 +126,8 @@ function hasKnownExtension(name: string): boolean {
 function codeTokens(span: TextSpan): Candidate[] {
   const out: Candidate[] = [];
   const syntax = 'inline-code' as const;
-  for (const match of span.text.matchAll(/[^\s"'`=;|&<>()]+/g)) {
+  // A `<name>` placeholder stays inside the token, so `packages/<name>/src` is one path.
+  for (const match of span.text.matchAll(/(?:[^\s"'`=;|&<>()]|<[\p{L}\p{N}_.-]+>)+/gu)) {
     const leading = /^[,:]+/.exec(match[0])?.[0].length ?? 0;
     const text = match[0].slice(leading).replace(/[.,:!]+$/, '');
     if (text === '' || text.startsWith('-') || !/[\p{L}\p{N}]/u.test(text)) continue;

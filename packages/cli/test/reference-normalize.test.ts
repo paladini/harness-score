@@ -92,6 +92,7 @@ describe('not evaluable targets', () => {
     ['${DIR}/a.md', 'variable-dependent'],
     ['%USERPROFILE%\\a.md', 'variable-dependent'],
     ['~/notes.md', 'variable-dependent'],
+    ['packages/<name>/src', 'variable-dependent'],
     ['$(git rev-parse --show-toplevel)/a.md', 'execution-dependent'],
     ['`pwd`/a.md', 'execution-dependent'],
     ['/etc/passwd', 'inaccessible-local-target'],

@@ -35,6 +35,7 @@ const SCHEME_RE = /^[A-Za-z][A-Za-z0-9+.-]+:/;
 const DRIVE_RE = /^[A-Za-z]:/;
 const BRACED_OR_PLAIN_VAR_RE = /\$[A-Za-z_{]/;
 const PERCENT_VAR_RE = /%[A-Za-z_][A-Za-z0-9_]*%/;
+const PLACEHOLDER_RE = /<[\p{L}\p{N}_.-]+>/u;
 
 function notEvaluable(reason: NotEvaluableReason): NormalizeResult {
   return { kind: 'not-evaluable', reason };
@@ -45,7 +46,12 @@ export function normalizeTarget(raw: string, options: NormalizeOptions): Normali
   if (target === '') return { kind: 'empty' };
 
   if (target.includes('`') || target.includes('$(')) return notEvaluable('execution-dependent');
-  if (BRACED_OR_PLAIN_VAR_RE.test(target) || PERCENT_VAR_RE.test(target) || target.startsWith('~')) {
+  if (
+    BRACED_OR_PLAIN_VAR_RE.test(target) ||
+    PERCENT_VAR_RE.test(target) ||
+    PLACEHOLDER_RE.test(target) ||
+    target.startsWith('~')
+  ) {
     return notEvaluable('variable-dependent');
   }
   if (SCHEME_RE.test(target) || target.startsWith('//')) return notEvaluable('external-resource');
