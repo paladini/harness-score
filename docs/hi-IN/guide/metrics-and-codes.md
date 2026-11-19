@@ -205,6 +205,7 @@ discovered path `unreadable-path` report करता है; जानबूझ
 | `--gate maturity\|effective` | `--min-level` के लिए score |
 | `--min-level <0-4>` | Complete gated score level से नीचे हो तो exit 1; gate द्वारा चुना गया snapshot incomplete हो तो exit 2 |
 | `--json` | Full report including `scopes`, `gate`, `effective`, और `verdicts` |
+| `--references` | `AGENTS.md`, rules, skills और specs में लिखे file, directory, glob और anchor references भी check करता है। Informational: score, level या exit code कभी नहीं बदलता। Rules: [`REFERENCE-CHECK.md`](https://github.com/paladini/harness-score/blob/main/packages/cli/REFERENCE-CHECK.md) |
 
 ## GitHub Action इनपुट
 
@@ -240,6 +241,7 @@ Action maturity complete होने पर ही maturity outputs, badge, औ
 | `checks[].applicable` | `false` जब check इस repository पर लागू न हो (closed-source `license` वाला HYG-05, MCP config के बिना HYG-08)। Numerator और denominator दोनों से बाहर। Default `true`। पुराने reports में field न होना लागू होने का अर्थ है |
 | `checks[].severity` | `"off"` \| `"warn"` \| `"error"` — इस scan ने उस check के लिए जो resolved severity use की |
 | `checks[].warnings` | Optional non-fatal diagnostics `{ code, message, source? }`; terminal और Markdown इन्हें points बदले बिना दिखाते हैं |
+| `references` | Optional; सिर्फ `--references` के साथ, आखिरी key के रूप में। `references.occurrences[]` के हर item की पाँच states में से एक होती है (`consistent`, `inconsistent`, `not-evaluable`, `not-supported`, `ambiguous`), rule और evidence के साथ। `level`, `score` या `checks` को कभी affect नहीं करता |
 
 `level`, `score`, dimensions, और checks diagnosis के लिए मौजूद रहते हैं, लेकिन संबंधित verdict `incomplete` होने पर provisional हैं। Terminal और Markdown unavailable snapshot को पहचानते हैं। Badge हमेशा maturity को दिखाता है और maturity incomplete होने पर `incomplete` value इस्तेमाल करता है, कभी L0-L4 नहीं। `verdicts` के बिना पुराने reports में `truncated: false` complete और `truncated: true` incomplete माना जाता है।
 
