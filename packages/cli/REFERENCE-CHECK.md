@@ -58,7 +58,9 @@ HTML comments hide their content. Headings (ATX and setext) and HTML anchors
 references themselves.
 
 **Tokens in code.** Inline code and code block lines are split on whitespace and
-on `` " ' ` = ; | & < > ( ) ``. Leading `,` `:` and trailing `.` `,` `:` `!`
+on `` " ' ` = ; | & < > ( ) ``, except that a `<name>` placeholder (letters,
+digits, `_`, `.`, `-`) stays inside the token, so `packages/<name>/src` is one
+token. Leading `,` `:` and trailing `.` `,` `:` `!`
 are removed. A trailing `:line` or `:line:column` after a known extension
 (`src/app.ts:42`) is not part of the path: the file is looked up without it, and
 the reference keeps its text as written. A token is a candidate when it contains
@@ -87,7 +89,8 @@ In this order, the first matching step decides:
      means the repository root; code and scope fields are relative to the root,
      and a leading `/` there is an absolute path;
    - `` ` `` or `$(` → `target.dynamic` (command substitution);
-   - `$NAME`, `${NAME}`, `%NAME%` or a leading `~` → `target.dynamic`;
+   - `$NAME`, `${NAME}`, `%NAME%`, a `<name>` placeholder or a leading `~`
+     → `target.dynamic`;
    - a URI scheme (`https:`, `mailto:` …) or a leading `//` → `target.external`;
    - `\\server\…`, a drive letter (`C:`) or a leading `/` read as absolute →
      `target.absolute`;
