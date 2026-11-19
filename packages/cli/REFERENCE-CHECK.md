@@ -111,8 +111,13 @@ Every reference ends in one of five states:
 - **not supported**: the syntax is outside what this check implements;
 - **ambiguous**: the text does not say enough to decide.
 
-A missing target is reported as inconsistent only when the scan could not have
-missed it. When the scan was incomplete (a file-count limit, or a depth limit,
+A missing target is reported as inconsistent only when the text names it as a
+target and the scan could not have missed it. A Markdown link and a rule scope
+field name their target explicitly. A path written in inline code or a code
+block may be an example, an output or a file the command creates, so when it is
+not found (or exists with the other type) the outcome is ambiguous
+(`path.code-missing`, `path.code-type-mismatch`, `anchor.code-document-missing`)
+instead of inconsistent. A path in code that is found is consistent. When the scan was incomplete (a file-count limit, or a depth limit,
 unreadable directory or symlink out of the root at a path that overlaps the
 target), the outcome is `scan.incomplete` instead. A target that *was* found is
 consistent even when the scan was incomplete.
@@ -138,9 +143,11 @@ Rules marked *internal* are intermediate steps and never appear in a report.
 | `path.directory` | *internal* | | A directory reference waiting for the lookup. |
 | `path.file-found` | consistent | | The file exists. |
 | `path.directory-found` | consistent | | The directory exists (the root always does). |
-| `path.file-missing` | inconsistent | `target-missing` | No such file. |
-| `path.directory-missing` | inconsistent | `target-missing` | No such directory. |
-| `path.type-mismatch` | inconsistent | `type-mismatch` | The path exists, but as a directory instead of a file, or the reverse. |
+| `path.file-missing` | inconsistent | `target-missing` | No such file, for a Markdown link or a scope field. |
+| `path.directory-missing` | inconsistent | `target-missing` | No such directory, for a Markdown link or a scope field. |
+| `path.type-mismatch` | inconsistent | `type-mismatch` | The path exists, but as a directory instead of a file, or the reverse, for a Markdown link or a scope field. |
+| `path.code-missing` | ambiguous | `operational-purpose-unknown` | No such file or directory, for a path in inline code or a code block. |
+| `path.code-type-mismatch` | ambiguous | `operational-purpose-unknown` | The path exists with the other type, for a path in inline code or a code block. |
 | `path.bare-name-missing` | ambiguous | `bare-name-not-found` | A name without a path separator (for example `Next.js`) that is not in the repository: it may be a mention, not a path. |
 | `glob.mention` | not evaluable | `non-operational-mention` | A glob written in text or code, not declared as a rule scope. |
 | `glob.unsupported` | not supported | `unsupported-glob` | Negation, braces, character classes, `$` interpolation, `\`, or an empty pattern. |
@@ -150,9 +157,10 @@ Rules marked *internal* are intermediate steps and never appear in a report.
 | `anchor.same-document` | *internal* | | An anchor in the same document, waiting for the lookup. |
 | `anchor.other-document` | *internal* | | An anchor in another document, waiting for the lookup. |
 | `anchor.found` | consistent | | A heading produces this anchor name (the evidence says when it matched only after removing accents). |
-| `anchor.missing` | inconsistent | `anchor-missing` | The document exists but has no such heading. |
-| `anchor.document-missing` | inconsistent | `document-missing` | The target document does not exist. |
-| `anchor.html` | not supported | `html-anchor` | No heading matches, but an HTML anchor with this name exists. |
+| `anchor.missing` | inconsistent | `anchor-missing` | The document exists, but no heading and no `<a name>` or `<a id>` produces this name (other HTML ids, such as `<span id>`, do not count). |
+| `anchor.document-missing` | inconsistent | `document-missing` | The target document of a Markdown link does not exist. |
+| `anchor.code-document-missing` | ambiguous | `operational-purpose-unknown` | The target document of an anchor written in inline code or a code block does not exist. |
+| `anchor.html` | not supported | `html-anchor` | No heading matches, but an `<a name="…">` or `<a id="…">` in the target document declares this name. |
 | `anchor.non-markdown` | not supported | `non-markdown-anchor` | The target is not a Markdown file (for example a line anchor such as `file.ts#L10`). |
 | `anchor.unreadable` | not evaluable | `inaccessible-local-target` | The target document exists but could not be read. |
 | `scan.incomplete` | not evaluable | `incomplete-scan` | Not found, and the scan may not have included it. |
@@ -186,7 +194,12 @@ already in use (`x`, `x`, `x-1` → `x`, `x-1`, `x-1-1`).
 
 The fragment of a reference is trimmed, percent-decoded, NFC-normalized and
 lowercased before the comparison. A fragment that matches a heading only after
-removing accents still resolves. Only Markdown files (`.md`, `.markdown`, `.mdx`,
+removing accents still resolves. A fragment that matches no heading is not
+supported when an `<a name="…">` or `<a id="…">` tag of the target document
+declares it (an attribute counts only after whitespace, so `data-id` does not),
+and inconsistent otherwise, including when the document has other HTML ids such
+as `<span id="…">`. The same holds for anchors in the same document and in
+another document. Only Markdown files (`.md`, `.markdown`, `.mdx`,
 `.mdc`) are searched for headings.
 
 ## 7. Specifications (OpenSpec)

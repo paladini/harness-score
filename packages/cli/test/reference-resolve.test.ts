@@ -96,7 +96,7 @@ describe('files and directories', () => {
 describe('file:line references in code', () => {
   test('the file is checked without its line suffix', () => {
     expect(one('`src/index.ts:12`')).toMatchObject({ state: 'consistent', rawText: 'src/index.ts:12' });
-    expect(one('`src/nope.ts:3:1`')).toMatchObject({ state: 'inconsistent', reasonCode: 'target-missing' });
+    expect(one('`src/nope.ts:3:1`')).toMatchObject({ state: 'ambiguous', rule: 'path.code-missing' });
   });
 });
 
@@ -113,8 +113,115 @@ describe('bare names', () => {
     });
   });
 
-  test('an explicit path that is missing is inconsistent', () => {
-    expect(one('`docs/x.md`')).toMatchObject({ state: 'inconsistent', reasonCode: 'target-missing' });
+  test('a path with a separator that is missing is ambiguous in code', () => {
+    expect(one('`docs/x.md`')).toMatchObject({ state: 'ambiguous', rule: 'path.code-missing' });
+  });
+});
+
+describe('paths written in code', () => {
+  const block = (line: string) => `\`\`\`sh\n${line}\n\`\`\`\n`;
+  const unconfirmed = 'operational-purpose-unknown';
+
+  test.each([
+    ['inline code', '`docs/guide.md`'],
+    ['a code block', block('cat docs/guide.md')],
+  ])('an existing file in %s is consistent', (_where, source) => {
+    expect(one(source)).toMatchObject({ state: 'consistent', rule: 'path.file-found' });
+  });
+
+  test.each([
+    ['inline code', '`docs/nope.md`'],
+    ['a code block', block('cat docs/nope.md')],
+    ['inline code, relative', '`./docs/nope.md`'],
+  ])('a missing file in %s is ambiguous, not inconsistent', (_where, source) => {
+    expect(one(source)).toMatchObject({
+      state: 'ambiguous',
+      reasonCode: unconfirmed,
+      rule: 'path.code-missing',
+      evidence: 'no file at docs/nope.md; a path written in code may not be meant as a target',
+    });
+  });
+
+  test.each([
+    ['inline code', '`nope/`'],
+    ['a code block', block('ls nope/')],
+  ])('a missing directory in %s is ambiguous', (_where, source) => {
+    expect(one(source)).toMatchObject({
+      state: 'ambiguous',
+      reasonCode: unconfirmed,
+      rule: 'path.code-missing',
+    });
+  });
+
+  test.each([
+    ['inline code, file cited as a directory', '`docs/guide.md/`', 'docs/guide.md exists but is a file'],
+    [
+      'a code block, file cited as a directory',
+      block('ls docs/guide.md/'),
+      'docs/guide.md exists but is a file',
+    ],
+    ['inline code, directory cited as a file', '`src/lib.js`', 'src/lib.js exists but is a directory'],
+    [
+      'a code block, directory cited as a file',
+      block('node src/lib.js'),
+      'src/lib.js exists but is a directory',
+    ],
+  ])('a type mismatch in %s is ambiguous', (_where, source, evidence) => {
+    const files = { ...BASE_FILES, 'src/lib.js/index.js': '' };
+    const ref = one(source, files);
+    expect(ref).toMatchObject({
+      state: 'ambiguous',
+      reasonCode: unconfirmed,
+      rule: 'path.code-type-mismatch',
+    });
+    expect(ref.evidence).toContain(evidence);
+  });
+
+  test('a missing file in a Markdown link stays inconsistent', () => {
+    expect(one('[a](docs/nope.md)')).toMatchObject({
+      state: 'inconsistent',
+      reasonCode: 'target-missing',
+      rule: 'path.file-missing',
+    });
+  });
+
+  test('a type mismatch in a Markdown link stays inconsistent', () => {
+    expect(one('[a](docs/guide.md/)')).toMatchObject({ state: 'inconsistent', rule: 'path.type-mismatch' });
+  });
+
+  test('a missing path in a rule scope field stays inconsistent', () => {
+    expect(
+      one('---\nglobs: docs/nope.md\n---\n', BASE_FILES, {
+        path: '.cursor/rules/core.mdc',
+        kind: 'scoped-rule',
+      }),
+    ).toMatchObject({ state: 'inconsistent', rule: 'path.file-missing' });
+  });
+
+  test('a bare name keeps its own ambiguity rule', () => {
+    expect(one(block('node nope.js'))).toMatchObject({ state: 'ambiguous', rule: 'path.bare-name-missing' });
+  });
+
+  test('an incomplete scan still comes first', () => {
+    expect(one('`docs/nope.md`', BASE_FILES, { incomplete: [{ code: 'file-count-limit' }] })).toMatchObject({
+      state: 'not-evaluable',
+      rule: 'scan.incomplete',
+    });
+  });
+
+  test('an anchor in code whose document is missing is ambiguous', () => {
+    for (const source of ['`docs/none.md#x`', block('open docs/none.md#x')]) {
+      expect(one(source)).toMatchObject({
+        state: 'ambiguous',
+        reasonCode: unconfirmed,
+        rule: 'anchor.code-document-missing',
+      });
+    }
+  });
+
+  test('an anchor in code is still checked against the headings of an existing document', () => {
+    expect(one('`docs/api.md#login`')).toMatchObject({ state: 'consistent', rule: 'anchor.found' });
+    expect(one('`docs/api.md#nope`')).toMatchObject({ state: 'inconsistent', rule: 'anchor.missing' });
   });
 });
 
@@ -136,7 +243,7 @@ describe('documents in subdirectories', () => {
 
   test('when neither exists the evidence names both', () => {
     expect(one('`src/y.ts`', files, { path: 'packages/api/AGENTS.md' }).evidence).toBe(
-      'no file at src/y.ts or packages/api/src/y.ts',
+      'no file at src/y.ts or packages/api/src/y.ts; a path written in code may not be meant as a target',
     );
   });
 });

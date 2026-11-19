@@ -33,7 +33,11 @@ export type ReferenceState = 'consistent' | 'inconsistent' | 'not-evaluable' | '
 /** A state, or `pending` while the factual check has not run yet. */
 export type ReferenceStatus = ReferenceState | 'pending';
 
-export type AmbiguityReason = 'empty-destination' | 'no-type-indicator' | 'bare-name-not-found';
+export type AmbiguityReason =
+  | 'empty-destination'
+  | 'no-type-indicator'
+  | 'bare-name-not-found'
+  | 'operational-purpose-unknown';
 export type UnsupportedReason = 'unsupported-glob' | 'html-anchor' | 'non-markdown-anchor';
 export type InconsistencyReason =
   | 'document-missing'
@@ -62,6 +66,8 @@ export const RULES = {
   pathDirectoryMissing: 'path.directory-missing',
   pathTypeMismatch: 'path.type-mismatch',
   pathBareNameMissing: 'path.bare-name-missing',
+  pathCodeMissing: 'path.code-missing',
+  pathCodeTypeMismatch: 'path.code-type-mismatch',
   globMention: 'glob.mention',
   globUnsupported: 'glob.unsupported',
   globScope: 'glob.scope',
@@ -72,6 +78,7 @@ export const RULES = {
   anchorFound: 'anchor.found',
   anchorMissing: 'anchor.missing',
   anchorDocumentMissing: 'anchor.document-missing',
+  anchorCodeDocumentMissing: 'anchor.code-document-missing',
   anchorHtml: 'anchor.html',
   anchorNonMarkdown: 'anchor.non-markdown',
   anchorUnreadable: 'anchor.unreadable',
