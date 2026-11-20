@@ -1,3 +1,5 @@
+import type { ReferenceState, ResolvedReference, SourceArtifactKind } from './references/types.js';
+
 /** Stable identifiers for the six dimensions of the maturity model. */
 export type DimensionId = 'context' | 'skills' | 'hooks' | 'sensors' | 'ci' | 'hygiene';
 
@@ -31,10 +33,14 @@ export interface ScanContext {
   incompleteReasons?: ScanIncompleteReason[];
   /** True when the relative path exists as a file. */
   has(relPath: string): boolean;
+  /** True when at least one scanned file lives under the relative directory path. Empty directories are not detected. Optional for custom contexts; derived from `files` when absent. */
+  hasDirectory?(relPath: string): boolean;
   /** File content as UTF-8, or null when missing/unreadable/over the read limit. Cached. */
   read(relPath: string): string | null;
   /** All files whose relative path matches the regex. */
   matching(re: RegExp): string[];
+  /** Files matching a glob pattern, or null when the pattern uses unsupported syntax. Optional for custom contexts; derived from `files` when absent. */
+  matchingGlob?(pattern: string): string[] | null;
 }
 
 /** Non-fatal diagnostic attached to a check result. */
@@ -190,4 +196,65 @@ export interface Report {
   preset: PresetInfo;
   /** Extra repo-relative paths made visible inside normally skipped directories. */
   scan?: { includePaths: string[] };
+  /**
+   * Reference check of the operational documents. Present only when requested
+   * (`--references`); informational, never part of the score, level or exit code.
+   */
+  references?: ReferenceReport;
+}
+
+/** Outcome of checking the references written in a repository's operational documents. */
+export interface ReferenceReport {
+  summary: {
+    /** Operational documents whose references were checked. */
+    operationalDocuments: number;
+    /** Recognized documents left unchecked (illustrative or archived). */
+    skippedDocuments: number;
+    /** Operational documents that could not be read. */
+    unreadableDocuments: number;
+    occurrences: number;
+    byState: Record<ReferenceState, number>;
+    /** Occurrences per reason code, for every state that carries one. */
+    byReason: Record<string, number>;
+    /** False when the repository scan was incomplete. */
+    scanComplete: boolean;
+  };
+  /** Every reference occurrence, by document path and then position. */
+  occurrences: ResolvedReference[];
+  skipped: Array<{ path: string; kind: SourceArtifactKind; scope: 'illustrative' | 'archived' }>;
+  unreadable: string[];
+  /** Structural recognition of versioned specifications (OpenSpec). */
+  specifications: SpecificationReport;
+}
+
+/** Whether a specification document has the minimum content of a proposal, requirement, spec or task. */
+export type SpecificationContent = 'sufficient' | 'empty' | 'insufficient' | 'unreadable' | 'not-assessed';
+
+export type SpecificationStructureStatus = 'identified' | 'not-identified' | 'external';
+
+/**
+ * Three independent properties of a repository's versioned specifications:
+ * an identifiable structure, minimum content, and consistent internal
+ * references. There is no combined verdict and no score.
+ */
+export interface SpecificationReport {
+  structure: {
+    status: SpecificationStructureStatus;
+    convention: 'openspec' | null;
+    /** Spec documents, active change folders and archived change folders. */
+    parts: { specs: number; activeChanges: number; archivedChanges: number };
+  };
+  documents: Array<{
+    path: string;
+    scope: 'operational' | 'illustrative' | 'archived';
+    minimumContent: SpecificationContent;
+    references: { total: number; byState: Record<ReferenceState, number> };
+  }>;
+  properties: {
+    structure: SpecificationStructureStatus;
+    /** Counts over operational specification documents only. */
+    minimumContent: { sufficient: number; empty: number; insufficient: number; unreadable: number };
+    /** States of the references found in operational specification documents. */
+    referenceConsistency: Record<ReferenceState, number>;
+  };
 }

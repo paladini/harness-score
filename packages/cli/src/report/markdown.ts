@@ -1,7 +1,8 @@
 import type { ReportDiff } from '../diff.js';
 import { toolDisplayName } from '../harness/registry.js';
+import { label, referenceOverview } from '../references/format.js';
 import { checkIsScored } from '../score.js';
-import type { CheckResult, Report } from '../types.js';
+import type { CheckResult, ReferenceReport, Report } from '../types.js';
 import { formatIncompleteReason, reportScopeIsComplete, reportVerdict } from '../verdict.js';
 
 function signed(n: number): string {
@@ -75,6 +76,30 @@ function renderDiffSection(diff: ReportDiff): string[] {
     lines.push('No change since baseline.');
   }
   lines.push('');
+  return lines;
+}
+
+function renderReferencesSection(references: ReferenceReport): string[] {
+  const overview = referenceOverview(references);
+  const lines = ['', '## References', '', '_Informational; not part of the score._', ''];
+  lines.push(`- ${overview.documents}`);
+  lines.push(`- ${overview.states}`);
+  if (overview.incomplete)
+    lines.push('- ⚠ The scan was incomplete, so a missing target may not be a defect.');
+  if (overview.inconsistent.length > 0) {
+    lines.push('', '### Inconsistent', '');
+    for (const item of overview.inconsistent) {
+      lines.push(`- \`${item.location}\` \`${item.text}\` — ${item.evidence}`);
+    }
+    if (overview.hidden > 0) lines.push(`- … and ${overview.hidden} more (see the JSON report).`);
+  }
+  if (overview.other.length > 0) {
+    lines.push('', '### Other outcomes', '');
+    for (const item of overview.other) lines.push(`- ${label(item.state)} / ${item.reason}: ${item.count}`);
+  }
+  const [heading, ...details] = overview.specifications;
+  lines.push('', '### Specifications', '', `- ${heading}`);
+  for (const detail of details) lines.push(`- ${detail}`);
   return lines;
 }
 
@@ -225,6 +250,7 @@ export function renderMarkdown(report: Report, diff?: ReportDiff | null): string
       lines.push(`> ⚠ **Capped:** ${report.level.capReason}`);
     }
   }
+  if (report.references) lines.push(...renderReferencesSection(report.references));
   lines.push('');
   return lines.join('\n');
 }

@@ -204,6 +204,7 @@ root reports `outside-root-symlink` and is not traversed or read.
 | `--gate maturity\|effective` | Score used for `--min-level` |
 | `--min-level <0-4>` | Exit 1 when a complete gated score is below level; an incomplete gated snapshot exits 2 |
 | `--json` | Full report including `scopes`, `gate`, `effective`, and `verdicts` |
+| `--references` | Also check the file, directory, glob and anchor references written in `AGENTS.md`, rules, skills and specs. Informational: never changes the score, the level or the exit code. Rules: [`REFERENCE-CHECK.md`](https://github.com/paladini/harness-score/blob/main/packages/cli/REFERENCE-CHECK.md) |
 
 ## GitHub Action inputs
 
@@ -239,6 +240,7 @@ The Action publishes maturity outputs, badges, and reports only when maturity is
 | `checks[].applicable` | `false` when the check does not apply to this repository (HYG-05 with a closed-source `license`, HYG-08 with no MCP config). Excluded from the numerator and denominator. Defaults to `true`. Omitted on older reports, which means applicable |
 | `checks[].severity` | `"off"` \| `"warn"` \| `"error"` — the resolved severity this scan used for that check |
 | `checks[].warnings` | Optional non-fatal diagnostics `{ code, message, source? }`; terminal and Markdown render them without changing points |
+| `references` | Optional; present only with `--references`, as the last key. Each item of `references.occurrences[]` has one of five states (`consistent`, `inconsistent`, `not-evaluable`, `not-supported`, `ambiguous`) with its rule and evidence. Never affects `level`, `score` or `checks` |
 
 `level`, `score`, dimensions, and checks remain present for diagnosis, but are provisional when their verdict is `incomplete`. Terminal and Markdown identify the unavailable snapshot. The badge always represents maturity and uses `incomplete`, never L0-L4, when maturity is incomplete. Old reports without `verdicts` are treated as complete when `truncated` is `false`, and incomplete when it is `true`.
 

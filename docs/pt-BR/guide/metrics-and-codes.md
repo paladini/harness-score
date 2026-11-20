@@ -206,6 +206,7 @@ são seguidos e deduplicados, enquanto um alvo fora da raiz reporta
 | `--gate maturity\|effective` | Pontuação usada para `--min-level` |
 | `--min-level <0-4>` | Exit 1 quando a pontuação gated completa está abaixo do nível; snapshot selecionado pelo gate incompleto retorna exit 2 |
 | `--json` | Relatório completo incluindo `scopes`, `gate`, `effective` e `verdicts` |
+| `--references` | Também verifica as referências a arquivos, diretórios, globs e âncoras escritas em `AGENTS.md`, regras, skills e specs. Informativo: nunca muda a pontuação, o nível nem o exit code. Regras: [`REFERENCE-CHECK.md`](https://github.com/paladini/harness-score/blob/main/packages/cli/REFERENCE-CHECK.md) |
 
 ## Inputs da GitHub Action
 
@@ -241,6 +242,7 @@ A Action publica outputs, badge e relatório de maturity somente quando maturity
 | `checks[].applicable` | `false` quando o check não se aplica a este repositório (HYG-05 com `license` de código fechado, HYG-08 sem config MCP). Excluído do numerador e do denominador. O padrão é `true`. Ausente em relatórios antigos, o que significa aplicável |
 | `checks[].severity` | `"off"` \| `"warn"` \| `"error"` — a severidade resolvida usada por este scan para aquele check |
 | `checks[].warnings` | Diagnósticos opcionais e não fatais `{ code, message, source? }`; terminal e Markdown os exibem sem alterar pontos |
+| `references` | Opcional; aparece só com `--references`, como última chave. Cada item de `references.occurrences[]` tem um de cinco estados (`consistent`, `inconsistent`, `not-evaluable`, `not-supported`, `ambiguous`), com a regra e a evidência. Nunca afeta `level`, `score` nem `checks` |
 
 `level`, `score`, dimensões e checks continuam presentes para diagnóstico, mas são provisórios quando o veredito correspondente é `incomplete`. Terminal e Markdown identificam o snapshot indisponível. O badge sempre representa maturity e usa `incomplete`, nunca L0-L4, quando maturity está incompleto. Relatórios antigos sem `verdicts` são completos quando `truncated` é `false` e incompletos quando é `true`.
 

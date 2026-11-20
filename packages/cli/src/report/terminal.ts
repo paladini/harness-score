@@ -1,7 +1,8 @@
 import type { ReportDiff } from '../diff.js';
 import { toolDisplayName } from '../harness/registry.js';
+import { label, referenceOverview } from '../references/format.js';
 import { checkIsScored } from '../score.js';
-import type { CheckResult, Report } from '../types.js';
+import type { CheckResult, ReferenceReport, Report } from '../types.js';
 import { formatIncompleteReason, reportScopeIsComplete, reportVerdict } from '../verdict.js';
 
 const useColor = process.stdout.isTTY === true && process.env.NO_COLOR === undefined;
@@ -122,6 +123,36 @@ function notApplicableChecks(checks: CheckResult[]): CheckResult[] {
 
 function formatScopes(scopes: string[]): string {
   return scopes.join(', ');
+}
+
+function renderReferencesSection(references: ReferenceReport): string[] {
+  const overview = referenceOverview(references);
+  const lines = [bold('  References') + dim(' (informational, not part of the score)')];
+  lines.push(`  ${overview.documents}`);
+  lines.push(`  ${overview.states}`);
+  if (overview.incomplete) {
+    lines.push(yellow(`  ${WARN} the scan was incomplete, so a missing target may not be a defect`));
+  }
+  if (overview.inconsistent.length > 0) {
+    lines.push(bold('  Inconsistent:'));
+    for (const item of overview.inconsistent) {
+      lines.push(`   ${red(CROSS)} ${bold(item.location)} ${item.text} ${dim(`${ARROW} ${item.evidence}`)}`);
+    }
+    if (overview.hidden > 0) {
+      lines.push(dim(`   ${MIDDOT} and ${overview.hidden} more (use --json for the full list)`));
+    }
+  }
+  if (overview.other.length > 0) {
+    lines.push(bold('  Other outcomes:'));
+    for (const item of overview.other) {
+      lines.push(`   ${dim(MIDDOT)} ${label(item.state)} / ${item.reason}: ${item.count}`);
+    }
+  }
+  const [heading, ...details] = overview.specifications;
+  lines.push(`  ${bold(heading!)}`);
+  for (const detail of details) lines.push(`   ${dim(MIDDOT)} ${detail}`);
+  lines.push('');
+  return lines;
 }
 
 /** Render a report and optional comparison for a terminal. */
@@ -265,5 +296,6 @@ export function renderTerminal(report: Report, diff?: ReportDiff | null): string
     }
     lines.push('');
   }
+  if (report.references) lines.push(...renderReferencesSection(report.references));
   return lines.join('\n');
 }

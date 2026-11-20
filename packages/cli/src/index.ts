@@ -15,11 +15,23 @@ export type * from './diff.js';
 export { computeDiff } from './diff.js';
 export type { ToolId } from './harness/registry.js';
 export { TOOL_DISPLAY_NAMES, toolDisplayName } from './harness/registry.js';
+export type { SourcePosition } from './references/markdown.js';
+export type {
+  ReferenceForm,
+  ReferenceReason,
+  ReferenceRule,
+  ReferenceState,
+  ReferenceSyntax,
+  ResolvedReference,
+  SourceArtifactKind,
+} from './references/types.js';
+export { RULES } from './references/types.js';
 export { renderBadge } from './report/badge.js';
 export { renderMarkdown } from './report/markdown.js';
 export { renderTerminal } from './report/terminal.js';
 export type { CreateScanOptions, ScanOverlay } from './scan.js';
 export { createScanContext } from './scan.js';
+export type { ReportOptions } from './score.js';
 export {
   buildReport,
   buildReportFromContext,
@@ -38,11 +50,14 @@ import { buildReport } from './score.js';
 import type { Report } from './types.js';
 
 /** Options for resolving configuration before scanning a repository. */
-export interface ScoreOptions extends CliConfigOverrides {}
+export interface ScoreOptions extends CliConfigOverrides {
+  /** Also check the references in operational documents (informational, never scored). */
+  references?: boolean;
+}
 
 /** One-call API: scan a directory and get the full report. */
 export function score(root: string, options: ScoreOptions = {}): Report {
   const rootAbs = root;
   const config = resolveScanConfig(rootAbs, options);
-  return buildReport(rootAbs, config);
+  return buildReport(rootAbs, config, { references: options.references });
 }

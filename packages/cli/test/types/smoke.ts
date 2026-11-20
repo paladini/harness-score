@@ -25,8 +25,11 @@ import {
   LEVEL_REQUIREMENTS,
   type LevelInfo,
   PRESET_REGISTRY,
+  type ReferenceReport,
+  type ReferenceState,
   type Report,
   type ReportDiff,
+  type ResolvedReference,
   renderBadge,
   renderMarkdown,
   renderTerminal,
@@ -80,6 +83,12 @@ const devinDisplayName: string = TOOL_DISPLAY_NAMES.devin;
 const severity: Severity = scored.checks[0]!.severity;
 const severities = resolveSeverities({ extends: [], rules: {} });
 const presets = PRESET_REGISTRY;
+// The reference check is opt-in and optional: absent unless requested.
+const withReferences: Report = score('.', { references: true });
+const referenceReport: ReferenceReport | undefined = withReferences.references;
+const referenceState: ReferenceState = 'not-evaluable';
+const occurrence: ResolvedReference | undefined = referenceReport?.occurrences[0];
+const noReferences: ReferenceReport | undefined = scored.references;
 
 // Referenced only so the compiler treats every import as used; this file is
 // never executed, only type-checked.
@@ -114,6 +123,11 @@ void [
   severity,
   severities,
   presets,
+  withReferences,
+  referenceReport,
+  referenceState,
+  occurrence,
+  noReferences,
   DOCS_BASE_URL,
   LEVEL_NAMES,
   LEVEL_REQUIREMENTS,
