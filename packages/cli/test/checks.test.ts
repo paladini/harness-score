@@ -675,6 +675,15 @@ describe('ci checks', () => {
     expect(outcome.evidence).toContain(file);
   });
 
+  test('CI-01 does not detect Buildkite JSON pipeline files', async () => {
+    const ctx = fakeContext({
+      'buildkite.json': '{"steps": []}',
+      '.buildkite/pipeline.json': '{"steps": []}',
+      'buildkite/pipeline.json': '{"steps": []}',
+    });
+    expect((await check('CI-01')).run(ctx).passed).toBe(false);
+  });
+
   test('CI-02 and CI-03 inspect Buildkite command strings and command lists at nested paths', async () => {
     const stringCommands = fakeContext({
       'buildkite.yml':
