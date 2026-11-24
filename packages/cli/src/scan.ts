@@ -1,5 +1,6 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import { filterGlob } from './references/glob.js';
 import type { ScanContext, ScanIncompleteReason } from './types.js';
 import { compareLexically } from './util.js';
 
@@ -257,8 +258,15 @@ function buildContext(
     if (!fileSet.has(rel)) fileSet.add(rel);
   }
   const files = [...fileSet].sort();
+  const dirSet = new Set<string>();
+  for (const f of files) {
+    for (let i = f.indexOf('/'); i !== -1; i = f.indexOf('/', i + 1)) {
+      dirSet.add(f.slice(0, i));
+    }
+  }
   const contentCache = new Map<string, string | null>();
   const matchCache = new Map<string, string[]>();
+  const globCache = new Map<string, string[] | null>();
 
   return {
     root,
@@ -270,6 +278,9 @@ function buildContext(
     incompleteReasons,
     has(relPath: string): boolean {
       return fileSet.has(relPath);
+    },
+    hasDirectory(relPath: string): boolean {
+      return dirSet.has(relPath);
     },
     read(relPath: string): string | null {
       if (contentCache.has(relPath)) return contentCache.get(relPath)!;
@@ -305,6 +316,12 @@ function buildContext(
       if (cached) return cached;
       const result = files.filter((f) => re.test(f));
       matchCache.set(key, result);
+      return result;
+    },
+    matchingGlob(pattern: string): string[] | null {
+      if (globCache.has(pattern)) return globCache.get(pattern)!;
+      const result = filterGlob(pattern, files);
+      globCache.set(pattern, result);
       return result;
     },
   };

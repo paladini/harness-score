@@ -199,6 +199,7 @@ untracked 和 ignored 文件。仓库扫描中的 `file-count-limit` 表示 1,00
 | `--gate maturity\|effective` | `--min-level` 使用的分数 |
 | `--min-level <0-4>` | 完整 gated 分数低于等级时 exit 1；gate 选择的 snapshot 不完整时 exit 2 |
 | `--json` | 完整报告，含 `scopes`、`gate`、`effective` 与 `verdicts` |
+| `--references` | 同时检查 `AGENTS.md`、规则、skills 与 specs 中写出的文件、目录、glob 与锚点引用。仅供参考：不会改变分数、等级或 exit code。规则见 [`REFERENCE-CHECK.md`](https://github.com/paladini/harness-score/blob/main/packages/cli/REFERENCE-CHECK.md) |
 
 ## GitHub Action 输入
 
@@ -229,6 +230,7 @@ Action 仅在 maturity 完整时发布 maturity outputs、badge 和报告，仅�
 | `checks[].applicable` | 当该 check 不适用于此仓库时为 `false`（HYG-05 的闭源 `license`，或 HYG-08 在没有 MCP 配置时）。同时从分子和分母中排除。默认 `true`。旧报告省略该字段，含义为适用 |
 | `checks[].severity` | `"off"` \| `"warn"` \| `"error"` — 本次 scan 对该 check 使用的最终 severity |
 | `checks[].warnings` | 可选的非致命诊断 `{ code, message, source? }`；terminal 与 Markdown 会显示它们，但不改变分数 |
+| `references` | 可选；仅在使用 `--references` 时出现，且为最后一个键。`references.occurrences[]` 中的每一项具有五种状态之一（`consistent`、`inconsistent`、`not-evaluable`、`not-supported`、`ambiguous`），并附规则与证据。不影响 `level`、`score` 或 `checks` |
 | `effective` | 相同结构：`{ level, score, dimensions, checks, detectedHarnesses }` |
 | `detectedHarnesses` | **repo** 中看到的工具（仅供参考） |
 | `verdicts.maturity`、`verdicts.effective` | 每个 snapshot 的完整性状态与确定性原因：`complete` 或 `incomplete` |

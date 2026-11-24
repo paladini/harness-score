@@ -3,6 +3,7 @@ import type { ResolvedScanConfig, ResolvedSeverity } from './config.js';
 import { resolveSeverities } from './config.js';
 import { buildOverlays } from './harness/global-paths.js';
 import { detectHarnesses } from './harness/index.js';
+import { buildReferenceReport } from './references/report.js';
 import { createScanContext } from './scan.js';
 import type {
   CheckOutcome,
@@ -181,12 +182,19 @@ function contextVerdict(ctx: ScanContext): ScanVerdict {
   return { status: reasons.length > 0 ? 'incomplete' : 'complete', reasons };
 }
 
+/** Optional report sections; every one is off unless asked for. */
+export interface ReportOptions {
+  /** Also check the references in operational documents (informational, not scored). */
+  references?: boolean;
+}
+
 /** Build a report from prepared repository and effective scan contexts. */
 export function buildReportFromContext(
   maturityCtx: ScanContext,
   effectiveCtx: ScanContext,
   config: ResolvedScanConfig,
   resolvedRoots: Report['resolvedRoots'],
+  options: ReportOptions = {},
 ): Report {
   const severities = resolveSeverities(config);
   const maturity = buildSnapshot(maturityCtx, severities);
@@ -204,7 +212,7 @@ export function buildReportFromContext(
     .filter(([, v]) => v.source !== 'default')
     .map(([id, v]) => ({ id, severity: v.severity, source: v.source }));
 
-  return {
+  const report: Report = {
     tool: { name: 'harness-score', version: TOOL_VERSION },
     root: maturityCtx.root,
     truncated: maturityVerdict.status === 'incomplete' || effectiveVerdict.status === 'incomplete',
@@ -221,10 +229,17 @@ export function buildReportFromContext(
     preset: { extends: config.extends, rules: config.rules, resolved: resolvedEntries },
     scan: { includePaths: config.scan?.includePaths ?? [] },
   };
+  // Informational and opt-in: it is the last key and never feeds the score above.
+  if (options.references) report.references = buildReferenceReport(maturityCtx);
+  return report;
 }
 
 /** Build a full report for a repository root with optional scope configuration. */
-export function buildReport(rootInput: string, config?: ResolvedScanConfig): Report {
+export function buildReport(
+  rootInput: string,
+  config?: ResolvedScanConfig,
+  options: ReportOptions = {},
+): Report {
   const root = rootInput;
   const resolved = config ?? {
     scopes: { user: false, system: false },
@@ -241,12 +256,12 @@ export function buildReport(rootInput: string, config?: ResolvedScanConfig): Rep
   const hasExtraScopes = resolved.scopes.user || resolved.scopes.system || resolved.extraRoots.length > 0;
 
   if (!hasExtraScopes) {
-    return buildReportFromContext(maturityCtx, maturityCtx, resolved, undefined);
+    return buildReportFromContext(maturityCtx, maturityCtx, resolved, undefined, options);
   }
 
   const { overlays, resolvedRoots } = buildOverlays(root, resolved.scopes, resolved.extraRoots);
   const effectiveCtx = createScanContext(root, { overlays, includePaths });
-  return buildReportFromContext(maturityCtx, effectiveCtx, resolved, resolvedRoots);
+  return buildReportFromContext(maturityCtx, effectiveCtx, resolved, resolvedRoots, options);
 }
 
 /**
