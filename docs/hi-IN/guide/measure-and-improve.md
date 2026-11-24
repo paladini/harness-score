@@ -645,7 +645,8 @@ tree test करते हैं।
 #### HYG-08 · MCP config uses env interpolation for credentials — 3 pts {#hyg-08}
 जब MCP config मौजूद हो (`.cursor/mcp.json`, `.mcp.json`, `.agents/mcp_config.json`, Continue YAML, OpenCode JSONC, या Codex TOML),
 वह valid हो, और कोई भी credential-shaped field (token, key, secret, password…)
-literal के बजाय environment variable या secret को reference करे। हर client का documented syntax मान्य है: `${VAR}`, `${VAR:-default}`, `${env:VAR}`, `${input:id}`, `{env:VAR}`, <code v-pre>${{ secrets.NAME }}</code>, और Codex की `*_env_var` keys, जो variable का नाम देती हैं। यह HYG-04 का positive complement है।
+literal के बजाय environment variable या secret को reference करे। हर client का documented syntax मान्य है: `${VAR}`, `${VAR:-}`, `${env:VAR}`, `${input:id}`, `{env:VAR}`, <code v-pre>${{ secrets.NAME }}</code>, और Codex की `*_env_var` keys, जो variable का नाम देती हैं। यह HYG-04 का positive complement है।
+`${VAR:-value}` जैसा non-empty fallback fail होता है, क्योंकि वह fallback repository में committed literal है।
 **लागू नहीं** जब repository में MCP config न हो। MCP न उपयोग करना missing interpolation
 नहीं है, इसलिए check numerator और denominator दोनों से बाहर हो जाता है। बाद में config
 जोड़ने पर check फिर लागू होता है।

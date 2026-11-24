@@ -693,9 +693,10 @@ tree everywhere.
 When an MCP config exists, any credential-shaped field (token, key, secret,
 password…) identified in JSON, Continue YAML, OpenCode JSONC, or Codex TOML
 references an environment variable or secret rather than holding a literal.
-Each client's documented syntax counts: `${VAR}`, `${VAR:-default}`, `${env:VAR}`, `${input:id}`, `{env:VAR}`, <code v-pre>${{ secrets.NAME }}</code>,
+Each client's documented syntax counts: `${VAR}`, `${VAR:-}`, `${env:VAR}`, `${input:id}`, `{env:VAR}`, <code v-pre>${{ secrets.NAME }}</code>,
 and Codex `*_env_var` keys, which name a variable. The positive complement
-to HYG-04.
+to HYG-04. A non-empty fallback such as `${VAR:-value}` fails, because the
+fallback is a literal committed to the repository.
 **Not applicable** when the repository has no MCP config. Not using MCP is
 not a missing interpolation setup, so the check drops out of the score
 numerator and denominator. Adding a config later makes it applicable again.

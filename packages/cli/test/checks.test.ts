@@ -1047,7 +1047,7 @@ describe('hygiene checks', () => {
 
   test.each([
     ['Cursor ${env:NAME}', '.cursor/mcp.json', '${env:GITHUB_TOKEN}'],
-    ['Claude Code ${VAR:-default}', '.mcp.json', '${API_TOKEN:-}'],
+    ['Claude Code ${VAR:-}', '.mcp.json', '${API_TOKEN:-}'],
     ['VS Code ${input:id}', '.vscode/mcp.json', '${input:api-token}'],
     ['VS Code ${env:NAME}', '.vscode/mcp.json', '${env:API_TOKEN}'],
     ['OpenCode {env:VAR}', 'opencode.json', '{env:API_TOKEN}'],
@@ -1057,6 +1057,31 @@ describe('hygiene checks', () => {
       ? { mcp: { svc: { type: 'local', command: ['npx'], environment: { API_TOKEN: value } } } }
       : { mcpServers: { svc: { command: 'npx', env: { API_TOKEN: value } } } };
     const ctx = fakeContext({ [file]: JSON.stringify(config) });
+    expect((await check('HYG-08')).run(ctx).passed).toBe(true);
+  });
+
+  test.each([
+    ['a literal fallback', '${API_TOKEN:-literal-value-not-interpolated}'],
+    ['a literal fallback next to another reference', '${API_TOKEN:-literal-value}${OTHER_TOKEN}'],
+  ])('HYG-08 fails on a credential reference with %s', async (_name, value) => {
+    const ctx = fakeContext({
+      '.mcp.json': JSON.stringify({ mcpServers: { svc: { env: { API_TOKEN: value } } } }),
+    });
+    expect((await check('HYG-08')).run(ctx).passed).toBe(false);
+  });
+
+  test('HYG-08 allows a fallback on a field that is not credential-shaped', async () => {
+    const ctx = fakeContext({
+      '.mcp.json': JSON.stringify({
+        mcpServers: {
+          svc: {
+            type: 'http',
+            url: '${API_BASE_URL:-https://api.example.com}/mcp',
+            headers: { Authorization: 'Bearer ${API_KEY}' },
+          },
+        },
+      }),
+    });
     expect((await check('HYG-08')).run(ctx).passed).toBe(true);
   });
 

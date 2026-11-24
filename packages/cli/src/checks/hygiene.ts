@@ -9,11 +9,18 @@ const ENV_TEMPLATE_RE = /\.(example|sample|template|dist)$/;
 const CREDENTIAL_WORDS = new Set(['token', 'key', 'secret', 'password', 'passwd', 'auth', 'apikey']);
 /**
  * Secret references in each MCP client's documented syntax: `${VAR}` and
- * `${VAR:-default}` (Claude Code), `${env:VAR}` (Cursor, VS Code),
+ * `${VAR:-}` (Claude Code), `${env:VAR}` (Cursor, VS Code),
  * `${input:id}` (VS Code), `{env:VAR}` (OpenCode), `${{ secrets.NAME }}` (Continue).
  */
 const SECRET_REFERENCE_RE =
-  /\$\{[A-Za-z_][A-Za-z0-9_]*(?::-[^}]*)?\}|\$?\{env:[A-Za-z_][A-Za-z0-9_]*\}|\$\{input:[\w.-]+\}|\$\{\{\s*secrets\.[\w-]+\s*\}\}/;
+  /\$\{[A-Za-z_][A-Za-z0-9_]*(?::-)?\}|\$?\{env:[A-Za-z_][A-Za-z0-9_]*\}|\$\{input:[\w.-]+\}|\$\{\{\s*secrets\.[\w-]+\s*\}\}/;
+/** A Claude Code `${VAR:-default}` with a non-empty default commits that default as a literal. */
+const LITERAL_FALLBACK_RE = /\$\{[A-Za-z_][A-Za-z0-9_]*:-[^}]/;
+
+function isSecretReference(value: string): boolean {
+  return SECRET_REFERENCE_RE.test(value) && !LITERAL_FALLBACK_RE.test(value);
+}
+
 const CLOSED_SOURCE_LICENSES = new Set(['proprietary', 'unlicensed']);
 
 function readJsonObject(ctx: ScanContext, path: string): Record<string, unknown> | null {
@@ -348,7 +355,7 @@ export const hygieneChecks: Check[] = [
         } else {
           return { passed: false, evidence: `${file} is not valid JSON.` };
         }
-        const uninterpolated = credentialValues.filter((v) => !SECRET_REFERENCE_RE.test(v));
+        const uninterpolated = credentialValues.filter((v) => !isSecretReference(v));
         if (uninterpolated.length > 0) {
           return {
             passed: false,

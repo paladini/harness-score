@@ -685,8 +685,10 @@ tree everywhere.
 Cuando existe config MCP (`.cursor/mcp.json`, `.mcp.json`, `.agents/mcp_config.json`, Continue YAML, OpenCode JSONC o Codex TOML), es válida, y cualquier campo con forma de
 credencial (token, key, secret, password…) referencia una variable de entorno
 o un secreto en lugar de un literal. Vale la sintaxis documentada de cada
-cliente: `${VAR}`, `${VAR:-default}`, `${env:VAR}`, `${input:id}`, `{env:VAR}`, <code v-pre>${{ secrets.NAME }}</code>, y las claves
+cliente: `${VAR}`, `${VAR:-}`, `${env:VAR}`, `${input:id}`, `{env:VAR}`, <code v-pre>${{ secrets.NAME }}</code>, y las claves
 `*_env_var` de Codex, que nombran una variable. El complemento positivo de HYG-04.
+Un fallback no vacío como `${VAR:-valor}` falla, porque el fallback es un
+literal commiteado en el repositorio.
 **No aplica** cuando el repositorio no tiene config MCP. No usar MCP no es
 una interpolación faltante, así que el check sale del numerador y del
 denominador. Añadir una config después vuelve a hacer aplicable el check.
