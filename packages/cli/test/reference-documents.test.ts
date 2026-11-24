@@ -1,6 +1,7 @@
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
+import { CONTEXT_ROOT_FILES } from '../src/harness/registry.js';
 import { findOperationalDocuments } from '../src/references/documents.js';
 import { createScanContext } from '../src/scan.js';
 import { fakeContext } from './helpers.js';
@@ -17,6 +18,8 @@ function byPath(paths: string[], root?: string) {
 describe('context instructions', () => {
   test.each([
     'AGENTS.md',
+    'AGENT.md',
+    'AGENTS.local.md',
     'CLAUDE.md',
     'GEMINI.md',
     '.claude/CLAUDE.md',
@@ -30,6 +33,20 @@ describe('context instructions', () => {
       kind: 'context-instruction',
       scope: 'operational',
     });
+  });
+});
+
+describe('root-only project guides', () => {
+  test.each([
+    'packages/api/AGENT.md',
+    'services/web/AGENTS.local.md',
+  ])('nested %s stays a scoped rule', (file) => {
+    expect(byPath([file])[file]).toEqual({ path: file, kind: 'scoped-rule', scope: 'operational' });
+  });
+
+  test('every root guide accepted by CTX-01 is a context instruction', () => {
+    const docs = byPath([...CONTEXT_ROOT_FILES]);
+    for (const file of CONTEXT_ROOT_FILES) expect(docs[file]?.kind).toBe('context-instruction');
   });
 });
 

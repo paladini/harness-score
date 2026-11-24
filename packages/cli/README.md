@@ -69,7 +69,8 @@ harness-score --references        # also check the references written in AGENTS.
 
 `--references` adds an informational section that checks whether the files,
 directories, glob patterns and Markdown anchors cited in `AGENTS.md`,
-`CLAUDE.md`, `GEMINI.md`, scoped rules, skills and OpenSpec documents exist in
+`CLAUDE.md`, `GEMINI.md`, a root `AGENT.md` or `AGENTS.local.md`, scoped
+rules, skills and OpenSpec documents exist in
 the repository. Each occurrence is reported with its position and one of five
 states: consistent, inconsistent, not evaluable, not supported or ambiguous.
 

@@ -203,6 +203,24 @@ describe('--references: terminal and Markdown', () => {
   });
 });
 
+describe('--references: root project guides', () => {
+  test.each(['AGENT.md', 'AGENTS.local.md'])('a root %s is checked like AGENTS.md', (guide) => {
+    const root = makeRepo({
+      [guide]: '# Guide\nSee [guide](docs/guide.md) and [missing](docs/missing.md).\n',
+      'docs/guide.md': '# Guide\n',
+    });
+    const report = json([root, '--references']);
+    expect(report.checks.find((c: { id: string }) => c.id === 'CTX-01').passed).toBe(true);
+    expect(report.references.summary.operationalDocuments).toBe(1);
+    expect(report.references.summary.byState).toMatchObject({ consistent: 1, inconsistent: 1 });
+    expect(report.references.occurrences.map((o: { sourceArtifact: string }) => o.sourceArtifact)).toEqual([
+      guide,
+      guide,
+    ]);
+    expect(report.references.occurrences[0].sourceArtifactKind).toBe('context-instruction');
+  });
+});
+
 describe('--references: scope', () => {
   test('fixtures and archived specs are listed, not checked', () => {
     const root = makeRepo({

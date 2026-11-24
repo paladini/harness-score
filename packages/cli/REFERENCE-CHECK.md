@@ -16,7 +16,7 @@ in this order of precedence:
 
 | Kind | Paths |
 |---|---|
-| `context-instruction` | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` at any depth (including `.claude/CLAUDE.md`) |
+| `context-instruction` | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` at any depth (including `.claude/CLAUDE.md`); `AGENT.md` and `AGENTS.local.md` at the root only, the same root guides CTX-01 accepts (nested copies are scoped rules) |
 | `versioned-spec` | Markdown files under `openspec/specs/` and `openspec/changes/` |
 | `skill` | The skill locations the scanner already recognizes, such as `.agents/skills/*/SKILL.md`, `.cursor/skills/*/SKILL.md`, `.claude/skills/*/SKILL.md`, `.devin/skills/*/SKILL.md` |
 | `scoped-rule` | The rule locations the scanner already recognizes, such as `.cursor/rules/*.mdc`, `.github/instructions/*.instructions.md`, `.windsurf/rules/*.md`, `.clinerules/*.md`, `.claude/rules/**/*.md` |

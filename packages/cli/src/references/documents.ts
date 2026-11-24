@@ -8,7 +8,7 @@
  * set of operational documents.
  */
 
-import { matchPathSpec, PATH_SPECS } from '../harness/registry.js';
+import { CONTEXT_ROOT_FILES, matchPathSpec, PATH_SPECS } from '../harness/registry.js';
 import type { ScanContext } from '../types.js';
 import { compareLexically } from '../util.js';
 import type { SourceArtifactKind } from './types.js';
@@ -23,6 +23,8 @@ export interface OperationalDocument {
 }
 
 /** AGENTS.md / CLAUDE.md / GEMINI.md at the root or in any subdirectory. */
+// AGENT.md and AGENTS.local.md are context instructions only at the root
+// (CONTEXT_ROOT_FILES); nested copies stay scoped rules, as in PATH_SPECS.
 const CONTEXT_FILE_RE = /(^|\/)(AGENTS|CLAUDE|GEMINI)\.md$/;
 /** Markdown documents of an OpenSpec layout. */
 const SPEC_FILE_RE = /^openspec\/(specs|changes)\/.+\.md$/;
@@ -59,6 +61,10 @@ export function findOperationalDocuments(ctx: ScanContext): OperationalDocument[
     if (!kinds.has(path)) kinds.set(path, kind);
   };
 
+  // Root project guides: the same files CTX-01 accepts.
+  for (const file of CONTEXT_ROOT_FILES) {
+    if (ctx.has(file)) add(file, 'context-instruction');
+  }
   for (const file of ctx.matching(CONTEXT_FILE_RE)) add(file, 'context-instruction');
   for (const file of ctx.matching(SPEC_FILE_RE)) add(file, 'versioned-spec');
   for (const spec of PATH_SPECS) {
