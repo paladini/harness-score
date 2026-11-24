@@ -632,7 +632,9 @@ describe('hook checks', () => {
 describe('ci checks', () => {
   test('CI-01 fails with no CI configuration', async () => {
     const ctx = fakeContext({});
-    expect((await check('CI-01')).run(ctx).passed).toBe(false);
+    const outcome = (await check('CI-01')).run(ctx);
+    expect(outcome.passed).toBe(false);
+    expect(outcome.evidence).toContain('Buildkite');
   });
 
   test('CI-01 passes with a GitHub Actions workflow', async () => {
@@ -655,6 +657,47 @@ describe('ci checks', () => {
   test('CI-01 passes with a root Jenkinsfile', async () => {
     const ctx = fakeContext({ Jenkinsfile: 'pipeline { agent any }' });
     expect((await check('CI-01')).run(ctx).passed).toBe(true);
+  });
+
+  test.each([
+    'buildkite.yml',
+    'buildkite.yaml',
+    '.buildkite/pipeline.yml',
+    '.buildkite/pipeline.yaml',
+    'buildkite/pipeline.yml',
+    'buildkite/pipeline.yaml',
+    'services/api/.buildkite/pipeline.yml',
+    'services/api/buildkite.yml',
+  ])('CI-01 detects a Buildkite pipeline at %s', async (file) => {
+    const ctx = fakeContext({ [file]: 'steps: []' });
+    const outcome = (await check('CI-01')).run(ctx);
+    expect(outcome.passed, file).toBe(true);
+    expect(outcome.evidence).toContain(file);
+  });
+
+  test('CI-01 does not detect Buildkite JSON pipeline files', async () => {
+    const ctx = fakeContext({
+      'buildkite.json': '{"steps": []}',
+      '.buildkite/pipeline.json': '{"steps": []}',
+      'buildkite/pipeline.json': '{"steps": []}',
+    });
+    expect((await check('CI-01')).run(ctx).passed).toBe(false);
+  });
+
+  test('CI-02 and CI-03 inspect Buildkite command strings and command lists at nested paths', async () => {
+    const stringCommands = fakeContext({
+      'buildkite.yml':
+        'steps:\n  - label: Test\n    command: npm test\n  - label: Lint\n    commands: npm run lint',
+    });
+    expect((await check('CI-02')).run(stringCommands).passed).toBe(true);
+    expect((await check('CI-03')).run(stringCommands).passed).toBe(true);
+
+    const listCommands = fakeContext({
+      'services/api/.buildkite/pipeline.yaml':
+        'steps:\n  - label: Test\n    command:\n      - npm ci\n      - npm test\n  - label: Lint\n    commands:\n      - npm run lint\n      - npm run typecheck',
+    });
+    expect((await check('CI-02')).run(listCommands).passed).toBe(true);
+    expect((await check('CI-03')).run(listCommands).passed).toBe(true);
   });
 
   test('CI-01 de-duplicates files that match multiple provider patterns', async () => {

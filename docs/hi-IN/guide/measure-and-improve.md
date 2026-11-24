@@ -583,6 +583,7 @@ tree में कम से कम एक वास्तविक test फ़�
 ### CI Feedback (14 pts)
 
 #### CI-01 · CI pipeline configured — 4 pts {#ci-01}
+Buildkite YAML pipelines को किसी भी गहराई पर पहचाना जाता है: `buildkite.yml`, `.buildkite/pipeline.yml`, या `buildkite/pipeline.yml` (`.yaml` रूपों सहित)।
 GitHub Actions workflow (या GitLab/CircleCI/Jenkins equivalent), जिसमें
 `cloudbuild/` के अंतर्गत Google Cloud Build configuration भी शामिल है।
 Detection filesystem पर आधारित है और scan root के नीचे किसी भी depth पर लागू

@@ -570,6 +570,7 @@ prettier/biome/oxfmt、black/ruff-format、gofmt/rustfmt、pint 或 php-cs-fixer
 ### CI Feedback (14 pts)
 
 #### CI-01 · CI pipeline configured — 4 pts {#ci-01}
+Buildkite 的 YAML 流水线也会在任意深度被检测：`buildkite.yml`、`.buildkite/pipeline.yml` 或 `buildkite/pipeline.yml`（也包括 `.yaml` 变体）。
 GitHub Actions workflow（或 GitLab/CircleCI/Jenkins 等价物），也包括
 `cloudbuild/` 下的 Google Cloud Build 配置。
 检测基于文件系统，会计入扫描根目录下任意深度的文件，因此嵌套工作区项目中的 CI 文件也算。它不会验证 CI 平台是否实际执行该文件。

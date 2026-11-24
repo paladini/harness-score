@@ -7,6 +7,7 @@ import { expandCiWithComposerScripts } from './composer.js';
 // subfolders, each carrying its own pipeline file. Matching only at depth 0
 // scored those repos 0/14 on CI while the harness itself was complete.
 const WORKFLOW_RE = /(^|\/)\.(github|forgejo)\/workflows\/[^/]+\.(yml|yaml)$/;
+const BUILDKITE_RES = [/(^|\/)\.?buildkite\/pipeline\.(yml|yaml)$/, /(^|\/)buildkite\.(yml|yaml)$/];
 const OTHER_CI_RES = [
   /(^|\/)\.gitlab-ci\.yml$/,
   /(^|\/)azure-pipelines\.yml$/,
@@ -14,6 +15,7 @@ const OTHER_CI_RES = [
   /(^|\/)Jenkinsfile$/,
   /(^|\/)bitbucket-pipelines\.yml$/,
   /(^|\/)cloudbuild\/.+\.(yml|yaml)$/,
+  ...BUILDKITE_RES,
 ];
 
 function ciFiles(ctx: ScanContext): string[] {
@@ -26,6 +28,7 @@ const CI_COMMAND_KEYS = {
   azure: ['script', 'bash', 'pwsh', 'powershell', 'command', 'customCommand'],
   bitbucket: ['script', 'after-script'],
   cloudbuild: ['args', 'entrypoint', 'script'],
+  buildkite: ['command', 'commands'],
 } as const;
 
 function extractYamlCommands(content: string, keys: readonly string[], emptyValueIsBlock = true): string {
@@ -81,17 +84,19 @@ function ciCommandContent(ctx: ScanContext): string {
       const content = ctx.read(file) ?? '';
       if (/(^|\/)Jenkinsfile$/.test(file)) return extractJenkinsCommands(content);
 
-      const keys = file.startsWith('cloudbuild/')
-        ? CI_COMMAND_KEYS.cloudbuild
-        : file.endsWith('.gitlab-ci.yml')
-          ? CI_COMMAND_KEYS.gitlab
-          : file.endsWith('azure-pipelines.yml')
-            ? CI_COMMAND_KEYS.azure
-            : file.endsWith('.circleci/config.yml')
-              ? null
-              : file.endsWith('bitbucket-pipelines.yml')
-                ? CI_COMMAND_KEYS.bitbucket
-                : CI_COMMAND_KEYS.workflow;
+      const keys = BUILDKITE_RES.some((re) => re.test(file))
+        ? CI_COMMAND_KEYS.buildkite
+        : file.startsWith('cloudbuild/')
+          ? CI_COMMAND_KEYS.cloudbuild
+          : file.endsWith('.gitlab-ci.yml')
+            ? CI_COMMAND_KEYS.gitlab
+            : file.endsWith('azure-pipelines.yml')
+              ? CI_COMMAND_KEYS.azure
+              : file.endsWith('.circleci/config.yml')
+                ? null
+                : file.endsWith('bitbucket-pipelines.yml')
+                  ? CI_COMMAND_KEYS.bitbucket
+                  : CI_COMMAND_KEYS.workflow;
 
       return keys === null ? extractCircleCiCommands(content) : extractYamlCommands(content, keys);
     })
@@ -119,7 +124,10 @@ export const ciChecks: Check[] = [
       const files = ciFiles(ctx);
       return files.length > 0
         ? { passed: true, evidence: `Found: ${files.slice(0, 3).join(', ')}.` }
-        : { passed: false, evidence: 'No CI configuration detected (GitHub Actions, GitLab CI, CircleCI…).' };
+        : {
+            passed: false,
+            evidence: 'No CI configuration detected (GitHub Actions, GitLab CI, CircleCI, Buildkite, etc.).',
+          };
     },
   },
   {

@@ -620,6 +620,7 @@ At least one actual test file in the tree.
 ### CI Feedback (14 pts)
 
 #### CI-01 · CI pipeline configured — 4 pts {#ci-01}
+También se detectan pipelines YAML de Buildkite a cualquier profundidad: `buildkite.yml`, `.buildkite/pipeline.yml` o `buildkite/pipeline.yml` (incluidas las variantes `.yaml`).
 Flujo de trabajo de GitHub Actions (o equivalente de GitLab/CircleCI/Jenkins),
 incluida una configuración de Google Cloud Build en `cloudbuild/`.
 La detección se basa en el filesystem y funciona a cualquier profundidad por
