@@ -622,7 +622,8 @@ package-lock.json、uv.lock、Cargo.lock、go.sum 或等价 lockfile。
 #### HYG-08 · MCP config uses env interpolation for credentials — 3 pts {#hyg-08}
 当存在 MCP 配置（`.cursor/mcp.json`、`.mcp.json`、`.agents/mcp_config.json`、Continue YAML、OpenCode JSONC 或 Codex TOML）时，
 它必须有效，且任何 credential 形字段（token、key、secret、password 等）
-使用 `${ENV_VAR}` 插值而非字面量。这是 HYG-04 的正面补充。
+引用环境变量或 secret，而非字面量。各客户端文档中的语法均可：`${VAR}`、`${VAR:-}`、`${env:VAR}`、`${input:id}`、`{env:VAR}`、<code v-pre>${{ secrets.NAME }}</code>，以及 Codex 中命名变量的 `*_env_var` 键。这是 HYG-04 的正面补充。
+非空 fallback（如 `${VAR:-value}`）会失败，因为该 fallback 是提交到仓库中的字面量。
 **不适用：** 仓库没有 MCP 配置。不使用 MCP 并不是缺少插值配置，因此该 check
 同时退出分数的分子和分母。之后添加配置会使该 check 重新适用。
 **修复：** 将 secrets 引用为 `"${VAR_NAME}"`，并在 `.env.example` 中记录所需变量。
